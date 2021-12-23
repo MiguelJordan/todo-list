@@ -1,46 +1,40 @@
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
+import Container from "@mui/material/Container";
+import IconButton from "@mui/material/IconButton";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
 
-import { Link, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
+
+// icons
+import MenuIcon from "@mui/icons-material/Menu";
+
+// components
+import AccountMenu from "./menu/AccountMenu";
+
+import { useNavigate } from "react-router-dom";
+import { ButtonBase } from "@mui/material";
 
 const Nav = ({
   links = [],
   settings = ["Profile", "Account", "Dashboard", "Logout"],
+  showLoginBtn = true,
 }) => {
+  const { user } = useContext(AuthContext);
   const Navigate = useNavigate();
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const openNavMenu = (event) => {
     // setAnchorElNav(event.currentTarget);
   };
 
-  const closeNavMenu = () => {
-    // setAnchorElNav(null);
-  };
-
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
   return (
     <AppBar
       position="static"
-      sx={{ backgroundColor: "transparent", marginBottom: "2rem" }}
+      sx={{ backgroundColor: "transparent", marginBottom: "1rem" }}
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
@@ -61,7 +55,7 @@ const Nav = ({
             noWrap
             component="div"
             onClick={() => Navigate("/")}
-            sx={{ flexGrow: { xs: 1, sm: 0, md: 1 }, display: "flex" }}
+            sx={{ cursor: "pointer", marginRight: "auto" }}
           >
             TheBoss
           </Typography>
@@ -76,36 +70,24 @@ const Nav = ({
               </Button>
             ))}
           </Box>
-
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
+          {user && <AccountMenu user={user} />}
+          {!user && showLoginBtn && (
+            <Button
+              onClick={() => Navigate("/login")}
+              sx={{
+                my: 2,
+                backgroundColor: "hsl(216, 100%, 46%)",
+                color: "white",
+                display: "block",
+                border: "3px solid transparent",
+                "&:hover": {
+                  border: "3px solid hsl(216, 100%, 46%)",
+                },
               }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={closeNavMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+              Log in
+            </Button>
+          )}
         </Toolbar>
       </Container>
     </AppBar>

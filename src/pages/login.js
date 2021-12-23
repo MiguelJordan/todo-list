@@ -43,6 +43,10 @@ const useStyles = makeStyles((theme) => ({
       margin: "auto",
       minWidth: "87vw",
     },
+    [theme.breakpoints.between("sm", "md")]: {
+      padding: "70px",
+      minWidth: "57vw",
+    },
     [theme.breakpoints.up("md")]: {
       padding: "70px",
     },
@@ -115,7 +119,12 @@ const Page = () => {
             container
             align="center"
             justifyContent="center"
-            //className={style.loginForm}
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%,-50%)",
+            }}
           >
             <Paper
               variant="elevation"

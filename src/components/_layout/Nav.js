@@ -17,13 +17,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import AccountMenu from "./menu/AccountMenu";
 
 import { useNavigate } from "react-router-dom";
-import { ButtonBase } from "@mui/material";
 
-const Nav = ({
-  links = [],
-  settings = ["Profile", "Account", "Dashboard", "Logout"],
-  showLoginBtn = true,
-}) => {
+const Nav = ({ links = [], showLoginBtn = true }) => {
   const { user } = useContext(AuthContext);
   const Navigate = useNavigate();
 

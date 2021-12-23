@@ -1,13 +1,18 @@
-import * as React from "react";
+import { useContext, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
+// import Divider from "@mui/material/Divider";
+import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+// import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
 
-import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 
 // icons
@@ -22,29 +27,56 @@ const Nav = ({ links = [], showLoginBtn = true }) => {
   const { user } = useContext(AuthContext);
   const Navigate = useNavigate();
 
-  const openNavMenu = (event) => {
-    // setAnchorElNav(event.currentTarget);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const toggleDrawer = (e) => {
+    if (e.type === "keydown" && (e.key === "Tab" || e.key === "Shift")) {
+      return;
+    }
+    setDrawerOpen(!drawerOpen);
   };
 
   return (
-    <AppBar
-      position="static"
-      sx={{ backgroundColor: "transparent", marginBottom: "1rem" }}
-    >
+    <AppBar position="static" sx={{ backgroundColor: "transparent" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          {/* <Box> */}
           <IconButton
             size="large"
             aria-label="navigation menu"
             aria-controls="menu-appbar"
             aria-haspopup="true"
-            onClick={openNavMenu}
+            onClick={toggleDrawer}
             color="inherit"
+            sx={{ display: { xs: "flex", sm: "none" } }}
           >
             <MenuIcon />
           </IconButton>
-          {/* </Box> */}
+          <Drawer
+            anchor={"left"}
+            open={drawerOpen}
+            onClose={() => setDrawerOpen(false)}
+            PaperProps={{ sx: { backgroundColor: "black" } }}
+          >
+            <Box
+              sx={{ display: { xs: "flex", sm: "none" }, width: 250 }}
+              role="presentation"
+              onClick={toggleDrawer}
+              onKeyDown={toggleDrawer}
+            >
+              <List>
+                {links.map((link) => (
+                  <ListItem
+                    button
+                    key={link.text}
+                    onClick={() => Navigate(link.path)}
+                  >
+                    {/* <Divider /> */}
+                    <ListItemText primary={link.text} />
+                  </ListItem>
+                ))}
+              </List>
+            </Box>
+          </Drawer>
           <Typography
             variant="h6"
             noWrap

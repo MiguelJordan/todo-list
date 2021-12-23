@@ -95,16 +95,11 @@ export default function AccountMenu({ user }) {
         {options.map((option) => {
           return (
             <MenuItem key={option.text} onClick={option.handleClick}>
-              <ListItemIcon>
-                {option.icon}
-                {/* <PersonAdd fontSize="small" /> */}
-              </ListItemIcon>
+              <ListItemIcon>{option.icon}</ListItemIcon>
               {option.text}
             </MenuItem>
           );
         })}
-
-        {/* <Divider /> */}
       </Menu>
     </Fragment>
   );

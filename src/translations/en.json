@@ -1,0 +1,13 @@
+{
+  "auth": {
+    "passwordField": "Password",
+    "forgot_password": "Forgot Password?"
+  },
+  "home_screen": {
+    "greeting": "Welcome"
+  },
+  "login_page": {
+    "title": "Log In"
+  },
+  "test": ""
+}

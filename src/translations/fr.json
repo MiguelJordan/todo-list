@@ -1,0 +1,13 @@
+{
+  "auth": {
+    "passwordField": "Mot De Passe",
+    "forgot_password": "Mot de passe Oublie?"
+  },
+  "home_screen": {
+    "greeting": "Welcome"
+  },
+  "login_page": {
+    "title": "Connexion"
+  },
+  "test": ""
+}

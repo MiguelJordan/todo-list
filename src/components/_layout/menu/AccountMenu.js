@@ -6,6 +6,7 @@ import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import IconButton from "@mui/material/IconButton";
 import { colors, Tooltip } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
 // get user option by role
 import useOptions from "./menuOptions";
@@ -13,8 +14,25 @@ import useOptions from "./menuOptions";
 // context
 import { SocketContext } from "../../../contexts/SocketContext";
 
+const useStyles = makeStyles((theme) => ({
+  onlineParent: {
+    position: "relative",
+  },
+  onlineDot: {
+    position: "absolute",
+    right: 0,
+    width: 15,
+    height: 15,
+    borderRadius: "50%",
+    backgroundColor: colors.green[500],
+    zIndex: 2,
+  },
+}));
+
 export default function AccountMenu({ user }) {
   const { socketConnected } = useContext(SocketContext);
+  const classes = useStyles();
+
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -31,24 +49,8 @@ export default function AccountMenu({ user }) {
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
         <Tooltip title="Account settings">
           <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
-            <div
-              style={{
-                position: "relative",
-              }}
-            >
-              {socketConnected && (
-                <div
-                  style={{
-                    position: "absolute",
-                    right: 0,
-                    width: 10,
-                    height: 10,
-                    borderRadius: "50%",
-                    backgroundColor: colors.green[500],
-                    zIndex: 2,
-                  }}
-                />
-              )}
+            <div className={classes.onlineParent}>
+              {socketConnected && <div className={classes.onlineDot} />}
               <Avatar alt={user?.firstName} src={user?.profilePic}>
                 {user?.firstName[0]}
               </Avatar>

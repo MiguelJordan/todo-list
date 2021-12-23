@@ -72,7 +72,6 @@ const SocketContextProvider = ({ children }) => {
       socket.off("registered", registeredE);
     };
   }, [socket]);
-  //
 
   const context = { socket, socketConnected };
 

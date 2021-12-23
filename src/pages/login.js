@@ -231,5 +231,5 @@ const Page = () => {
 };
 
 export default function Login() {
-  return <Layout Main={Page} />;
+  return <Layout Main={Page} showLoginBtn={false} />;
 }

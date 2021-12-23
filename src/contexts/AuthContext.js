@@ -29,7 +29,7 @@ const AuthContexProvider = ({ children }) => {
         })
       ).json();
 
-      if (data) saveUser(data);
+      if (!data.error) saveUser(data);
 
       return data;
     } catch (err) {

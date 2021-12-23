@@ -1,17 +1,21 @@
-import * as React from "react";
+import { Fragment, useContext, useState } from "react";
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
+import { colors, Tooltip } from "@mui/material";
 
 // get user option by role
 import useOptions from "./menuOptions";
 
+// context
+import { SocketContext } from "../../../contexts/SocketContext";
+
 export default function AccountMenu({ user }) {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const { socketConnected } = useContext(SocketContext);
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -23,13 +27,32 @@ export default function AccountMenu({ user }) {
   const options = useOptions(user?.role);
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
         <Tooltip title="Account settings">
           <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
-            <Avatar alt={user?.firstName} src={user?.profilePic}>
-              {user?.firstName[0]}
-            </Avatar>
+            <div
+              style={{
+                position: "relative",
+              }}
+            >
+              {socketConnected && (
+                <div
+                  style={{
+                    position: "absolute",
+                    right: 0,
+                    width: 10,
+                    height: 10,
+                    borderRadius: "50%",
+                    backgroundColor: colors.green[500],
+                    zIndex: 2,
+                  }}
+                />
+              )}
+              <Avatar alt={user?.firstName} src={user?.profilePic}>
+                {user?.firstName[0]}
+              </Avatar>
+            </div>
           </IconButton>
         </Tooltip>
       </Box>
@@ -83,6 +106,6 @@ export default function AccountMenu({ user }) {
 
         {/* <Divider /> */}
       </Menu>
-    </React.Fragment>
+    </Fragment>
   );
 }

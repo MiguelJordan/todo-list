@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 const useFetchGet = (url, resourceName = "") => {
-  const [resource, setResource] = useState(null);
+  const [data, setData] = useState(null);
   const [isPending, setIsPending] = useState(true);
   const [error, setError] = useState(null);
 
@@ -12,10 +12,10 @@ const useFetchGet = (url, resourceName = "") => {
       .then((response) => {
         return response.json();
       })
-      .then((resource) => {
+      .then((data) => {
         setError(null);
         setIsPending(false);
-        setResource(resource);
+        setData(data);
       })
       .catch((err) => {
         setIsPending(false);
@@ -25,7 +25,7 @@ const useFetchGet = (url, resourceName = "") => {
     return () => abortControl.abort();
   }, [url, resourceName]);
 
-  return { resource, error, isPending };
+  return { data, error, isPending };
 };
 
 export default useFetchGet;

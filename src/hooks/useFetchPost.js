@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-const useFetchPost = (url, resourceName = "", data) => {
-  const [resource, setResource] = useState(null);
+const useFetchPost = (url, resourceName = "", reqData) => {
+  const [data, setData] = useState(null);
   const [isPending, setIsPending] = useState(true);
   const [error, setError] = useState(null);
 
@@ -11,16 +11,16 @@ const useFetchPost = (url, resourceName = "", data) => {
     fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
+      body: JSON.stringify(reqData),
       signal: abortControl.signal,
     })
       .then((response) => {
         return response.json();
       })
-      .then((resource) => {
+      .then((resData) => {
         setError(null);
         setIsPending(false);
-        setResource(resource);
+        setData(resData);
       })
       .catch((err) => {
         setIsPending(false);
@@ -30,7 +30,7 @@ const useFetchPost = (url, resourceName = "", data) => {
     return () => abortControl.abort();
   }, [url, data, resourceName]);
 
-  return { resource, error, isPending };
+  return { data, error, isPending };
 };
 
 export default useFetchPost;

@@ -1,9 +1,9 @@
 import Nav from "./Nav";
 
-export default function Layout({ Main, links }) {
+export default function Layout({ Main, links, showLoginBtn }) {
   return (
     <>
-      <Nav links={links} />
+      <Nav links={links} showLoginBtn={showLoginBtn} />
       <Main />
     </>
   );

@@ -8,6 +8,7 @@ import Orders from "./Orders";
 const mainLinks = [
   { text: "Drinks", path: "/waiter/" },
   { text: "Orders", path: "/waiter/orders" },
+  { text: "Yoyo", path: "/waiter/orders" },
 ];
 
 export default function Waiter() {

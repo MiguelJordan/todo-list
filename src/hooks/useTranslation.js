@@ -10,7 +10,9 @@ const useTranslation = () => {
   const translate = (key) => {
     const keys = key.split(".");
 
-    return translateNested(keys) ?? key;
+    // return translation or the last key;
+    // which is the actual word or phrase to be translated
+    return translateNested(keys) ?? keys[keys.length - 1];
   };
 
   const translateNested = (keys) => {
@@ -20,16 +22,12 @@ const useTranslation = () => {
   };
 
   const setLanguage = (lang) => {
-    if (!translations[lang]) {
-      storage.set("language", "en");
-    } else {
-      storage.set("language", lang);
-    }
-
-    setLang(storage.get("language"));
+    if (!translations[lang]) return;
+    storage.set("language", lang);
+    setLang(lang);
   };
 
-  return { t: translate, setLanguage };
+  return { t: translate, language, setLanguage };
 };
 
 export default useTranslation;

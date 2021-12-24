@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -13,6 +13,7 @@ import ListItem from "@mui/material/ListItem";
 // import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 
 // icons
@@ -21,11 +22,13 @@ import MenuIcon from "@mui/icons-material/Menu";
 // components
 import AccountMenu from "./menu/AccountMenu";
 
-import { useNavigate } from "react-router-dom";
+// custom hooks
+import useTranslation from "../../hooks/useTranslation";
 
 const Nav = ({ links = [], showLoginBtn = true }) => {
   const { user } = useContext(AuthContext);
   const Navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -35,6 +38,8 @@ const Nav = ({ links = [], showLoginBtn = true }) => {
     }
     setDrawerOpen(!drawerOpen);
   };
+
+  const showLinkText = ({ text }) => t(`_var.waiter.nav.${text}`);
 
   links = links.map((link) => {
     const directEqual = window.location.pathname == link.path;
@@ -77,7 +82,11 @@ const Nav = ({ links = [], showLoginBtn = true }) => {
                     button
                     key={link.text}
                     onClick={() => Navigate(link.path)}
-                    sx={{ position: "relative", width: "240px" }}
+                    sx={{
+                      position: "relative",
+                      width: "240px",
+                      paddingLeft: "25px",
+                    }}
                   >
                     {link.isActive && (
                       <Divider
@@ -85,15 +94,16 @@ const Nav = ({ links = [], showLoginBtn = true }) => {
                           height: "50%",
                           width: "5px",
                           position: "absolute",
-                          left: 0,
+                          left: 5,
                           top: "50%",
+                          borderRadius: "4px",
                           transform: "translateY(-50%)",
                           backgroundColor: "hsl(184, 92%, 41%)",
                         }}
                       />
                     )}
                     <ListItemText
-                      primary={link.text}
+                      primary={showLinkText(link)}
                       primaryTypographyProps={{
                         color: link.isActive ? "nav.active" : "nav.inActive",
                       }}
@@ -127,7 +137,7 @@ const Nav = ({ links = [], showLoginBtn = true }) => {
                   onClick={() => Navigate(link.path)}
                 >
                   <ListItemText
-                    primary={link.text}
+                    primary={showLinkText(link)}
                     primaryTypographyProps={{
                       color: link.isActive ? "nav.active" : "nav.inActive",
                     }}

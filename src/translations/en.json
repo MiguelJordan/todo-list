@@ -9,5 +9,8 @@
   "login_page": {
     "title": "Log In"
   },
-  "test": ""
+  "_var": {
+    "role": { "section": "value" },
+    "waiter": { "nav": { "Drinks": "Drinks", "Orders": "Orders" } }
+  }
 }

@@ -5,7 +5,7 @@ import useStorage from "./useStorage";
 
 const useTranslation = () => {
   const storage = useStorage();
-  const [language, setLang] = useState(storage.get("language") || "en");
+  const [language, setLang] = useState(storage.get("language") || "fr");
 
   const translate = (key) => {
     const keys = key.split(".");

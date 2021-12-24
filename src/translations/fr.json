@@ -9,5 +9,8 @@
   "login_page": {
     "title": "Connexion"
   },
-  "test": ""
+  "_var": {
+    "role": { "section": "value" },
+    "waiter": { "nav": { "Drinks": "Boissons", "Orders": "Commandes" } }
+  }
 }

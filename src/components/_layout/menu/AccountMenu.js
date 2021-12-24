@@ -15,18 +15,20 @@ import useOptions from "./menuOptions";
 import { SocketContext } from "../../../contexts/SocketContext";
 
 const useStyles = makeStyles((theme) => ({
-  onlineParent: {
+  presence_parent: {
     position: "relative",
   },
-  onlineDot: {
+  presence_dot: {
     position: "absolute",
-    right: 0,
-    width: 15,
-    height: 15,
+    right: -2,
+    width: 10,
+    height: 10,
     borderRadius: "50%",
-    backgroundColor: colors.green[500],
+    backgroundColor: "#d58c13",
+    border: "3px solid #001d42",
     zIndex: 2,
   },
+  presence_online: { backgroundColor: colors.green[500] },
 }));
 
 export default function AccountMenu({ user }) {
@@ -50,8 +52,12 @@ export default function AccountMenu({ user }) {
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
         <Tooltip title="Account settings">
           <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
-            <div className={classes.onlineParent}>
-              {socketConnected && <div className={classes.onlineDot} />}
+            <div className={classes.presence_parent}>
+              <div
+                className={`${classes.presence_dot} ${
+                  socketConnected && classes.presence_online
+                }`}
+              />
               <Avatar alt={user?.firstName} src={user?.profilePic}>
                 {user?.firstName[0]}
               </Avatar>

@@ -3,7 +3,7 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
-// import Divider from "@mui/material/Divider";
+import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
@@ -36,6 +36,14 @@ const Nav = ({ links = [], showLoginBtn = true }) => {
     setDrawerOpen(!drawerOpen);
   };
 
+  links = links.map((link) => {
+    const directEqual = window.location.pathname == link.path;
+    const indirectEqual =
+      window.location.pathname == link.path.slice(0, link.path.length - 1);
+    link.isActive = directEqual || indirectEqual ? true : false;
+    return link;
+  });
+
   return (
     <AppBar position="static" sx={{ backgroundColor: "transparent" }}>
       <Container maxWidth="xl">
@@ -55,7 +63,7 @@ const Nav = ({ links = [], showLoginBtn = true }) => {
             anchor={"left"}
             open={drawerOpen}
             onClose={() => setDrawerOpen(false)}
-            PaperProps={{ sx: { backgroundColor: "black" } }}
+            PaperProps={{ sx: { backgroundColor: "hsl(214, 100%, 13%)" } }}
           >
             <Box
               sx={{ display: { xs: "flex", sm: "none" }, width: 250 }}
@@ -69,9 +77,27 @@ const Nav = ({ links = [], showLoginBtn = true }) => {
                     button
                     key={link.text}
                     onClick={() => Navigate(link.path)}
+                    sx={{ position: "relative", width: "240px" }}
                   >
-                    {/* <Divider /> */}
-                    <ListItemText primary={link.text} />
+                    {link.isActive && (
+                      <Divider
+                        sx={{
+                          height: "50%",
+                          width: "5px",
+                          position: "absolute",
+                          left: 0,
+                          top: "50%",
+                          transform: "translateY(-50%)",
+                          backgroundColor: "hsl(184, 92%, 41%)",
+                        }}
+                      />
+                    )}
+                    <ListItemText
+                      primary={link.text}
+                      primaryTypographyProps={{
+                        color: link.isActive ? "nav.active" : "nav.inActive",
+                      }}
+                    />
                   </ListItem>
                 ))}
               </List>
@@ -86,16 +112,44 @@ const Nav = ({ links = [], showLoginBtn = true }) => {
           >
             TheBoss
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", sm: "flex" } }}>
-            {links.map((link) => (
-              <Button
-                key={link.text}
-                onClick={() => Navigate(link.path)}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {link.text}
-              </Button>
-            ))}
+          <Box
+            sx={{
+              display: { xs: "none", sm: "flex" },
+              marginRight: "auto",
+            }}
+          >
+            <List sx={{ display: "flex", marginBottom: "-15px" }}>
+              {links.map((link) => (
+                <ListItem
+                  button
+                  sx={{ position: "relative" }}
+                  key={link.text}
+                  onClick={() => Navigate(link.path)}
+                >
+                  <ListItemText
+                    primary={link.text}
+                    primaryTypographyProps={{
+                      color: link.isActive ? "nav.active" : "nav.inActive",
+                    }}
+                  />
+
+                  {link.isActive && (
+                    <Divider
+                      sx={{
+                        height: "5px",
+                        position: "absolute",
+                        bottom: 0,
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        width: "95%",
+                        marginTop: "-10px",
+                        backgroundColor: "hsl(184, 92%, 41%)",
+                      }}
+                    />
+                  )}
+                </ListItem>
+              ))}
+            </List>
           </Box>
           {user && <AccountMenu user={user} />}
           {!user && showLoginBtn && (
@@ -116,6 +170,13 @@ const Nav = ({ links = [], showLoginBtn = true }) => {
             </Button>
           )}
         </Toolbar>
+        <Divider
+          sx={{
+            display: { xs: "none", sm: "flex" },
+            width: "100%",
+            backgroundColor: "hsl(213, 51%, 35%)",
+          }}
+        />
       </Container>
     </AppBar>
   );

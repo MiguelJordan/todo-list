@@ -103,102 +103,99 @@ export default function OrderList({ role = "" }) {
               className={classes.card}
               key={item.id}
             >
-              {item ? (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  alignItems: "flex-start",
+                  flexFlow: "column",
+                  paddingLeft: "6px",
+                }}
+              >
                 <div
                   style={{
                     display: "flex",
                     justifyContent: "flex-start",
                     alignItems: "flex-start",
                     flexFlow: "column",
-                    paddingLeft: "6px",
+                    marginTop: "-10px",
                   }}
                 >
-                  <div
+                  /* Head of the order list */
+                  <span
                     style={{
-                      display: "flex",
-                      justifyContent: "flex-start",
+                      fontSize: 28,
+                      color: "#001D42",
                       alignItems: "flex-start",
-                      flexFlow: "column",
-                      marginTop: "-10px",
+                      alignSelf: "flex-start",
+                      // marginTop: "-20%",
+                    }}
+                    onClick={() => Navigate("./detail")}
+                  >
+                    {role === "waiter" ? `${item.tableN}` : `${item.waiterN}`}
+                  </span>
+                  {"Date of the order"}
+                  <span
+                    style={{
+                      fontSize: 15,
+                      color: "#707070",
+                      alignItems: "flex-start",
+                      alignSelf: "flex-start",
+                      //marginTop: "-20%",
                     }}
                   >
-                    /* Head of the order list */
-                    <span
-                      style={{
-                        fontSize: 28,
-                        color: "#001D42",
-                        alignItems: "flex-start",
-                        alignSelf: "flex-start",
-                        // marginTop: "-20%",
-                      }}
-                      onClick={() => Navigate("./detail")}
-                    >
-                      {role === "waiter" ? `${item.tableN}` : `${item.waiterN}`}
-                    </span>
-                    {"Date of the order"}
-                    <span
-                      style={{
-                        fontSize: 15,
-                        color: "#707070",
-                        alignItems: "flex-start",
-                        alignSelf: "flex-start",
-                        //marginTop: "-20%",
-                      }}
-                    >
-                      {item.createdDate}
-                    </span>
-                  </div>
-                  <hr
-                    width="310vw"
-                    color="gray"
-                    style={{
-                      color: "#B3B3B3",
-                      height: 2,
-                    }}
-                  />
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      alignItems: "flex-start",
-                      flexFlow: "column",
-                    }}
-                  >
-                    {"Total amount of Drinks in FCFA"}
-                    <span
-                      style={{
-                        fontSize: 20,
-                        color: "#707070",
-                        alignItems: "flex-start",
-                        alignSelf: "flex-start",
-                        marginTop: "5%",
-                      }}
-                    >
-                      {`Boissons: ${item.drink}`}
-                    </span>
-                    {"Total amount of Meal in FCFA"}
-                    <span
-                      style={{
-                        fontSize: 20,
-                        color: "#707070",
-                        alignItems: "flex-start",
-                        alignSelf: "flex-start",
-                      }}
-                    >
-                      {`Repas: ${item.meal}`}
-                    </span>
-                  </div>
-                  {item.isPaid && (
-                    <span
-                      style={{ marginTop: "2%", color: "green" }}
-                    >{`Status: Payee`}</span>
-                  )}
+                    {item.createdDate}
+                  </span>
                 </div>
-              ) : (
-                <div style={{ backgroundColor: "red" }}> No Order Found</div>
-              )}
+                <hr
+                  width="310vw"
+                  color="gray"
+                  style={{
+                    color: "#B3B3B3",
+                    height: 2,
+                  }}
+                />
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    alignItems: "flex-start",
+                    flexFlow: "column",
+                  }}
+                >
+                  {"Total amount of Drinks in FCFA"}
+                  <span
+                    style={{
+                      fontSize: 20,
+                      color: "#707070",
+                      alignItems: "flex-start",
+                      alignSelf: "flex-start",
+                      marginTop: "5%",
+                    }}
+                  >
+                    {`Boissons: ${item.drink}`}
+                  </span>
+                  {"Total amount of Meal in FCFA"}
+                  <span
+                    style={{
+                      fontSize: 20,
+                      color: "#707070",
+                      alignItems: "flex-start",
+                      alignSelf: "flex-start",
+                    }}
+                  >
+                    {`Repas: ${item.meal}`}
+                  </span>
+                </div>
+                {item.isPaid && (
+                  <span
+                    style={{ marginTop: "2%", color: "green" }}
+                  >{`Status: Payee`}</span>
+                )}
+              </div>
             </Box>
           ))}
+          {array.lenght === 0 && <div>Aucun Element Trouve</div>}
         </Grid>
       </Container>
     </div>

@@ -20,6 +20,7 @@ import useTranslation from "../hooks/useTranslation";
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    minWidth: "80vw",
     [theme.breakpoints.down("sm")]: {
       //   maxWidth: "100px",
       minWidth: "95vw",
@@ -45,10 +46,15 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.between("sm", "md")]: {
       padding: "70px",
-      minWidth: "57vw",
+      minWidth: "33vw",
     },
     [theme.breakpoints.up("md")]: {
       padding: "70px",
+      minWidth: "30vw",
+    },
+    [theme.breakpoints.up("lg")]: {
+      padding: "60px",
+      minWidth: "20vw",
     },
   },
   buttonBlock: {
@@ -113,7 +119,7 @@ const Page = () => {
 
   return (
     <>
-      <Grid align="center" className={style.root}>
+      <Grid container align="center" className={style.root}>
         <Grid item xs={6} align="center">
           <Grid
             container

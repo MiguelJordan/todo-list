@@ -53,66 +53,72 @@ const Nav = ({ links = [], showLoginBtn = true }) => {
     <AppBar position="static" sx={{ backgroundColor: "transparent" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <IconButton
-            size="large"
-            aria-label="navigation menu"
-            aria-controls="menu-appbar"
-            aria-haspopup="true"
-            onClick={toggleDrawer}
-            color="inherit"
-            sx={{ display: { xs: "flex", sm: "none" } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Drawer
-            anchor={"left"}
-            open={drawerOpen}
-            onClose={() => setDrawerOpen(false)}
-            PaperProps={{ sx: { backgroundColor: "hsl(214, 100%, 13%)" } }}
-          >
-            <Box
-              sx={{ display: { xs: "flex", sm: "none" }, width: 250 }}
-              role="presentation"
-              onClick={toggleDrawer}
-              onKeyDown={toggleDrawer}
-            >
-              <List>
-                {links.map((link) => (
-                  <ListItem
-                    button
-                    key={link.text}
-                    onClick={() => Navigate(link.path)}
-                    sx={{
-                      position: "relative",
-                      width: "240px",
-                      paddingLeft: "25px",
-                    }}
-                  >
-                    {link.isActive && (
-                      <Divider
+          {links.length > 0 && (
+            <>
+              <IconButton
+                size="large"
+                aria-label="navigation menu"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={toggleDrawer}
+                color="inherit"
+                sx={{ display: { xs: "flex", sm: "none" } }}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Drawer
+                anchor={"left"}
+                open={drawerOpen}
+                onClose={() => setDrawerOpen(false)}
+                PaperProps={{ sx: { backgroundColor: "hsl(214, 100%, 13%)" } }}
+              >
+                <Box
+                  sx={{ display: { xs: "flex", sm: "none" }, width: 250 }}
+                  role="presentation"
+                  onClick={toggleDrawer}
+                  onKeyDown={toggleDrawer}
+                >
+                  <List>
+                    {links.map((link) => (
+                      <ListItem
+                        button
+                        key={link.text}
+                        onClick={() => Navigate(link.path)}
                         sx={{
-                          height: "50%",
-                          width: "5px",
-                          position: "absolute",
-                          left: 5,
-                          top: "50%",
-                          borderRadius: "4px",
-                          transform: "translateY(-50%)",
-                          backgroundColor: "hsl(184, 92%, 41%)",
+                          position: "relative",
+                          width: "240px",
+                          paddingLeft: "25px",
                         }}
-                      />
-                    )}
-                    <ListItemText
-                      primary={showLinkText(link)}
-                      primaryTypographyProps={{
-                        color: link.isActive ? "nav.active" : "nav.inActive",
-                      }}
-                    />
-                  </ListItem>
-                ))}
-              </List>
-            </Box>
-          </Drawer>
+                      >
+                        {link.isActive && (
+                          <Divider
+                            sx={{
+                              height: "50%",
+                              width: "5px",
+                              position: "absolute",
+                              left: 5,
+                              top: "50%",
+                              borderRadius: "4px",
+                              transform: "translateY(-50%)",
+                              backgroundColor: "hsl(184, 92%, 41%)",
+                            }}
+                          />
+                        )}
+                        <ListItemText
+                          primary={showLinkText(link)}
+                          primaryTypographyProps={{
+                            color: link.isActive
+                              ? "nav.active"
+                              : "nav.inActive",
+                          }}
+                        />
+                      </ListItem>
+                    ))}
+                  </List>
+                </Box>
+              </Drawer>
+            </>
+          )}
           <Typography
             variant="h6"
             noWrap

@@ -217,7 +217,11 @@ export default function ItemList({ list = [], preview = true, role = "" }) {
                         >
                           {item.prices.map((price) => (
                             <>
-                              <option key={price} value={price}>
+                              <option
+                                key={price}
+                                value={price}
+                                style={{ color: "#B3B3B3" }}
+                              >
                                 {price}
                               </option>
                             </>

@@ -10,12 +10,11 @@ const useStyles = makeStyles((theme) => ({
     flexFlow: "column",
     justifyContent: "center",
     backgroundColor: "white",
-    // marginLeft: "0px",
     borderRadius: "8px",
     marginBottom: "20px",
-    //marginRight: "10px",
-    width: "330px",
-    height: "20vh",
+    margin: "2px",
+    maxWidth: "330px",
+    minHeight: "150px",
 
     //flex: "auto",
   },
@@ -75,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function OrderList({ role = "" }) {
+export default function OrderList({ role = "", array = [] }) {
   const classes = useStyles();
   const Navigate = useNavigate();
 
@@ -97,7 +96,7 @@ export default function OrderList({ role = "" }) {
                   m: 1.5,
                 },
                 "& hr": {
-                  mx: 0.5,
+                  m: "5px",
                 },
               }}
               className={classes.card}
@@ -121,7 +120,6 @@ export default function OrderList({ role = "" }) {
                     marginTop: "-10px",
                   }}
                 >
-                  /* Head of the order list */
                   <span
                     style={{
                       fontSize: 28,
@@ -132,9 +130,11 @@ export default function OrderList({ role = "" }) {
                     }}
                     onClick={() => Navigate("./detail")}
                   >
-                    {role === "waiter" ? `${item.tableN}` : `${item.waiterN}`}
+                    {role === "waiter"
+                      ? `Table:${item.tableN}`
+                      : ` Serveur:${item.waiterN}`}
                   </span>
-                  {"Date of the order"}
+
                   <span
                     style={{
                       fontSize: 15,
@@ -163,7 +163,6 @@ export default function OrderList({ role = "" }) {
                     flexFlow: "column",
                   }}
                 >
-                  {"Total amount of Drinks in FCFA"}
                   <span
                     style={{
                       fontSize: 20,
@@ -173,9 +172,9 @@ export default function OrderList({ role = "" }) {
                       marginTop: "5%",
                     }}
                   >
-                    {`Boissons: ${item.drink}`}
+                    {item.drink ? `Boisson: ${item.drink}` : "Boisson:"}
                   </span>
-                  {"Total amount of Meal in FCFA"}
+
                   <span
                     style={{
                       fontSize: 20,
@@ -184,7 +183,7 @@ export default function OrderList({ role = "" }) {
                       alignSelf: "flex-start",
                     }}
                   >
-                    {`Repas: ${item.meal}`}
+                    {item.meal ? `Repas: ${item.meal}` : "Repas:"}
                   </span>
                 </div>
                 {item.isPaid && (

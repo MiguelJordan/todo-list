@@ -1,14 +1,13 @@
 import React, { useState } from "react";
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
 import Input from "@mui/material/Input";
 import Select from "@mui/material/Select";
-import InputLabel from "@mui/material/InputLabel";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import { Hidden, alpha, Container, TextField } from "@mui/material";
+import { InputLabel } from "@mui/material";
+
+import { alpha, Container, TextField } from "@mui/material";
 import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -63,19 +62,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ItemDetails() {
-  const [newVal, setNewVal] = useState({
-    familly: "Boisson",
-    category: "Beer",
-    name: "Castel",
-    measureUnit: "Bouteille",
-    price: [],
-    commissionAmt: 50,
-    cost: 5000,
-  });
+export default function ItemDetails({ list = {} }) {
+  const [newVal, setNewVal] = useState(list);
   const [read, setRead] = useState(true);
   const classes = useStyles();
-  const [val, setVal] = useState(2);
   const [error, setError] = useState("");
 
   const handleModifier = (e) => {
@@ -86,25 +76,20 @@ export default function ItemDetails() {
       !newVal.category ||
       !newVal.measureUnit ||
       !newVal.commissionAmt ||
-      !newVal.name
+      !newVal.name ||
+      newVal.cost <= 0
     )
-      return setError("S'il vous plais entrez des valeurs valid ");
-
+      return setError(
+        "S'il vous plais entrez des valeurs valid dans les champs approprier"
+      );
+    setError("");
+    setRead(true);
     console.log(newVal);
   };
 
   return (
     <div>
       <Container>
-        <Select
-          native
-          variant="standard"
-          value={val}
-          onChange={(e) => setVal(e.target.value)}
-        >
-          <option value={1}>1</option>
-          <option value={2}>2</option>
-        </Select>
         <Grid
           conatainer
           className={classes.grid}
@@ -112,6 +97,17 @@ export default function ItemDetails() {
           style={{ margin: "15px" }}
         >
           <form onSubmit={handleModifier}>
+            {error !== "" && (
+              <div
+                style={{
+                  margin: "15px",
+                  border: "2px solid red",
+                  maxWidth: "280px",
+                }}
+              >
+                {error}
+              </div>
+            )}
             <Grid item align="center">
               <FormControl color="success" variant="standard">
                 <InputLabel
@@ -222,7 +218,7 @@ export default function ItemDetails() {
                   htmlFor="component-disabled"
                   style={{ color: "white" }}
                 >
-                  Commission
+                  Commission(FCFA)
                 </InputLabel>
                 <Input
                   type="number"
@@ -243,7 +239,7 @@ export default function ItemDetails() {
                   htmlFor="component-disabled"
                   style={{ color: "white" }}
                 >
-                  Prix D'achat
+                  Prix D'achat(FCFA)
                 </InputLabel>
                 <Input
                   type="number"
@@ -258,7 +254,8 @@ export default function ItemDetails() {
                 <FormHelperText></FormHelperText>
               </FormControl>
             </Grid>
-            <Grid item align="center">
+
+            {/* <Grid item align="center">
               <FormControl color="success" variant="standard">
                 <InputLabel
                   htmlFor="component-disabled"
@@ -274,7 +271,7 @@ export default function ItemDetails() {
                 />
                 <FormHelperText></FormHelperText>
               </FormControl>
-            </Grid>
+            </Grid> */}
 
             <Grid item style={{ marginTop: "5%" }}>
               <Button
@@ -284,16 +281,24 @@ export default function ItemDetails() {
               >
                 Supprimer
               </Button>
-              <Button
-                variant="contained"
-                type={read ? "" : "submit"}
-                onClick={(e) => {
-                  if (read) setRead(false);
-                }}
-                style={{ backgroundColor: "#04A5E0", marginLeft: "5%" }}
-              >
-                {read ? "Modifier" : "Valider"}
-              </Button>
+              {read && (
+                <Button
+                  variant="contained"
+                  onClick={() => setRead(false)}
+                  style={{ backgroundColor: "#04A5E0", marginLeft: "5%" }}
+                >
+                  Modifier
+                </Button>
+              )}
+              {!read && (
+                <Button
+                  variant="contained"
+                  type="submit"
+                  style={{ backgroundColor: "#04A5E0", marginLeft: "5%" }}
+                >
+                  Valider
+                </Button>
+              )}
             </Grid>
           </form>
         </Grid>

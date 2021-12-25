@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -43,8 +43,7 @@ const Nav = ({ links = [], showLoginBtn = true }) => {
 
   links = links.map((link) => {
     const directEqual = window.location.pathname == link.path;
-    const indirectEqual =
-      window.location.pathname == link.path.slice(0, link.path.length - 1);
+    const indirectEqual = window.location.pathname == `${link.path}/`;
     link.isActive = directEqual || indirectEqual ? true : false;
     return link;
   });

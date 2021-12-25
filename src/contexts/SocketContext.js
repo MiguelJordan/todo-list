@@ -23,8 +23,17 @@ const SocketContextProvider = ({ children }) => {
 
   const [socketConnected, setSocketConnected] = useState(false);
 
+  // this is to attempt registration immediately user logs in
+  useEffect(() => {
+    connectE();
+  }, [user]);
+
   const connectE = () => {
-    if (!socketConnected) {
+    if (!user) socket.close();
+
+    if (user && !socketConnected) {
+      if (!socket.connected) socket.connect();
+
       socket.emit("register", _user);
       // socket.emit("_clientEvent", {
       //   event: "_cE-presence",
@@ -32,7 +41,6 @@ const SocketContextProvider = ({ children }) => {
       //   rooms: [_user.companyCode],
       // });
     }
-    console.log(`Connected @ ${socket.id}`);
   };
 
   const connectErrorE = (data) => {

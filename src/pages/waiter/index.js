@@ -6,7 +6,7 @@ import Drinks from "./Drinks";
 import Orders from "./Orders";
 
 const mainLinks = [
-  { text: "Drinks", path: "/waiter/" },
+  { text: "Drinks", path: "/waiter" },
   { text: "Orders", path: "/waiter/orders" },
   // { text: "Yoyo", path: "/wankiter/ordersgsn" },
 ];

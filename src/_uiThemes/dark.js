@@ -6,8 +6,8 @@ export default createTheme({
       paper: "#001d42",
     },
     text: {
-      primary: "#001d42",
-      secondary: "#hsl(218, 4%, 63%)",
+      primary: "#ba000d",
+      secondary: "hsl(218, 4%, 63%)",
       light: "white",
     },
     action: {

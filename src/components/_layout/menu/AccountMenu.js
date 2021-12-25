@@ -1,9 +1,11 @@
 import { Fragment, useContext, useState } from "react";
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
+import { Divider } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
 import IconButton from "@mui/material/IconButton";
 import { colors, Tooltip } from "@mui/material";
 import { makeStyles } from "@mui/styles";
@@ -45,7 +47,7 @@ export default function AccountMenu({ user }) {
     setAnchorEl(null);
   };
 
-  const options = useOptions(user?.role);
+  const _menu = useOptions(user);
 
   return (
     <Fragment>
@@ -101,12 +103,30 @@ export default function AccountMenu({ user }) {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        {options.map((option) => {
+        {_menu.options.map((option, index) => {
           return (
-            <MenuItem key={option.text} onClick={option.handleClick}>
-              <ListItemIcon>{option.icon}</ListItemIcon>
-              {option.text}
-            </MenuItem>
+            <div key={option.text}>
+              <MenuItem onClick={option.handleClick}>
+                <ListItemIcon>{option.icon}</ListItemIcon>
+                {option.label ? (
+                  <ListItemText
+                    primary={option.label}
+                    secondary={option.text}
+                  />
+                ) : (
+                  <ListItemText primary={option.text} />
+                )}
+              </MenuItem>
+              {_menu.dividers.includes(index) && (
+                <Divider
+                  sx={{
+                    bgcolor: "gray",
+                    width: "95%",
+                    margin: "0 auto",
+                  }}
+                />
+              )}
+            </div>
           );
         })}
       </Menu>

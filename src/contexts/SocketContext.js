@@ -10,10 +10,10 @@ const SocketContextProvider = ({ children }) => {
   const { user } = useContext(AuthContext);
   const _user = user
     ? {
-        companyCode: user.companyCode,
+        companyCode: user.company.code,
         id: user.id,
         role: user.role,
-        unitCode: user.unitCode,
+        unitCode: user.workUnit.code,
       }
     : null;
 

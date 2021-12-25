@@ -23,17 +23,9 @@ const SocketContextProvider = ({ children }) => {
 
   const [socketConnected, setSocketConnected] = useState(false);
 
-  // this is to attempt registration immediately user logs in
-  useEffect(() => {
-    connectE();
-  }, [user]);
-
   const connectE = () => {
-    if (!user) socket.close();
-
+    console.log("connectE", user, socket);
     if (user && !socketConnected) {
-      if (!socket.connected) socket.connect();
-
       socket.emit("register", _user);
       // socket.emit("_clientEvent", {
       //   event: "_cE-presence",
@@ -42,6 +34,17 @@ const SocketContextProvider = ({ children }) => {
       // });
     }
   };
+
+  // this is to attempt registration immediately user logs in
+  useEffect(() => {
+    if (user) {
+      socket.connect();
+      connectE();
+    } else {
+      socket.close();
+    }
+    console.log("uE", user, socket);
+  }, [socket, user]);
 
   const connectErrorE = (data) => {
     console.log("Connection error:", data);

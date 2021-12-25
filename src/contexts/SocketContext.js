@@ -10,10 +10,10 @@ const SocketContextProvider = ({ children }) => {
   const { user } = useContext(AuthContext);
   const _user = user
     ? {
-        companyCode: user.companyCode,
+        companyCode: user.company.code,
         id: user.id,
         role: user.role,
-        unitCode: user.unitCode,
+        unitCode: user.workUnit.code,
       }
     : null;
 
@@ -24,7 +24,8 @@ const SocketContextProvider = ({ children }) => {
   const [socketConnected, setSocketConnected] = useState(false);
 
   const connectE = () => {
-    if (!socketConnected) {
+    console.log("connectE", user, socket);
+    if (user && !socketConnected) {
       socket.emit("register", _user);
       // socket.emit("_clientEvent", {
       //   event: "_cE-presence",
@@ -32,8 +33,18 @@ const SocketContextProvider = ({ children }) => {
       //   rooms: [_user.companyCode],
       // });
     }
-    console.log(`Connected @ ${socket.id}`);
   };
+
+  // this is to attempt registration immediately user logs in
+  useEffect(() => {
+    if (user) {
+      socket.connect();
+      connectE();
+    } else {
+      socket.close();
+    }
+    console.log("uE", user, socket);
+  }, [socket, user]);
 
   const connectErrorE = (data) => {
     console.log("Connection error:", data);

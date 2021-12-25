@@ -1,11 +1,14 @@
 import { Fragment, useContext, useState } from "react";
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
+import { Divider } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
 import IconButton from "@mui/material/IconButton";
 import { colors, Tooltip } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
 // get user option by role
 import useOptions from "./menuOptions";
@@ -13,42 +16,50 @@ import useOptions from "./menuOptions";
 // context
 import { SocketContext } from "../../../contexts/SocketContext";
 
+const useStyles = makeStyles((theme) => ({
+  presence_parent: {
+    position: "relative",
+  },
+  presence_dot: {
+    position: "absolute",
+    right: -2,
+    width: 10,
+    height: 10,
+    borderRadius: "50%",
+    backgroundColor: "#d58c13",
+    border: "3px solid #001d42",
+    zIndex: 2,
+  },
+  presence_online: { backgroundColor: colors.green[500] },
+}));
+
 export default function AccountMenu({ user }) {
   const { socketConnected } = useContext(SocketContext);
+  const classes = useStyles();
+
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const options = useOptions(user?.role);
+  const _menu = useOptions(user);
 
   return (
     <Fragment>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
         <Tooltip title="Account settings">
           <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
-            <div
-              style={{
-                position: "relative",
-              }}
-            >
-              {socketConnected && (
-                <div
-                  style={{
-                    position: "absolute",
-                    right: 0,
-                    width: 10,
-                    height: 10,
-                    borderRadius: "50%",
-                    backgroundColor: colors.green[500],
-                    zIndex: 2,
-                  }}
-                />
-              )}
+            <div className={classes.presence_parent}>
+              <div
+                className={`${classes.presence_dot} ${
+                  socketConnected && classes.presence_online
+                }`}
+              />
               <Avatar alt={user?.firstName} src={user?.profilePic}>
                 {user?.firstName[0]}
               </Avatar>
@@ -92,19 +103,32 @@ export default function AccountMenu({ user }) {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        {options.map((option) => {
+        {_menu.options.map((option, index) => {
           return (
-            <MenuItem key={option.text} onClick={option.handleClick}>
-              <ListItemIcon>
-                {option.icon}
-                {/* <PersonAdd fontSize="small" /> */}
-              </ListItemIcon>
-              {option.text}
-            </MenuItem>
+            <div key={option.text}>
+              <MenuItem onClick={option.handleClick}>
+                <ListItemIcon>{option.icon}</ListItemIcon>
+                {option.label ? (
+                  <ListItemText
+                    primary={option.label}
+                    secondary={option.text}
+                  />
+                ) : (
+                  <ListItemText primary={option.text} />
+                )}
+              </MenuItem>
+              {_menu.dividers.includes(index) && (
+                <Divider
+                  sx={{
+                    bgcolor: "gray",
+                    width: "95%",
+                    margin: "0 auto",
+                  }}
+                />
+              )}
+            </div>
           );
         })}
-
-        {/* <Divider /> */}
       </Menu>
     </Fragment>
   );

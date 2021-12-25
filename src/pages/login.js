@@ -76,7 +76,7 @@ const Page = () => {
 
   const [serverError, setServerError] = useState("");
   const [rootRole, setRootRole] = useState("");
-  const [disabled, setDisabled] = useState(false);
+  const [disabled] = useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation();
 

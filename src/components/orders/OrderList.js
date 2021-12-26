@@ -10,12 +10,11 @@ const useStyles = makeStyles((theme) => ({
     flexFlow: "column",
     justifyContent: "center",
     backgroundColor: "white",
-    // marginLeft: "0px",
     borderRadius: "8px",
     marginBottom: "20px",
-    //marginRight: "10px",
-    width: "330px",
-    height: "20vh",
+    margin: "2px",
+    maxWidth: "330px",
+    minHeight: "150px",
 
     //flex: "auto",
   },
@@ -75,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function OrderList({ role = "" }) {
+export default function OrderList({ role = "", array = [] }) {
   const classes = useStyles();
   const Navigate = useNavigate();
 
@@ -97,108 +96,105 @@ export default function OrderList({ role = "" }) {
                   m: 1.5,
                 },
                 "& hr": {
-                  mx: 0.5,
+                  m: "5px",
                 },
               }}
               className={classes.card}
               key={item.id}
             >
-              {item ? (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  alignItems: "flex-start",
+                  flexFlow: "column",
+                  paddingLeft: "6px",
+                }}
+              >
                 <div
                   style={{
                     display: "flex",
                     justifyContent: "flex-start",
                     alignItems: "flex-start",
                     flexFlow: "column",
-                    paddingLeft: "6px",
+                    marginTop: "-10px",
                   }}
                 >
-                  <div
+                  <span
                     style={{
-                      display: "flex",
-                      justifyContent: "flex-start",
+                      fontSize: 28,
+                      color: "#001D42",
                       alignItems: "flex-start",
-                      flexFlow: "column",
-                      marginTop: "-10px",
+                      alignSelf: "flex-start",
+                      // marginTop: "-20%",
+                    }}
+                    onClick={() => Navigate("./detail")}
+                  >
+                    {role === "waiter"
+                      ? `Table:${item.tableN}`
+                      : ` Serveur:${item.waiterN}`}
+                  </span>
+
+                  <span
+                    style={{
+                      fontSize: 15,
+                      color: "#707070",
+                      alignItems: "flex-start",
+                      alignSelf: "flex-start",
+                      //marginTop: "-20%",
                     }}
                   >
-                    /* Head of the order list */
-                    <span
-                      style={{
-                        fontSize: 28,
-                        color: "#001D42",
-                        alignItems: "flex-start",
-                        alignSelf: "flex-start",
-                        // marginTop: "-20%",
-                      }}
-                      onClick={() => Navigate("./detail")}
-                    >
-                      {role === "waiter" ? `${item.tableN}` : `${item.waiterN}`}
-                    </span>
-                    {"Date of the order"}
-                    <span
-                      style={{
-                        fontSize: 15,
-                        color: "#707070",
-                        alignItems: "flex-start",
-                        alignSelf: "flex-start",
-                        //marginTop: "-20%",
-                      }}
-                    >
-                      {item.createdDate}
-                    </span>
-                  </div>
-                  <hr
-                    width="310vw"
-                    color="gray"
-                    style={{
-                      color: "#B3B3B3",
-                      height: 2,
-                    }}
-                  />
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      alignItems: "flex-start",
-                      flexFlow: "column",
-                    }}
-                  >
-                    {"Total amount of Drinks in FCFA"}
-                    <span
-                      style={{
-                        fontSize: 20,
-                        color: "#707070",
-                        alignItems: "flex-start",
-                        alignSelf: "flex-start",
-                        marginTop: "5%",
-                      }}
-                    >
-                      {`Boissons: ${item.drink}`}
-                    </span>
-                    {"Total amount of Meal in FCFA"}
-                    <span
-                      style={{
-                        fontSize: 20,
-                        color: "#707070",
-                        alignItems: "flex-start",
-                        alignSelf: "flex-start",
-                      }}
-                    >
-                      {`Repas: ${item.meal}`}
-                    </span>
-                  </div>
-                  {item.isPaid && (
-                    <span
-                      style={{ marginTop: "2%", color: "green" }}
-                    >{`Status: Payee`}</span>
-                  )}
+                    {item.createdDate}
+                  </span>
                 </div>
-              ) : (
-                <div style={{ backgroundColor: "red" }}> No Order Found</div>
-              )}
+                <hr
+                  width="310vw"
+                  color="gray"
+                  style={{
+                    color: "#B3B3B3",
+                    height: 2,
+                  }}
+                />
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    alignItems: "flex-start",
+                    flexFlow: "column",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: 20,
+                      color: "#707070",
+                      alignItems: "flex-start",
+                      alignSelf: "flex-start",
+                      marginTop: "5%",
+                    }}
+                  >
+                    {item.drink ? `Boisson: ${item.drink}` : "Boisson:"}
+                  </span>
+
+                  <span
+                    style={{
+                      fontSize: 20,
+                      color: "#707070",
+                      alignItems: "flex-start",
+                      alignSelf: "flex-start",
+                    }}
+                  >
+                    {item.meal ? `Repas: ${item.meal}` : "Repas:"}
+                  </span>
+                </div>
+                {item.isPaid && (
+                  <span
+                    style={{ marginTop: "2%", color: "green" }}
+                  >{`Status: Payee`}</span>
+                )}
+              </div>
             </Box>
           ))}
+          {array.lenght === 0 && <div>Aucun Element Trouve</div>}
         </Grid>
       </Container>
     </div>

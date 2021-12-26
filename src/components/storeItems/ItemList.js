@@ -10,6 +10,8 @@ import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import Select from "@mui/material/Select";
+import { MenuItem } from "@mui/material";
+import image from "../../assests/Item_Image_d.jpg";
 
 import { useNavigate } from "react-router-dom";
 
@@ -44,15 +46,20 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
   },
   container: {
-    marginTop: "2%",
-    alignItems: "center",
+    marginTop: "5%",
+    //display: "flex",
+    //marginLeft: "5%",
+    //marginRight: "5%",
     height: "calc(80vh - 10%)",
-    // marginLeft: "1.5%",
+    // minWidth: "50px",
+    // minHeight: "300px",
+    //position: "fixed",
     justifyContent: "center",
     overflowX: "hidden",
     overflowY: "scroll",
     alignItems: "center",
-    //margin: "auto",
+    margin: "auto",
+
     webkitScrollbar: {
       width: 0,
     },
@@ -66,15 +73,26 @@ const useStyles = makeStyles((theme) => ({
       //marginLeft: "10px",
       //maxWidth: 1500,
       height: "calc(80vh - 10%)",
+      marginTop: "3%",
     },
     [theme.breakpoints.up("md")]: {
       width: "calc(100vw - 230px)",
       marginLeft: "0px",
-      //maxWidth: 1500,
+      //marginTop: "10%",
+      height: "calc(80vh - 10%)",
+    },
+    [theme.breakpoints.between("sm", "md")]: {
+      width: "calc(100vw - 230px)",
+      marginLeft: "0px",
+      //marginTop: "10%",
       height: "calc(80vh - 10%)",
     },
     [theme.breakpoints.down("sm")]: {
-      marginTop: 0,
+      marginTop: "6%",
+      width: "calc(100vw - 30px)",
+    },
+    [theme.breakpoints.down("xs")]: {
+      marginTop: "14%",
       width: "calc(100vw - 30px)",
     },
   },
@@ -100,6 +118,10 @@ const useStyles = makeStyles((theme) => ({
     padding: 0,
     [theme.breakpoints.up("sm")]: {
       marginLeft: "20px",
+      marginRight: "10px",
+    },
+    [theme.breakpoints.up("xs")]: {
+      maxWidth: "280px",
       // marginRight: "10px",
     },
 
@@ -155,103 +177,117 @@ export default function ItemList({ list = [], preview = true, role = "" }) {
   const Navigate = useNavigate();
 
   return (
-    <div className={classes.container}>
-      <Container>
-        <Grid container align="center" direction="row" className={classes.grid}>
-          {list.map((item) => (
-            <Grid item lg={3} md={4} sm={6} xs={12} key={item.id}>
-              <Card className={classes.card}>
-                <CardMedia
-                  className={classes.media}
-                  image={item.image}
-                  title="card"
-                />
-                <CardContent className={classes.content}>
-                  <Typography variant="h6" style={{ color: "#B3B3B3" }}>
-                    {item.name}
-
-                    <hr
-                      style={{
-                        color: "#B3B3B3",
-                        backgroundColor: "#B3B3B3",
-                        height: 1,
-                      }}
+    <>
+      <div className={classes.container}>
+        <Container>
+          <Grid
+            container
+            align="center"
+            direction="row"
+            className={classes.grid}
+          >
+            {list.length !== 0 ? (
+              list.map((item) => (
+                <Grid item xl={3} lg={3} md={4} sm={5} xs={12} key={item.id}>
+                  <Card className={classes.card}>
+                    <CardMedia
+                      className={classes.media}
+                      image={image}
+                      title={item.name}
                     />
-                  </Typography>
-                  <form className={classes.formControl}>
-                    <label>Prix: </label>
-                    <Select
-                      native
-                      variant="standard"
-                      label="Prix"
-                      style={{ color: "#FFFFFF" }}
-                    >
-                      {item.price.map((price) => (
-                        <div key={price}>
-                          <option value={price}>{price}</option>
-                        </div>
-                      ))}
-                    </Select>
-                    <br />
-                    <br />
-                    <label htmlFor="">Quantite En Stock : </label>
-                    <output
-                      type="number"
-                      style={{
-                        backgroundColor: "#415672",
-                        // width: "70px",
-                        color: "#FFFFFF",
-                        strokeWidth: 40,
-                        marginLeft: 4,
-                        padding: 4,
-                        borderRadius: "5px",
-                      }}
-                    >
-                      250
-                    </output>
-                    {!preview && role !== "admin" && (
-                      <>
+                    <CardContent className={classes.content}>
+                      <Typography variant="h6" style={{ color: "#B3B3B3" }}>
+                        {item.name}
+
+                        <hr
+                          style={{
+                            color: "#B3B3B3",
+                            backgroundColor: "#B3B3B3",
+                            height: 0.5,
+                          }}
+                        />
+                      </Typography>
+                      <form className={classes.formControl}>
+                        <label>Prix: </label>
+                        <Select
+                          native
+                          variant="standard"
+                          label="Prix"
+                          style={{ color: "#FFFFFF" }}
+                        >
+                          {item.prices.map((price) => (
+                            <>
+                              <option
+                                key={price}
+                                value={price}
+                                style={{ color: "#B3B3B3" }}
+                              >
+                                {price}
+                              </option>
+                            </>
+                          ))}
+                        </Select>
                         <br />
                         <br />
-                        <label htmlFor="">Quantite :</label>
-                        <input
-                          width={2}
+                        <label htmlFor="">Quantite En Stock : </label>
+                        <output
                           type="number"
                           style={{
-                            width: "30px",
-                            marginLeft: 8,
                             backgroundColor: "#415672",
+                            // width: "70px",
                             color: "#FFFFFF",
+                            strokeWidth: 40,
+                            marginLeft: 4,
+                            padding: 8,
+                            borderRadius: "5px",
                           }}
-                          className={classes.inp}
-                        />
-                        <br />
-                        <br />
-                        <Button
-                          variant="outlined"
-                          style={{ border: "4px solid #2B4362" }}
                         >
-                          Ajouter
-                        </Button>
-                      </>
-                    )}
-                    {role === "admin" && (
-                      <>
-                        <Button>{"Detail"}</Button>
-                      </>
-                    )}
-                  </form>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-          {list.length === 0 && (
-            <div style={{ display: "flex", justifyContent: "center" }}>
-              <span>No Item Found</span>
-            </div>
-          )}
-        </Grid>
-      </Container>
-    </div>
+                          {item.stock}
+                        </output>
+                        {!preview && role !== "admin" && (
+                          <>
+                            <br />
+                            <br />
+                            <label htmlFor="">Quantite :</label>
+                            <input
+                              width={2}
+                              type="number"
+                              style={{
+                                width: "30px",
+                                marginLeft: 8,
+                                backgroundColor: "#415672",
+                                color: "#FFFFFF",
+                              }}
+                              className={classes.inp}
+                            />
+                            <br />
+                            <br />
+                            <Button
+                              variant="outlined"
+                              style={{ border: "4px solid #2B4362" }}
+                            >
+                              Ajouter
+                            </Button>
+                          </>
+                        )}
+                        {role === "admin" && (
+                          <>
+                            <Button>{"Detail"}</Button>
+                          </>
+                        )}
+                      </form>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))
+            ) : (
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <span>No Item Found</span>
+              </div>
+            )}
+          </Grid>
+        </Container>
+      </div>
+    </>
   );
 }

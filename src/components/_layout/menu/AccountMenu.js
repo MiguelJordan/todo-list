@@ -55,7 +55,7 @@ export default function AccountMenu({ user }) {
   return (
     <Fragment>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
-        <Tooltip title="Account settings">
+        <Tooltip title={t("compo.nav.account_menu.tooltip")}>
           <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
             <div className={classes.presence_parent}>
               <div

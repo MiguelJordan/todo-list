@@ -9,3 +9,15 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.main {
+  text-align: left;
+  overflow-y: scroll;
+  height: 90vh;
+  padding: 0 20px 0px 20px;
+  border: 2px solid green;
+}
+
+.main .center {
+  text-align: center;
+}

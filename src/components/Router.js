@@ -11,7 +11,7 @@ const NotFound = React.lazy(() => import("../pages/404"));
 const Login = React.lazy(() => import("../pages/login"));
 const Waiter = React.lazy(() => import("../pages/waiter"));
 
-export default function Router(props) {
+export default function Router() {
   return (
     <BrowserRouter forceRefresh={false}>
       <div className="App">

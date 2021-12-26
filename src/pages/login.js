@@ -117,130 +117,128 @@ const Page = () => {
   };
 
   return (
-    <>
-      <Grid container align="center" className={style.root}>
-        <Grid item xs={6} align="center">
-          <Grid
-            container
-            align="center"
-            justifyContent="center"
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%,-50%)",
-            }}
+    <Grid container align="center" className={style.root}>
+      <Grid item xs={6} align="center">
+        <Grid
+          container
+          align="center"
+          justifyContent="center"
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%,-50%)",
+          }}
+        >
+          <Paper
+            variant="elevation"
+            elevation={2}
+            className={style.loginBackground}
           >
-            <Paper
-              variant="elevation"
-              elevation={2}
-              className={style.loginBackground}
-            >
-              <Grid align="center" style={{ marginBottom: "5%" }}>
-                <Avatar style={{ backgroundColor: "#001D42" }}>
-                  <LockCloseOutlined />
-                </Avatar>
-                <Typography component="h1" variant="h5">
-                  {t("login_page.title")}
-                </Typography>
-              </Grid>
-              {serverError !== "" ? (
-                <Grid
-                  item
-                  align="center"
+            <Grid align="center" style={{ marginBottom: "5%" }}>
+              <Avatar style={{ backgroundColor: "#001D42" }}>
+                <LockCloseOutlined />
+              </Avatar>
+              <Typography component="h1" variant="h5">
+                {t("login_page.title")}
+              </Typography>
+            </Grid>
+            {serverError !== "" ? (
+              <Grid
+                item
+                align="center"
+                style={{
+                  marginBottom: "5%",
+                }}
+              >
+                <div
                   style={{
-                    marginBottom: "5%",
+                    border: "2px solid red",
+                    borderRadius: 5,
+                    marginBottom: "2%",
                   }}
                 >
-                  <div
-                    style={{
-                      border: "2px solid red",
-                      borderRadius: 5,
-                      marginBottom: "2%",
-                    }}
-                  >
-                    <Typography variant="subtitle2" style={{ color: "black" }}>
-                      {serverError}
-                    </Typography>
-                  </div>
-                </Grid>
-              ) : (
-                ""
-              )}
+                  <Typography variant="subtitle2" style={{ color: "black" }}>
+                    {serverError}
+                  </Typography>
+                </div>
+              </Grid>
+            ) : (
+              ""
+            )}
 
-              <Grid item>
-                <form onSubmit={handleSubmit}>
-                  <Grid container direction="column" spacing={2}>
-                    <Grid item>
-                      <TextField
-                        type="text"
-                        label="ID*"
-                        fullWidth
-                        name="id"
-                        variant="outlined"
-                        onChange={handleChange}
-                        required
-                        autoComplete="off"
-                      />
-                    </Grid>
+            <Grid item>
+              <form onSubmit={handleSubmit}>
+                <Grid container direction="column" spacing={2}>
+                  <Grid item>
+                    <TextField
+                      type="text"
+                      label="ID*"
+                      fullWidth
+                      name="id"
+                      variant="outlined"
+                      onChange={handleChange}
+                      required
+                      autoComplete="off"
+                    />
+                  </Grid>
+                  <Grid item>
+                    <TextField
+                      className={style.field}
+                      onChange={handleChange}
+                      type="password"
+                      label={t("auth.passwordField") + "*"}
+                      fullWidth
+                      name="password"
+                      variant="outlined"
+                      required
+                    />
+                  </Grid>
+                  {rootRole !== "" ? (
                     <Grid item>
                       <TextField
                         className={style.field}
-                        onChange={handleChange}
-                        type="password"
-                        label={t("auth.passwordField") + "*"}
+                        onChange={(e) => {
+                          setUser({
+                            ...user,
+                            [e.target.name]: e.target.value.trim(),
+                          });
+                        }}
+                        type="text"
+                        label="Role*"
                         fullWidth
-                        name="password"
+                        name="role"
                         variant="outlined"
                         required
                       />
                     </Grid>
-                    {rootRole !== "" ? (
-                      <Grid item>
-                        <TextField
-                          className={style.field}
-                          onChange={(e) => {
-                            setUser({
-                              ...user,
-                              [e.target.name]: e.target.value.trim(),
-                            });
-                          }}
-                          type="text"
-                          label="Role*"
-                          fullWidth
-                          name="role"
-                          variant="outlined"
-                          required
-                        />
-                      </Grid>
-                    ) : (
-                      ""
-                    )}
+                  ) : (
+                    ""
+                  )}
 
-                    <Grid item>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        type="submit"
-                        className={style.buttonBlock}
-                        disabled={disabled}
-                      >
-                        {t("login_page.title")}
-                      </Button>
-                    </Grid>
+                  <Grid item>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      type="submit"
+                      className={style.buttonBlock}
+                      disabled={disabled}
+                    >
+                      {t("login_page.title")}
+                    </Button>
                   </Grid>
-                </form>
-              </Grid>
-              <span style={{ marginBottom: "3%" }}>
-                <Link href="#" variant="body2">
-                  {t("auth.forgot_password")}
-                </Link>
-              </span>
-            </Paper>
-          </Grid>
+                </Grid>
+              </form>
+            </Grid>
+            <span style={{ marginBottom: "3%" }}>
+              <Link href="#" variant="body2">
+                {t("auth.forgot_password")}
+              </Link>
+            </span>
+          </Paper>
         </Grid>
       </Grid>
-    </>
+    </Grid>
   );
 };
 

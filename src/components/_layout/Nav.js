@@ -50,7 +50,7 @@ const Nav = ({ links = [], showLoginBtn = true }) => {
   });
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "transparent" }}>
+    <AppBar position="static" sx={{ backgroundColor: "#001d42" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {links.length > 0 && (
@@ -178,12 +178,13 @@ const Nav = ({ links = [], showLoginBtn = true }) => {
                 color: "white",
                 display: "block",
                 border: "3px solid transparent",
+                marginLeft: "1rem",
                 "&:hover": {
                   border: "3px solid hsl(216, 100%, 46%)",
                 },
               }}
             >
-              Log in
+              {t("compo.nav.login_btn")}
             </Button>
           )}
         </Toolbar>

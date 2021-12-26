@@ -6,7 +6,12 @@
   "login_page": {
     "title": "Log In"
   },
-  "compo": { "nav": { "account_menu": { "tooltip": "Account settings" } } },
+  "compo": {
+    "nav": {
+      "login_btn": "Log In",
+      "account_menu": { "tooltip": "Account settings" }
+    }
+  },
   "pages": {
     "home": { "greeting": "Welcome", "page_title": "Home Page" },
     "waiter": { "drinks": "Drinks Page", "orders": "Orders Page" }

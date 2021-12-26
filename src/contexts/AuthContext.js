@@ -20,6 +20,8 @@ const AuthContexProvider = ({ children }) => {
   };
 
   const login = async (credentials) => {
+    let res;
+
     try {
       const data = await (
         await fetch(apiUrl + "/accounts/login", {
@@ -33,16 +35,26 @@ const AuthContexProvider = ({ children }) => {
 
       saveUser(data);
 
-      return data;
+      res = data;
     } catch (err) {
-      return { error: err.message };
+      res = { error: err.message };
     }
+
+    return res;
   };
 
   const logout = async () => {
-    const res = await (await fetch(apiUrl + "/accounts/logout")).json();
+    let res;
 
-    if (res.success) removeUser();
+    try {
+      const data = await (await fetch(apiUrl + "/accounts/logout")).json();
+
+      if (data.success) removeUser();
+      res = data;
+    } catch (err) {
+      res = { error: err.message };
+    }
+
     return res;
   };
 

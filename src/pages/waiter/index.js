@@ -1,9 +1,12 @@
+import * as React from "react";
 import { Route, Routes } from "react-router-dom";
 
 import Layout from "../../components/_layout/Layout";
 
 import Drinks from "./Drinks";
 import Orders from "./Orders";
+
+const NotFound = React.lazy(() => import("../404"));
 
 const mainLinks = [
   { text: "Drinks", path: "/waiter" },
@@ -19,6 +22,7 @@ export default function Waiter() {
         path="/orders"
         element={<Layout Main={Orders} links={mainLinks} />}
       />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

@@ -3,13 +3,14 @@
     "passwordField": "Password",
     "forgot_password": "Forgot Password?"
   },
-  "home_screen": {
-    "greeting": "Welcome"
-  },
   "login_page": {
     "title": "Log In"
   },
-  "pages": { "waiter": { "drinks": "Drinks Page", "orders": "Orders Page" } },
+  "compo": { "nav": { "account_menu": { "tooltip": "Account settings" } } },
+  "pages": {
+    "home": { "greeting": "Welcome", "page_title": "Home Page" },
+    "waiter": { "drinks": "Drinks Page", "orders": "Orders Page" }
+  },
   "_var": {
     "role": { "section": "value" },
     "waiter": {

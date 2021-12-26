@@ -8,7 +8,6 @@ export const TrContext = createContext();
 const TrCProvider = ({ children }) => {
   const storage = useStorage();
   const [language, setLang] = useState(storage.get("language") || "fr");
-  console.log("Ran", language);
 
   const translate = (key) => {
     const keys = key.split(".");

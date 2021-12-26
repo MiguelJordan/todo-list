@@ -1,2 +1,2 @@
 # Main Todos
-1. Work on 404 page. It doesn't show on invalid nested routes(like /waiter/sjvbsjbv) yet
+1. Work on suspense component

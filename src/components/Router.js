@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Auth from "./Auth";
 
 // components
+import Spinner from "./Spinner";
 // const Cashier = React.lazy(() => import("../Routes/cashierRoute"));
 const Home = React.lazy(() => import("../pages/home"));
 const NotFound = React.lazy(() => import("../pages/404"));
@@ -15,7 +16,7 @@ export default function Router() {
   return (
     <BrowserRouter forceRefresh={false}>
       <div className="App">
-        <React.Suspense fallback={<p>Loading</p>}>
+        <React.Suspense fallback={<Spinner />}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route

@@ -15,6 +15,7 @@ import useOptions from "./menuOptions";
 
 // context
 import { SocketContext } from "../../../contexts/SocketContext";
+import { TrContext } from "../../../contexts/TranslationContext";
 
 const useStyles = makeStyles((theme) => ({
   presence_parent: {
@@ -36,9 +37,11 @@ const useStyles = makeStyles((theme) => ({
 export default function AccountMenu({ user }) {
   const { socketConnected } = useContext(SocketContext);
   const classes = useStyles();
+  const { t } = useContext(TrContext);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -111,10 +114,12 @@ export default function AccountMenu({ user }) {
                 {option.label ? (
                   <ListItemText
                     primary={option.label}
-                    secondary={option.text}
+                    secondary={t(`_var.${user.role}.menu.text.${option.text}`)}
                   />
                 ) : (
-                  <ListItemText primary={option.text} />
+                  <ListItemText
+                    primary={t(`_var.${user.role}.menu.text.${option.text}`)}
+                  />
                 )}
               </MenuItem>
               {_menu.dividers.includes(index) && (

@@ -15,8 +15,7 @@ import { useNavigate } from "react-router";
 import Layout from "../components/_layout/Layout";
 
 import { AuthContext } from "../contexts/AuthContext";
-
-import useTranslation from "../hooks/useTranslation";
+import { TrContext } from "../contexts/TranslationContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -78,9 +77,9 @@ const Page = () => {
   const [rootRole, setRootRole] = useState("");
   const [disabled] = useState(false);
   const navigate = useNavigate();
-  const { t } = useTranslation();
 
   const { login } = useContext(AuthContext);
+  const { t } = useContext(TrContext);
 
   const handleChange = (e) => {
     setUser({

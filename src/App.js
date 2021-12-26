@@ -5,16 +5,19 @@ import Router from "./components/Router";
 import AuthContexProvider from "./contexts/AuthContext";
 import SocketContextProvider from "./contexts/SocketContext";
 import ThemeContextProvider from "./contexts/ThemeContext";
+import TrCProvider from "./contexts/TranslationContext";
 
 function App() {
   return (
-    <ThemeContextProvider>
-      <AuthContexProvider>
-        <SocketContextProvider>
-          <Router />
-        </SocketContextProvider>
-      </AuthContexProvider>
-    </ThemeContextProvider>
+    <TrCProvider>
+      <ThemeContextProvider>
+        <AuthContexProvider>
+          <SocketContextProvider>
+            <Router />
+          </SocketContextProvider>
+        </AuthContexProvider>
+      </ThemeContextProvider>
+    </TrCProvider>
   );
 }
 

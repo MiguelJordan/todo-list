@@ -9,8 +9,17 @@
   "login_page": {
     "title": "Connexion"
   },
+  "pages": {
+    "waiter": { "drinks": "Page des Boissons", "orders": "Page des Commandes" }
+  },
   "_var": {
     "role": { "section": "value" },
-    "waiter": { "nav": { "Drinks": "Boissons", "Orders": "Commandes" } }
+    "waiter": {
+      "menu": {
+        "label": { "name": "nom" },
+        "text": { "dashboard": "Tableau de bord", "logout": "Deconnexion" }
+      },
+      "nav": { "Drinks": "Boissons", "Orders": "Commandes" }
+    }
   }
 }

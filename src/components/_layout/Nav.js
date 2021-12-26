@@ -14,21 +14,22 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 
 import { useNavigate } from "react-router-dom";
+
+// contexts
 import { AuthContext } from "../../contexts/AuthContext";
+import { TrContext } from "../../contexts/TranslationContext";
 
 // icons
 import MenuIcon from "@mui/icons-material/Menu";
 
 // components
 import AccountMenu from "./menu/AccountMenu";
-
-// custom hooks
-import useTranslation from "../../hooks/useTranslation";
+import IOSwitch from "./switch";
 
 const Nav = ({ links = [], showLoginBtn = true }) => {
   const { user } = useContext(AuthContext);
+  const { t } = useContext(TrContext);
   const Navigate = useNavigate();
-  const { t } = useTranslation();
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -39,7 +40,7 @@ const Nav = ({ links = [], showLoginBtn = true }) => {
     setDrawerOpen(!drawerOpen);
   };
 
-  const showLinkText = ({ text }) => t(`_var.waiter.nav.${text}`);
+  const showLinkText = ({ text }) => t(`_var.${user.role}.nav.${text}`);
 
   links = links.map((link) => {
     const directEqual = window.location.pathname == link.path;
@@ -166,6 +167,7 @@ const Nav = ({ links = [], showLoginBtn = true }) => {
               ))}
             </List>
           </Box>
+          <IOSwitch />
           {user && <AccountMenu user={user} />}
           {!user && showLoginBtn && (
             <Button

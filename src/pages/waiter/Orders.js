@@ -1,7 +1,12 @@
-export default function Orders() {
+import { useContext } from "react";
+import { TrContext } from "../../contexts/TranslationContext";
+
+export default function Drinks() {
+  const { t } = useContext(TrContext);
+
   return (
     <>
-      <div>Orders Page</div>
+      <h1>{t("pages.waiter.orders")}</h1>
     </>
   );
 }

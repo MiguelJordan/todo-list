@@ -43,11 +43,11 @@ const SocketContextProvider = ({ children }) => {
     } else {
       socket.close();
     }
-    console.log("uE", user, socket);
+    // console.log("uE", user, socket);
   }, [socket, user]);
 
   const connectErrorE = (data) => {
-    console.log("Connection error:", data);
+    // console.log("Connection error:", data);
   };
 
   const disconnectE = () => {
@@ -57,7 +57,7 @@ const SocketContextProvider = ({ children }) => {
 
   const registeredE = (data) => {
     setSocketConnected(true);
-    console.log("Registration:", data);
+    // console.log("Registration:", data);
   };
 
   useEffect(() => {

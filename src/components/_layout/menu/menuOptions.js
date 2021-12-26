@@ -13,19 +13,19 @@ const useOptions = (user) => {
   const { logout } = useContext(AuthContext);
 
   // general opts
-  const CompanyOpt = {
-    handleClick: () => {},
-    icon: <DashboardIcon color="primary" />,
-    label: "Company",
-    text: "Dashboard",
-  };
+  // const CompanyOpt = {
+  //   handleClick: () => {},
+  //   icon: <DashboardIcon color="primary" />,
+  //   label: "Company",
+  //   text: "Dashboard",
+  // };
 
-  const wuOpt = {
-    handleClick: () => {},
-    icon: <DashboardIcon color="primary" />,
-    label: "Unit",
-    text: "Dashboard",
-  };
+  // const wuOpt = {
+  //   handleClick: () => {},
+  //   icon: <DashboardIcon color="primary" />,
+  //   label: "Unit",
+  //   text: "Dashboard",
+  // };
 
   const nameOpt = {
     handleClick: () => {},
@@ -38,13 +38,13 @@ const useOptions = (user) => {
       Navigate(`/${user.role}`);
     },
     icon: <DashboardIcon color="primary" />,
-    text: "Dashboard",
+    text: "dashboard",
   };
 
   const logoutOpt = {
     handleClick: logout,
     icon: <Logout style={{ color: "red" }} />,
-    text: "Logout",
+    text: "logout",
   };
 
   const options = {

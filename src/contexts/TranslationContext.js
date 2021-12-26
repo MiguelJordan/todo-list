@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { createContext, useState } from "react";
 
 import * as translations from "../translations";
-import useStorage from "./useStorage";
+import useStorage from "../hooks/useStorage";
 
-const useTranslation = () => {
+export const TrContext = createContext();
+
+const TrCProvider = ({ children }) => {
   const storage = useStorage();
   const [language, setLang] = useState(storage.get("language") || "fr");
+  console.log("Ran", language);
 
   const translate = (key) => {
     const keys = key.split(".");
@@ -27,7 +30,9 @@ const useTranslation = () => {
     setLang(lang);
   };
 
-  return { t: translate, language, setLanguage };
+  const context = { t: translate, language, setLanguage };
+
+  return <TrContext.Provider value={context}>{children}</TrContext.Provider>;
 };
 
-export default useTranslation;
+export default TrCProvider;

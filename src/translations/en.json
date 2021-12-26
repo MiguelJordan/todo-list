@@ -9,8 +9,15 @@
   "login_page": {
     "title": "Log In"
   },
+  "pages": { "waiter": { "drinks": "Drinks Page", "orders": "Orders Page" } },
   "_var": {
     "role": { "section": "value" },
-    "waiter": { "nav": { "Drinks": "Drinks", "Orders": "Orders" } }
+    "waiter": {
+      "menu": {
+        "label": { "name": "name" },
+        "text": { "dashboard": "Dashboard", "logout": "Logout" }
+      },
+      "nav": { "Drinks": "Drinks", "Orders": "Orders" }
+    }
   }
 }

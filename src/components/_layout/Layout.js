@@ -1,10 +1,12 @@
 import Nav from "./Nav";
 
-export default function Layout({ Main, links, showLoginBtn }) {
+export default function Layout({ Main, links, showLoginBtn, footer = false }) {
   return (
     <>
       <Nav links={links} showLoginBtn={showLoginBtn} />
-      <Main />
+      <div className="main">
+        <Main />
+      </div>
     </>
   );
 }

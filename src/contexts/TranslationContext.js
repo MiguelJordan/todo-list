@@ -4,23 +4,31 @@ import * as translations from "../translations";
 import useStorage from "../hooks/useStorage";
 
 export const TrContext = createContext();
+const fallback = "en";
 
 const TrCProvider = ({ children }) => {
   const storage = useStorage();
   const [language, setLang] = useState(storage.get("language") || "fr");
 
-  const translate = (key) => {
+  const translate = (key, index = 1) => {
     const keys = key.split(".");
 
     // return translation or the last key;
     // which is the actual word or phrase to be translated
-    return translateNested(keys) ?? keys[keys.length - 1];
+
+    return (
+      translateNested(language, keys) ??
+      translateNested(fallback, keys) ??
+      keys[keys.length - index]
+    );
   };
 
-  const translateNested = (keys) => {
-    return keys.reduce((prev, key) => {
-      return prev[key];
-    }, translations[language]);
+  const translateNested = (language, keys) => {
+    try {
+      return keys.reduce((prev, key) => {
+        return prev[key];
+      }, translations[language]);
+    } catch (err) {}
   };
 
   const setLanguage = (lang) => {

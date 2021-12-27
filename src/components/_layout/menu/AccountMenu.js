@@ -114,11 +114,17 @@ export default function AccountMenu({ user }) {
                 {option.label ? (
                   <ListItemText
                     primary={option.label}
-                    secondary={t(`_var.${user.role}.menu.text.${option.text}`)}
+                    secondary={t(
+                      `_var.${option.role}.menu.${option.text}.text`,
+                      2
+                    )}
                   />
                 ) : (
                   <ListItemText
-                    primary={t(`_var.${user.role}.menu.text.${option.text}`)}
+                    primary={t(
+                      `_var.${option.role}.menu.${option.text}.text`,
+                      2
+                    )}
                   />
                 )}
               </MenuItem>

@@ -30,20 +30,21 @@ const useOptions = (user) => {
   const nameOpt = {
     handleClick: () => {},
     icon: <PersonIcon style={{ color: "white" }} />,
+    role: "*",
     text: `${user?.firstName || user?.lastName || "--name--"}`,
   };
 
   const dashboardOpt = {
-    handleClick: () => {
-      Navigate(`/${user.role}`);
-    },
+    handleClick: () => Navigate(`/${user.role}`),
     icon: <DashboardIcon color="primary" />,
+    role: "*",
     text: "dashboard",
   };
 
   const logoutOpt = {
     handleClick: logout,
     icon: <Logout style={{ color: "red" }} />,
+    role: "*",
     text: "logout",
   };
 

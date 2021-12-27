@@ -7,9 +7,9 @@ const Page = () => {
   const { t } = useContext(TrContext);
 
   return (
-    <div className="main">
+    <>
       <h1 className="center">{t("pages.home.greeting")}</h1>
-      <div className="center">{t("pages.home.page_title")}</div>{" "}
+      <div className="center">{t("pages.home.page_title")}</div>
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae mi ut
         sem efficitur laoreet sit amet ut mi. Maecenas at vestibulum ligula.
@@ -70,7 +70,7 @@ const Page = () => {
         efficitur. Vestibulum sapien arcu, pharetra quis mi sed, semper viverra
         arcu.
       </p>
-    </div>
+    </>
   );
 };
 

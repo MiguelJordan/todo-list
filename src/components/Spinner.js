@@ -8,7 +8,7 @@ export default function Spinner() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        paddingTop: "50vh",
+        paddingTop: "40vh",
       }}
     >
       <CircularProgress />

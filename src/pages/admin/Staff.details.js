@@ -6,7 +6,7 @@ export default function Drinks() {
 
   return (
     <>
-      <h1 className="center">{t("pages.waiter.orders")}</h1>
+      <h1 className="center">{t("Staff Member's Details Page")}</h1>
     </>
   );
 }

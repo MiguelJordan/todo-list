@@ -1,11 +1,4 @@
 {
-  "auth": {
-    "passwordField": "Mot De Passe",
-    "forgot_password": "Mot de passe Oublie?"
-  },
-  "login_page": {
-    "title": "Connexion"
-  },
   "compo": {
     "nav": {
       "login_btn": "Connexion",
@@ -13,17 +6,34 @@
     }
   },
   "pages": {
+    "auth": {
+      "passwordField": "Mot De Passe",
+      "forgot_password": "Mot de passe Oublie?"
+    },
     "home": { "greeting": "Bienvenue", "page_title": "Page D'accueil" },
-    "waiter": { "drinks": "Page des Boissons", "orders": "Page des Commandes" }
+    "login": { "title": "Connexion" },
+    "waiter": { "items": "Page des Produits", "orders": "Page des Commandes" }
   },
   "_var": {
-    "role": { "section": "value" },
-    "waiter": {
+    "*": {
       "menu": {
-        "label": { "name": "nom" },
-        "text": { "dashboard": "Tableau de bord", "logout": "Deconnexion" }
-      },
-      "nav": { "Drinks": "Boissons", "Orders": "Commandes" }
+        "dashboard": { "text": "Tableau de bord" },
+        "logout": { "text": "Deconnexion" }
+      }
+    },
+    "admin": {
+      "nav": {
+        "bills": "Factures",
+        "staff": "Personnel",
+        "staff_add": "Ajouter User",
+        "stores": "Magazins"
+      }
+    },
+    "cashier": {
+      "nav": { "bills": "Factures" }
+    },
+    "waiter": {
+      "nav": { "items": "Produits", "orders": "Commandes" }
     }
   }
 }

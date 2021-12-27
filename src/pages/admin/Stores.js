@@ -6,7 +6,7 @@ export default function Drinks() {
 
   return (
     <>
-      <h1>{t("pages.waiter.drinks")}</h1>
+      <h1 className="center">{t("Stores Page")}</h1>
     </>
   );
 }

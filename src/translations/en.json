@@ -1,11 +1,4 @@
 {
-  "auth": {
-    "passwordField": "Password",
-    "forgot_password": "Forgot Password?"
-  },
-  "login_page": {
-    "title": "Log In"
-  },
   "compo": {
     "nav": {
       "login_btn": "Log In",
@@ -13,17 +6,34 @@
     }
   },
   "pages": {
+    "auth": {
+      "passwordField": "Password",
+      "forgot_password": "Forgot Password?"
+    },
     "home": { "greeting": "Welcome", "page_title": "Home Page" },
-    "waiter": { "drinks": "Drinks Page", "orders": "Orders Page" }
+    "login": { "title": "Log In" },
+    "waiter": { "items": "Items' Page", "orders": "Orders' Page" }
   },
   "_var": {
-    "role": { "section": "value" },
-    "waiter": {
+    "*": {
       "menu": {
-        "label": { "name": "name" },
-        "text": { "dashboard": "Dashboard", "logout": "Logout" }
-      },
-      "nav": { "Drinks": "Drinks", "Orders": "Orders" }
+        "dashboard": { "text": "Dashboard" },
+        "logout": { "text": "Logout" }
+      }
+    },
+    "admin": {
+      "nav": {
+        "bills": "Bills",
+        "staff": "Staff",
+        "staff_add": "Add User",
+        "stores": "Stores"
+      }
+    },
+    "cashier": {
+      "nav": { "bills": "Bills" }
+    },
+    "waiter": {
+      "nav": { "items": "Items", "orders": "Orders" }
     }
   }
 }

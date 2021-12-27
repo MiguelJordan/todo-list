@@ -6,7 +6,8 @@ import Auth from "./Auth";
 
 // components
 import Spinner from "./Spinner";
-// const Cashier = React.lazy(() => import("../Routes/cashierRoute"));
+const Admin = React.lazy(() => import("../pages/admin"));
+const Cashier = React.lazy(() => import("../pages/cashier"));
 const Home = React.lazy(() => import("../pages/home"));
 const NotFound = React.lazy(() => import("../pages/404"));
 const Login = React.lazy(() => import("../pages/login"));
@@ -22,6 +23,14 @@ export default function Router() {
             <Route
               path="/login"
               element={<Auth page={<Login />} roles={[]} />}
+            />
+            <Route
+              path="/admin/*"
+              element={<Auth page={<Admin />} roles={["admin"]} />}
+            />
+            <Route
+              path="/cashier/*"
+              element={<Auth page={<Cashier />} roles={["cashier"]} />}
             />
             <Route
               path="/waiter/*"

@@ -109,11 +109,9 @@ const Page = () => {
     setServerError("");
 
     // get routes and redirects
-    if (res.role === "waiter") {
-      navigate("/waiter");
-    } else if (res.role === "cashier") {
-      navigate("/cashier");
-    }
+    if (res.role === "admin") return navigate("/admin");
+    if (res.role === "cashier") return navigate("/cashier");
+    if (res.role === "waiter") return navigate("/waiter");
   };
 
   return (
@@ -140,7 +138,7 @@ const Page = () => {
                 <LockCloseOutlined />
               </Avatar>
               <Typography component="h1" variant="h5">
-                {t("login_page.title")}
+                {t("pages.login.title")}
               </Typography>
             </Grid>
             {serverError !== "" ? (
@@ -187,7 +185,7 @@ const Page = () => {
                       className={style.field}
                       onChange={handleChange}
                       type="password"
-                      label={t("auth.passwordField") + "*"}
+                      label={t("pages.auth.passwordField") + "*"}
                       fullWidth
                       name="password"
                       variant="outlined"
@@ -224,7 +222,7 @@ const Page = () => {
                       className={style.buttonBlock}
                       disabled={disabled}
                     >
-                      {t("login_page.title")}
+                      {t("pages.login.title")}
                     </Button>
                   </Grid>
                 </Grid>
@@ -232,7 +230,7 @@ const Page = () => {
             </Grid>
             <span style={{ marginBottom: "3%" }}>
               <Link href="#" variant="body2">
-                {t("auth.forgot_password")}
+                {t("pages.auth.forgot_password")}
               </Link>
             </span>
           </Paper>

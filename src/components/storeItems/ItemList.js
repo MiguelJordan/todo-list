@@ -47,13 +47,7 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     marginTop: "5%",
-    //display: "flex",
-    //marginLeft: "5%",
-    //marginRight: "5%",
     height: "calc(80vh - 10%)",
-    // minWidth: "50px",
-    // minHeight: "300px",
-    //position: "fixed",
     justifyContent: "center",
     overflowX: "hidden",
     overflowY: "scroll",
@@ -68,32 +62,26 @@ const useStyles = makeStyles((theme) => ({
     top: "50%",
     left: "50%",
     bottom: 0,
+    [theme.breakpoints.up("xs")]: {
+      marginTop: "115px",
+      width: "calc(100vw - 30px)",
+    },
+    [theme.breakpoints.up("sm")]: {
+      marginTop: "115px",
+      width: "calc(100vw - 30px)",
+    },
+    [theme.breakpoints.up("md")]: {
+      width: "calc(100vw - 230px)",
+      marginLeft: "0px",
+      marginTop: "115px",
+      height: "calc(80vh - 10%)",
+    },
     [theme.breakpoints.up("lg")]: {
       width: "calc(100vw - 230px)",
       //marginLeft: "10px",
       //maxWidth: 1500,
       height: "calc(80vh - 10%)",
-      marginTop: "3%",
-    },
-    [theme.breakpoints.up("md")]: {
-      width: "calc(100vw - 230px)",
-      marginLeft: "0px",
-      //marginTop: "10%",
-      height: "calc(80vh - 10%)",
-    },
-    [theme.breakpoints.between("sm", "md")]: {
-      width: "calc(100vw - 230px)",
-      marginLeft: "0px",
-      //marginTop: "10%",
-      height: "calc(80vh - 10%)",
-    },
-    [theme.breakpoints.down("sm")]: {
-      marginTop: "6%",
-      width: "calc(100vw - 30px)",
-    },
-    [theme.breakpoints.down("xs")]: {
-      marginTop: "14%",
-      width: "calc(100vw - 30px)",
+      marginTop: "110px",
     },
   },
   content: {
@@ -112,18 +100,19 @@ const useStyles = makeStyles((theme) => ({
     borderTopRightRadius: 4,
     WebkitBorderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
-    marginBottom: "30px",
+    //marginBottom: "20px",
+    margin: "8px",
     //
     minWidth: "180px",
     padding: 0,
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: "20px",
-      marginRight: "10px",
-    },
-    [theme.breakpoints.up("xs")]: {
-      maxWidth: "280px",
-      // marginRight: "10px",
-    },
+    // [theme.breakpoints.up("sm")]: {
+    //   marginLeft: "1px",
+    //   marginRight: "1px",
+    // },
+    // [theme.breakpoints.up("xs")]: {
+    //   maxWidth: "280px",
+    //   // marginRight: "10px",
+    // },
 
     //border: "5px solid alpha(theme.palette.common.white, 0.15)",
   },
@@ -136,7 +125,7 @@ const useStyles = makeStyles((theme) => ({
       marginBottom: 0,
     },
     [theme.breakpoints.between("sm", "md")]: {
-      marginLeft: "1%",
+      // marginLeft: "1%",
       marginRight: "20%",
       width: "100%",
     },
@@ -188,7 +177,7 @@ export default function ItemList({ list = [], preview = true, role = "" }) {
           >
             {list.length !== 0 ? (
               list.map((item) => (
-                <Grid item xl={3} lg={3} md={4} sm={5} xs={12} key={item.id}>
+                <Grid item xl={3} lg={3} md={5} sm={6} xs={12} key={item.id}>
                   <Card className={classes.card}>
                     <CardMedia
                       className={classes.media}

@@ -143,7 +143,6 @@ const Nav = ({ links = [], showLoginBtn = true }) => {
                   onClick={() => Navigate(link.path)}
                 >
                   <ListItemText
-                    noWrap
                     primary={showLinkText(link)}
                     primaryTypographyProps={{
                       color: link.isActive ? "nav.active" : "nav.inActive",

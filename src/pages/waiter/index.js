@@ -11,7 +11,6 @@ const NotFound = React.lazy(() => import("../404"));
 const mainLinks = [
   { text: "items", path: "/waiter" },
   { text: "orders", path: "/waiter/orders" },
-  // { text: "Yoyo", path: "/wankiter/ordersgsn" },
 ];
 
 export default function Waiter() {
@@ -22,6 +21,14 @@ export default function Waiter() {
         path="/orders"
         element={<Layout Main={Orders} links={mainLinks} />}
       />
+      {/* <Route
+        path="/orders/add"
+        element={<Layout Main={Orders} links={mainLinks} />}
+      />
+      <Route
+        path="/orders/:id"
+        element={<Layout Main={Orders} links={mainLinks} />}
+      /> */}
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

@@ -1,7 +1,8 @@
+import { Select, TextField } from "@mui/material";
 import { useContext } from "react";
 import { TrContext } from "../../contexts/TranslationContext";
 
-export default function Drinks() {
+export default function Orders() {
   const { t } = useContext(TrContext);
 
   return (

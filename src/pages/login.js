@@ -1,16 +1,10 @@
 import React, { useContext, useState } from "react";
-import {
-  Button,
-  TextField,
-  Grid,
-  Paper,
-  Typography,
-  Link,
-} from "@material-ui/core";
+import { Button, TextField, Grid, Typography, Link } from "@material-ui/core";
 import { Avatar } from "@mui/material";
 import { makeStyles } from "@material-ui/core";
 import LockCloseOutlined from "@mui/icons-material/LockOutlined";
 import { useNavigate } from "react-router";
+import Paper from "@mui/material/Paper";
 
 import Layout from "../components/_layout/Layout";
 
@@ -20,6 +14,7 @@ import { TrContext } from "../contexts/TranslationContext";
 const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: "80vw",
+
     [theme.breakpoints.down("sm")]: {
       //   maxWidth: "100px",
       minWidth: "95vw",
@@ -37,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
     minHeight: "30vh",
     padding: "50px",
     minWidth: "37vw",
+    backgroundColor: "#FFFFFF",
 
     [theme.breakpoints.down("sm")]: {
       padding: "10px",
@@ -182,7 +178,6 @@ const Page = () => {
                   </Grid>
                   <Grid item>
                     <TextField
-                      className={style.field}
                       onChange={handleChange}
                       type="password"
                       label={t("pages.auth.passwordField") + "*"}
@@ -195,7 +190,6 @@ const Page = () => {
                   {rootRole !== "" ? (
                     <Grid item>
                       <TextField
-                        className={style.field}
                         onChange={(e) => {
                           setUser({
                             ...user,

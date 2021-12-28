@@ -6,9 +6,9 @@ import {
   Button,
   Container,
 } from "@material-ui/core";
-import Card from "@material-ui/core/Card";
-import CardMedia from "@material-ui/core/CardMedia";
-import CardContent from "@material-ui/core/CardContent";
+import Card from "@mui/material/Card";
+import CardMedia from "@mui/material/CardMedia";
+import CardContent from "@mui/material/CardContent";
 import Select from "@mui/material/Select";
 import { MenuItem } from "@mui/material";
 import image from "../../assests/Item_Image_d.jpg";
@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
     left: "50%",
     bottom: 0,
     [theme.breakpoints.up("xs")]: {
-      marginTop: "115px",
+      marginTop: "95px",
       width: "calc(100vw - 30px)",
     },
     [theme.breakpoints.up("sm")]: {

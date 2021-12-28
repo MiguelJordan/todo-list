@@ -1,8 +1,9 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import { makeStyles, alpha, Grid, Container } from "@material-ui/core";
-
+import Select from "@mui/material/Select";
 import { useNavigate } from "react-router-dom";
+import { TextField } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -11,10 +12,17 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     backgroundColor: "white",
     borderRadius: "8px",
-    marginBottom: "20px",
-    margin: "2px",
-    maxWidth: "330px",
+    margin: "5px",
     minHeight: "150px",
+    maxWidth: "330px",
+
+    [theme.breakpoints.up("xs")]: {
+      minWidth: "250px",
+    },
+    width: "min-content",
+    [theme.breakpoints.up("sm")]: {
+      minWidth: "300px",
+    },
 
     //flex: "auto",
   },
@@ -39,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   container: {
-    marginTop: "2%",
+    marginTop: "30px",
     height: "calc(80vh - 10%)",
 
     justifyContent: "center",
@@ -68,8 +76,22 @@ const useStyles = makeStyles((theme) => ({
       height: "calc(80vh - 10%)",
     },
     [theme.breakpoints.down("sm")]: {
-      marginTop: 0,
+      //marginTop: 0,
       width: "calc(100vw - 30px)",
+    },
+  },
+  box: {
+    display: "flex",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    flexFlow: "column",
+    paddingLeft: "6px",
+
+    [theme.breakpoints.up("xs")]: {
+      minWidth: "250px",
+    },
+    [theme.breakpoints.up("sm")]: {
+      minWidth: "300px",
     },
   },
 }));
@@ -82,119 +104,123 @@ export default function OrderList({ role = "", array = [] }) {
     <div className={classes.container}>
       <Container>
         <Grid container align="center" direction="row" className={classes.grid}>
-          {array.map((item) => (
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                //width: "fit-content",
-                border: (theme) => `1px solid ${theme.palette.divider}`,
-                borderRadius: "8px",
-                //bgcolor: "background.paper",
-                color: "text.secondary",
-                "& svg": {
-                  m: 1.5,
-                },
-                "& hr": {
-                  m: "5px",
-                },
-              }}
-              className={classes.card}
-              key={item.id}
-            >
-              <div
-                style={{
+          {array.lenght !== 0 ? (
+            array.map((item) => (
+              <Box
+                sx={{
                   display: "flex",
-                  justifyContent: "flex-start",
-                  alignItems: "flex-start",
-                  flexFlow: "column",
-                  paddingLeft: "6px",
+                  alignItems: "center",
+                  width: "min-content",
+                  border: (theme) => `1px solid ${theme.palette.divider}`,
+                  borderRadius: "8px",
+                  //bgcolor: "background.paper",
+                  color: "text.secondary",
+                  "& svg": {
+                    m: 1.5,
+                  },
+                  "& hr": {
+                    m: "5px",
+                  },
                 }}
+                className={classes.card}
+                onClick={() => Navigate("./detail")}
+                key={item.id}
               >
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "flex-start",
-                    alignItems: "flex-start",
-                    flexFlow: "column",
-                    marginTop: "-10px",
-                  }}
-                >
-                  <span
+                <div className={classes.box}>
+                  <div
                     style={{
-                      fontSize: 28,
-                      color: "#001D42",
+                      display: "flex",
+                      justifyContent: "flex-start",
                       alignItems: "flex-start",
-                      alignSelf: "flex-start",
-                      // marginTop: "-20%",
+                      flexFlow: "column",
+                      marginTop: "-10px",
                     }}
-                    onClick={() => Navigate("./detail")}
                   >
-                    {role === "waiter"
-                      ? `Table:${item.tableN}`
-                      : ` Serveur:${item.waiterN}`}
-                  </span>
+                    <span
+                      style={{
+                        fontSize: 28,
+                        color: "#001D42",
+                        alignItems: "flex-start",
+                        alignSelf: "flex-start",
+                        // marginTop: "-20%",
+                      }}
+                    >
+                      {role === "waiter" || role === "cashier"
+                        ? `Table:${item.tableN}`
+                        : ` Serveur:${item.waiterN}`}
+                    </span>
 
-                  <span
+                    <span
+                      style={{
+                        fontSize: 15,
+                        color: "#707070",
+                        alignItems: "flex-start",
+                        alignSelf: "flex-start",
+                        marginTop: "4px",
+                      }}
+                    >
+                      {item.createdDate}
+                    </span>
+                  </div>
+                  <hr
+                    width="90%"
+                    color="gray"
                     style={{
-                      fontSize: 15,
-                      color: "#707070",
+                      color: "#B3B3B3",
+                      height: 2,
+                      marginTop: "5px",
+                    }}
+                  />
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-start",
                       alignItems: "flex-start",
-                      alignSelf: "flex-start",
-                      //marginTop: "-20%",
+                      flexFlow: "column",
                     }}
                   >
-                    {item.createdDate}
-                  </span>
-                </div>
-                <hr
-                  width="310vw"
-                  color="gray"
-                  style={{
-                    color: "#B3B3B3",
-                    height: 2,
-                  }}
-                />
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "flex-start",
-                    alignItems: "flex-start",
-                    flexFlow: "column",
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: 20,
-                      color: "#707070",
-                      alignItems: "flex-start",
-                      alignSelf: "flex-start",
-                      marginTop: "5%",
-                    }}
-                  >
-                    {item.drink ? `Boisson: ${item.drink}` : "Boisson:"}
-                  </span>
+                    <span
+                      style={{
+                        fontSize: 20,
+                        color: "#707070",
+                        alignItems: "flex-start",
+                        alignSelf: "flex-start",
+                        marginTop: "5%",
+                      }}
+                    >
+                      {item.drink ? `Boisson: ${item.drink}` : "Boisson:"}
+                    </span>
 
-                  <span
-                    style={{
-                      fontSize: 20,
-                      color: "#707070",
-                      alignItems: "flex-start",
-                      alignSelf: "flex-start",
-                    }}
-                  >
-                    {item.meal ? `Repas: ${item.meal}` : "Repas:"}
-                  </span>
+                    <span
+                      style={{
+                        fontSize: 20,
+                        color: "#707070",
+                        alignItems: "flex-start",
+                        alignSelf: "flex-start",
+                      }}
+                    >
+                      {item.meal ? `Repas: ${item.meal}` : "Repas:"}
+                    </span>
+                  </div>
+                  {item.isPaid && (
+                    <span
+                      style={{ marginTop: "2%", color: "green" }}
+                    >{`Status: Payee`}</span>
+                  )}
                 </div>
-                {item.isPaid && (
-                  <span
-                    style={{ marginTop: "2%", color: "green" }}
-                  >{`Status: Payee`}</span>
-                )}
-              </div>
-            </Box>
-          ))}
-          {array.lenght === 0 && <div>Aucun Element Trouve</div>}
+              </Box>
+            ))
+          ) : (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                color: "red",
+              }}
+            >
+              <h2>No Item Found</h2>
+            </div>
+          )}
         </Grid>
       </Container>
     </div>

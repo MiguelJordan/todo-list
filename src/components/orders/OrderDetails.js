@@ -1,20 +1,15 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import Button from "@mui/material/Button";
 
-import ExpandMore from "@mui/icons-material/ExpandMore";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Grid from "@mui/material/Grid";
-import { ListItemIcon } from "@mui/material";
-import { DeleteRounded, EditRounded } from "@mui/icons-material";
+import {
+  Checkbox,
+  ListItemIcon,
+  ListItemText,
+  OutlinedInput,
+  Select,
+} from "@mui/material";
+
+import { DeleteRounded, EditRounded, ExpandMore } from "@mui/icons-material";
 import {
   Avatar,
   Container,
@@ -23,6 +18,21 @@ import {
   MenuItem,
   Tooltip,
   Typography,
+  Button,
+  AccordionDetails,
+  AccordionSummary,
+  Accordion,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Grid,
+  FormControl,
+  FormHelperText,
+  Input,
+  InputLabel,
 } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
@@ -101,9 +111,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function OrderDetails({ list }) {
+export default function OrderDetails({ list, role = "", methods }) {
   const classes = useStyles();
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const [method, setMethod] = useState([]);
+
+  const handlechange = (e) => {
+    const {
+      target: { value },
+    } = e;
+    setMethod(typeof value === "string" ? value.split(",") : value);
+  };
+  const MenuProps = {
+    PaperProps: {
+      Styles: {
+        maxHeight: 48 * 4.5 + 8,
+        width: 250,
+      },
+    },
+  };
 
   const handleOpenUser = (e) => {
     setAnchorElUser(e.currentTarget);
@@ -134,7 +160,6 @@ export default function OrderDetails({ list }) {
       Icon: <EditRounded />,
     },
   ];
-  var one;
 
   return (
     <div>
@@ -236,16 +261,18 @@ export default function OrderDetails({ list }) {
                           >
                             Total&nbsp;
                           </TableCell>
-                          <TableCell
-                            align="center"
-                            style={{
-                              backgroundColor: "#28405F",
-                              fontSize: 20,
-                              color: "#B3B3B3",
-                            }}
-                          >
-                            Action&nbsp;
-                          </TableCell>
+                          {role === "waiter" && (
+                            <TableCell
+                              align="center"
+                              style={{
+                                backgroundColor: "#28405F",
+                                fontSize: 20,
+                                color: "#B3B3B3",
+                              }}
+                            >
+                              Action&nbsp;
+                            </TableCell>
+                          )}
                         </TableRow>
                       </TableHead>
                       <TableBody>
@@ -301,54 +328,58 @@ export default function OrderDetails({ list }) {
                             >
                               {row.total}
                             </TableCell>
-                            <TableCell
-                              align="center"
-                              style={{ color: "#B3B3B3", fontSize: 25 }}
-                            >
-                              <Tooltip title="Open">
-                                <IconButton onClick={handleOpenUser}>
-                                  <Avatar
-                                    alt={row.name.toUpperCase()}
-                                    src="/broken-image.jpg"
-                                  />
-                                </IconButton>
-                              </Tooltip>
-                              <Menu
-                                anchorEl={anchorElUser}
-                                anchorOrigin={{
-                                  vertical: "top",
-                                  horizontal: "right",
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                  vertical: "top",
-                                  horizontal: "right",
-                                }}
-                                open={Boolean(anchorElUser)}
-                                onClose={handleCloseUser}
+                            {role === "waiter" && (
+                              <TableCell
+                                align="center"
+                                style={{ color: "#B3B3B3", fontSize: 25 }}
                               >
-                                {(one = row.id)}
-                                {option.map((item) => (
-                                  <MenuItem key={item.name} onClick={item.func}>
-                                    <ListItemIcon
-                                      style={{
-                                        color: `${item.color}`,
-                                      }}
+                                <Tooltip title="Action">
+                                  <IconButton onClick={handleOpenUser}>
+                                    <Avatar
+                                      alt={row.name.toUpperCase()}
+                                      src="/broken-image.jpg"
+                                    />
+                                  </IconButton>
+                                </Tooltip>
+                                <Menu
+                                  anchorEl={anchorElUser}
+                                  anchorOrigin={{
+                                    vertical: "top",
+                                    horizontal: "right",
+                                  }}
+                                  keepMounted
+                                  transformOrigin={{
+                                    vertical: "top",
+                                    horizontal: "right",
+                                  }}
+                                  open={Boolean(anchorElUser)}
+                                  onClose={handleCloseUser}
+                                >
+                                  {option.map((item) => (
+                                    <MenuItem
+                                      key={item.name}
+                                      onClick={item.func}
                                     >
-                                      {item.Icon}
-                                    </ListItemIcon>
-                                    <Typography
-                                      textAlign={"center"}
-                                      style={{
-                                        color: "white",
-                                      }}
-                                    >
-                                      {item.name}
-                                    </Typography>
-                                  </MenuItem>
-                                ))}
-                              </Menu>
-                            </TableCell>
+                                      <ListItemIcon
+                                        style={{
+                                          color: `${item.color}`,
+                                        }}
+                                      >
+                                        {item.Icon}
+                                      </ListItemIcon>
+                                      <Typography
+                                        textAlign={"center"}
+                                        style={{
+                                          color: "white",
+                                        }}
+                                      >
+                                        {item.name}
+                                      </Typography>
+                                    </MenuItem>
+                                  ))}
+                                </Menu>
+                              </TableCell>
+                            )}
                           </TableRow>
                         ))}
                       </TableBody>
@@ -360,19 +391,122 @@ export default function OrderDetails({ list }) {
           ))}
         </div>
 
-        <div
-          style={{ display: "flex", justifyContent: "center", marginTop: "2%" }}
-        >
-          <Button variant="contained" style={{ backgroundColor: "#04A5E0" }}>
-            {"Enregistrer & Imprimer"}
-          </Button>
-          <Button
-            variant="contained"
-            style={{ backgroundColor: "#FF0000", marginLeft: "5%" }}
+        {role === "waiter" && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "2%",
+            }}
           >
-            Annuler
-          </Button>
-        </div>
+            <Button variant="contained" style={{ backgroundColor: "#04A5E0" }}>
+              {"Enregistrer & Imprimer"}
+            </Button>
+            <Button
+              variant="contained"
+              style={{ backgroundColor: "#FF0000", marginLeft: "5%" }}
+            >
+              Annuler
+            </Button>
+          </div>
+        )}
+        {role === "admin" && (
+          <div style={{ margin: "15px" }}>
+            <Grid item align="center">
+              <FormControl color="success" variant="standard">
+                <InputLabel
+                  htmlFor="component-disabled"
+                  style={{ color: "white" }}
+                >
+                  Waiter
+                </InputLabel>
+                <Input
+                  id="component-helper"
+                  type="text"
+                  readOnly={true}
+                  //defaultValue={newVal.familly}
+                  name="familly"
+                  className={classes.form}
+                />
+                <FormHelperText></FormHelperText>
+              </FormControl>
+            </Grid>
+            <Grid item align="center">
+              <FormControl color="success" variant="standard">
+                <InputLabel
+                  htmlFor="component-disabled"
+                  style={{ color: "white" }}
+                >
+                  Cashier
+                </InputLabel>
+                <Input
+                  id="component-helper"
+                  type="text"
+                  readOnly={true}
+                  //defaultValue={newVal.familly}
+                  name="familly"
+                  className={classes.form}
+                />
+                <FormHelperText></FormHelperText>
+              </FormControl>
+            </Grid>
+            <Grid item align="center">
+              <FormControl color="success" variant="standard">
+                <InputLabel
+                  htmlFor="component-disabled"
+                  style={{ color: "white" }}
+                >
+                  Payment Method
+                </InputLabel>
+                <Input
+                  id="component-helper"
+                  type="text"
+                  readOnly={true}
+                  //defaultValue={newVal.familly}
+                  name="familly"
+                  className={classes.form}
+                />
+                <FormHelperText></FormHelperText>
+              </FormControl>
+            </Grid>
+          </div>
+        )}
+
+        {role === "cashier" && (
+          <div>
+            <Grid item align="center">
+              {" "}
+              <FormControl color="success" variant="standard">
+                <InputLabel
+                  htmlFor="component-disabled"
+                  style={{ color: "white" }}
+                >
+                  Payment Method
+                </InputLabel>
+                <Select
+                  id="component-helper"
+                  multiple
+                  type="text"
+                  readOnly={true}
+                  onChange={handlechange}
+                  value={method}
+                  input={<OutlinedInput label="Method" />}
+                  renderValue={(selected) => selected.join(",")}
+                  MenuProps={MenuProps}
+                  name="familly"
+                  className={classes.form}
+                >
+                  {methods.map((name) => (
+                    <MenuItem value={name} key={name}>
+                      <Checkbox checked={method.indexOf(name) > -1} />
+                      <ListItemText primary={name} />
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+          </div>
+        )}
       </Container>
     </div>
   );

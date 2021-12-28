@@ -35,7 +35,7 @@ export default function Admin() {
       />
       <Route
         path="/staff/:id"
-        element={<Layout Main={StaffDetails} links={[]} />}
+        element={<Layout Main={StaffDetails} links={mainLinks} />}
       />
       <Route
         path="/stores"
@@ -43,7 +43,7 @@ export default function Admin() {
       />
       <Route
         path="/store/:id"
-        element={<Layout Main={StoreDetails} links={[]} />}
+        element={<Layout Main={StoreDetails} links={mainLinks} />}
       />
       <Route path="*" element={<NotFound />} />
     </Routes>

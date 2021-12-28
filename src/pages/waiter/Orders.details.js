@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { TrContext } from "../../contexts/TranslationContext";
 
-export default function Orders() {
+export default function OrderDetails() {
   const { t } = useContext(TrContext);
 
   return (

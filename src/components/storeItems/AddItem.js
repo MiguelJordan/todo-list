@@ -6,16 +6,11 @@ import { Button, Grid, Typography } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minWidth: "80vw",
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
+    //minWidth: "80vw",
+    display: "flex",
+    justifyContent: "center",
     [theme.breakpoints.down("sm")]: {
-      //   maxWidth: "100px",
-      minWidth: "95vw",
-      //   minHeight: "100px",
-      //width: "100vw",
+      //minWidth: "95vw",
     },
   },
   loginBackground: {
@@ -47,11 +42,23 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AddItem() {
   const classes = useStyles();
-
+  const [item, setItem] = React.useState({
+    name: "",
+    familly: "",
+    category: "",
+    cost: "",
+    price: [],
+    image: "",
+  });
   const [serverError, setServerError] = React.useState("");
 
+  const handleAdd = (e) => {
+    e.preventDefault();
+    console.log(item);
+  };
+
   return (
-    <Grid container className={classes.root}>
+    <Grid container align="center" className={classes.root}>
       <Paper
         variant="elevation"
         elevation={2}
@@ -85,17 +92,20 @@ export default function AddItem() {
         ) : (
           ""
         )}
-        <Grid>
-          <form>
+        <Grid item xs={8}>
+          <form onSubmit={handleAdd}>
             <Grid container spacing={1} direction={"column"}>
               <Grid item>
                 <TextField
                   type="text"
                   label="Familly*"
                   fullWidth
-                  name="Familly"
+                  name="familly"
                   variant="standard"
                   required
+                  onChange={(e) => {
+                    setItem({ ...item, [e.target.name]: e.target.value });
+                  }}
                   autoComplete="off"
                 />
               </Grid>
@@ -104,9 +114,12 @@ export default function AddItem() {
                   type="text"
                   label="Category*"
                   fullWidth
-                  name="Category"
+                  name="category"
                   variant="standard"
                   required
+                  onChange={(e) => {
+                    setItem({ ...item, [e.target.name]: e.target.value });
+                  }}
                   autoComplete="off"
                 />
               </Grid>
@@ -115,9 +128,12 @@ export default function AddItem() {
                   type="text"
                   label="Name*"
                   fullWidth
-                  name="Name"
+                  name="name"
                   variant="standard"
                   required
+                  onChange={(e) => {
+                    setItem({ ...item, [e.target.name]: e.target.value });
+                  }}
                   autoComplete="off"
                 />
               </Grid>
@@ -126,9 +142,12 @@ export default function AddItem() {
                   type="number"
                   label="Cost*"
                   fullWidth
-                  name="Number"
+                  name="cost"
                   variant="standard"
                   required
+                  onChange={(e) => {
+                    setItem({ ...item, [e.target.name]: e.target.value });
+                  }}
                   autoComplete="off"
                 />
               </Grid>
@@ -137,10 +156,16 @@ export default function AddItem() {
                   type="number"
                   label="Price(s)*"
                   fullWidth
-                  name="Number"
+                  name="price"
                   variant="standard"
                   multiline
                   required
+                  onClick={(e) => {
+                    setItem({
+                      ...item,
+                      [e.target.name]: [...item.price, e.target.value],
+                    });
+                  }}
                   autoComplete="off"
                 />
               </Grid>
@@ -149,14 +174,19 @@ export default function AddItem() {
                   type="file"
                   label="Image*"
                   fullWidth
-                  name="Number"
+                  name="image"
                   variant="standard"
                   required
+                  onChange={(e) => {
+                    setItem({ ...item, [e.target.name]: e.target.value });
+                  }}
                   autoComplete="off"
                 />
               </Grid>
               <Grid item align="center">
-                <Button variant="contained">Add</Button>
+                <Button type="submit" variant="contained">
+                  Add
+                </Button>
               </Grid>
             </Grid>
           </form>

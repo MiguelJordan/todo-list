@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Button, TextField, Grid, Typography, Link } from "@material-ui/core";
+import { Button, TextField, Grid, Typography, Link } from "@mui/material";
 import { Avatar } from "@mui/material";
 import { makeStyles } from "@material-ui/core";
 import LockCloseOutlined from "@mui/icons-material/LockOutlined";
@@ -133,7 +133,11 @@ const Page = () => {
               <Avatar style={{ backgroundColor: "#001D42" }}>
                 <LockCloseOutlined />
               </Avatar>
-              <Typography component="h1" variant="h5">
+              <Typography
+                component="h1"
+                variant="h5"
+                style={{ color: "#001D42" }}
+              >
                 {t("pages.login.title")}
               </Typography>
             </Grid>

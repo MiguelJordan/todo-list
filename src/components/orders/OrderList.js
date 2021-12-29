@@ -47,8 +47,14 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   container: {
-    marginTop: "30px",
-    height: "calc(80vh - 10%)",
+    marginTop: ({ role }) => {
+      if (role === "admin") return "45px";
+      return "15px";
+    },
+    height: ({ role }) => {
+      if (role === "admin") return "450px";
+      return "470px";
+    },
 
     justifyContent: "center",
     overflowX: "hidden",
@@ -62,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     top: "50%",
     left: "50%",
-    bottom: 0,
+    bottom: 5,
     [theme.breakpoints.up("lg")]: {
       width: "calc(100vw - 230px)",
       //marginLeft: "10px",
@@ -97,14 +103,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function OrderList({ role = "", array = [] }) {
-  const classes = useStyles();
+  const classes = useStyles({ role });
   const Navigate = useNavigate();
 
   return (
     <div className={classes.container}>
       <Container>
         <Grid container align="center" direction="row" className={classes.grid}>
-          {array.lenght !== 0 ? (
+          {array.length === 0 ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <h2>No Order Found</h2>
+            </div>
+          ) : (
             array.map((item) => (
               <Box
                 sx={{
@@ -146,8 +161,8 @@ export default function OrderList({ role = "", array = [] }) {
                       }}
                     >
                       {role === "waiter" || role === "cashier"
-                        ? `Table:${item.tableN}`
-                        : ` Serveur:${item.waiterN}`}
+                        ? `Table: ${item.tableN}`
+                        : ` Serveur: ${item.waiterN}`}
                     </span>
 
                     <span
@@ -210,16 +225,6 @@ export default function OrderList({ role = "", array = [] }) {
                 </div>
               </Box>
             ))
-          ) : (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                color: "red",
-              }}
-            >
-              <h2>No Item Found</h2>
-            </div>
           )}
         </Grid>
       </Container>

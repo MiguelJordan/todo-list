@@ -23,7 +23,7 @@ const Search = styled("div")(({ theme }) => ({
     left: "50%",
     transform: "translate(-50%,-50%)",
     width: "70%",
-    marginTop: "45px",
+    marginTop: "35px",
   },
   [theme.breakpoints.between("sm", "md")]: {
     //marginLeft: "0%",

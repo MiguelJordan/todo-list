@@ -64,9 +64,10 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("xs")]: {
       marginTop: "50px",
       width: "calc(90vw - 30px)",
+      height: "74vh",
     },
     [theme.breakpoints.up("sm")]: {
-      marginTop: "50px",
+      marginTop: "40px",
       width: "calc(90vw - 30px)",
     },
     [theme.breakpoints.up("md")]: {

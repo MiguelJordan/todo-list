@@ -78,15 +78,13 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("md")]: {
       marginTop: "1%",
     },
-    filters: {
-      display: "flex",
-      flexFlow: "column",
-      justifyContent: "center",
-      alignItems: "center",
-      [theme.breakpoints.up("xs")]: {
-        flexFlow: "column",
-      },
-    },
+  },
+  filters: {
+    display: "flex",
+    marginTop: "20px",
+    justifyContent: "center",
+    alignItems: "center",
+    [theme.breakpoints.up("xs")]: {},
   },
 }));
 
@@ -156,54 +154,38 @@ export default function Drinks() {
     <>
       {/* <h1>{t("pages.waiter.drinks")}</h1> */}
       <div className={classes.filters}>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            //marginLeft: "3%",
-            marginTop: "12px",
+        <span>Family:</span>
+        <Select
+          native
+          variant="standard"
+          style={{ color: "#B3B3B3", marginLeft: "1.5%" }}
+          defaultValue={fam}
+          onChange={(e) => {
+            setFam(e.target.value);
           }}
         >
-          Familly:
-          <Select
-            native
-            variant="standard"
-            style={{ color: "#B3B3B3", marginLeft: "1%", marginTop: "-0.5%" }}
-            defaultValue={fam}
-            onChange={(e) => {
-              setFam(e.target.value);
-            }}
-          >
-            {familly.map((fam) => (
-              <option value={fam} key={fam}>
-                {fam}
-              </option>
-            ))}
-          </Select>
-        </div>
+          {familly.map((fam) => (
+            <option value={fam} key={fam}>
+              {fam}
+            </option>
+          ))}
+        </Select>
 
-        <div
-          style={{
-            marginTop: "20px",
-            display: "flex",
-            justifyContent: "center",
-          }}
+        <span>Category: </span>
+
+        <Select
+          native
+          variant="standard"
+          style={{ color: "#B3B3B3", marginLeft: "1.5%" }}
+          defaultValue={category[0]}
+          onChange={(e) => setCat(e.target.value)}
         >
-          Category:
-          <Select
-            native
-            variant="standard"
-            style={{ color: "#B3B3B3", marginLeft: "1%", marginTop: "-1%" }}
-            defaultValue={category[0]}
-            onChange={(e) => setCat(e.target.value)}
-          >
-            {category.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
-              </option>
-            ))}
-          </Select>
-        </div>
+          {category.map((cat) => (
+            <option key={cat} value={cat}>
+              {cat}
+            </option>
+          ))}
+        </Select>
       </div>
 
       <div className={classes.search}>

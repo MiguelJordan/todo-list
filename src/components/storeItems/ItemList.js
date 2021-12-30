@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     overflowX: "hidden",
     overflowY: "scroll",
     alignItems: "center",
-    height: "calc(70vh - 10%)",
+    height: "70vh",
     webkitScrollbar: {
       width: 0,
     },
@@ -58,13 +58,13 @@ const useStyles = makeStyles((theme) => ({
       width: "calc(90vw - 30px)",
     },
     [theme.breakpoints.up("sm")]: {
-      marginTop: "30px",
+      marginTop: "80px",
       width: "calc(90vw - 30px)",
     },
     [theme.breakpoints.up("md")]: {
       width: "calc(95vw - 230px)",
       marginLeft: "0px",
-      marginTop: "80px",
+      marginTop: "88px",
       height: "calc(70vh - 10%)",
     },
     [theme.breakpoints.up("lg")]: {
@@ -254,7 +254,15 @@ export default function ItemList({ list = [], preview = true, role = "" }) {
             </Grid>
           ))
         ) : (
-          <div style={{ display: "flex", justifyContent: "center" }}>
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%,-50%)",
+              bottom: 0,
+            }}
+          >
             <span>No Item Found</span>
           </div>
         )}

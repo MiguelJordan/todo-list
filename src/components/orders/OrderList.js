@@ -47,20 +47,12 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   container: {
-    marginTop: ({ role }) => {
-      if (role === "admin") return "45px";
-      return "15px";
-    },
-    height: ({ role }) => {
-      if (role === "admin") return "450px";
-      return "470px";
-    },
-
+    //marginTop: "5%",
     justifyContent: "center",
     overflowX: "hidden",
     overflowY: "scroll",
     alignItems: "center",
-    margin: "auto",
+    height: "78vh",
     webkitScrollbar: {
       width: 0,
     },
@@ -68,22 +60,27 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     top: "50%",
     left: "50%",
-    bottom: 5,
-    [theme.breakpoints.up("lg")]: {
-      width: "calc(100vw - 230px)",
-      //marginLeft: "10px",
-      //maxWidth: 1500,
-      height: "calc(80vh - 10%)",
+    bottom: 0,
+    [theme.breakpoints.up("xs")]: {
+      marginTop: "50px",
+      width: "calc(90vw - 30px)",
+    },
+    [theme.breakpoints.up("sm")]: {
+      marginTop: "50px",
+      width: "calc(90vw - 30px)",
     },
     [theme.breakpoints.up("md")]: {
-      width: "calc(100vw - 230px)",
+      width: "calc(95vw - 230px)",
       marginLeft: "0px",
-      //maxWidth: 1500,
-      height: "calc(80vh - 10%)",
+      marginTop: "53px",
+      height: "75vh",
     },
-    [theme.breakpoints.down("sm")]: {
-      //marginTop: 0,
-      width: "calc(100vw - 30px)",
+    [theme.breakpoints.up("lg")]: {
+      //width: "calc(100vw - 230px)",
+      //marginLeft: "10px",
+      //maxWidth: 1500,
+      //height: "calc(70vh - 10%)",
+      // marginTop: "35px",
     },
   },
   box: {
@@ -108,126 +105,127 @@ export default function OrderList({ role = "", array = [] }) {
 
   return (
     <div className={classes.container}>
-      <Container>
-        <Grid container align="center" direction="row" className={classes.grid}>
-          {array.length === 0 ? (
-            <div
-              style={{
+      <Grid container align="center" direction="row" className={classes.grid}>
+        {array.length === 0 ? (
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%,-50%)",
+              bottom: 0,
+            }}
+          >
+            <h2>No Order Found</h2>
+          </div>
+        ) : (
+          array.map((item) => (
+            <Box
+              sx={{
                 display: "flex",
-                justifyContent: "center",
+                alignItems: "center",
+                width: "min-content",
+                border: (theme) => `1px solid ${theme.palette.divider}`,
+                borderRadius: "8px",
+                //bgcolor: "background.paper",
+                color: "text.secondary",
+                "& svg": {
+                  m: 1.5,
+                },
+                "& hr": {
+                  m: "5px",
+                },
               }}
+              className={classes.card}
+              onClick={() => Navigate("./detail")}
+              key={item.id}
             >
-              <h2>No Order Found</h2>
-            </div>
-          ) : (
-            array.map((item) => (
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  width: "min-content",
-                  border: (theme) => `1px solid ${theme.palette.divider}`,
-                  borderRadius: "8px",
-                  //bgcolor: "background.paper",
-                  color: "text.secondary",
-                  "& svg": {
-                    m: 1.5,
-                  },
-                  "& hr": {
-                    m: "5px",
-                  },
-                }}
-                className={classes.card}
-                onClick={() => Navigate("./detail")}
-                key={item.id}
-              >
-                <div className={classes.box}>
-                  <div
+              <div className={classes.box}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    alignItems: "flex-start",
+                    flexFlow: "column",
+                    marginTop: "-10px",
+                  }}
+                >
+                  <span
                     style={{
-                      display: "flex",
-                      justifyContent: "flex-start",
+                      fontSize: 28,
+                      color: "#001D42",
                       alignItems: "flex-start",
-                      flexFlow: "column",
-                      marginTop: "-10px",
+                      alignSelf: "flex-start",
+                      // marginTop: "-20%",
                     }}
                   >
-                    <span
-                      style={{
-                        fontSize: 28,
-                        color: "#001D42",
-                        alignItems: "flex-start",
-                        alignSelf: "flex-start",
-                        // marginTop: "-20%",
-                      }}
-                    >
-                      {role === "waiter" || role === "cashier"
-                        ? `Table: ${item.tableN}`
-                        : ` Serveur: ${item.waiterN}`}
-                    </span>
+                    {role === "waiter" || role === "cashier"
+                      ? `Table: ${item.tableN}`
+                      : ` Serveur: ${item.waiterN}`}
+                  </span>
 
-                    <span
-                      style={{
-                        fontSize: 15,
-                        color: "#707070",
-                        alignItems: "flex-start",
-                        alignSelf: "flex-start",
-                        marginTop: "4px",
-                      }}
-                    >
-                      {item.createdDate}
-                    </span>
-                  </div>
-                  <hr
-                    width="90%"
-                    color="gray"
+                  <span
                     style={{
-                      color: "#B3B3B3",
-                      height: 2,
-                      marginTop: "5px",
-                    }}
-                  />
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-start",
+                      fontSize: 15,
+                      color: "#707070",
                       alignItems: "flex-start",
-                      flexFlow: "column",
+                      alignSelf: "flex-start",
+                      marginTop: "4px",
                     }}
                   >
-                    <span
-                      style={{
-                        fontSize: 20,
-                        color: "#707070",
-                        alignItems: "flex-start",
-                        alignSelf: "flex-start",
-                        marginTop: "5%",
-                      }}
-                    >
-                      {item.drink ? `Boisson: ${item.drink}` : "Boisson:"}
-                    </span>
-
-                    <span
-                      style={{
-                        fontSize: 20,
-                        color: "#707070",
-                        alignItems: "flex-start",
-                        alignSelf: "flex-start",
-                      }}
-                    >
-                      {item.meal ? `Repas: ${item.meal}` : "Repas:"}
-                    </span>
-                  </div>
-                  {item.isPaid && (
-                    <span
-                      style={{ marginTop: "2%", color: "green" }}
-                    >{`Status: Payee`}</span>
-                  )}
+                    {item.createdDate}
+                  </span>
                 </div>
-              </Box>
-            ))
-          )}
-        </Grid>
-      </Container>
+                <hr
+                  width="90%"
+                  color="gray"
+                  style={{
+                    color: "#B3B3B3",
+                    height: 2,
+                    marginTop: "5px",
+                  }}
+                />
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    alignItems: "flex-start",
+                    flexFlow: "column",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: 20,
+                      color: "#707070",
+                      alignItems: "flex-start",
+                      alignSelf: "flex-start",
+                      marginTop: "5%",
+                    }}
+                  >
+                    {item.drink ? `Boisson: ${item.drink}` : "Boisson:"}
+                  </span>
+
+                  <span
+                    style={{
+                      fontSize: 20,
+                      color: "#707070",
+                      alignItems: "flex-start",
+                      alignSelf: "flex-start",
+                    }}
+                  >
+                    {item.meal ? `Repas: ${item.meal}` : "Repas:"}
+                  </span>
+                </div>
+                {item.isPaid && (
+                  <span
+                    style={{ marginTop: "2%", color: "green" }}
+                  >{`Status: Payee`}</span>
+                )}
+              </div>
+            </Box>
+          ))
+        )}
+      </Grid>
     </div>
   );
 }

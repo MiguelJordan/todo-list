@@ -4,9 +4,8 @@ import { TrContext } from "../../contexts/TranslationContext";
 import { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
-import { styled } from "@mui/material/styles";
-import { alpha, makeStyles } from "@material-ui/core";
-import OrderDetails from "../../components/orders/OrderDetails";
+import { styled, alpha } from "@mui/material/styles";
+//import {  makeStyles } from "@material-ui/core";
 
 const Search = styled("div")(({ theme }) => ({
   position: "absolute",

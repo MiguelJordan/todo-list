@@ -3,10 +3,10 @@ import { useState } from "react";
 import { useContext } from "react";
 import ItemList from "../../components/storeItems/ItemList";
 import { TrContext } from "../../contexts/TranslationContext";
-import { alpha, makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
-import { styled } from "@mui/material/styles";
+import { styled, alpha } from "@mui/material/styles";
 
 const Search = styled("div")(({ theme }) => ({
   position: "absolute",

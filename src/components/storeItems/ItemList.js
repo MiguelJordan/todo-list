@@ -1,17 +1,10 @@
 import React from "react";
-import {
-  makeStyles,
-  Grid,
-  Typography,
-  Button,
-  Container,
-} from "@material-ui/core";
+import { Grid, Typography, Button, Container } from "@mui/material";
+import { makeStyles } from "@material-ui/core";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Select from "@mui/material/Select";
-import { MenuItem } from "@mui/material";
-import image from "../../assests/Item_Image_d.jpg";
 
 import { useNavigate } from "react-router-dom";
 
@@ -46,14 +39,12 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
   },
   container: {
-    marginTop: "5%",
-    height: "calc(80vh - 10%)",
+    //marginTop: "5%",
     justifyContent: "center",
     overflowX: "hidden",
     overflowY: "scroll",
     alignItems: "center",
-    margin: "auto",
-
+    height: "calc(70vh - 10%)",
     webkitScrollbar: {
       width: 0,
     },
@@ -63,25 +54,25 @@ const useStyles = makeStyles((theme) => ({
     left: "50%",
     bottom: 0,
     [theme.breakpoints.up("xs")]: {
-      marginTop: "95px",
-      width: "calc(100vw - 30px)",
+      marginTop: "70px",
+      width: "calc(90vw - 30px)",
     },
     [theme.breakpoints.up("sm")]: {
-      marginTop: "115px",
-      width: "calc(100vw - 30px)",
+      marginTop: "30px",
+      width: "calc(90vw - 30px)",
     },
     [theme.breakpoints.up("md")]: {
-      width: "calc(100vw - 230px)",
+      width: "calc(95vw - 230px)",
       marginLeft: "0px",
-      marginTop: "115px",
-      height: "calc(80vh - 10%)",
+      marginTop: "80px",
+      height: "calc(70vh - 10%)",
     },
     [theme.breakpoints.up("lg")]: {
       width: "calc(100vw - 230px)",
       //marginLeft: "10px",
       //maxWidth: 1500,
-      height: "calc(80vh - 10%)",
-      marginTop: "110px",
+      height: "calc(70vh - 10%)",
+      marginTop: "60px",
     },
   },
   content: {
@@ -166,117 +157,108 @@ export default function ItemList({ list = [], preview = true, role = "" }) {
   const Navigate = useNavigate();
 
   return (
-    <>
-      <div className={classes.container}>
-        <Container>
-          <Grid
-            container
-            align="center"
-            direction="row"
-            className={classes.grid}
-          >
-            {list.length !== 0 ? (
-              list.map((item) => (
-                <Grid item xl={3} lg={3} md={5} sm={6} xs={12} key={item.id}>
-                  <Card className={classes.card}>
-                    <CardMedia
-                      className={classes.media}
-                      image={image}
-                      title={item.name}
-                    />
-                    <CardContent className={classes.content}>
-                      <Typography variant="h6" style={{ color: "#B3B3B3" }}>
-                        {item.name}
+    <div className={classes.container}>
+      <Grid container className={classes.grid} align="center" direction="row">
+        {list.length !== 0 ? (
+          list.map((item) => (
+            <Grid item xl={3} lg={3} md={5} sm={6} xs={12} key={item.id}>
+              <Card className={classes.card}>
+                <CardMedia
+                  className={classes.media}
+                  image={item.image}
+                  title={item.name}
+                />
+                <CardContent className={classes.content}>
+                  <Typography variant="h6" style={{ color: "#B3B3B3" }}>
+                    {item.name}
 
-                        <hr
-                          style={{
-                            color: "#B3B3B3",
-                            backgroundColor: "#B3B3B3",
-                            height: 0.5,
-                          }}
-                        />
-                      </Typography>
-                      <form className={classes.formControl}>
-                        <label>Prix: </label>
-                        <Select
-                          native
-                          variant="standard"
-                          label="Prix"
-                          style={{ color: "#FFFFFF" }}
-                        >
-                          {item.prices.map((price) => (
-                            <>
-                              <option
-                                key={price}
-                                value={price}
-                                style={{ color: "#B3B3B3" }}
-                              >
-                                {price}
-                              </option>
-                            </>
-                          ))}
-                        </Select>
+                    <hr
+                      style={{
+                        color: "#B3B3B3",
+                        backgroundColor: "#B3B3B3",
+                        height: 0.5,
+                      }}
+                    />
+                  </Typography>
+                  <form className={classes.formControl}>
+                    <label>Prix: </label>
+                    <Select
+                      native
+                      variant="standard"
+                      label="Prix"
+                      style={{ color: "#FFFFFF" }}
+                    >
+                      {item.prices.map((price) => (
+                        <>
+                          <option
+                            key={price}
+                            value={price}
+                            style={{ color: "#B3B3B3" }}
+                          >
+                            {price}
+                          </option>
+                        </>
+                      ))}
+                    </Select>
+                    <br />
+                    <br />
+                    <label htmlFor="">Quantite En Stock : </label>
+                    <output
+                      type="number"
+                      style={{
+                        backgroundColor: "#415672",
+                        // width: "70px",
+                        color: "#FFFFFF",
+                        strokeWidth: 40,
+                        marginLeft: 4,
+                        padding: 8,
+                        borderRadius: "5px",
+                      }}
+                    >
+                      {item.stock}
+                    </output>
+                    {!preview && role !== "admin" && (
+                      <>
                         <br />
                         <br />
-                        <label htmlFor="">Quantite En Stock : </label>
-                        <output
+                        <label htmlFor="">Quantite :</label>
+                        <input
+                          width={2}
                           type="number"
                           style={{
+                            width: "30px",
+                            marginLeft: 8,
                             backgroundColor: "#415672",
-                            // width: "70px",
                             color: "#FFFFFF",
-                            strokeWidth: 40,
-                            marginLeft: 4,
-                            padding: 8,
-                            borderRadius: "5px",
                           }}
+                          className={classes.inp}
+                        />
+                        <br />
+                        <br />
+                        <Button
+                          variant="outlined"
+                          style={{ border: "4px solid #2B4362" }}
                         >
-                          {item.stock}
-                        </output>
-                        {!preview && role !== "admin" && (
-                          <>
-                            <br />
-                            <br />
-                            <label htmlFor="">Quantite :</label>
-                            <input
-                              width={2}
-                              type="number"
-                              style={{
-                                width: "30px",
-                                marginLeft: 8,
-                                backgroundColor: "#415672",
-                                color: "#FFFFFF",
-                              }}
-                              className={classes.inp}
-                            />
-                            <br />
-                            <br />
-                            <Button
-                              variant="outlined"
-                              style={{ border: "4px solid #2B4362" }}
-                            >
-                              Ajouter
-                            </Button>
-                          </>
-                        )}
-                        {role === "admin" && (
-                          <>
-                            <Button>{"Detail"}</Button>
-                          </>
-                        )}
-                      </form>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              ))
-            ) : (
-              <div style={{ display: "flex", justifyContent: "center" }}>
-                <span>No Item Found</span>
-              </div>
-            )}
-          </Grid>
-        </Container>
-      </div>
-    </>
+                          Ajouter
+                        </Button>
+                      </>
+                    )}
+                    {role === "admin" && (
+                      <>
+                        <Button>{"Detail"}</Button>
+                      </>
+                    )}
+                  </form>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))
+        ) : (
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <span>No Item Found</span>
+          </div>
+        )}
+      </Grid>
+    </div>
   );
 }

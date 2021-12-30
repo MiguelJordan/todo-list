@@ -1,8 +1,9 @@
 import { useContext } from "react";
-import OrderDetails from "../../components/orders/OrderDetails";
 import { TrContext } from "../../contexts/TranslationContext";
 
-export default function Bills() {
+import OrderDetails from "../../components/orders/OrderDetails";
+
+export default function BillDetail() {
   const { t } = useContext(TrContext);
 
   const lists = {
@@ -30,14 +31,7 @@ export default function Bills() {
 
   return (
     <>
-      {/* <h1 className="center">{t("Cashier's Bills")}</h1> */}
-
-      <OrderDetails
-        role="cashier"
-        list={lists}
-        methods={["OM", "MOMO", "CASH", "AUCUN"]}
-        point={["Snack", "Cabaret"]}
-      />
+      <OrderDetails role="admin" list={lists} />
     </>
   );
 }

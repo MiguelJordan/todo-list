@@ -1,16 +1,8 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core";
-
 import {
-  Checkbox,
   ListItemIcon,
-  ListItemText,
-  OutlinedInput,
   Select,
-} from "@mui/material";
-
-import { DeleteRounded, EditRounded, ExpandMore } from "@mui/icons-material";
-import {
   Avatar,
   Container,
   IconButton,
@@ -34,6 +26,11 @@ import {
   Input,
   InputLabel,
 } from "@mui/material";
+
+import { TextField } from "@material-ui/core";
+
+//icons
+import { DeleteRounded, EditRounded, ExpandMore } from "@mui/icons-material";
 
 const useStyles = makeStyles((theme) => ({
   accordion: {
@@ -111,24 +108,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function OrderDetails({ list, role = "", methods }) {
+export default function OrderDetails({
+  list = [],
+  role = "",
+  methods = [],
+  point = [],
+}) {
   const classes = useStyles();
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [method, setMethod] = useState([]);
+  const [addPayment, setAddPayement] = useState([]);
+  const [orderInfo, setOrderInfo] = useState({
+    consumptionPoint: "",
+    paymentMethod: [],
+  });
 
   const handlechange = (e) => {
     const {
       target: { value },
     } = e;
     setMethod(typeof value === "string" ? value.split(",") : value);
-  };
-  const MenuProps = {
-    PaperProps: {
-      Styles: {
-        maxHeight: 48 * 4.5 + 8,
-        width: 250,
-      },
-    },
   };
 
   const handleOpenUser = (e) => {
@@ -144,6 +143,17 @@ export default function OrderDetails({ list, role = "", methods }) {
   const ModifyItem = () => {
     console.log("Modify");
   };
+  const handleRemoveField = (i) => {
+    const values = [...addPayment];
+    values.splice(i, 1);
+    setAddPayement(values);
+  };
+  const handleAddField = () => {
+    const values = [...addPayment];
+    values.push({ value: null });
+    setAddPayement(values);
+  };
+
   const familly = Object.keys(list);
 
   const option = [
@@ -162,55 +172,105 @@ export default function OrderDetails({ list, role = "", methods }) {
   ];
 
   return (
-    <div>
-      <Container>
-        <div
-          style={{
-            display: "grid",
-            placeContent: "center",
-            placeItems: "center",
-          }}
-        >
-          {familly.map((fam) => (
-            <Grid
-              align="center"
-              item
-              xs={6}
-              sm={8}
-              md={10}
-              lg={12}
-              style={{ flexFlow: "column" }}
-            >
-              <Accordion>
-                <AccordionSummary
-                  expandIcon={<ExpandMore />}
-                  style={{
-                    backgroundColor: "#7F8DA0",
-                    color: "#FFFFFF",
-                  }}
-                >
-                  <Typography>{fam}</Typography>
-                </AccordionSummary>
-                <AccordionDetails className={classes.accordion}>
-                  <TableContainer className={classes.table}>
-                    <Table
-                      stickyHeader
-                      aria-label="simple table"
-                      className={classes.accordion}
-                    >
-                      <TableHead>
-                        <TableRow>
-                          <TableCell
-                            align="center"
-                            style={{
-                              backgroundColor: "#28405F",
+    <Container>
+      <div
+        style={{
+          display: "grid",
+          placeContent: "center",
+          placeItems: "center",
+        }}
+      >
+        {familly.map((fam) => (
+          <Grid
+            align="center"
+            item
+            xs={6}
+            sm={8}
+            md={10}
+            lg={12}
+            style={{ flexFlow: "column" }}
+          >
+            <Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMore />}
+                style={{
+                  backgroundColor: "#7F8DA0",
+                  color: "#FFFFFF",
+                }}
+              >
+                <Typography>{fam}</Typography>
+              </AccordionSummary>
+              <AccordionDetails className={classes.accordion}>
+                <TableContainer className={classes.table}>
+                  <Table
+                    stickyHeader
+                    aria-label="simple table"
+                    className={classes.accordion}
+                  >
+                    <TableHead>
+                      <TableRow>
+                        <TableCell
+                          align="center"
+                          style={{
+                            backgroundColor: "#28405F",
 
-                              color: "#B3B3B3",
-                              fontSize: 20,
-                            }}
-                          >
-                            Nom
-                          </TableCell>
+                            color: "#B3B3B3",
+                            fontSize: 20,
+                          }}
+                        >
+                          Nom
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          style={{
+                            backgroundColor: "#28405F",
+                            fontSize: 20,
+                            color: "#B3B3B3",
+                          }}
+                        >
+                          Categorie
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          style={{
+                            backgroundColor: "#28405F",
+                            fontSize: 20,
+                            color: "#B3B3B3",
+                          }}
+                        >
+                          Quantite
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          style={{
+                            backgroundColor: "#28405F",
+                            fontSize: 20,
+                            color: "#B3B3B3",
+                          }}
+                        >
+                          Unite_de_mesure&nbsp;
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          style={{
+                            backgroundColor: "#28405F",
+                            fontSize: 20,
+                            color: "#B3B3B3",
+                          }}
+                        >
+                          Prix&nbsp;
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          style={{
+                            backgroundColor: "#28405F",
+                            fontSize: 20,
+                            color: "#B3B3B3",
+                          }}
+                        >
+                          Total&nbsp;
+                        </TableCell>
+                        {role === "waiter" && (
                           <TableCell
                             align="center"
                             style={{
@@ -219,295 +279,376 @@ export default function OrderDetails({ list, role = "", methods }) {
                               color: "#B3B3B3",
                             }}
                           >
-                            Categorie
+                            Action&nbsp;
+                          </TableCell>
+                        )}
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {list[fam].map((row) => (
+                        <TableRow
+                          key={row.name}
+                          sx={{
+                            "&:last-child td, &:last-child th": {
+                              border: 0,
+                            },
+                          }}
+                        >
+                          <TableCell
+                            component="th"
+                            scope="row"
+                            align="center"
+                            style={{
+                              color: "#7f8893",
+                              fontSize: 25,
+                            }}
+                          >
+                            {row.name}
+                          </TableCell>
+                          <TableCell
+                            component="th"
+                            scope="row"
+                            align="center"
+                            style={{ color: "#7f8893", fontSize: 25 }}
+                          >
+                            {row.category}
                           </TableCell>
                           <TableCell
                             align="center"
-                            style={{
-                              backgroundColor: "#28405F",
-                              fontSize: 20,
-                              color: "#B3B3B3",
-                            }}
+                            style={{ color: "#7f8893", fontSize: 25 }}
                           >
-                            Quantite
+                            {row.quantity}
                           </TableCell>
                           <TableCell
                             align="center"
-                            style={{
-                              backgroundColor: "#28405F",
-                              fontSize: 20,
-                              color: "#B3B3B3",
-                            }}
+                            style={{ color: "#7f8893", fontSize: 25 }}
                           >
-                            Unite_de_mesure&nbsp;
+                            {row.measureUnit}
                           </TableCell>
                           <TableCell
                             align="center"
-                            style={{
-                              backgroundColor: "#28405F",
-                              fontSize: 20,
-                              color: "#B3B3B3",
-                            }}
+                            style={{ color: "#B3B3B3", fontSize: 25 }}
                           >
-                            Prix&nbsp;
+                            {row.price}
                           </TableCell>
                           <TableCell
                             align="center"
-                            style={{
-                              backgroundColor: "#28405F",
-                              fontSize: 20,
-                              color: "#B3B3B3",
-                            }}
+                            style={{ color: "#B3B3B3", fontSize: 25 }}
                           >
-                            Total&nbsp;
+                            {row.total}
                           </TableCell>
                           {role === "waiter" && (
                             <TableCell
                               align="center"
-                              style={{
-                                backgroundColor: "#28405F",
-                                fontSize: 20,
-                                color: "#B3B3B3",
-                              }}
+                              style={{ color: "#B3B3B3", fontSize: 25 }}
                             >
-                              Action&nbsp;
+                              <Tooltip title="Action">
+                                <IconButton onClick={handleOpenUser}>
+                                  <Avatar
+                                    alt={row.name.toUpperCase()}
+                                    src="/broken-image.jpg"
+                                  />
+                                </IconButton>
+                              </Tooltip>
+                              <Menu
+                                anchorEl={anchorElUser}
+                                anchorOrigin={{
+                                  vertical: "top",
+                                  horizontal: "right",
+                                }}
+                                keepMounted
+                                transformOrigin={{
+                                  vertical: "top",
+                                  horizontal: "right",
+                                }}
+                                open={Boolean(anchorElUser)}
+                                onClose={handleCloseUser}
+                              >
+                                {option.map((item) => (
+                                  <MenuItem key={item.name} onClick={item.func}>
+                                    <ListItemIcon
+                                      style={{
+                                        color: `${item.color}`,
+                                      }}
+                                    >
+                                      {item.Icon}
+                                    </ListItemIcon>
+                                    <Typography
+                                      textAlign={"center"}
+                                      style={{
+                                        color: "white",
+                                      }}
+                                    >
+                                      {item.name}
+                                    </Typography>
+                                  </MenuItem>
+                                ))}
+                              </Menu>
                             </TableCell>
                           )}
                         </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {list[fam].map((row) => (
-                          <TableRow
-                            key={row.name}
-                            sx={{
-                              "&:last-child td, &:last-child th": {
-                                border: 0,
-                              },
-                            }}
-                          >
-                            <TableCell
-                              component="th"
-                              scope="row"
-                              align="center"
-                              style={{
-                                color: "#7f8893",
-                                fontSize: 25,
-                              }}
-                            >
-                              {row.name}
-                            </TableCell>
-                            <TableCell
-                              component="th"
-                              scope="row"
-                              align="center"
-                              style={{ color: "#7f8893", fontSize: 25 }}
-                            >
-                              {row.category}
-                            </TableCell>
-                            <TableCell
-                              align="center"
-                              style={{ color: "#7f8893", fontSize: 25 }}
-                            >
-                              {row.quantity}
-                            </TableCell>
-                            <TableCell
-                              align="center"
-                              style={{ color: "#7f8893", fontSize: 25 }}
-                            >
-                              {row.measureUnit}
-                            </TableCell>
-                            <TableCell
-                              align="center"
-                              style={{ color: "#B3B3B3", fontSize: 25 }}
-                            >
-                              {row.price}
-                            </TableCell>
-                            <TableCell
-                              align="center"
-                              style={{ color: "#B3B3B3", fontSize: 25 }}
-                            >
-                              {row.total}
-                            </TableCell>
-                            {role === "waiter" && (
-                              <TableCell
-                                align="center"
-                                style={{ color: "#B3B3B3", fontSize: 25 }}
-                              >
-                                <Tooltip title="Action">
-                                  <IconButton onClick={handleOpenUser}>
-                                    <Avatar
-                                      alt={row.name.toUpperCase()}
-                                      src="/broken-image.jpg"
-                                    />
-                                  </IconButton>
-                                </Tooltip>
-                                <Menu
-                                  anchorEl={anchorElUser}
-                                  anchorOrigin={{
-                                    vertical: "top",
-                                    horizontal: "right",
-                                  }}
-                                  keepMounted
-                                  transformOrigin={{
-                                    vertical: "top",
-                                    horizontal: "right",
-                                  }}
-                                  open={Boolean(anchorElUser)}
-                                  onClose={handleCloseUser}
-                                >
-                                  {option.map((item) => (
-                                    <MenuItem
-                                      key={item.name}
-                                      onClick={item.func}
-                                    >
-                                      <ListItemIcon
-                                        style={{
-                                          color: `${item.color}`,
-                                        }}
-                                      >
-                                        {item.Icon}
-                                      </ListItemIcon>
-                                      <Typography
-                                        textAlign={"center"}
-                                        style={{
-                                          color: "white",
-                                        }}
-                                      >
-                                        {item.name}
-                                      </Typography>
-                                    </MenuItem>
-                                  ))}
-                                </Menu>
-                              </TableCell>
-                            )}
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                </AccordionDetails>
-              </Accordion>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </AccordionDetails>
+            </Accordion>
+          </Grid>
+        ))}
+      </div>
+
+      {role === "waiter" && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "2%",
+          }}
+        >
+          <Button variant="contained" style={{ backgroundColor: "#04A5E0" }}>
+            {"Enregistrer & Imprimer"}
+          </Button>
+          <Button
+            variant="contained"
+            style={{ backgroundColor: "#FF0000", marginLeft: "5%" }}
+          >
+            Annuler
+          </Button>
+        </div>
+      )}
+      {role === "admin" && (
+        <div style={{ margin: "15px" }}>
+          <Grid item align="center">
+            <FormControl color="success" variant="standard">
+              <InputLabel
+                htmlFor="component-disabled"
+                style={{ color: "white" }}
+              >
+                Waiter
+              </InputLabel>
+              <Input
+                id="component-helper"
+                type="text"
+                readOnly={true}
+                //defaultValue={newVal.familly}
+                name="familly"
+                className={classes.form}
+              />
+              <FormHelperText></FormHelperText>
+            </FormControl>
+          </Grid>
+          <Grid item align="center">
+            <FormControl color="success" variant="standard">
+              <InputLabel
+                htmlFor="component-disabled"
+                style={{ color: "white" }}
+              >
+                Cashier
+              </InputLabel>
+              <Input
+                id="component-helper"
+                type="text"
+                readOnly={true}
+                //defaultValue={newVal.familly}
+                name="familly"
+                className={classes.form}
+              />
+              <FormHelperText></FormHelperText>
+            </FormControl>
+          </Grid>
+          <Grid item align="center">
+            <FormControl color="success" variant="standard">
+              <InputLabel
+                htmlFor="component-disabled"
+                style={{ color: "white" }}
+              >
+                Payment Method
+              </InputLabel>
+              <Input
+                id="component-helper"
+                type="text"
+                readOnly={true}
+                //defaultValue={newVal.familly}
+                name="familly"
+                className={classes.form}
+              />
+              <FormHelperText></FormHelperText>
+            </FormControl>
+          </Grid>
+        </div>
+      )}
+
+      {role === "cashier" && (
+        <div style={{ marginTop: "25px" }}>
+          <Grid align="center">
+            <FormControl color="success" variant="standard">
+              <InputLabel
+                htmlFor="component-disabled"
+                style={{ color: "white" }}
+              >
+                Point de Consomation
+              </InputLabel>
+              <Select
+                style={{ color: "#B3B3B3" }}
+                variant="standard"
+                native
+                name="consumptionPoint"
+                type="text"
+                onChange={(e) =>
+                  setOrderInfo({
+                    ...orderInfo,
+                    [e.target.name]: e.target.value,
+                  })
+                }
+                defaultValue={methods[0]}
+                className={classes.form}
+              >
+                {point.map((name) => (
+                  <option key={name} value={name}>
+                    {name}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item align="center">
+            {" "}
+            <FormControl color="success" variant="standard">
+              <InputLabel
+                htmlFor="component-disabled"
+                style={{ color: "white" }}
+              >
+                Payement
+              </InputLabel>
+              <Select
+                style={{ color: "#B3B3B3" }}
+                variant="standard"
+                native
+                type="text"
+                name="name"
+                onChange={(e) =>
+                  setOrderInfo({
+                    ...orderInfo,
+                    [orderInfo.paymentMethod]: {
+                      ...orderInfo.paymentMethod,
+                      [e.target.name]: e.target.value,
+                    },
+                  })
+                }
+                defaultValue={methods[0]}
+                className={classes.form}
+              >
+                {methods.map((name) => (
+                  <option key={name} value={name}>
+                    {name}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+            <TextField
+              type="number"
+              label="Prix"
+              name="paymentMethod"
+              inputProps={{ color: "blue" }}
+              variant="standard"
+              onChange={(e) =>
+                setOrderInfo({
+                  ...orderInfo,
+                  [e.target.name]: [
+                    { ...orderInfo.paymentMethod, ["price"]: e.target.value },
+                  ],
+                })
+              }
+              style={{ marginLeft: "20px", color: "#B3B3B3" }}
+            />
+          </Grid>
+          {addPayment.map((field, idx) => (
+            <Grid
+              item
+              align="center"
+              style={{ marginTop: "20px" }}
+              key={`${field}-${idx}`}
+            >
+              <FormControl color="success" variant="standard">
+                <InputLabel
+                  htmlFor="component-disabled"
+                  style={{ color: "#B3B3B3" }}
+                >
+                  Payement
+                </InputLabel>
+                <Select
+                  style={{ color: "#B3B3B3" }}
+                  variant="standard"
+                  native
+                  name="name"
+                  type="text"
+                  onChange={(e) =>
+                    setOrderInfo({
+                      ...orderInfo,
+                      ["paymentMethod"]: [
+                        {
+                          ...orderInfo,
+                          [e.target.name]: e.target.value,
+                        },
+                      ],
+                    })
+                  }
+                  defaultValue={methods[0]}
+                  className={classes.form}
+                >
+                  {methods.map((name) => (
+                    <option key={name} value={name}>
+                      {name}
+                    </option>
+                  ))}
+                </Select>
+              </FormControl>
+              <TextField
+                type="number"
+                label="Prix"
+                variant="standard"
+                name="price"
+                onChange={(e) =>
+                  setOrderInfo({
+                    ...orderInfo,
+                    ["paymentMethod"]: [
+                      {
+                        [e.target.name]: e.target.value,
+                      },
+                    ],
+                  })
+                }
+                style={{ marginLeft: "20px" }}
+              />
+              <Button
+                style={{ marginTop: "20px" }}
+                onClick={() => handleRemoveField(idx)}
+              >
+                Supprimer
+              </Button>
             </Grid>
           ))}
-        </div>
-
-        {role === "waiter" && (
           <div
             style={{
               display: "flex",
               justifyContent: "center",
-              marginTop: "2%",
+              margin: "15px",
             }}
           >
-            <Button variant="contained" style={{ backgroundColor: "#04A5E0" }}>
-              {"Enregistrer & Imprimer"}
+            <Button onClick={() => console.log(orderInfo)} variant="contained">
+              Valider
             </Button>
             <Button
               variant="contained"
-              style={{ backgroundColor: "#FF0000", marginLeft: "5%" }}
+              onClick={handleAddField}
+              style={{ marginLeft: "10px" }}
             >
-              Annuler
+              Ajouter(payement)
             </Button>
           </div>
-        )}
-        {role === "admin" && (
-          <div style={{ margin: "15px" }}>
-            <Grid item align="center">
-              <FormControl color="success" variant="standard">
-                <InputLabel
-                  htmlFor="component-disabled"
-                  style={{ color: "white" }}
-                >
-                  Waiter
-                </InputLabel>
-                <Input
-                  id="component-helper"
-                  type="text"
-                  readOnly={true}
-                  //defaultValue={newVal.familly}
-                  name="familly"
-                  className={classes.form}
-                />
-                <FormHelperText></FormHelperText>
-              </FormControl>
-            </Grid>
-            <Grid item align="center">
-              <FormControl color="success" variant="standard">
-                <InputLabel
-                  htmlFor="component-disabled"
-                  style={{ color: "white" }}
-                >
-                  Cashier
-                </InputLabel>
-                <Input
-                  id="component-helper"
-                  type="text"
-                  readOnly={true}
-                  //defaultValue={newVal.familly}
-                  name="familly"
-                  className={classes.form}
-                />
-                <FormHelperText></FormHelperText>
-              </FormControl>
-            </Grid>
-            <Grid item align="center">
-              <FormControl color="success" variant="standard">
-                <InputLabel
-                  htmlFor="component-disabled"
-                  style={{ color: "white" }}
-                >
-                  Payment Method
-                </InputLabel>
-                <Input
-                  id="component-helper"
-                  type="text"
-                  readOnly={true}
-                  //defaultValue={newVal.familly}
-                  name="familly"
-                  className={classes.form}
-                />
-                <FormHelperText></FormHelperText>
-              </FormControl>
-            </Grid>
-          </div>
-        )}
-
-        {role === "cashier" && (
-          <div>
-            <Grid item align="center">
-              {" "}
-              <FormControl color="success" variant="standard">
-                <InputLabel
-                  htmlFor="component-disabled"
-                  style={{ color: "white" }}
-                >
-                  Payment Method
-                </InputLabel>
-                <Select
-                  id="component-helper"
-                  multiple
-                  type="text"
-                  readOnly={true}
-                  onChange={handlechange}
-                  value={method}
-                  input={<OutlinedInput label="Method" />}
-                  renderValue={(selected) => selected.join(",")}
-                  MenuProps={MenuProps}
-                  name="familly"
-                  className={classes.form}
-                >
-                  {methods.map((name) => (
-                    <MenuItem value={name} key={name}>
-                      <Checkbox checked={method.indexOf(name) > -1} />
-                      <ListItemText primary={name} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-          </div>
-        )}
-      </Container>
-    </div>
+        </div>
+      )}
+    </Container>
   );
 }

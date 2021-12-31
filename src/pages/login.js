@@ -1,5 +1,7 @@
 import React, { useContext, useState } from "react";
-import { Button, TextField, Grid, Typography, Link } from "@mui/material";
+import { Button, Link, Typography } from "@mui/material";
+import { TextField } from "@material-ui/core";
+import Grid from "@mui/material/Grid";
 import { Avatar } from "@mui/material";
 import { makeStyles } from "@material-ui/core";
 import LockCloseOutlined from "@mui/icons-material/LockOutlined";
@@ -26,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     minHeight: "90vh",
     alignItems: "center",
+    color: "#001D42",
   },
   loginBackground: {
     justifyContent: "center",
@@ -54,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonBlock: {
     width: "100%",
+    marginBottom: "5px",
     [theme.breakpoints.down("sm")]: {
       //display: "block",
       width: "90%",
@@ -177,6 +181,7 @@ const Page = () => {
                       variant="outlined"
                       onChange={handleChange}
                       required
+                      style={{ color: "#001D42" }}
                       autoComplete="off"
                     />
                   </Grid>
@@ -189,28 +194,9 @@ const Page = () => {
                       name="password"
                       variant="outlined"
                       required
+                      style={{ color: "#001D42" }}
                     />
                   </Grid>
-                  {rootRole !== "" ? (
-                    <Grid item>
-                      <TextField
-                        onChange={(e) => {
-                          setUser({
-                            ...user,
-                            [e.target.name]: e.target.value.trim(),
-                          });
-                        }}
-                        type="text"
-                        label="Role*"
-                        fullWidth
-                        name="role"
-                        variant="outlined"
-                        required
-                      />
-                    </Grid>
-                  ) : (
-                    ""
-                  )}
 
                   <Grid item>
                     <Button
@@ -226,7 +212,7 @@ const Page = () => {
                 </Grid>
               </form>
             </Grid>
-            <span style={{ marginBottom: "3%" }}>
+            <span style={{ marginTop: "10px" }}>
               <Link href="#" variant="body2">
                 {t("pages.auth.forgot_password")}
               </Link>

@@ -1,3 +1,5 @@
+//import { Select } from "@mui/material";
+import { useState } from "react";
 import { useContext } from "react";
 
 // components
@@ -15,9 +17,59 @@ export default function Drinks() {
 
   console.log(items);
 
+  const list = {
+    drinks: {
+      whisky: [{ id: "1", name: "Label", prices: [1000, 2000], stock: 50 }],
+      Beer: [
+        {
+          id: "2",
+          name: "Castel",
+          prices: [1000, 2000],
+          stock: 50,
+          image: "",
+        },
+        {
+          id: "3",
+          name: "Boster",
+          prices: [1000, 1500],
+          stock: 150,
+          image: "",
+        },
+        {
+          id: "6",
+          name: "Castel",
+          prices: [1000, 2000],
+          stock: 50,
+          image: "",
+        },
+        {
+          id: "7",
+          name: "Boster",
+          prices: [1000, 1500],
+          stock: 150,
+          image: "",
+        },
+        {
+          id: "8",
+          name: "Castel",
+          prices: [1000, 2000],
+          stock: 50,
+          image: "",
+        },
+        {
+          id: "9",
+          name: "Boster",
+          prices: [1000, 1500],
+          stock: 150,
+          image: "",
+        },
+      ],
+    },
+  };
+
   return (
-    <>
-      <h1 className="center">{t("pages.waiter.items")}</h1>
-    </>
+    <div style={{ maxHeight: "100%", justifyContent: "start" }}>
+      <ItemList list={list} preview={false} role="waiter" />
+    </div>
   );
 }

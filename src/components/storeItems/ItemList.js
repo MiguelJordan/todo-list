@@ -1,17 +1,16 @@
-import React from "react";
-import { Grid, Typography, Button, Container } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Button, Typography } from "@mui/material";
 import { makeStyles } from "@material-ui/core";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
-//import Select from "@mui/material/Select";
 
 import { useNavigate } from "react-router-dom";
-//import Search from "@mui/icons-material/Search";
-import { useState } from "react";
 
 import Search from "../subComponents/Search";
-import Select from "../subComponents/Select";
+import Dropdown from "../subComponents/Dropdown";
+
+import { capitalise } from "../../functions/data";
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -32,7 +31,6 @@ const useStyles = makeStyles((theme) => ({
     width: 500,
     maxWidth: 500,
   },
-
   formControl: {
     margin: theme.spacing(1),
     minWidth: 100,
@@ -42,21 +40,16 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
   },
   container: {
-    marginTop: "90px",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    overflowX: "hidden",
-    overflowY: "scroll",
+    overflowY: "auto",
     height: "70vh",
-    transform: "translate(-50%, -50%)",
-    position: "absolute",
-    top: "50%",
-    left: "50%",
     flexWrap: "wrap",
     width: "100%",
-
-    bottom: 0,
+    [theme.breakpoints.up("sm")]: {
+      height: "75vh",
+    },
   },
   content: {
     fill: "transparent",
@@ -68,8 +61,6 @@ const useStyles = makeStyles((theme) => ({
   },
   card: {
     backgroundColor: "transparent",
-    //
-    //marginRight: 0,
     borderTopLeftRadius: 4,
     borderTopRightRadius: 4,
     WebkitBorderBottomLeftRadius: 0,
@@ -82,16 +73,6 @@ const useStyles = makeStyles((theme) => ({
     //flex: 1,
 
     flexBasis: "33.33333%",
-
-    // padding: 0,
-    // // [theme.breakpoints.up("lg")]: { flex: "10%" },
-    // [theme.breakpoints.up("md")]: { flex: "25%" },
-    // // [theme.breakpoints.up("sm")]: { flex: "0 0 33.3333%" },
-    // [theme.breakpoints.down("sm")]: {
-    //   flex: "50%",
-    // },
-
-    //border: "5px solid alpha(theme.palette.common.white, 0.15)",
   },
   grid: {
     justifyContent: "center",
@@ -138,36 +119,69 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 export default function ItemList({ list = {}, preview = true, role = "" }) {
   const classes = useStyles();
   const [searchVal, setSearchVal] = useState();
-
-  const family = Object.keys(list);
-  const [fam, setFam] = useState(family[0]);
-  const category = Object.keys(list[fam]);
-  const [cat, setCat] = useState(category[0]);
   const [store, setStore] = useState();
   const Navigate = useNavigate();
-  const filterArray = list[fam][cat];
+
+  const [family, setFamily] = useState("");
+  const [category, setCategory] = useState("");
+  const [filterArray, setArray] = useState(list?.[family]?.[category] ?? []);
+
+  const families = Object.keys(list);
+  const [categories, setCats] = useState(Object.keys(list?.[family] ?? []));
+
+  const onCatChange = (value, family = "") => {
+    if (value) return setCategory(value);
+    setCategory(Object.keys(list[family])[0]);
+  };
+
+  const onFamChange = (_family) => {
+    setCats(Object.keys(list[_family]));
+    onCatChange(null, _family);
+    setFamily(_family);
+  };
+
+  useEffect(() => {
+    if (families.length) onFamChange(families[0]);
+  }, []);
+
+  useEffect(() => {
+    setArray(list?.[family]?.[category] ?? []);
+  }, [category, family]);
 
   return (
-    <div>
+    <>
       {role === "waiter" && (
         <div
           style={{
             display: "flex",
+            alignItems: "center",
             justifyContent: "center",
-            marginTop: "15px",
+            flexWrap: "wrap",
+            margin: "15px 0",
           }}
         >
           <span>
             Family:{" "}
-            <Select values={family} onchange={setFam} defaultVal={fam} />
+            <Dropdown
+              values={families}
+              onchange={onFamChange}
+              defaultVal={family}
+            />
           </span>
           <span>
             Category:{" "}
-            <Select values={category} onchange={setCat} defaultVal={cat} />
+            <Dropdown
+              values={categories}
+              onchange={(value) => onCatChange(value)}
+              defaultVal={category}
+            />
           </span>
+          <Search onChange={setSearchVal} />
         </div>
       )}
       {role === "admin" && (
@@ -179,15 +193,10 @@ export default function ItemList({ list = {}, preview = true, role = "" }) {
           }}
         >
           <span>
-            Stock: <Select />
+            Stock: <Dropdown />
           </span>
         </div>
       )}
-      <span
-        style={{ display: "flex", justifyContent: "center", marginTop: "15px" }}
-      >
-        <Search onChange={setSearchVal} />
-      </span>
 
       <div className={classes.container}>
         {filterArray.length !== 0 ? (
@@ -195,7 +204,7 @@ export default function ItemList({ list = {}, preview = true, role = "" }) {
             <Card className={classes.card} key={item.id}>
               <CardMedia
                 className={classes.media}
-                image={item.image}
+                image={apiUrl + item.imageUrl}
                 title={item.name}
               />
               <CardContent className={classes.content}>
@@ -203,7 +212,7 @@ export default function ItemList({ list = {}, preview = true, role = "" }) {
                   variant="h6"
                   style={{ color: "#B3B3B3", textAlign: "center" }}
                 >
-                  {item.name}
+                  {capitalise(item.name)}
 
                   <hr
                     style={{
@@ -215,24 +224,7 @@ export default function ItemList({ list = {}, preview = true, role = "" }) {
                 </Typography>
                 <form className={classes.formControl}>
                   <label>Prix: </label>
-                  <Select
-                    native
-                    variant="standard"
-                    label="Prix"
-                    style={{ color: "#FFFFFF" }}
-                  >
-                    {item.prices.map((price) => (
-                      <>
-                        <option
-                          key={price}
-                          value={price}
-                          style={{ color: "#B3B3B3" }}
-                        >
-                          {price}
-                        </option>
-                      </>
-                    ))}
-                  </Select>
+                  <Dropdown values={item.prices} defaultVal={item.prices[0]} />
                   <br />
                   <br />
                   <label htmlFor="">Quantite En Stock : </label>
@@ -248,7 +240,7 @@ export default function ItemList({ list = {}, preview = true, role = "" }) {
                       borderRadius: "5px",
                     }}
                   >
-                    {item.stock}
+                    {item.quantity}
                   </output>
                   {!preview && role !== "admin" && (
                     <>
@@ -295,10 +287,10 @@ export default function ItemList({ list = {}, preview = true, role = "" }) {
               bottom: 0,
             }}
           >
-            <span>No Item Found</span>
+            <h2>No Item Found</h2>
           </div>
         )}
       </div>
-    </div>
+    </>
   );
 }

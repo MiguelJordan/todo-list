@@ -1,38 +1,21 @@
 //import { Select } from "@mui/material";
 import { useState } from "react";
 import { useContext } from "react";
-import ItemList from "../../components/storeItems/ItemList";
+
+// components
+// import ItemList from "../../components/storeItems/ItemList";
+
+// contexts
+// import { AuthContext } from "../../contexts/AuthContext";
 import { TrContext } from "../../contexts/TranslationContext";
-import { makeStyles } from "@material-ui/core";
-import SearchIcon from "@mui/icons-material/Search";
-import InputBase from "@mui/material/InputBase";
-import { styled, alpha } from "@mui/material/styles";
-
-import Search from "../../components/subComponents/Search";
-import Select from "../../components/subComponents/Select";
-
-const useStyles = makeStyles((theme) => ({
-  search: {
-    display: "flex",
-    justifyContent: "center",
-    [theme.breakpoints.up("xs")]: {},
-    [theme.breakpoints.up("md")]: {
-      marginTop: "1%",
-    },
-  },
-  filters: {
-    display: "flex",
-    marginTop: "20px",
-    justifyContent: "center",
-    alignItems: "center",
-    [theme.breakpoints.up("xs")]: {},
-  },
-}));
+import { ItemContext } from "../../contexts/ItemContext";
 
 export default function Drinks() {
-  const [searchVal, setSearchVal] = useState("");
-  const classes = useStyles();
+  // const { user } = useContext(AuthContext);
   const { t } = useContext(TrContext);
+  const { items } = useContext(ItemContext);
+
+  console.log(items);
 
   const list = {
     drinks: {

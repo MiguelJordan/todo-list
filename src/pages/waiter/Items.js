@@ -75,7 +75,7 @@ export default function Items() {
         </span>
         <Search onChange={() => {}} />
       </div>
-      <ItemList items={[]} role="waiter" />
+      <ItemList items={_items} role="waiter" />
     </>
   );
 }

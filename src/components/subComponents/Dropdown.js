@@ -9,7 +9,7 @@ export default function Dropdown({ onchange, values = [], defaultVal = "" }) {
     <Select
       variant="standard"
       style={{ color: "#B3B3B3" }}
-      value={value || defaultVal}
+      value={value || defaultVal || values[0]}
       onChange={(e) => {
         if (onchange) onchange(e.target.value);
         setValue(e.target.value);

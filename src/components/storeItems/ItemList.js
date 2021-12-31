@@ -129,10 +129,19 @@ export default function ItemList({ list = {}, preview = true, role = "" }) {
 
   const [family, setFamily] = useState("");
   const [category, setCategory] = useState("");
-  const [filterArray, setArray] = useState(list?.[family]?.[category] ?? []);
+  const [array, setArray] = useState(list?.[family]?.[category] ?? []);
 
   const families = Object.keys(list);
   const [categories, setCats] = useState(Object.keys(list?.[family] ?? []));
+
+  const filterArray = [];
+
+  array.filter((val) => {
+    if (!searchVal) return filterArray.push(val);
+    if (val.name.toLowerCase().includes(searchVal.toLowerCase().trim()))
+      return filterArray.push(val);
+    return "";
+  });
 
   const onCatChange = (value, family = "") => {
     if (value) return setCategory(value);
@@ -246,6 +255,10 @@ export default function ItemList({ list = {}, preview = true, role = "" }) {
                     <>
                       <br />
                       <br />
+                      <label>Offre: </label>
+                      <Dropdown values={["Oui", "Non"]} defaultVal="Non" />
+                      <br />
+                      <br />
                       <label htmlFor="">Quantite :</label>
                       <input
                         width={2}
@@ -255,6 +268,7 @@ export default function ItemList({ list = {}, preview = true, role = "" }) {
                           marginLeft: 8,
                           backgroundColor: "#415672",
                           color: "#FFFFFF",
+                          borderRadius: "5px",
                         }}
                         className={classes.inp}
                       />
@@ -280,11 +294,10 @@ export default function ItemList({ list = {}, preview = true, role = "" }) {
         ) : (
           <div
             style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%,-50%)",
-              bottom: 0,
+              display: "flex",
+
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
             <h2>No Item Found</h2>

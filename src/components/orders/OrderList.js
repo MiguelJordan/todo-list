@@ -49,21 +49,16 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   container: {
-    marginTop: "50px",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    overflowX: "hidden",
-    overflowY: "scroll",
+    overflowY: "auto",
     height: "70vh",
-    transform: "translate(-50%, -50%)",
-    position: "absolute",
-    top: "50%",
-    left: "50%",
     flexWrap: "wrap",
     width: "100%",
-
-    bottom: 0,
+    [theme.breakpoints.up("sm")]: {
+      height: "75vh",
+    },
   },
   box: {
     display: "flex",
@@ -106,11 +101,10 @@ export default function OrderList({ role = "", array = [] }) {
         {filterArray.length === 0 ? (
           <div
             style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%,-50%)",
-              bottom: 0,
+              display: "flex",
+
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
             <h2>No Order Found</h2>

@@ -9,22 +9,27 @@ import Box from "@mui/material/Box";
 import AddIcon from "@mui/icons-material/Add";
 
 const StyledFab = styled(Fab)(({ theme }) => ({
-  position: "absolute",
-  zIndex: 1,
-  bottom: 45,
-  left: 230,
-  right: -10,
-  margin: "auto",
-  float: "right",
-  [theme.breakpoints.between("sm", "md")]: {
-    left: 500,
-  },
-  [theme.breakpoints.up("md")]: {
-    left: 650,
-  },
-  [theme.breakpoints.up("lg")]: {
-    left: 850,
-  },
+  // position: "relative",
+  // zIndex: 1,
+  // bottom: 45,
+  // left: 230,
+  // right: -10,
+  // margin: "auto",
+  // float: "right",
+  // [theme.breakpoints.between("sm", "md")]: {
+  //   left: 500,
+  // },
+  // [theme.breakpoints.up("md")]: {
+  //   left: 650,
+  // },
+  // [theme.breakpoints.up("lg")]: {
+  //   left: 850,
+  // },
+  display: "flex",
+  flexDirection: "column",
+  //alignItems: "center",
+  marginTop: "auto",
+  // alignSelf: "flex-end",
 }));
 
 export default function Fabs({ Element }) {
@@ -42,9 +47,18 @@ export default function Fabs({ Element }) {
 
   return (
     <div>
-      <StyledFab color="primary" aria-label="add">
-        <AddIcon onClick={handleOpen} />
-      </StyledFab>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+
+          alignItems: "flex-end",
+        }}
+      >
+        <Fab color="primary" aria-label="add">
+          <AddIcon onClick={handleOpen} />
+        </Fab>
+      </div>
       <Modal
         open={openModal}
         onClose={handleClose}

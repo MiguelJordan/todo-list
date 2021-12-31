@@ -124,7 +124,7 @@ const apiUrl = process.env.REACT_APP_API_URL;
 export default function ItemList({ list = {}, preview = true, role = "" }) {
   const classes = useStyles();
   const [searchVal, setSearchVal] = useState();
-  const [store, setStore] = useState();
+  // const [store, setStore] = useState();
   const Navigate = useNavigate();
 
   const [family, setFamily] = useState("");

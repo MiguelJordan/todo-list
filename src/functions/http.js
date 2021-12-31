@@ -1,4 +1,4 @@
-const get = async (url, params = {}) => {
+export const get = async (url, params = {}) => {
   try {
     const reqUrl = new URL(url);
 
@@ -9,7 +9,7 @@ const get = async (url, params = {}) => {
   }
 };
 
-const post = async (url, body = {}) => {
+export const post = async (url, body = {}) => {
   try {
     return await (
       await fetch(url, {
@@ -23,7 +23,7 @@ const post = async (url, body = {}) => {
   }
 };
 
-const postFormData = async (url, values = {}) => {
+export const postFormData = async (url, values = {}) => {
   const formData = new FormData();
 
   for (let prop in values) {
@@ -45,5 +45,3 @@ const postFormData = async (url, values = {}) => {
     return { error: err.message };
   }
 };
-
-module.exports = { get, post, postFormData };

@@ -5,7 +5,7 @@ import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
 import Input from "@mui/material/Input";
 import Select from "@mui/material/Select";
-import { InputLabel } from "@mui/material";
+import { InputLabel, Paper, Typography } from "@mui/material";
 
 import { alpha, Container, TextField } from "@mui/material";
 import { makeStyles } from "@material-ui/core";
@@ -50,7 +50,11 @@ const useStyles = makeStyles((theme) => ({
       width: "calc(100vw - 30px)",
     },
   },
-  form: {
+  input: {
+    flex: "40%",
+    margin: "5px",
+    height: "100px",
+    width: "100%",
     borderBottom: "3px solid green",
     color: "white",
     "&:hover": {
@@ -60,9 +64,43 @@ const useStyles = makeStyles((theme) => ({
       color: "white",
     },
   },
+  root: {
+    minWidth: "50vw",
+    display: "flex",
+    justifyContent: "center",
+
+    [theme.breakpoints.down("sm")]: {
+      //   maxWidth: "100px",
+      minWidth: "55vw",
+      //   minHeight: "100px",
+      //width: "100vw",
+    },
+  },
+  form: {
+    display: "flex",
+    //flexDirection: "column",
+    //alignItems: "center",
+    flexWrap: "wrap",
+    width: "450px",
+    //justifyContent: "center",
+
+    [theme.breakpoints.up("sm")]: {
+      marginTop: "20px",
+    },
+  },
 }));
 
-export default function ItemDetails({ list = {} }) {
+export default function ItemDetails({
+  list = {
+    familly: "Boissons",
+    category: "Beer",
+    name: "Castel",
+    measureUnit: "Bouteille",
+    commissionAmt: "50",
+    cost: "400",
+    prices: [1000, 1500],
+  },
+}) {
   const [newVal, setNewVal] = useState(list);
   const [read, setRead] = useState(true);
   const classes = useStyles();
@@ -88,221 +126,208 @@ export default function ItemDetails({ list = {} }) {
   };
 
   return (
-    <div>
-      <Container>
-        <Grid
-          conatainer
-          className={classes.grid}
-          align="center"
-          style={{ margin: "15px" }}
+    <div className={classes.root}>
+      <form onSubmit={handleModifier} className={classes.form}>
+        {error !== "" && (
+          <div
+            style={{
+              margin: "10px",
+              border: "2px solid red",
+              maxWidth: "280px",
+            }}
+          >
+            {error}
+          </div>
+        )}
+
+        <FormControl color="success" variant="standard">
+          <InputLabel htmlFor="component-disabled" style={{ color: "white" }}>
+            Famille
+          </InputLabel>
+
+          <Input
+            id="component-helper"
+            type="text"
+            readOnly={read}
+            defaultValue={newVal.familly}
+            name="familly"
+            className={classes.input}
+            onChange={(e) =>
+              setNewVal({
+                ...newVal,
+                [e.target.name]: e.target.value.trim(),
+              })
+            }
+          />
+        </FormControl>
+
+        <FormControl color="success" variant="standard">
+          <InputLabel htmlFor="component-disabled" style={{ color: "white" }}>
+            Categorie
+          </InputLabel>
+          <Input
+            id="component-helper"
+            type="text"
+            name="category"
+            readOnly={read}
+            defaultValue={newVal.category}
+            className={classes.input}
+            onChange={(e) =>
+              setNewVal({
+                ...newVal,
+                [e.target.name]: e.target.value.trim(),
+              })
+            }
+          />
+        </FormControl>
+
+        <FormControl color="success" variant="standard">
+          <InputLabel htmlFor="component-disabled" style={{ color: "white" }}>
+            Nom
+          </InputLabel>
+          <Input
+            id="component-helper"
+            type="text"
+            name="name"
+            defaultValue={newVal.name}
+            readOnly={read}
+            className={classes.input}
+            onChange={(e) =>
+              setNewVal({
+                ...newVal,
+                [e.target.name]: e.target.value.trim(),
+              })
+            }
+          />
+        </FormControl>
+
+        <FormControl color="success" variant="standard">
+          <InputLabel htmlFor="component-disabled" style={{ color: "white" }}>
+            Qauntite En Stock
+          </InputLabel>
+          <Input
+            type="number"
+            readOnly={true}
+            defaultValue={50}
+            className={classes.input}
+          />
+        </FormControl>
+
+        <FormControl color="success" variant="standard">
+          <InputLabel htmlFor="component-disabled" style={{ color: "white" }}>
+            Unite De Mesure
+          </InputLabel>
+          <Input
+            type="text"
+            name="measureUnit"
+            readOnly={read}
+            defaultValue={newVal.measureUnit}
+            className={classes.input}
+            onChange={(e) =>
+              setNewVal({
+                ...newVal,
+                [e.target.name]: e.target.value.trim(),
+              })
+            }
+          />
+          <FormHelperText></FormHelperText>
+        </FormControl>
+
+        <FormControl color="success" variant="standard">
+          <InputLabel htmlFor="component-disabled" style={{ color: "white" }}>
+            Commission(FCFA)
+          </InputLabel>
+          <Input
+            type="number"
+            name="commissionAmt"
+            readOnly={read}
+            defaultValue={newVal.commissionAmt}
+            className={classes.input}
+            onChange={(e) =>
+              setNewVal({
+                ...newVal,
+                [e.target.name]: e.target.value.trim(),
+              })
+            }
+          />
+          <FormHelperText></FormHelperText>
+        </FormControl>
+
+        <FormControl color="success" variant="standard">
+          <InputLabel htmlFor="component-disabled" style={{ color: "white" }}>
+            Prix D'achat(FCFA)
+          </InputLabel>
+          <Input
+            type="number"
+            name="cost"
+            readOnly={read}
+            defaultValue={newVal.cost}
+            className={classes.input}
+            onChange={(e) =>
+              setNewVal({
+                ...newVal,
+                [e.target.name]: e.target.value.trim(),
+              })
+            }
+          />
+          <FormHelperText></FormHelperText>
+        </FormControl>
+
+        {newVal.prices.map((price) => (
+          <FormControl color="success" variant="standard" key={price}>
+            <InputLabel htmlFor="component-disabled" style={{ color: "white" }}>
+              Prix(FCFA)
+            </InputLabel>
+            <Input
+              type="number"
+              readOnly={read}
+              defaultValue={price}
+              name="prices"
+              onChange={(e) => {
+                setNewVal({
+                  ...newVal,
+                  [e.target.name]: [...newVal.prices, e.target.value.trim()],
+                });
+              }}
+              className={classes.input}
+            />
+          </FormControl>
+        ))}
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "0px",
+          }}
         >
-          <form onSubmit={handleModifier}>
-            {error !== "" && (
-              <div
-                style={{
-                  margin: "15px",
-                  border: "2px solid red",
-                  maxWidth: "280px",
-                }}
-              >
-                {error}
-              </div>
-            )}
-            <Grid item align="center">
-              <FormControl color="success" variant="standard">
-                <InputLabel
-                  htmlFor="component-disabled"
-                  style={{ color: "white" }}
-                >
-                  Famille
-                </InputLabel>
-                <Input
-                  id="component-helper"
-                  type="text"
-                  readOnly={read}
-                  defaultValue={newVal.familly}
-                  name="familly"
-                  className={classes.form}
-                  onChange={(e) =>
-                    setNewVal({ ...newVal, [e.target.name]: e.target.value })
-                  }
-                />
-                <FormHelperText></FormHelperText>
-              </FormControl>
-            </Grid>
-            <Grid item align="center">
-              <FormControl color="success" variant="standard">
-                <InputLabel
-                  htmlFor="component-disabled"
-                  style={{ color: "white" }}
-                >
-                  Categorie
-                </InputLabel>
-                <Input
-                  id="component-helper"
-                  type="text"
-                  name="category"
-                  readOnly={read}
-                  defaultValue={newVal.category}
-                  className={classes.form}
-                  onChange={(e) =>
-                    setNewVal({ ...newVal, [e.target.name]: e.target.value })
-                  }
-                />
-                <FormHelperText></FormHelperText>
-              </FormControl>
-            </Grid>
-            <Grid item align="center">
-              <FormControl color="success" variant="standard">
-                <InputLabel
-                  htmlFor="component-disabled"
-                  style={{ color: "white" }}
-                >
-                  Nom
-                </InputLabel>
-                <Input
-                  id="component-helper"
-                  type="text"
-                  name="name"
-                  defaultValue={newVal.name}
-                  readOnly={read}
-                  className={classes.form}
-                  onChange={(e) =>
-                    setNewVal({ ...newVal, [e.target.name]: e.target.value })
-                  }
-                />
-                <FormHelperText></FormHelperText>
-              </FormControl>
-            </Grid>
-            <Grid item align="center">
-              <FormControl color="success" variant="standard">
-                <InputLabel
-                  htmlFor="component-disabled"
-                  style={{ color: "white" }}
-                >
-                  Qauntite En Stock
-                </InputLabel>
-                <Input
-                  type="number"
-                  readOnly={true}
-                  defaultValue={50}
-                  className={classes.form}
-                />
-                <FormHelperText></FormHelperText>
-              </FormControl>
-            </Grid>
-            <Grid item align="center">
-              <FormControl color="success" variant="standard">
-                <InputLabel
-                  htmlFor="component-disabled"
-                  style={{ color: "white" }}
-                >
-                  Unite De Mesure
-                </InputLabel>
-                <Input
-                  type="text"
-                  name="measureUnit"
-                  readOnly={read}
-                  defaultValue={newVal.measureUnit}
-                  className={classes.form}
-                  onChange={(e) =>
-                    setNewVal({ ...newVal, [e.target.name]: e.target.value })
-                  }
-                />
-                <FormHelperText></FormHelperText>
-              </FormControl>
-            </Grid>
-            <Grid item align="center">
-              <FormControl color="success" variant="standard">
-                <InputLabel
-                  htmlFor="component-disabled"
-                  style={{ color: "white" }}
-                >
-                  Commission(FCFA)
-                </InputLabel>
-                <Input
-                  type="number"
-                  name="commissionAmt"
-                  readOnly={read}
-                  defaultValue={newVal.commissionAmt}
-                  className={classes.form}
-                  onChange={(e) =>
-                    setNewVal({ ...newVal, [e.target.name]: e.target.value })
-                  }
-                />
-                <FormHelperText></FormHelperText>
-              </FormControl>
-            </Grid>
-            <Grid item align="center">
-              <FormControl color="success" variant="standard">
-                <InputLabel
-                  htmlFor="component-disabled"
-                  style={{ color: "white" }}
-                >
-                  Prix D'achat(FCFA)
-                </InputLabel>
-                <Input
-                  type="number"
-                  name="cost"
-                  readOnly={read}
-                  defaultValue={newVal.cost}
-                  className={classes.form}
-                  onChange={(e) =>
-                    setNewVal({ ...newVal, [e.target.name]: e.target.value })
-                  }
-                />
-                <FormHelperText></FormHelperText>
-              </FormControl>
-            </Grid>
-
-            {/* <Grid item align="center">
-              <FormControl color="success" variant="standard">
-                <InputLabel
-                  htmlFor="component-disabled"
-                  style={{ color: "white" }}
-                >
-                  Prix De Vente
-                </InputLabel>
-                <Input
-                  type="number"
-                  readOnly={read}
-                  defaultValue={1000}
-                  className={classes.form}
-                />
-                <FormHelperText></FormHelperText>
-              </FormControl>
-            </Grid> */}
-
-            <Grid item style={{ marginTop: "5%" }}>
-              <Button
-                disabled={!read}
-                variant="contained"
-                style={{ backgroundColor: "#FF0000" }}
-              >
-                Supprimer
-              </Button>
-              {read && (
-                <Button
-                  variant="contained"
-                  onClick={() => setRead(false)}
-                  style={{ backgroundColor: "#04A5E0", marginLeft: "5%" }}
-                >
-                  Modifier
-                </Button>
-              )}
-              {!read && (
-                <Button
-                  variant="contained"
-                  type="submit"
-                  style={{ backgroundColor: "#04A5E0", marginLeft: "5%" }}
-                >
-                  Valider
-                </Button>
-              )}
-            </Grid>
-          </form>
-        </Grid>
-      </Container>
+          <Button
+            disabled={!read}
+            variant="contained"
+            style={{ backgroundColor: "#FF0000" }}
+          >
+            Supprimer
+          </Button>
+          {read && (
+            <Button
+              variant="contained"
+              onClick={() => setRead(false)}
+              style={{ backgroundColor: "#04A5E0", marginLeft: "5%" }}
+            >
+              Modifier
+            </Button>
+          )}
+          {!read && (
+            <Button
+              variant="contained"
+              type="submit"
+              style={{ backgroundColor: "#04A5E0", marginLeft: "5%" }}
+            >
+              Valider
+            </Button>
+          )}
+        </div>
+      </form>
     </div>
   );
 }

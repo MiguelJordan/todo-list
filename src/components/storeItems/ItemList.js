@@ -1,19 +1,17 @@
 import React from "react";
-import {
-  makeStyles,
-  Grid,
-  Typography,
-  Button,
-  Container,
-} from "@material-ui/core";
+import { Grid, Typography, Button, Container } from "@mui/material";
+import { makeStyles } from "@material-ui/core";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
-import Select from "@mui/material/Select";
-import { MenuItem } from "@mui/material";
-import image from "../../assests/Item_Image_d.jpg";
+//import Select from "@mui/material/Select";
 
 import { useNavigate } from "react-router-dom";
+//import Search from "@mui/icons-material/Search";
+import { useState } from "react";
+
+import Search from "../subComponents/Search";
+import Select from "../subComponents/Select";
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -34,55 +32,31 @@ const useStyles = makeStyles((theme) => ({
     width: 500,
     maxWidth: 500,
   },
-  iconButton: {
-    padding: 10,
-  },
+
   formControl: {
     margin: theme.spacing(1),
     minWidth: 100,
     backgroundColor: "transparent",
     fill: "transparent",
     color: "#B3B3B3",
-    justifyContent: "center",
+    textAlign: "center",
   },
   container: {
-    marginTop: "5%",
-    height: "calc(80vh - 10%)",
+    marginTop: "90px",
+    display: "flex",
     justifyContent: "center",
+    alignItems: "center",
     overflowX: "hidden",
     overflowY: "scroll",
-    alignItems: "center",
-    margin: "auto",
-
-    webkitScrollbar: {
-      width: 0,
-    },
+    height: "70vh",
     transform: "translate(-50%, -50%)",
     position: "absolute",
     top: "50%",
     left: "50%",
+    flexWrap: "wrap",
+    width: "100%",
+
     bottom: 0,
-    [theme.breakpoints.up("xs")]: {
-      marginTop: "95px",
-      width: "calc(100vw - 30px)",
-    },
-    [theme.breakpoints.up("sm")]: {
-      marginTop: "115px",
-      width: "calc(100vw - 30px)",
-    },
-    [theme.breakpoints.up("md")]: {
-      width: "calc(100vw - 230px)",
-      marginLeft: "0px",
-      marginTop: "115px",
-      height: "calc(80vh - 10%)",
-    },
-    [theme.breakpoints.up("lg")]: {
-      width: "calc(100vw - 230px)",
-      //marginLeft: "10px",
-      //maxWidth: 1500,
-      height: "calc(80vh - 10%)",
-      marginTop: "110px",
-    },
   },
   content: {
     fill: "transparent",
@@ -103,15 +77,18 @@ const useStyles = makeStyles((theme) => ({
     //marginBottom: "20px",
     margin: "8px",
     //
-    minWidth: "180px",
-    padding: 0,
-    // [theme.breakpoints.up("sm")]: {
-    //   marginLeft: "1px",
-    //   marginRight: "1px",
-    // },
-    // [theme.breakpoints.up("xs")]: {
-    //   maxWidth: "280px",
-    //   // marginRight: "10px",
+    minWidth: "250px",
+    maxWidth: "280px",
+    //flex: 1,
+
+    flexBasis: "33.33333%",
+
+    // padding: 0,
+    // // [theme.breakpoints.up("lg")]: { flex: "10%" },
+    // [theme.breakpoints.up("md")]: { flex: "25%" },
+    // // [theme.breakpoints.up("sm")]: { flex: "0 0 33.3333%" },
+    // [theme.breakpoints.down("sm")]: {
+    //   flex: "50%",
     // },
 
     //border: "5px solid alpha(theme.palette.common.white, 0.15)",
@@ -161,122 +138,167 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ItemList({ list = [], preview = true, role = "" }) {
+export default function ItemList({ list = {}, preview = true, role = "" }) {
   const classes = useStyles();
+  const [searchVal, setSearchVal] = useState();
+
+  const family = Object.keys(list);
+  const [fam, setFam] = useState(family[0]);
+  const category = Object.keys(list[fam]);
+  const [cat, setCat] = useState(category[0]);
+  const [store, setStore] = useState();
   const Navigate = useNavigate();
+  const filterArray = list[fam][cat];
 
   return (
-    <>
-      <div className={classes.container}>
-        <Container>
-          <Grid
-            container
-            align="center"
-            direction="row"
-            className={classes.grid}
-          >
-            {list.length !== 0 ? (
-              list.map((item) => (
-                <Grid item xl={3} lg={3} md={5} sm={6} xs={12} key={item.id}>
-                  <Card className={classes.card}>
-                    <CardMedia
-                      className={classes.media}
-                      image={image}
-                      title={item.name}
-                    />
-                    <CardContent className={classes.content}>
-                      <Typography variant="h6" style={{ color: "#B3B3B3" }}>
-                        {item.name}
+    <div>
+      {role === "waiter" && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "15px",
+          }}
+        >
+          <span>
+            Family:{" "}
+            <Select values={family} onchange={setFam} defaultVal={fam} />
+          </span>
+          <span>
+            Category:{" "}
+            <Select values={category} onchange={setCat} defaultVal={cat} />
+          </span>
+        </div>
+      )}
+      {role === "admin" && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "15px",
+          }}
+        >
+          <span>
+            Stock: <Select />
+          </span>
+        </div>
+      )}
+      <span
+        style={{ display: "flex", justifyContent: "center", marginTop: "15px" }}
+      >
+        <Search onChange={setSearchVal} />
+      </span>
 
-                        <hr
-                          style={{
-                            color: "#B3B3B3",
-                            backgroundColor: "#B3B3B3",
-                            height: 0.5,
-                          }}
-                        />
-                      </Typography>
-                      <form className={classes.formControl}>
-                        <label>Prix: </label>
-                        <Select
-                          native
-                          variant="standard"
-                          label="Prix"
-                          style={{ color: "#FFFFFF" }}
+      <div className={classes.container}>
+        {filterArray.length !== 0 ? (
+          filterArray.map((item) => (
+            <Card className={classes.card} key={item.id}>
+              <CardMedia
+                className={classes.media}
+                image={item.image}
+                title={item.name}
+              />
+              <CardContent className={classes.content}>
+                <Typography
+                  variant="h6"
+                  style={{ color: "#B3B3B3", textAlign: "center" }}
+                >
+                  {item.name}
+
+                  <hr
+                    style={{
+                      color: "#B3B3B3",
+                      backgroundColor: "#B3B3B3",
+                      height: 0.5,
+                    }}
+                  />
+                </Typography>
+                <form className={classes.formControl}>
+                  <label>Prix: </label>
+                  <Select
+                    native
+                    variant="standard"
+                    label="Prix"
+                    style={{ color: "#FFFFFF" }}
+                  >
+                    {item.prices.map((price) => (
+                      <>
+                        <option
+                          key={price}
+                          value={price}
+                          style={{ color: "#B3B3B3" }}
                         >
-                          {item.prices.map((price) => (
-                            <>
-                              <option
-                                key={price}
-                                value={price}
-                                style={{ color: "#B3B3B3" }}
-                              >
-                                {price}
-                              </option>
-                            </>
-                          ))}
-                        </Select>
-                        <br />
-                        <br />
-                        <label htmlFor="">Quantite En Stock : </label>
-                        <output
-                          type="number"
-                          style={{
-                            backgroundColor: "#415672",
-                            // width: "70px",
-                            color: "#FFFFFF",
-                            strokeWidth: 40,
-                            marginLeft: 4,
-                            padding: 8,
-                            borderRadius: "5px",
-                          }}
-                        >
-                          {item.stock}
-                        </output>
-                        {!preview && role !== "admin" && (
-                          <>
-                            <br />
-                            <br />
-                            <label htmlFor="">Quantite :</label>
-                            <input
-                              width={2}
-                              type="number"
-                              style={{
-                                width: "30px",
-                                marginLeft: 8,
-                                backgroundColor: "#415672",
-                                color: "#FFFFFF",
-                              }}
-                              className={classes.inp}
-                            />
-                            <br />
-                            <br />
-                            <Button
-                              variant="outlined"
-                              style={{ border: "4px solid #2B4362" }}
-                            >
-                              Ajouter
-                            </Button>
-                          </>
-                        )}
-                        {role === "admin" && (
-                          <>
-                            <Button>{"Detail"}</Button>
-                          </>
-                        )}
-                      </form>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              ))
-            ) : (
-              <div style={{ display: "flex", justifyContent: "center" }}>
-                <span>No Item Found</span>
-              </div>
-            )}
-          </Grid>
-        </Container>
+                          {price}
+                        </option>
+                      </>
+                    ))}
+                  </Select>
+                  <br />
+                  <br />
+                  <label htmlFor="">Quantite En Stock : </label>
+                  <output
+                    type="number"
+                    style={{
+                      backgroundColor: "#415672",
+                      // width: "70px",
+                      color: "#FFFFFF",
+                      strokeWidth: 40,
+                      marginLeft: 4,
+                      padding: 8,
+                      borderRadius: "5px",
+                    }}
+                  >
+                    {item.stock}
+                  </output>
+                  {!preview && role !== "admin" && (
+                    <>
+                      <br />
+                      <br />
+                      <label htmlFor="">Quantite :</label>
+                      <input
+                        width={2}
+                        type="number"
+                        style={{
+                          width: "30px",
+                          marginLeft: 8,
+                          backgroundColor: "#415672",
+                          color: "#FFFFFF",
+                        }}
+                        className={classes.inp}
+                      />
+                      <br />
+                      <br />
+                      <Button
+                        variant="outlined"
+                        style={{ border: "4px solid #2B4362" }}
+                      >
+                        Ajouter
+                      </Button>
+                    </>
+                  )}
+                  {role === "admin" && (
+                    <>
+                      <Button>{"Detail"}</Button>
+                    </>
+                  )}
+                </form>
+              </CardContent>
+            </Card>
+          ))
+        ) : (
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%,-50%)",
+              bottom: 0,
+            }}
+          >
+            <span>No Item Found</span>
+          </div>
+        )}
       </div>
-    </>
+    </div>
   );
 }

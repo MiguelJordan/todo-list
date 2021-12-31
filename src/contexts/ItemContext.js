@@ -15,7 +15,7 @@ const ItemContexProvider = ({ children }) => {
     const _items = await get(apiUrl + "/storeItems", {
       companyCode: user.company.code,
       storeId: user.workUnit.storeId,
-      query: { isBlocked: false },
+      query: JSON.stringify({}),
     });
 
     if (_items?.error) return console.log(_items?.error);

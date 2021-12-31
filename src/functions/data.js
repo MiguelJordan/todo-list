@@ -1,4 +1,4 @@
-const capitalise = (value) => {
+export const capitalise = (value) => {
   if (typeof value != "string") return value;
 
   value = value.trim();
@@ -7,7 +7,7 @@ const capitalise = (value) => {
   return value[0].toUpperCase() + value.slice(1).toLowerCase();
 };
 
-const groupData = ({ data = [], criteria = "", filters = [] }) => {
+export const groupData = ({ data = [], criteria = "", filters = [] }) => {
   if (filters.length) {
     data = data.filter((datum) => {
       let isOk = true;
@@ -31,5 +31,3 @@ const groupData = ({ data = [], criteria = "", filters = [] }) => {
     return prev;
   }, {});
 };
-
-module.exports = { capitalise, groupData };

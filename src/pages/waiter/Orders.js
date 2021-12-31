@@ -131,32 +131,11 @@ export default function Drinks() {
     },
   ];
 
-  const [searchVal, setSearchVal] = useState("");
-
   return (
     <>
       {/* <h1 className="center">{t("pages.waiter.orders")}</h1> */}
 
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <Search>
-          <SearchIconWrapper>
-            <SearchIcon />
-          </SearchIconWrapper>
-          <StyledInputBase
-            placeholder="Search…"
-            inputProps={{ "aria-label": "search" }}
-            onChange={(event) => setSearchVal(event.target.value)}
-          />
-        </Search>
-      </div>
-
-      <OrderList
-        array={list.filter((val) => {
-          if (val.tableN.includes(searchVal.toString().trim())) return val;
-          return "";
-        })}
-        role="waiter"
-      />
+      <OrderList array={list} role="waiter" />
     </>
   );
 }

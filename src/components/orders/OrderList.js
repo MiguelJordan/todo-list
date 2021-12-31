@@ -4,6 +4,8 @@ import { makeStyles, alpha, Grid, Container } from "@material-ui/core";
 import Select from "@mui/material/Select";
 import { useNavigate } from "react-router-dom";
 import { TextField } from "@mui/material";
+import Search from "../subComponents/Search";
+import { useState } from "react";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -47,42 +49,21 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   container: {
-    //marginTop: "5%",
+    marginTop: "40px",
+    display: "flex",
     justifyContent: "center",
+    alignItems: "center",
     overflowX: "hidden",
     overflowY: "scroll",
-    alignItems: "center",
-    height: "78vh",
-    webkitScrollbar: {
-      width: 0,
-    },
+    height: "70vh",
     transform: "translate(-50%, -50%)",
     position: "absolute",
     top: "50%",
     left: "50%",
+    flexWrap: "wrap",
+    width: "100%",
+
     bottom: 0,
-    [theme.breakpoints.up("xs")]: {
-      marginTop: "50px",
-      width: "calc(90vw - 30px)",
-      height: "74vh",
-    },
-    [theme.breakpoints.up("sm")]: {
-      marginTop: "40px",
-      width: "calc(90vw - 30px)",
-    },
-    [theme.breakpoints.up("md")]: {
-      width: "calc(95vw - 230px)",
-      marginLeft: "0px",
-      marginTop: "53px",
-      height: "75vh",
-    },
-    [theme.breakpoints.up("lg")]: {
-      //width: "calc(100vw - 230px)",
-      //marginLeft: "10px",
-      //maxWidth: 1500,
-      //height: "calc(70vh - 10%)",
-      // marginTop: "35px",
-    },
   },
   box: {
     display: "flex",
@@ -103,10 +84,16 @@ const useStyles = makeStyles((theme) => ({
 export default function OrderList({ role = "", array = [] }) {
   const classes = useStyles({ role });
   const Navigate = useNavigate();
+  const [searchVal, setSearchVal] = useState();
 
   return (
-    <div className={classes.container}>
-      <Grid container align="center" direction="row" className={classes.grid}>
+    <>
+      <span
+        style={{ display: "flex", justifyContent: "center", marginTop: "15px" }}
+      >
+        <Search onChange={setSearchVal} />
+      </span>
+      <div className={classes.container}>
         {array.length === 0 ? (
           <div
             style={{
@@ -123,8 +110,6 @@ export default function OrderList({ role = "", array = [] }) {
           array.map((item) => (
             <Box
               sx={{
-                display: "flex",
-                alignItems: "center",
                 width: "min-content",
                 border: (theme) => `1px solid ${theme.palette.divider}`,
                 borderRadius: "8px",
@@ -141,92 +126,90 @@ export default function OrderList({ role = "", array = [] }) {
               onClick={() => Navigate("./detail")}
               key={item.id}
             >
-              <div className={classes.box}>
-                <div
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  alignItems: "flex-start",
+                  flexFlow: "column",
+                  marginTop: "-10px",
+                }}
+              >
+                <span
                   style={{
-                    display: "flex",
-                    justifyContent: "flex-start",
+                    fontSize: 28,
+                    color: "#001D42",
                     alignItems: "flex-start",
-                    flexFlow: "column",
-                    marginTop: "-10px",
+                    alignSelf: "flex-start",
+                    // marginTop: "-20%",
                   }}
                 >
-                  <span
-                    style={{
-                      fontSize: 28,
-                      color: "#001D42",
-                      alignItems: "flex-start",
-                      alignSelf: "flex-start",
-                      // marginTop: "-20%",
-                    }}
-                  >
-                    {role === "waiter" || role === "cashier"
-                      ? `Table: ${item.tableN}`
-                      : ` Serveur: ${item.waiterN}`}
-                  </span>
+                  {role === "waiter" || role === "cashier"
+                    ? `Table: ${item.tableN}`
+                    : ` Serveur: ${item.waiterN}`}
+                </span>
 
-                  <span
-                    style={{
-                      fontSize: 15,
-                      color: "#707070",
-                      alignItems: "flex-start",
-                      alignSelf: "flex-start",
-                      marginTop: "4px",
-                    }}
-                  >
-                    {item.createdDate}
-                  </span>
-                </div>
-                <hr
-                  width="90%"
-                  color="gray"
+                <span
                   style={{
-                    color: "#B3B3B3",
-                    height: 2,
-                    marginTop: "5px",
-                  }}
-                />
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "flex-start",
+                    fontSize: 15,
+                    color: "#707070",
                     alignItems: "flex-start",
-                    flexFlow: "column",
+                    alignSelf: "flex-start",
+                    marginTop: "4px",
                   }}
                 >
-                  <span
-                    style={{
-                      fontSize: 20,
-                      color: "#707070",
-                      alignItems: "flex-start",
-                      alignSelf: "flex-start",
-                      marginTop: "5%",
-                    }}
-                  >
-                    {item.drink ? `Boisson: ${item.drink}` : "Boisson:"}
-                  </span>
-
-                  <span
-                    style={{
-                      fontSize: 20,
-                      color: "#707070",
-                      alignItems: "flex-start",
-                      alignSelf: "flex-start",
-                    }}
-                  >
-                    {item.meal ? `Repas: ${item.meal}` : "Repas:"}
-                  </span>
-                </div>
-                {item.isPaid && (
-                  <span
-                    style={{ marginTop: "2%", color: "green" }}
-                  >{`Status: Payee`}</span>
-                )}
+                  {item.createdDate}
+                </span>
               </div>
+              <hr
+                width="90%"
+                color="gray"
+                style={{
+                  color: "#B3B3B3",
+                  height: 2,
+                  marginTop: "5px",
+                }}
+              />
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  alignItems: "flex-start",
+                  flexFlow: "column",
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: 20,
+                    color: "#707070",
+                    alignItems: "flex-start",
+                    alignSelf: "flex-start",
+                    marginTop: "5%",
+                  }}
+                >
+                  {item.drink ? `Boisson: ${item.drink}` : "Boisson:"}
+                </span>
+
+                <span
+                  style={{
+                    fontSize: 20,
+                    color: "#707070",
+                    alignItems: "flex-start",
+                    alignSelf: "flex-start",
+                  }}
+                >
+                  {item.meal ? `Repas: ${item.meal}` : "Repas:"}
+                </span>
+              </div>
+              {item.isPaid && (
+                <span
+                  style={{ marginTop: "2%", color: "green" }}
+                >{`Status: Payee`}</span>
+              )}
             </Box>
           ))
         )}
-      </Grid>
-    </div>
+      </div>
+    </>
   );
 }

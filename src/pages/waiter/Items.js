@@ -57,14 +57,14 @@ export default function Items() {
           margin: "15px 0",
         }}
       >
-        <span>
+        {/* <span>
           Family:{" "}
           <Dropdown
             values={families}
             onchange={(value) => setFam(value)}
             defaultVal={family}
           />
-        </span>
+        </span> */}
         <span>
           Category:{" "}
           <Dropdown

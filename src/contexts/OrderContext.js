@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 
 const apiUrl = process.env.REACT_APP_API_URL;
@@ -8,6 +8,10 @@ export const OrderContext = createContext();
 const OrderContexProvider = ({ children }) => {
   const [orders, setOrders] = useState({});
   const { user } = useContext(AuthContext);
+
+  useEffect(() => {
+    // console.log("Order Context", user);
+  }, [user]);
 
   const context = {};
   return (

@@ -1,92 +1,24 @@
-//import { Select } from "@mui/material";
-import { useState } from "react";
+// import { useState } from "react";
 import { useContext } from "react";
+
+// components
 import ItemList from "../../components/storeItems/ItemList";
+
+// contexts
+// import { AuthContext } from "../../contexts/AuthContext";
 import { TrContext } from "../../contexts/TranslationContext";
-import { makeStyles } from "@material-ui/core";
-import SearchIcon from "@mui/icons-material/Search";
-import InputBase from "@mui/material/InputBase";
-import { styled, alpha } from "@mui/material/styles";
+import { ItemContext } from "../../contexts/ItemContext";
 
-import Search from "../../components/subComponents/Search";
-import Select from "../../components/subComponents/Select";
-
-const useStyles = makeStyles((theme) => ({
-  search: {
-    display: "flex",
-    justifyContent: "center",
-    [theme.breakpoints.up("xs")]: {},
-    [theme.breakpoints.up("md")]: {
-      marginTop: "1%",
-    },
-  },
-  filters: {
-    display: "flex",
-    marginTop: "20px",
-    justifyContent: "center",
-    alignItems: "center",
-    [theme.breakpoints.up("xs")]: {},
-  },
-}));
-
-export default function Drinks() {
-  const [searchVal, setSearchVal] = useState("");
-  const classes = useStyles();
+export default function Items() {
+  // const { user } = useContext(AuthContext);
   const { t } = useContext(TrContext);
+  const { items } = useContext(ItemContext);
 
-  const list = {
-    drinks: {
-      whisky: [{ id: "1", name: "Label", prices: [1000, 2000], stock: 50 }],
-      Beer: [
-        {
-          id: "2",
-          name: "Castel",
-          prices: [1000, 2000],
-          stock: 50,
-          image: "",
-        },
-        {
-          id: "3",
-          name: "Boster",
-          prices: [1000, 1500],
-          stock: 150,
-          image: "",
-        },
-        {
-          id: "6",
-          name: "Castel",
-          prices: [1000, 2000],
-          stock: 50,
-          image: "",
-        },
-        {
-          id: "7",
-          name: "Boster",
-          prices: [1000, 1500],
-          stock: 150,
-          image: "",
-        },
-        {
-          id: "8",
-          name: "Castel",
-          prices: [1000, 2000],
-          stock: 50,
-          image: "",
-        },
-        {
-          id: "9",
-          name: "Boster",
-          prices: [1000, 1500],
-          stock: 150,
-          image: "",
-        },
-      ],
-    },
-  };
+  console.log(items);
 
   return (
-    <div>
-      <ItemList list={list} preview={false} role="waiter" />
-    </div>
+    // <div style={{ maxHeight: "100%", justifyContent: "start" }}>
+    <ItemList list={items} preview={false} role="waiter" />
+    // {/* </div> */}
   );
 }

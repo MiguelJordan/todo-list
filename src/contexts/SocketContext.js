@@ -24,7 +24,7 @@ const SocketContextProvider = ({ children }) => {
   const [socketConnected, setSocketConnected] = useState(false);
 
   const connectE = () => {
-    console.log("connectE", user, socket);
+    // console.log("connectE", user, socket);
     if (user && !socketConnected) {
       socket.emit("register", _user);
       // socket.emit("_clientEvent", {

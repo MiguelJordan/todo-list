@@ -32,6 +32,7 @@ export default function Router() {
               path="/cashier/*"
               element={<Auth page={<Cashier />} roles={["cashier"]} />}
             />
+
             <Route
               path="/waiter/*"
               element={<Auth page={<Waiter />} roles={["waiter"]} />}

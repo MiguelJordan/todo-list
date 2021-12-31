@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     overflowX: "hidden",
     overflowY: "scroll",
-    height: "70vh",
+    height: "65vh",
     transform: "translate(-50%, -50%)",
     position: "absolute",
     top: "50%",
@@ -148,10 +148,17 @@ export default function ItemList({ list = {}, preview = true, role = "" }) {
   const [cat, setCat] = useState(category[0]);
   const [store, setStore] = useState();
   const Navigate = useNavigate();
-  const filterArray = list[fam][cat];
+  const filterArray = [];
+
+  list[fam][cat].filter((val) => {
+    if (!searchVal) return filterArray.push(val);
+    if (val.name.toLowerCase().includes(searchVal.toLowerCase().trim()))
+      return filterArray.push(val);
+    return "";
+  });
 
   return (
-    <div>
+    <>
       {role === "waiter" && (
         <div
           style={{
@@ -162,7 +169,13 @@ export default function ItemList({ list = {}, preview = true, role = "" }) {
         >
           <span>
             Family:{" "}
-            <Select values={family} onchange={setFam} defaultVal={fam} />
+            <Select
+              values={family}
+              onchange={setFam}
+              defaultVal={fam}
+              child={setCat}
+              list={list}
+            />
           </span>
           <span>
             Category:{" "}
@@ -184,7 +197,7 @@ export default function ItemList({ list = {}, preview = true, role = "" }) {
         </div>
       )}
       <span
-        style={{ display: "flex", justifyContent: "center", marginTop: "15px" }}
+        style={{ display: "flex", justifyContent: "center", marginTop: "10px" }}
       >
         <Search onChange={setSearchVal} />
       </span>
@@ -299,6 +312,6 @@ export default function ItemList({ list = {}, preview = true, role = "" }) {
           </div>
         )}
       </div>
-    </div>
+    </>
   );
 }

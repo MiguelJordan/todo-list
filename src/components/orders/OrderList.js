@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   container: {
-    marginTop: "40px",
+    marginTop: "50px",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -86,15 +86,24 @@ export default function OrderList({ role = "", array = [] }) {
   const Navigate = useNavigate();
   const [searchVal, setSearchVal] = useState();
 
+  const filterArray = [];
+
+  array.filter((val) => {
+    if (!searchVal) return filterArray.push(val);
+    if (val.tableN.toLowerCase().includes(searchVal.toLowerCase().trim()))
+      return filterArray.push(val);
+    return "";
+  });
+
   return (
     <>
       <span
-        style={{ display: "flex", justifyContent: "center", marginTop: "15px" }}
+        style={{ display: "flex", justifyContent: "center", marginTop: "10px" }}
       >
         <Search onChange={setSearchVal} />
       </span>
       <div className={classes.container}>
-        {array.length === 0 ? (
+        {filterArray.length === 0 ? (
           <div
             style={{
               position: "absolute",
@@ -107,7 +116,7 @@ export default function OrderList({ role = "", array = [] }) {
             <h2>No Order Found</h2>
           </div>
         ) : (
-          array.map((item) => (
+          filterArray.map((item) => (
             <Box
               sx={{
                 width: "min-content",

@@ -85,7 +85,7 @@ export default function Drinks() {
   };
 
   return (
-    <div style={{ maxHeight: "100%", justifyContent: "start" }}>
+    <div>
       <ItemList list={list} preview={false} role="waiter" />
     </div>
   );

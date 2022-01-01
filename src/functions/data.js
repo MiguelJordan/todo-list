@@ -7,20 +7,15 @@ export const capitalise = (value) => {
   return value[0].toUpperCase() + value.slice(1).toLowerCase();
 };
 
-export const groupData = ({ data = [], criteria = "", filters = [] }) => {
-  if (filters.length) {
-    data = data.filter((datum) => {
-      let isOk = true;
-      for (let filter of filters) {
-        if (datum[filter.name] != filter.value) {
-          isOk = false;
-          break;
-        }
-      }
-      return isOk;
-    });
-  }
+export const filter = ({ data = [], criteria = "", value = "" }) => {
+  return data.filter((dt) => dt?.[criteria] == value);
+};
 
+export const getList = ({ data = [], criteria }) => {
+  return [...new Set(data.map((dt) => dt[criteria]))];
+};
+
+export const groupData = ({ data = [], criteria = "" }) => {
   return data.reduce((prev, next) => {
     const _criteria = next[criteria];
     if (prev[_criteria]) {

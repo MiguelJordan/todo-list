@@ -5,9 +5,6 @@ import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 
-import { useNavigate } from "react-router-dom";
-
-import Search from "../subComponents/Search";
 import Dropdown from "../subComponents/Dropdown";
 
 import { capitalise } from "../../functions/data";
@@ -26,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#082c63",
     padding: "0px",
     display: "flex",
-    alignItems: "center",
+    alignitems: "center",
     position: "absolute",
     width: 500,
     maxWidth: 500,
@@ -41,8 +38,9 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     display: "flex",
+    flexFlow: "row",
     justifyContent: "center",
-    alignItems: "center",
+    alignitems: "center",
     overflowY: "auto",
     height: "70vh",
     flexWrap: "wrap",
@@ -76,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
   },
   grid: {
     justifyContent: "center",
-    alignItems: "center",
+    alignitems: "center",
     [theme.breakpoints.down("sm")]: {
       marginLeft: 0,
       marginRight: "20%",
@@ -92,7 +90,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexFlow: "row",
     justifyContent: "flex-end",
-    alignItems: "center",
+    alignitems: "center",
     position: "absolute",
     color: "#B3B3B3",
     width: "90%",
@@ -121,8 +119,9 @@ const useStyles = makeStyles((theme) => ({
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
-export default function ItemList({ list = {}, preview = true, role = "" }) {
+export default function ItemList({ items = [], preview = true, role = "" }) {
   const classes = useStyles();
+<<<<<<< HEAD
   const [searchVal, setSearchVal] = useState();
   // const [store, setStore] = useState();
   const Navigate = useNavigate();
@@ -161,66 +160,53 @@ export default function ItemList({ list = {}, preview = true, role = "" }) {
   useEffect(() => {
     setArray(list?.[family]?.[category] ?? []);
   }, [category, family]);
+=======
+>>>>>>> cbaa0f0e9d39cf86ae8dfedc6295c472e6e2cf4e
 
   return (
-    <>
-      {role === "waiter" && (
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flexWrap: "wrap",
-            margin: "15px 0",
-          }}
-        >
-          <span>
-            Family:{" "}
-            <Dropdown
-              values={families}
-              onchange={onFamChange}
-              defaultVal={family}
+    <div className={classes.container}>
+      {items.length !== 0 ? (
+        items.map((item) => (
+          <Card className={classes.card} key={item.id}>
+            <CardMedia
+              className={classes.media}
+              image={apiUrl + item.imageUrl}
+              title={item.name}
             />
-          </span>
-          <span>
-            Category:{" "}
-            <Dropdown
-              values={categories}
-              onchange={(value) => onCatChange(value)}
-              defaultVal={category}
-            />
-          </span>
-          <Search onChange={setSearchVal} />
-        </div>
-      )}
-      {role === "admin" && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: "15px",
-          }}
-        >
-          <span>
-            Stock: <Dropdown />
-          </span>
-        </div>
-      )}
+            <CardContent className={classes.content}>
+              <Typography
+                variant="h6"
+                style={{ color: "#B3B3B3", textAlign: "center" }}
+              >
+                {capitalise(item.name)}
 
-      <div className={classes.container}>
-        {filterArray.length !== 0 ? (
-          filterArray.map((item) => (
-            <Card className={classes.card} key={item.id}>
-              <CardMedia
-                className={classes.media}
-                image={apiUrl + item.imageUrl}
-                title={item.name}
-              />
-              <CardContent className={classes.content}>
-                <Typography
-                  variant="h6"
-                  style={{ color: "#B3B3B3", textAlign: "center" }}
+                <hr
+                  style={{
+                    color: "#B3B3B3",
+                    backgroundColor: "#B3B3B3",
+                    height: 0.5,
+                  }}
+                />
+              </Typography>
+              <form className={classes.formControl}>
+                <label>Prix: </label>
+                <Dropdown values={item.prices} defaultVal={item.prices[0]} />
+                <br />
+                <br />
+                <label htmlFor="">Quantite En Stock : </label>
+                <output
+                  type="number"
+                  style={{
+                    backgroundColor: "#415672",
+                    // width: "70px",
+                    color: "#FFFFFF",
+                    strokewidth: 40,
+                    marginLeft: 4,
+                    padding: 8,
+                    borderRadius: "5px",
+                  }}
                 >
+<<<<<<< HEAD
                   {capitalise(item.name)}
 
                   <hr
@@ -305,5 +291,48 @@ export default function ItemList({ list = {}, preview = true, role = "" }) {
         )}
       </div>
     </>
+=======
+                  {item.quantity}
+                </output>
+                {!preview && role !== "admin" && (
+                  <>
+                    <br />
+                    <br />
+                    <label htmlFor="">Quantite :</label>
+                    <input
+                      width={2}
+                      type="number"
+                      style={{
+                        width: "30px",
+                        marginLeft: 8,
+                        backgroundColor: "#415672",
+                        color: "#FFFFFF",
+                      }}
+                      className={classes.inp}
+                    />
+                    <br />
+                    <br />
+                    <Button
+                      variant="outlined"
+                      style={{ border: "4px solid #2B4362" }}
+                    >
+                      Ajouter
+                    </Button>
+                  </>
+                )}
+                {role === "admin" && (
+                  <>
+                    <Button>{"Detail"}</Button>
+                  </>
+                )}
+              </form>
+            </CardContent>
+          </Card>
+        ))
+      ) : (
+        <h2 style={{ marginTop: "100px" }}>No Item Found</h2>
+      )}
+    </div>
+>>>>>>> cbaa0f0e9d39cf86ae8dfedc6295c472e6e2cf4e
   );
 }

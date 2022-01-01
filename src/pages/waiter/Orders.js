@@ -1,13 +1,15 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import OrderList from "../../components/orders/OrderList";
 import { TrContext } from "../../contexts/TranslationContext";
-import { useState } from "react";
 
+import Search from "../../components/subComponents/Search";
 import AddOrder from "../../components/orders/AddOrder";
 import Fabs from "../../components/subComponents/Fabs";
 
 export default function Drinks() {
   const { t } = useContext(TrContext);
+
+  const [searchVal, setSearchVal] = useState();
 
   const list = [
     {
@@ -68,11 +70,24 @@ export default function Drinks() {
     },
   ];
 
+  const filterArray = [];
+
+  list.filter((val) => {
+    if (!searchVal) return filterArray.push(val);
+    if (val.tableN.toLowerCase().includes(searchVal.toLowerCase().trim()))
+      return filterArray.push(val);
+    return "";
+  });
+
   return (
     <div>
       {/* <h1 className="center">{t("pages.waiter.orders")}</h1> */}
-
-      <OrderList array={list} role="waiter" />
+      <span
+        style={{ display: "flex", justifyContent: "center", marginTop: "10px" }}
+      >
+        <Search onChange={setSearchVal} />
+      </span>
+      <OrderList array={filterArray} role="waiter" />
 
       <Fabs Element={<AddOrder />} />
     </div>

@@ -1,11 +1,13 @@
 import { useContext, useState } from "react";
 import { TrContext } from "../../contexts/TranslationContext";
+import { AuthContext } from "../../contexts/AuthContext";
 
-import { Button, Typography } from "@mui/material";
+import { Button } from "@mui/material";
 import { TextField } from "@material-ui/core";
 
 export default function Drinks() {
   const { t } = useContext(TrContext);
+  const { user } = useContext(AuthContext);
 
   const [error, setError] = useState("");
 
@@ -13,9 +15,10 @@ export default function Drinks() {
     firstName: "",
     lastName: "",
     role: "",
-    workUnit: [],
+    companyCode: user.company.code,
     email: "",
     tel: "",
+    unitCode: user.workUnit.code,
   });
 
   const handleSubmit = (e) => {
@@ -25,8 +28,7 @@ export default function Drinks() {
       !personInfo.firstName ||
       !personInfo.lastName ||
       !personInfo.role ||
-      !personInfo.tel ||
-      !personInfo.workUnit
+      !personInfo.tel
     )
       return setError("Invalid Value(s)");
     setError("");
@@ -47,9 +49,9 @@ export default function Drinks() {
       }}
     >
       {/* <h1 className="center">{t("Add Staff Page")}</h1> */}
-      <Typography style={{ color: "#001D42", marginTop: "15px" }}>
+      <h2 style={{ color: "#001D42", marginTop: "30px" }}>
         Ajouter Un Personel
-      </Typography>
+      </h2>
       <form
         style={{
           display: "flex",
@@ -136,20 +138,7 @@ export default function Drinks() {
           style={{ color: "#B3B3B3" }}
           required
         />
-        <TextField
-          variant="standard"
-          fullWidth
-          label="Post"
-          name="workUnit"
-          onChange={(e) =>
-            setPersonInfo({
-              ...personInfo,
-              [e.target.name]: [...personInfo.workUnit, e.target.value.trim()],
-            })
-          }
-          style={{ color: "#B3B3B3" }}
-          required
-        />
+
         <TextField
           variant="standard"
           type="email"

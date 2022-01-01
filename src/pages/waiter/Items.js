@@ -55,6 +55,8 @@ export default function Items() {
           justifyContent: "center",
           flexWrap: "wrap",
           margin: "15px 0",
+          flexFlow: "column",
+          alignItems: "center",
         }}
       >
         {/* <span>

@@ -1,17 +1,24 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core";
-import { Button, Typography } from "@mui/material";
+import { Button } from "@mui/material";
 import { TextField } from "@material-ui/core";
+
+import { AuthContext } from "../../contexts/AuthContext";
 
 const useStyles = makeStyles((theme) => ({}));
 
 export default function AddOrder() {
+  const { user } = React.useContext(AuthContext);
+
   const classes = useStyles();
 
   const [orderInfo, setOrderInfo] = React.useState({
     tableName: "",
     consumptionPoint: "",
     balanceForward: "",
+    companyCode: user.company.code,
+    unitCode: user.workUnit.code,
+    cashierId: user.id,
   });
   const [error, setError] = React.useState("");
 
@@ -37,9 +44,9 @@ export default function AddOrder() {
         borderRadius: "3px",
       }}
     >
-      <Typography style={{ color: "#001D42", marginTop: "15px" }}>
+      <h2 style={{ color: "#001D42", marginTop: "15px" }}>
         Ajouter Une Commande
-      </Typography>
+      </h2>
       <form
         style={{
           display: "flex",
@@ -96,20 +103,19 @@ export default function AddOrder() {
           label="Balance Forward"
         />
         <TextField
-          variant="standard"
           fullWidth
-          label="Consumption Point"
+          type="text"
           name="consumptionPoint"
+          variant="standard"
+          style={{ color: "#B3B3B3" }}
           onChange={(e) =>
             setOrderInfo({
               ...orderInfo,
               [e.target.name]: e.target.value.trim(),
             })
           }
-          style={{ color: "#B3B3B3" }}
-          required
+          label=" consumptionPoint"
         />
-
         <Button variant="contained" type="submit" style={{ marginTop: "15px" }}>
           Ajouter
         </Button>

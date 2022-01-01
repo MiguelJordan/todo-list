@@ -1,11 +1,9 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import { makeStyles, alpha, Grid, Container } from "@material-ui/core";
-import Select from "@mui/material/Select";
 import { useNavigate } from "react-router-dom";
-import { TextField } from "@mui/material";
+
 import Search from "../subComponents/Search";
-import { useState } from "react";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -15,15 +13,15 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "white",
     borderRadius: "8px",
     margin: "5px",
-    minHeight: "150px",
+    maxHeight: "150px",
     maxWidth: "330px",
+    minWidth: "300px",
 
-    [theme.breakpoints.up("xs")]: {
+    //width: "min-content",
+    [theme.breakpoints.down("sm")]: {
+      maxWidth: "300px",
       minWidth: "250px",
-    },
-    width: "min-content",
-    [theme.breakpoints.up("sm")]: {
-      minWidth: "300px",
+      minHeight: "150px",
     },
 
     //flex: "auto",
@@ -49,21 +47,17 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   container: {
-    marginTop: "40px",
     display: "flex",
+    flexFlow: "row",
     justifyContent: "center",
-    alignItems: "center",
-    overflowX: "hidden",
-    overflowY: "scroll",
-    height: "70vh",
-    transform: "translate(-50%, -50%)",
-    position: "absolute",
-    top: "50%",
-    left: "50%",
+    alignitems: "center",
+    overflowY: "auto",
+    height: "68vh",
     flexWrap: "wrap",
     width: "100%",
-
-    bottom: 0,
+    [theme.breakpoints.up("sm")]: {
+      height: "75vh",
+    },
   },
   box: {
     display: "flex",
@@ -84,132 +78,119 @@ const useStyles = makeStyles((theme) => ({
 export default function OrderList({ role = "", array = [] }) {
   const classes = useStyles({ role });
   const Navigate = useNavigate();
-  const [searchVal, setSearchVal] = useState();
 
   return (
-    <>
-      <span
-        style={{ display: "flex", justifyContent: "center", marginTop: "15px" }}
-      >
-        <Search onChange={setSearchVal} />
-      </span>
-      <div className={classes.container}>
-        {array.length === 0 ? (
-          <div
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%,-50%)",
-              bottom: 0,
+    <div className={classes.container}>
+      {array.length === 0 ? (
+        <h2
+          style={{
+            marginTop: "100px",
+          }}
+        >
+          No Order Found
+        </h2>
+      ) : (
+        array.map((item) => (
+          <Box
+            sx={{
+              width: "min-content",
+              border: (theme) => `1px solid ${theme.palette.divider}`,
+              borderRadius: "8px",
+              //bgcolor: "background.paper",
+              color: "text.secondary",
+              "& svg": {
+                m: 1.5,
+              },
+              "& hr": {
+                m: "5px",
+              },
             }}
+            className={classes.card}
+            key={item.id}
           >
-            <h2>No Order Found</h2>
-          </div>
-        ) : (
-          array.map((item) => (
-            <Box
-              sx={{
-                width: "min-content",
-                border: (theme) => `1px solid ${theme.palette.divider}`,
-                borderRadius: "8px",
-                //bgcolor: "background.paper",
-                color: "text.secondary",
-                "& svg": {
-                  m: 1.5,
-                },
-                "& hr": {
-                  m: "5px",
-                },
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-start",
+                alignItems: "flex-start",
+                flexFlow: "column",
+                marginTop: "-10px",
               }}
-              className={classes.card}
-              onClick={() => Navigate("./detail")}
-              key={item.id}
             >
-              <div
+              <span
                 style={{
-                  display: "flex",
-                  justifyContent: "flex-start",
+                  fontSize: 28,
+                  color: "#001D42",
                   alignItems: "flex-start",
-                  flexFlow: "column",
-                  marginTop: "-10px",
+                  alignSelf: "flex-start",
+                  // marginTop: "-20%",
                 }}
               >
-                <span
-                  style={{
-                    fontSize: 28,
-                    color: "#001D42",
-                    alignItems: "flex-start",
-                    alignSelf: "flex-start",
-                    // marginTop: "-20%",
-                  }}
-                >
-                  {role === "waiter" || role === "cashier"
-                    ? `Table: ${item.tableN}`
-                    : ` Serveur: ${item.waiterN}`}
-                </span>
+                {role === "waiter" || role === "cashier"
+                  ? `Table: ${item.tableN}`
+                  : ` Serveur: ${item.waiterN}`}
+              </span>
 
-                <span
-                  style={{
-                    fontSize: 15,
-                    color: "#707070",
-                    alignItems: "flex-start",
-                    alignSelf: "flex-start",
-                    marginTop: "4px",
-                  }}
-                >
-                  {item.createdDate}
-                </span>
-              </div>
-              <hr
-                width="90%"
-                color="gray"
+              <span
                 style={{
-                  color: "#B3B3B3",
-                  height: 2,
-                  marginTop: "5px",
-                }}
-              />
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-start",
+                  fontSize: 15,
+                  color: "#707070",
                   alignItems: "flex-start",
-                  flexFlow: "column",
+                  alignSelf: "flex-start",
+                  marginTop: "4px",
                 }}
               >
-                <span
-                  style={{
-                    fontSize: 20,
-                    color: "#707070",
-                    alignItems: "flex-start",
-                    alignSelf: "flex-start",
-                    marginTop: "5%",
-                  }}
-                >
-                  {item.drink ? `Boisson: ${item.drink}` : "Boisson:"}
-                </span>
+                {item.createdDate}
+              </span>
+            </div>
+            <hr
+              width="90%"
+              color="gray"
+              style={{
+                color: "#B3B3B3",
+                height: 2,
+                marginTop: "5px",
+              }}
+            />
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-start",
+                alignItems: "flex-start",
+                flexFlow: "column",
+              }}
+            >
+              <span
+                style={{
+                  fontSize: 20,
+                  color: "#707070",
+                  alignItems: "flex-start",
+                  alignSelf: "flex-start",
+                  marginTop: "5%",
+                }}
+              >
+                {item.drink ? `Boisson: ${item.drink}` : "Boisson:"}
+              </span>
 
-                <span
-                  style={{
-                    fontSize: 20,
-                    color: "#707070",
-                    alignItems: "flex-start",
-                    alignSelf: "flex-start",
-                  }}
-                >
-                  {item.meal ? `Repas: ${item.meal}` : "Repas:"}
-                </span>
-              </div>
-              {item.isPaid && (
-                <span
-                  style={{ marginTop: "2%", color: "green" }}
-                >{`Status: Payee`}</span>
-              )}
-            </Box>
-          ))
-        )}
-      </div>
-    </>
+              <span
+                style={{
+                  fontSize: 20,
+                  color: "#707070",
+                  alignItems: "flex-start",
+                  alignSelf: "flex-start",
+                }}
+              >
+                {item.meal ? `Repas: ${item.meal}` : "Repas:"}
+              </span>
+            </div>
+            {item.isPaid && (
+              <span
+                style={{ marginTop: "2%", color: "green" }}
+              >{`Status: Payee`}</span>
+            )}
+          </Box>
+        ))
+      )}
+    </div>
   );
 }

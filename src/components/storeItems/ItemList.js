@@ -17,17 +17,7 @@ const useStyles = makeStyles((theme) => ({
     borderTopLeftRadius: 13,
     borderTopRightRadius: 13,
   },
-  root: {
-    border: "2px solid #082c63",
-    borderRadius: "10px",
-    backgroundColor: "#082c63",
-    padding: "0px",
-    display: "flex",
-    alignitems: "center",
-    position: "absolute",
-    width: 500,
-    maxWidth: 500,
-  },
+
   formControl: {
     margin: theme.spacing(1),
     minWidth: 100,
@@ -71,49 +61,6 @@ const useStyles = makeStyles((theme) => ({
     //flex: 1,
 
     flexBasis: "33.33333%",
-  },
-  grid: {
-    justifyContent: "center",
-    alignitems: "center",
-    [theme.breakpoints.down("sm")]: {
-      marginLeft: 0,
-      marginRight: "20%",
-      marginBottom: 0,
-    },
-    [theme.breakpoints.between("sm", "md")]: {
-      // marginLeft: "1%",
-      marginRight: "20%",
-      width: "100%",
-    },
-  },
-  Toproot: {
-    display: "flex",
-    flexFlow: "row",
-    justifyContent: "flex-end",
-    alignitems: "center",
-    position: "absolute",
-    color: "#B3B3B3",
-    width: "90%",
-    [theme.breakpoints.between("sm", "md")]: {
-      justifyContent: "center",
-      width: "60%",
-    },
-    [theme.breakpoints.up("md")]: {
-      justifyContent: "flex-end",
-      width: "100%",
-    },
-    [theme.breakpoints.up("lg")]: {
-      justifyContent: "flex-end",
-      width: "94%",
-    },
-    [theme.breakpoints.up("xl")]: {
-      justifyContent: "flex-end",
-      width: "90%",
-    },
-    [theme.breakpoints.down("sm")]: {
-      justifyContent: "center",
-      width: "100%",
-    },
   },
 }));
 

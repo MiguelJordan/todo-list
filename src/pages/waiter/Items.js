@@ -17,6 +17,7 @@ export default function Items() {
   // const { user } = useContext(AuthContext);
   // const { t } = useContext(TrContext);
   const { items } = useContext(ItemContext);
+  const [searchVal, setSearchVal] = useState("");
 
   const [families] = useState(getList({ data: items, criteria: "family" }));
   const [family, setFam] = useState(families[0] ?? "");
@@ -31,6 +32,14 @@ export default function Items() {
   const [_items, setItems] = useState(
     filter({ data: data[family], criteria: "category", value: category })
   );
+  const filterArray = [];
+
+  _items.filter((val) => {
+    if (!searchVal) return filterArray.push(val);
+    if (val.name.toLowerCase().includes(searchVal.toLowerCase().trim()))
+      return filterArray.push(val);
+    return "";
+  });
 
   useEffect(() => {
     setCats(getList({ data: data[family], criteria: "category" }));
@@ -55,6 +64,8 @@ export default function Items() {
           justifyContent: "center",
           flexWrap: "wrap",
           margin: "15px 0",
+          flexFlow: "column",
+          alignItems: "center",
         }}
       >
         {/* <span>
@@ -73,9 +84,9 @@ export default function Items() {
             defaultVal={""}
           />
         </span>
-        <Search onChange={() => {}} />
+        <Search onChange={setSearchVal} />
       </div>
-      <ItemList items={_items} role="waiter" />
+      <ItemList items={filterArray} role="waiter" />
     </>
   );
 }

@@ -42,24 +42,19 @@ const useStyles = makeStyles((theme) => ({
   content: {
     fill: "transparent",
     backgroundColor: "transparent",
-    borderBottom: "2px solid #2B4362",
+    border: "2px solid #2B4362",
     borderTop: 0,
-    borderLeft: "2px solid #2B4362",
-    borderRight: "2px solid #2B4362",
   },
   card: {
     backgroundColor: "transparent",
-    borderTopLeftRadius: 4,
-    borderTopRightRadius: 4,
-    WebkitBorderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
-    //marginBottom: "20px",
+    // borderRadius: "4px 4px 0 0",
+    // borderTopLeftRadius: 4,
+    // borderTopRightRadius: 4,
+    // WebkitBorderBottomLeftRadius: 0,
+    // borderBottomRightRadius: 0,
     margin: "8px",
-    //
     minWidth: "250px",
     maxWidth: "280px",
-    //flex: 1,
-
     flexBasis: "33.33333%",
   },
 }));

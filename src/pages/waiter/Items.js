@@ -32,6 +32,7 @@ export default function Items() {
   const [_items, setItems] = useState(
     filter({ data: data[family], criteria: "category", value: category })
   );
+
   const filterArray = [];
 
   _items.filter((val) => {
@@ -60,12 +61,11 @@ export default function Items() {
       <div
         style={{
           display: "flex",
-          aligndts: "center",
+          flexFlow: "row",
+          alignItems: "center",
           justifyContent: "center",
           flexWrap: "wrap",
           margin: "15px 0",
-          flexFlow: "column",
-          alignItems: "center",
         }}
       >
         {/* <span>

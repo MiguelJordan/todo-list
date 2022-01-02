@@ -109,9 +109,7 @@ const Page = () => {
     setServerError("");
 
     // get routes and redirects
-    if (res.role === "admin") return navigate("/admin");
-    if (res.role === "cashier") return navigate("/cashier");
-    if (res.role === "waiter") return navigate("/waiter");
+    return navigate(`/${res.role}`);
   };
 
   return (

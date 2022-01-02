@@ -1,34 +1,62 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core";
+import { useContext, useState } from "react";
+// import { makeStyles } from "@material-ui/core";
 import { Button } from "@mui/material";
 import { TextField } from "@material-ui/core";
 
 import { AuthContext } from "../../contexts/AuthContext";
+import { SocketContext } from "../../contexts/SocketContext";
+import { post } from "../../functions/http";
 
-const useStyles = makeStyles((theme) => ({}));
+const apiUrl = process.env.REACT_APP_API_URL;
+
+// const useStyles = makeStyles((theme) => ({}));
 
 export default function AddOrder() {
-  const { user } = React.useContext(AuthContext);
+  const { user } = useContext(AuthContext);
+  const { sendEvent } = useContext(SocketContext);
 
-  const classes = useStyles();
+  // const classes = useStyles();
 
-  const [orderInfo, setOrderInfo] = React.useState({
+  const [orderInfo, setOrderInfo] = useState({
     tableName: "",
     consumptionPoint: "",
     balanceForward: "",
     companyCode: user.company.code,
     unitCode: user.workUnit.code,
-    cashierId: user.id,
+    waiterId: user.id,
   });
-  const [error, setError] = React.useState("");
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!orderInfo.tableName || !orderInfo.consumptionPoint)
-      return setError("Invalid value(s)");
+    if (!orderInfo.tableName) return setError("Invalid table name");
+
+    if (!orderInfo.consumptionPoint) {
+      return setError("Invalid consumption point");
+    }
+
     setError("");
-    console.log(orderInfo);
+
+    // request order creation
+    const res = await post(apiUrl + "/orders", orderInfo);
+
+    // handle order creation errors
+    if (res?.error) return setError(res.error);
+
+    // sending order created event
+    sendEvent({
+      name: "cE-order-created",
+      props: {
+        date: true,
+        companyCode: user.company.code,
+        source: "waiter",
+        startTime: new Date(),
+        unitCode: user.workUnit.code,
+        waiterId: user.id,
+      },
+      rooms: [user.workUnit.code],
+    });
   };
 
   return (
@@ -73,6 +101,7 @@ export default function AddOrder() {
         )}
 
         <TextField
+          required
           type="text"
           variant="standard"
           name="tableName"
@@ -86,7 +115,6 @@ export default function AddOrder() {
               [e.target.name]: e.target.value.trim(),
             })
           }
-          required
         />
         <TextField
           fullWidth
@@ -103,6 +131,7 @@ export default function AddOrder() {
           label="Balance Forward"
         />
         <TextField
+          required
           fullWidth
           type="text"
           name="consumptionPoint"

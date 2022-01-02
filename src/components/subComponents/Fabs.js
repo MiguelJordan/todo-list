@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Fab from "@mui/material/Fab";
-import { styled } from "@mui/material/styles";
+// import { styled } from "@mui/material/styles";
 import Backdrop from "@mui/material/Backdrop";
 import Fade from "@mui/material/Fade";
 import Modal from "@mui/material/Modal";
@@ -8,29 +8,29 @@ import Box from "@mui/material/Box";
 
 import AddIcon from "@mui/icons-material/Add";
 
-const StyledFab = styled(Fab)(({ theme }) => ({
-  // position: "relative",
-  // zIndex: 1,
-  // bottom: 45,
-  // left: 230,
-  // right: -10,
-  // margin: "auto",
-  // float: "right",
-  // [theme.breakpoints.between("sm", "md")]: {
-  //   left: 500,
-  // },
-  // [theme.breakpoints.up("md")]: {
-  //   left: 650,
-  // },
-  // [theme.breakpoints.up("lg")]: {
-  //   left: 850,
-  // },
-  display: "flex",
-  flexDirection: "column",
-  //alignItems: "center",
-  marginTop: "auto",
-  // alignSelf: "flex-end",
-}));
+// const StyledFab = styled(Fab)(({ theme }) => ({
+//   // position: "relative",
+//   // zIndex: 1,
+//   // bottom: 45,
+//   // left: 230,
+//   // right: -10,
+//   // margin: "auto",
+//   // float: "right",
+//   // [theme.breakpoints.between("sm", "md")]: {
+//   //   left: 500,
+//   // },
+//   // [theme.breakpoints.up("md")]: {
+//   //   left: 650,
+//   // },
+//   // [theme.breakpoints.up("lg")]: {
+//   //   left: 850,
+//   // },
+//   display: "flex",
+//   flexDirection: "column",
+//   //alignItems: "center",
+//   marginTop: "auto",
+//   // alignSelf: "flex-end",
+// }));
 
 export default function Fabs({ Element }) {
   const [openModal, setOpenModal] = useState(false);
@@ -46,19 +46,14 @@ export default function Fabs({ Element }) {
   };
 
   return (
-    <div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-
-          alignItems: "flex-end",
-        }}
+    <>
+      <Fab
+        color="primary"
+        aria-label="add"
+        style={{ position: "absolute", bottom: "50px", right: "35px" }}
       >
-        <Fab color="primary" aria-label="add">
-          <AddIcon onClick={handleOpen} />
-        </Fab>
-      </div>
+        <AddIcon onClick={handleOpen} />
+      </Fab>
       <Modal
         open={openModal}
         onClose={handleClose}
@@ -69,6 +64,6 @@ export default function Fabs({ Element }) {
           <Box sx={styleModal}>{Element}</Box>
         </Fade>
       </Modal>
-    </div>
+    </>
   );
 }

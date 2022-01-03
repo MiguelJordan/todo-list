@@ -1,6 +1,6 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import { makeStyles } from "@mui/styles";
+import { makeStyles } from "@material-ui/core";
 // import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({

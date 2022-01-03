@@ -62,7 +62,7 @@ export default function AccountMenu({ user }) {
                 className={`${classes.presence_dot} ${
                   socketConnected && classes.presence_online
                 }`}
-              />
+              ></div>
               <Avatar alt={user?.firstName} src={user?.profilePic}>
                 {user?.firstName[0]}
               </Avatar>

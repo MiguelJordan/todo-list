@@ -97,7 +97,7 @@ export default function OrderList({ role = "", array = [] }) {
                   m: "5px",
                 },
               }}
-              // className={classes.card}
+              className={classes.card}
               key={order.id}
             >
               <div

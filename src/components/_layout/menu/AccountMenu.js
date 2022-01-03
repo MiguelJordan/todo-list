@@ -24,8 +24,8 @@ const useStyles = makeStyles((theme) => ({
   presence_dot: {
     position: "absolute",
     right: -2,
-    width: 10,
-    height: 10,
+    width: "10px",
+    height: "10px",
     borderRadius: "50%",
     backgroundColor: "#d58c13",
     border: "3px solid #001d42",

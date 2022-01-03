@@ -59,8 +59,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const apiUrl = process.env.REACT_APP_API_URL;
-
 export default function ItemList({ items = [], preview = true, role = "" }) {
   const classes = useStyles();
 
@@ -71,7 +69,7 @@ export default function ItemList({ items = [], preview = true, role = "" }) {
           <Card className={classes.card} key={item.id}>
             <CardMedia
               className={classes.media}
-              image={apiUrl + item.imageUrl}
+              image={item.imageUrl}
               title={item.name}
             />
             <CardContent className={classes.content}>

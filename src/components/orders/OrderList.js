@@ -80,13 +80,7 @@ export default function OrderList({ role = "", array = [] }) {
   return (
     <div className={classes.container}>
       {array.length === 0 ? (
-        <h2
-          style={{
-            marginTop: "100px",
-          }}
-        >
-          No Order Found
-        </h2>
+        <h2 style={{ marginTop: "100px" }}>No Order Found</h2>
       ) : (
         array.map((order) => {
           return (
@@ -103,7 +97,7 @@ export default function OrderList({ role = "", array = [] }) {
                   m: "5px",
                 },
               }}
-              className={classes.card}
+              // className={classes.card}
               key={order.id}
             >
               <div

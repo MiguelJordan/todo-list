@@ -3,28 +3,18 @@ import Box from "@mui/material/Box";
 import { makeStyles, alpha, Grid, Container } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 
-import Search from "../subComponents/Search";
+import DoneIcon from "@mui/icons-material/Done";
 
 const useStyles = makeStyles((theme) => ({
   card: {
-    display: "flex",
-    flexFlow: "column",
-    justifyContent: "center",
+    margin: "8px",
+    minWidth: "250px",
+    maxWidth: "280px",
+    maxHeight: "150px",
+    //flexBasis: "33.33333%",
     backgroundColor: "white",
     borderRadius: "8px",
-    margin: "5px",
-    maxHeight: "150px",
-    maxWidth: "330px",
-    minWidth: "300px",
-
-    //width: "min-content",
-    [theme.breakpoints.down("sm")]: {
-      maxWidth: "300px",
-      minWidth: "250px",
-      minHeight: "150px",
-    },
-
-    //flex: "auto",
+    flex: "auto",
   },
   grid: {
     justifyContent: "center",
@@ -52,25 +42,14 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignitems: "center",
     overflowY: "auto",
-    height: "68vh",
+    height: ({ role }) => {
+      if (role === "admin") return "63vh";
+      return "68vh";
+    },
     flexWrap: "wrap",
     width: "100%",
     [theme.breakpoints.up("sm")]: {
       height: "75vh",
-    },
-  },
-  box: {
-    display: "flex",
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-    flexFlow: "column",
-    paddingLeft: "6px",
-
-    [theme.breakpoints.up("xs")]: {
-      minWidth: "250px",
-    },
-    [theme.breakpoints.up("sm")]: {
-      minWidth: "300px",
     },
   },
 }));
@@ -91,23 +70,7 @@ export default function OrderList({ role = "", array = [] }) {
         </h2>
       ) : (
         array.map((item) => (
-          <Box
-            sx={{
-              width: "min-content",
-              border: (theme) => `1px solid ${theme.palette.divider}`,
-              borderRadius: "8px",
-              //bgcolor: "background.paper",
-              color: "text.secondary",
-              "& svg": {
-                m: 1.5,
-              },
-              "& hr": {
-                m: "5px",
-              },
-            }}
-            className={classes.card}
-            key={item.id}
-          >
+          <Box className={classes.card} key={item.id}>
             <div
               style={{
                 display: "flex",
@@ -123,7 +86,7 @@ export default function OrderList({ role = "", array = [] }) {
                   color: "#001D42",
                   alignItems: "flex-start",
                   alignSelf: "flex-start",
-                  // marginTop: "-20%",
+                  marginTop: "20px",
                 }}
               >
                 {role === "waiter" || role === "cashier"
@@ -155,8 +118,7 @@ export default function OrderList({ role = "", array = [] }) {
             <div
               style={{
                 display: "flex",
-                justifyContent: "flex-start",
-                alignItems: "flex-start",
+                marginBottom: "10px",
                 flexFlow: "column",
               }}
             >
@@ -166,7 +128,7 @@ export default function OrderList({ role = "", array = [] }) {
                   color: "#707070",
                   alignItems: "flex-start",
                   alignSelf: "flex-start",
-                  marginTop: "5%",
+                  marginTop: "2px",
                 }}
               >
                 {item.drink ? `Boisson: ${item.drink}` : "Boisson:"}
@@ -184,9 +146,9 @@ export default function OrderList({ role = "", array = [] }) {
               </span>
             </div>
             {item.isPaid && (
-              <span
-                style={{ marginTop: "2%", color: "green" }}
-              >{`Status: Payee`}</span>
+              <span style={{ marginTop: "1px", color: "green" }}>
+                {<DoneIcon />}
+              </span>
             )}
           </Box>
         ))

@@ -17,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
     borderTopLeftRadius: 13,
     borderTopRightRadius: 13,
   },
-
   formControl: {
     margin: theme.spacing(1),
     minWidth: 100,
@@ -142,7 +141,9 @@ export default function ItemList({ items = [], preview = true, role = "" }) {
                 )}
                 {role === "admin" && (
                   <>
-                    <Button>{"Detail"}</Button>
+                    <Button variant="contained" style={{ marginTop: "10px" }}>
+                      {"Detail"}
+                    </Button>
                   </>
                 )}
               </form>

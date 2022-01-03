@@ -30,8 +30,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#d58c13",
     border: "3px solid #001d42",
     zIndex: 2,
+    "&$presence_online": { backgroundColor: colors.blue[500] },
   },
-  presence_online: { backgroundColor: colors.green[500] },
+  presence_online: {},
 }));
 
 export default function AccountMenu({ user }) {

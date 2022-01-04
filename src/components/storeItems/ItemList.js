@@ -135,7 +135,9 @@ export default function ItemList({ items = [], preview = true, role = "" }) {
                 )}
                 {role === "admin" && (
                   <>
-                    <Button>{"Detail"}</Button>
+                    <Button variant="contained" style={{ marginTop: "10px" }}>
+                      {"Detail"}
+                    </Button>
                   </>
                 )}
               </form>

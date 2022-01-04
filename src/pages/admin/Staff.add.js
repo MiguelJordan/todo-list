@@ -2,12 +2,20 @@ import { useContext, useState } from "react";
 import { TrContext } from "../../contexts/TranslationContext";
 import { AuthContext } from "../../contexts/AuthContext";
 
-import { Button } from "@mui/material";
-import { TextField } from "@material-ui/core";
+import { Button, TextField } from "@mui/material";
+import { makeStyles } from "@material-ui/core";
 
-export default function Drinks() {
+const useStyles = makeStyles({
+  inputText: {
+    color: "black",
+  },
+});
+
+export default function AddStaff() {
   const { t } = useContext(TrContext);
   const { user } = useContext(AuthContext);
+
+  const classes = useStyles();
 
   const [error, setError] = useState("");
 
@@ -49,9 +57,7 @@ export default function Drinks() {
       }}
     >
       {/* <h1 className="center">{t("Add Staff Page")}</h1> */}
-      <h2 style={{ color: "#001D42", marginTop: "30px" }}>
-        Ajouter Un Personel
-      </h2>
+
       <form
         style={{
           display: "flex",
@@ -63,6 +69,9 @@ export default function Drinks() {
         }}
         onSubmit={handleSubmit}
       >
+        <h2 style={{ color: "#001D42", marginTop: "10px" }}>
+          Ajouter Un Personel
+        </h2>
         {error !== "" && (
           <div
             style={{
@@ -81,6 +90,9 @@ export default function Drinks() {
           type="text"
           variant="standard"
           name="firstName"
+          inputProps={{
+            className: classes.inputText,
+          }}
           fullWidth
           label="First Name"
           style={{ color: "#B3B3B3" }}
@@ -96,8 +108,10 @@ export default function Drinks() {
           type="text"
           variant="standard"
           name="lastName"
+          inputProps={{
+            className: classes.inputText,
+          }}
           fullWidth
-          color=""
           label="Last Name"
           style={{ color: "#B3B3B3" }}
           onChange={(e) =>
@@ -112,6 +126,9 @@ export default function Drinks() {
           fullWidth
           type="number"
           name="tel"
+          inputProps={{
+            className: classes.inputText,
+          }}
           variant="standard"
           style={{ color: "#B3B3B3" }}
           onChange={(e) =>
@@ -126,6 +143,9 @@ export default function Drinks() {
         <TextField
           type="text"
           variant="standard"
+          inputProps={{
+            className: classes.inputText,
+          }}
           fullWidth
           label="role"
           name="role"
@@ -142,6 +162,9 @@ export default function Drinks() {
         <TextField
           variant="standard"
           type="email"
+          inputProps={{
+            className: classes.inputText,
+          }}
           fullWidth
           label="Email"
           name="email"
@@ -151,7 +174,6 @@ export default function Drinks() {
               [e.target.name]: e.target.value.trim(),
             })
           }
-          style={{ color: "#B3B3B3" }}
           required
         />
 

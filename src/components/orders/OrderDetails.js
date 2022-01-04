@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import {
   ListItemIcon,
-  Select,
   Avatar,
   Container,
   IconButton,
@@ -25,12 +24,13 @@ import {
   FormHelperText,
   Input,
   InputLabel,
+  TextField,
 } from "@mui/material";
-
-import { TextField } from "@material-ui/core";
 
 //icons
 import { DeleteRounded, EditRounded, ExpandMore } from "@mui/icons-material";
+
+import Dropdown from "../subComponents/Dropdown";
 
 const useStyles = makeStyles((theme) => ({
   accordion: {
@@ -106,6 +106,9 @@ const useStyles = makeStyles((theme) => ({
       marginTop: "20%",
     },
   },
+  text: {
+    color: "#B3B3B3",
+  },
 }));
 
 export default function OrderDetails({
@@ -116,19 +119,12 @@ export default function OrderDetails({
 }) {
   const classes = useStyles();
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const [method, setMethod] = useState([]);
-  const [addPayment, setAddPayement] = useState([]);
-  const [orderInfo, setOrderInfo] = useState({
-    consumptionPoint: "",
-    paymentMethod: [],
-  });
 
-  const handlechange = (e) => {
-    const {
-      target: { value },
-    } = e;
-    setMethod(typeof value === "string" ? value.split(",") : value);
-  };
+  const [addPayment, setAddPayement] = useState([]);
+  const [payment, setPayment] = React.useState([]);
+  const [orderInfo, setOrderInfo] = useState({
+    paymentMethod: payment,
+  });
 
   const handleOpenUser = (e) => {
     setAnchorElUser(e.currentTarget);
@@ -479,97 +475,43 @@ export default function OrderDetails({
       )}
 
       {role === "cashier" && (
-        <div style={{ marginTop: "25px" }}>
-          <Grid align="center">
+        <div
+          style={{
+            marginTop: "25px",
+            display: "flex",
+            justifyContent: "center",
+            flexFlow: "column",
+            alignItems: "center",
+          }}
+        >
+          <span>
             <FormControl color="success" variant="standard">
               <InputLabel
                 htmlFor="component-disabled"
-                style={{ color: "white" }}
-              >
-                Point de Consomation
-              </InputLabel>
-              <Select
                 style={{ color: "#B3B3B3" }}
-                variant="standard"
-                native
-                name="consumptionPoint"
-                type="text"
-                onChange={(e) =>
-                  setOrderInfo({
-                    ...orderInfo,
-                    [e.target.name]: e.target.value,
-                  })
-                }
-                defaultValue={methods[0]}
-                className={classes.form}
-              >
-                {point.map((name) => (
-                  <option key={name} value={name}>
-                    {name}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-
-          <Grid item align="center">
-            {" "}
-            <FormControl color="success" variant="standard">
-              <InputLabel
-                htmlFor="component-disabled"
-                style={{ color: "white" }}
               >
                 Payement
               </InputLabel>
-              <Select
-                style={{ color: "#B3B3B3" }}
-                variant="standard"
-                native
-                type="text"
-                name="name"
-                onChange={(e) =>
-                  setOrderInfo({
-                    ...orderInfo,
-                    [orderInfo.paymentMethod]: {
-                      ...orderInfo.paymentMethod,
-                      [e.target.name]: e.target.value,
-                    },
-                  })
-                }
-                defaultValue={methods[0]}
-                className={classes.form}
-              >
-                {methods.map((name) => (
-                  <option key={name} value={name}>
-                    {name}
-                  </option>
-                ))}
-              </Select>
+
+              <Dropdown values={methods} onchange={setPayment} field="name" />
             </FormControl>
             <TextField
               type="number"
               label="Prix"
-              name="paymentMethod"
-              inputProps={{ color: "blue" }}
+              name="price"
+              inputProps={{
+                className: classes.text,
+              }}
               variant="standard"
+              autoFocus
               onChange={(e) =>
-                setOrderInfo({
-                  ...orderInfo,
-                  [e.target.name]: [
-                    { ...orderInfo.paymentMethod, ["price"]: e.target.value },
-                  ],
-                })
+                setPayment({ ...payment, [e.target.name]: e.target.value })
               }
               style={{ marginLeft: "20px", color: "#B3B3B3" }}
             />
-          </Grid>
+          </span>
           {addPayment.map((field, idx) => (
-            <Grid
-              item
-              align="center"
-              style={{ marginTop: "20px" }}
-              key={`${field}-${idx}`}
-            >
+            <span style={{ marginTop: "20px" }} key={`${field}-${idx}`}>
               <FormControl color="success" variant="standard">
                 <InputLabel
                   htmlFor="component-disabled"
@@ -577,38 +519,18 @@ export default function OrderDetails({
                 >
                   Payement
                 </InputLabel>
-                <Select
-                  style={{ color: "#B3B3B3" }}
-                  variant="standard"
-                  native
-                  name="name"
-                  type="text"
-                  onChange={(e) =>
-                    setOrderInfo({
-                      ...orderInfo,
-                      ["paymentMethod"]: [
-                        {
-                          ...orderInfo,
-                          [e.target.name]: e.target.value,
-                        },
-                      ],
-                    })
-                  }
-                  defaultValue={methods[0]}
-                  className={classes.form}
-                >
-                  {methods.map((name) => (
-                    <option key={name} value={name}>
-                      {name}
-                    </option>
-                  ))}
-                </Select>
+
+                <Dropdown values={methods} />
               </FormControl>
               <TextField
                 type="number"
                 label="Prix"
                 variant="standard"
+                autoFocus
                 name="price"
+                inputProps={{
+                  className: classes.text,
+                }}
                 onChange={(e) =>
                   setOrderInfo({
                     ...orderInfo,
@@ -627,7 +549,7 @@ export default function OrderDetails({
               >
                 Supprimer
               </Button>
-            </Grid>
+            </span>
           ))}
           <div
             style={{
@@ -636,7 +558,7 @@ export default function OrderDetails({
               margin: "15px",
             }}
           >
-            <Button onClick={() => console.log(orderInfo)} variant="contained">
+            <Button onClick={() => console.log(payment)} variant="contained">
               Valider
             </Button>
             <Button

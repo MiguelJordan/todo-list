@@ -2,11 +2,12 @@ import "./App.css";
 import Router from "./components/Router";
 
 // contexts
-import AuthContexProvider from "./contexts/AuthContext";
+import AuthContextProvider from "./contexts/AuthContext";
+import DLContextProvider from "./contexts/DLContext";
 import ItemContexProvider from "./contexts/ItemContext";
-import OrderContexProvider from "./contexts/OrderContext";
+import OrderContextProvider from "./contexts/OrderContext";
 import SocketContextProvider from "./contexts/SocketContext";
-import StoreContexProvider from "./contexts/StoreContext";
+import StoreContextProvider from "./contexts/StoreContext";
 import ThemeContextProvider from "./contexts/ThemeContext";
 import TrCProvider from "./contexts/TranslationContext";
 
@@ -14,17 +15,19 @@ function App() {
   return (
     <TrCProvider>
       <ThemeContextProvider>
-        <AuthContexProvider>
+        <AuthContextProvider>
           <SocketContextProvider>
-            <StoreContexProvider>
-              <OrderContexProvider>
+            <StoreContextProvider>
+              <OrderContextProvider>
                 <ItemContexProvider>
-                  <Router />
+                  <DLContextProvider>
+                    <Router />
+                  </DLContextProvider>
                 </ItemContexProvider>
-              </OrderContexProvider>
-            </StoreContexProvider>
+              </OrderContextProvider>
+            </StoreContextProvider>
           </SocketContextProvider>
-        </AuthContexProvider>
+        </AuthContextProvider>
       </ThemeContextProvider>
     </TrCProvider>
   );

@@ -6,7 +6,7 @@ export const AuthContext = createContext();
 
 const loadUser = () => JSON.parse(localStorage.getItem("user"));
 
-const AuthContexProvider = ({ children }) => {
+const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(loadUser);
 
   const saveUser = (data) => {
@@ -64,4 +64,4 @@ const AuthContexProvider = ({ children }) => {
   );
 };
 
-export default AuthContexProvider;
+export default AuthContextProvider;

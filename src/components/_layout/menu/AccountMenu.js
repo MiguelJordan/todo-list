@@ -24,14 +24,20 @@ const useStyles = makeStyles((theme) => ({
   presence_dot: {
     position: "absolute",
     right: -2,
-    width: 10,
-    height: 10,
+    width: "10px",
+    height: "10px",
     borderRadius: "50%",
     backgroundColor: "#d58c13",
     border: "3px solid #001d42",
     zIndex: 2,
+    "&$presence_online": {
+      backgroundColor: colors.green[500],
+      width: 10,
+      height: 10,
+      display: "block",
+    },
   },
-  presence_online: { backgroundColor: colors.green[500] },
+  presence_online: {},
 }));
 
 export default function AccountMenu({ user }) {
@@ -59,10 +65,12 @@ export default function AccountMenu({ user }) {
           <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
             <div className={classes.presence_parent}>
               <div
-                className={`${classes.presence_dot} ${
-                  socketConnected && classes.presence_online
-                }`}
-              />
+                className={
+                  socketConnected
+                    ? `${classes.presence_dot} ${classes.presence_online}`
+                    : classes.presence_dot
+                }
+              ></div>
               <Avatar alt={user?.firstName} src={user?.profilePic}>
                 {user?.firstName[0]}
               </Avatar>

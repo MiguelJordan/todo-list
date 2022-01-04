@@ -24,26 +24,15 @@ const SocketContextProvider = ({ children }) => {
   const [socketConnected, setSocketConnected] = useState(false);
 
   const connectE = () => {
-    // console.log("connectE", user, socket);
-    if (user && !socketConnected) {
-      socket.emit("register", _user);
-      // socket.emit("_clientEvent", {
-      //   event: "_cE-presence",
-      //   props: { ..._user, source: "company" },
-      //   rooms: [_user.companyCode],
-      // });
-    }
+    if (user && !socketConnected) socket?.emit("register", _user);
   };
 
   // this is to attempt registration immediately user logs in
   useEffect(() => {
-    if (user) {
-      socket.connect();
-      connectE();
-    } else {
-      socket.close();
+    if (!user) {
+      socket?.close();
+      setSocketConnected(false);
     }
-    // console.log("uE", user, socket);
   }, [socket, user]);
 
   const connectErrorE = (data) => {
@@ -51,20 +40,17 @@ const SocketContextProvider = ({ children }) => {
   };
 
   const disconnectE = () => {
-    console.log("Disconnected");
     setSocketConnected(false);
+    console.log("Disconnected");
   };
 
   const registeredE = (data) => {
     setSocketConnected(true);
+    console.log("Connected");
     // console.log("Registration:", data);
   };
 
   useEffect(() => {
-    socket.on("_cE-test-orders", (data) => console.log("_cE-orders", data));
-
-    socket.on("_cE-test-users", (data) => console.log("_cE-users", data));
-
     socket.on("connect", connectE);
 
     socket.on("connect_error", connectErrorE);
@@ -84,7 +70,13 @@ const SocketContextProvider = ({ children }) => {
     };
   }, [socket]);
 
-  const context = { socket, socketConnected };
+  const sendEvent = ({ name = "", props = {}, rooms = [] }) => {
+    if (!socketConnected || !name || !rooms.length) return;
+    console.log("event:", { name, props, rooms });
+    return socket.emit("_clientEvent", { name, props, rooms });
+  };
+
+  const context = { socket, socketConnected, sendEvent };
 
   return (
     <SocketContext.Provider value={context}>{children}</SocketContext.Provider>

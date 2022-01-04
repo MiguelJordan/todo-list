@@ -11,11 +11,13 @@ const ItemContexProvider = ({ children }) => {
   const { user } = useContext(AuthContext);
 
   const getItems = async () => {
-    const _items = await get(apiUrl + "/storeItems", {
+    const query = {
       companyCode: user.company.code,
       storeId: user.workUnit.storeId,
       query: JSON.stringify({ isBlocked: false }),
-    });
+    };
+
+    const _items = await get(apiUrl + "/storeItems", query);
 
     if (_items?.error) return console.log(_items?.error);
 
@@ -23,7 +25,8 @@ const ItemContexProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (user?.role == "waiter") getItems();
+    if (user?.role != "waiter") return;
+    getItems();
   }, [user]);
 
   const context = { items };

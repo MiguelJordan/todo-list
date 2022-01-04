@@ -14,7 +14,7 @@ import EditRounded from "@mui/icons-material/EditRounded";
 export default function Staff() {
   const { t } = useContext(TrContext);
 
-  const list = [
+  const users = [
     { id: "1", name: "john", role: "waiter" },
     { id: "2", name: "Anne", role: "waiter" },
     { id: "3", name: "Jack", role: "cashier" },
@@ -24,7 +24,7 @@ export default function Staff() {
 
   return (
     <>
-      {/* <h1 className="center">{t("List of Staff Members")}</h1> */}
+      <h1 className="center">{t("List of Staff Members")}</h1>
 
       <Grid container justifyContent={"center"} align="center" spacing={2}>
         <Grid
@@ -36,14 +36,14 @@ export default function Staff() {
           style={{ backgroundColor: "#001d42" }}
         >
           <List style={{ backgroundColor: "#001d42" }}>
-            {list.map((item) => (
-              <ListItem key={item.id}>
+            {users.map((_user) => (
+              <ListItem key={_user.id}>
                 <ListItemText
-                  primary={item.name}
+                  primary={_user.name}
                   // secondary={secondary ? "Secondary text" : null}
                 />
                 <ListItemText
-                  primary={item.role}
+                  primary={_user.role}
                   //secondary={secondary ? "Secondary text" : null}
                 />
                 <ListItemAvatar

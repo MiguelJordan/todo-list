@@ -12,7 +12,7 @@ export default function Bills() {
     Anne: [
       {
         id: "1",
-        tableN: "1",
+        tableName: "1",
         createdDate: "2021-12-28",
         drink: 10000,
         waiterN: "Anne",
@@ -21,7 +21,7 @@ export default function Bills() {
       },
       {
         id: "7",
-        tableN: "7",
+        tableName: "7",
         isPaid: true,
         createdDate: "2021-12-20",
         drink: 10000,
@@ -30,7 +30,7 @@ export default function Bills() {
       },
       {
         id: "5",
-        tableN: "5",
+        tableName: "5",
         isPaid: true,
         createdDate: "2021-12-18",
         drink: 10000,
@@ -39,7 +39,7 @@ export default function Bills() {
       },
       {
         id: "6",
-        tableN: "6",
+        tableName: "6",
         isPaid: true,
         createdDate: "2021-12-19",
         drink: 10000,
@@ -50,7 +50,7 @@ export default function Bills() {
     Michelle: [
       {
         id: "4",
-        tableN: "4",
+        tableName: "4",
         createdDate: "2021-12-31",
         drink: 10000,
         waiterN: "Michelle",
@@ -61,7 +61,7 @@ export default function Bills() {
     Jacob: [
       {
         id: "2",
-        tableN: "2",
+        tableName: "2",
         isPaid: true,
         createdDate: "2021-12-29",
         drink: 10000,
@@ -70,7 +70,7 @@ export default function Bills() {
       },
       {
         id: "8",
-        tableN: "8",
+        tableName: "8",
         isPaid: true,
         createdDate: "2021-12-29",
         drink: 10000,
@@ -81,7 +81,7 @@ export default function Bills() {
     Jack: [
       {
         id: "3",
-        tableN: "3",
+        tableName: "3",
         isPaid: true,
         createdDate: "2021-12-30",
         drink: 10000,
@@ -106,14 +106,14 @@ export default function Bills() {
       if (
         !Bill.isPaid &&
         (!searchVal ||
-          Bill.tableN.toLowerCase().includes(searchVal.toLowerCase().trim()))
+          Bill.tableName.toLowerCase().includes(searchVal.toLowerCase().trim()))
       )
         filterArray.push(Bill);
     }
     if (
       Bill.paymentMethod.includes(payment) &&
       (!searchVal ||
-        Bill.tableN.toLowerCase().includes(searchVal.toLowerCase().trim()))
+        Bill.tableName.toLowerCase().includes(searchVal.toLowerCase().trim()))
     )
       filterArray.push(Bill);
   });

@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
-// import { makeStyles } from "@material-ui/core";
-import { Button } from "@mui/material";
-import { TextField } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
+import { Button, TextField } from "@mui/material";
 
 import { AuthContext } from "../../contexts/AuthContext";
 import { SocketContext } from "../../contexts/SocketContext";
@@ -9,13 +8,17 @@ import { post } from "../../functions/http";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
-// const useStyles = makeStyles((theme) => ({}));
+const useStyles = makeStyles((theme) => ({
+  inputText: {
+    color: "#B3B3B3",
+  },
+}));
 
 export default function AddOrder() {
   const { user } = useContext(AuthContext);
   const { sendEvent } = useContext(SocketContext);
 
-  // const classes = useStyles();
+  const classes = useStyles();
 
   const [orderInfo, setOrderInfo] = useState({
     tableName: "",
@@ -35,6 +38,9 @@ export default function AddOrder() {
     if (!orderInfo.consumptionPoint) {
       return setError("Invalid consumption point");
     }
+
+    if (orderInfo.balanceForward < 0)
+      return setError("Invalid balance forward");
 
     setError("");
 
@@ -106,7 +112,9 @@ export default function AddOrder() {
           variant="standard"
           name="tableName"
           fullWidth
-          color=""
+          inputProps={{
+            className: classes.inputText,
+          }}
           label="Table Name"
           style={{ color: "#B3B3B3" }}
           onChange={(e) =>
@@ -121,6 +129,9 @@ export default function AddOrder() {
           type="number"
           name="balanceForward"
           variant="standard"
+          inputProps={{
+            className: classes.inputText,
+          }}
           style={{ color: "#B3B3B3" }}
           onChange={(e) =>
             setOrderInfo({
@@ -133,6 +144,9 @@ export default function AddOrder() {
         <TextField
           required
           fullWidth
+          inputProps={{
+            className: classes.inputText,
+          }}
           type="text"
           name="consumptionPoint"
           variant="standard"

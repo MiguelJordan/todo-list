@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: "250px",
     maxWidth: "280px",
     maxHeight: "150px",
-    //flexBasis: "33.33333%",
+    flexBasis: "33.33333%",
     backgroundColor: "white",
     borderRadius: "8px",
     flex: "auto",
@@ -65,29 +65,14 @@ export default function OrderList({ role = "", array = [] }) {
       ) : (
         array.map((order) => {
           return (
-            <Box
-              sx={{
-                width: "min-content",
-                border: (theme) => `1px solid ${theme.palette.divider}`,
-                borderRadius: "8px",
-                color: "text.secondary",
-                "& svg": {
-                  m: 1.5,
-                },
-                "& hr": {
-                  m: "5px",
-                },
-              }}
-              className={classes.card}
-              key={order.id}
-            >
+            <Box className={classes.card} key={order.id}>
               <div
                 style={{
                   display: "flex",
                   justifyContent: "flex-start",
                   alignItems: "flex-start",
                   flexFlow: "column",
-                  marginTop: "-10px",
+                  marginTop: "-2px",
                   padding: "5px",
                 }}
               >

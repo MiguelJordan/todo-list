@@ -1,77 +1,25 @@
 import React, { useContext, useState } from "react";
-import { Button, Link, Typography } from "@mui/material";
-import { TextField } from "@material-ui/core";
-import Grid from "@mui/material/Grid";
-import { Avatar } from "@mui/material";
+import { Button, Typography, TextField } from "@mui/material";
 import { makeStyles } from "@material-ui/core";
-import LockCloseOutlined from "@mui/icons-material/LockOutlined";
+import { Avatar } from "@mui/material";
 import { useNavigate } from "react-router";
-import Paper from "@mui/material/Paper";
 
+import LockCloseOutlined from "@mui/icons-material/LockOutlined";
+
+//components
 import Layout from "../components/_layout/Layout";
-
 import { AuthContext } from "../contexts/AuthContext";
 import { TrContext } from "../contexts/TranslationContext";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    minWidth: "80vw",
-
-    [theme.breakpoints.down("sm")]: {
-      //   maxWidth: "100px",
-      minWidth: "95vw",
-      //   minHeight: "100px",
-      //width: "100vw",
-    },
-  },
-  loginForm: {
-    justifyContent: "center",
-    minHeight: "90vh",
-    alignItems: "center",
-    color: "#001D42",
-  },
-  loginBackground: {
-    justifyContent: "center",
-    minHeight: "30vh",
-    padding: "50px",
-    minWidth: "37vw",
-    backgroundColor: "#FFFFFF",
-
-    [theme.breakpoints.down("sm")]: {
-      padding: "10px",
-      margin: "auto",
-      minWidth: "87vw",
-    },
-    [theme.breakpoints.between("sm", "md")]: {
-      padding: "70px",
-      minWidth: "33vw",
-    },
-    [theme.breakpoints.up("md")]: {
-      padding: "70px",
-      minWidth: "30vw",
-    },
-    [theme.breakpoints.up("lg")]: {
-      padding: "60px",
-      minWidth: "20vw",
-    },
-  },
-  buttonBlock: {
-    width: "100%",
-    marginBottom: "5px",
-    [theme.breakpoints.down("sm")]: {
-      //display: "block",
-      width: "90%",
-    },
-  },
-  Error: {
-    display: "inline-block",
+  inputText: {
+    color: "black",
   },
 }));
 
 const Page = () => {
-  const style = useStyles();
-
   const [user, setUser] = useState({ id: "", password: "", role: "" });
+  const classes = useStyles();
 
   const [serverError, setServerError] = useState("");
   const [rootRole, setRootRole] = useState("");
@@ -113,112 +61,115 @@ const Page = () => {
   };
 
   return (
-    <Grid container align="center" className={style.root}>
-      <Grid item xs={6} align="center">
-        <Grid
-          container
-          align="center"
-          justifyContent="center"
+    <div
+      style={{
+        display: "flex",
+        flexFlow: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "330px",
+        backgroundColor: "#FFFFFF",
+        borderRadius: "3px",
+
+        /* to center it on the page */
+        position: "absolute",
+        transform: "translate(-50%,-50%)",
+        top: "50%",
+        left: "50%",
+        height: "310px",
+      }}
+    >
+      <Avatar
+        style={{
+          backgroundColor: "#001D42",
+          display: "flex",
+          alignItems: "center",
+          alignSelf: "center",
+        }}
+      >
+        <LockCloseOutlined />
+      </Avatar>
+      <span style={{ alignItems: "center" }}>
+        <Typography
+          component="h1"
+          variant="h5"
           style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%,-50%)",
+            color: "#001D42",
+            display: "flex",
+            justifyContent: "center",
           }}
         >
-          <Paper
-            variant="elevation"
-            elevation={2}
-            className={style.loginBackground}
+          {t("pages.login.title")}
+        </Typography>
+      </span>
+
+      <form
+        style={{
+          display: "flex",
+          flexFlow: "column",
+          justifyContent: "center",
+          margin: "15px",
+          color: "#B3B3B3",
+          width: "70%",
+        }}
+        onSubmit={handleSubmit}
+      >
+        {serverError !== "" && (
+          <div
+            style={{
+              border: "2px solid red",
+              color: "#001D42",
+              margin: "5px",
+              display: "flex",
+              justifyContent: "center",
+              marginBottom: "20px",
+            }}
           >
-            <Grid align="center" style={{ marginBottom: "5%" }}>
-              <Avatar style={{ backgroundColor: "#001D42" }}>
-                <LockCloseOutlined />
-              </Avatar>
-              <Typography
-                component="h1"
-                variant="h5"
-                style={{ color: "#001D42" }}
-              >
-                {t("pages.login.title")}
-              </Typography>
-            </Grid>
-            {serverError !== "" ? (
-              <Grid
-                item
-                align="center"
-                style={{
-                  marginBottom: "5%",
-                }}
-              >
-                <div
-                  style={{
-                    border: "2px solid red",
-                    borderRadius: 5,
-                    marginBottom: "2%",
-                  }}
-                >
-                  <Typography variant="subtitle2" style={{ color: "black" }}>
-                    {serverError}
-                  </Typography>
-                </div>
-              </Grid>
-            ) : (
-              ""
-            )}
+            <Typography variant="subtitle2" style={{ color: "black" }}>
+              {serverError}
+            </Typography>
+          </div>
+        )}
+        <TextField
+          type="text"
+          label="ID*"
+          fullWidth
+          name="id"
+          variant="outlined"
+          inputProps={{
+            className: classes.inputText,
+          }}
+          onChange={handleChange}
+          required
+          style={{ color: "#001D42" }}
+          autoComplete="off"
+        />
 
-            <Grid item>
-              <form onSubmit={handleSubmit}>
-                <Grid container direction="column" spacing={2}>
-                  <Grid item>
-                    <TextField
-                      type="text"
-                      label="ID*"
-                      fullWidth
-                      name="id"
-                      variant="outlined"
-                      onChange={handleChange}
-                      required
-                      style={{ color: "#001D42" }}
-                      autoComplete="off"
-                    />
-                  </Grid>
-                  <Grid item>
-                    <TextField
-                      onChange={handleChange}
-                      type="password"
-                      label={t("pages.auth.passwordField") + "*"}
-                      fullWidth
-                      name="password"
-                      variant="outlined"
-                      required
-                      style={{ color: "#001D42" }}
-                    />
-                  </Grid>
+        <TextField
+          onChange={handleChange}
+          type="password"
+          label={t("pages.auth.passwordField") + "*"}
+          fullWidth
+          name="password"
+          variant="outlined"
+          inputProps={{
+            className: classes.inputText,
+          }}
+          required
+          style={{ marginTop: "10px" }}
+        />
 
-                  <Grid item>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      type="submit"
-                      className={style.buttonBlock}
-                      disabled={disabled}
-                    >
-                      {t("pages.login.title")}
-                    </Button>
-                  </Grid>
-                </Grid>
-              </form>
-            </Grid>
-            <span style={{ marginTop: "10px" }}>
-              <Link href="#" variant="body2">
-                {t("pages.auth.forgot_password")}
-              </Link>
-            </span>
-          </Paper>
-        </Grid>
-      </Grid>
-    </Grid>
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+          style={{ marginTop: "15px" }}
+          disabled={disabled}
+        >
+          {t("pages.login.title")}
+        </Button>
+      </form>
+    </div>
   );
 };
 

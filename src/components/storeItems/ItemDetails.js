@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
 import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
 import Input from "@mui/material/Input";
-import Select from "@mui/material/Select";
-import { InputLabel, Paper, Typography } from "@mui/material";
 
-import { alpha, Container, TextField } from "@mui/material";
+import { InputLabel } from "@mui/material";
+
+import { alpha } from "@mui/material";
 import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -106,7 +105,7 @@ export default function ItemDetails({
   const classes = useStyles();
   const [error, setError] = useState("");
 
-  const handleModifier = (e) => {
+  const handleModify = (e) => {
     e.preventDefault();
 
     if (
@@ -127,7 +126,7 @@ export default function ItemDetails({
 
   return (
     <div className={classes.root}>
-      <form onSubmit={handleModifier} className={classes.form}>
+      <form onSubmit={handleModify} className={classes.form}>
         {error !== "" && (
           <div
             style={{

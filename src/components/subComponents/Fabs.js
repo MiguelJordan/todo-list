@@ -50,7 +50,7 @@ export default function Fabs({ Element }) {
       <Fab
         color="primary"
         aria-label="add"
-        style={{ position: "absolute", bottom: "50px", right: "35px" }}
+        style={{ position: "absolute", bottom: "30px", right: "35px" }}
       >
         <AddIcon onClick={handleOpen} />
       </Fab>

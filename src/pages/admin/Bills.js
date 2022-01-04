@@ -70,15 +70,11 @@ export default function Bills() {
     },
   ];
   const [startD, setStartD] = useState(
-    `${new Date().getUTCFullYear()}-${
-      new Date().getUTCMonth() + 1
-    }-${new Date().getUTCDate()}`
+    `${new Date().toISOString().slice(0, 10)}`
   );
 
   const [stopD, setStopD] = useState(
-    `${new Date().getUTCFullYear()}-${
-      new Date().getUTCMonth() + 1
-    }-${new Date().getUTCDate()}`
+    `${new Date().toISOString().slice(0, 10)}`
   );
 
   const [searchVal, setSearchVal] = useState("");
@@ -95,7 +91,7 @@ export default function Bills() {
     }
     return "";
   });
-
+  console.log();
   return (
     <>
       {/* <h1 className="center">{t("Admin's Bills")}</h1> */}

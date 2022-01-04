@@ -38,6 +38,9 @@ const useStyles = makeStyles((theme) => ({
       minWidth: "20vw",
     },
   },
+  inputText: {
+    color: "#B3B3B3",
+  },
 }));
 
 export default function AddItem() {
@@ -101,6 +104,9 @@ export default function AddItem() {
                   label="Familly*"
                   fullWidth
                   name="familly"
+                  inputProps={{
+                    className: classes.inputText,
+                  }}
                   variant="standard"
                   required
                   onChange={(e) => {
@@ -131,6 +137,9 @@ export default function AddItem() {
                   name="name"
                   variant="standard"
                   required
+                  inputProps={{
+                    className: classes.inputText,
+                  }}
                   onChange={(e) => {
                     setItem({ ...item, [e.target.name]: e.target.value });
                   }}
@@ -145,6 +154,9 @@ export default function AddItem() {
                   name="cost"
                   variant="standard"
                   required
+                  inputProps={{
+                    className: classes.inputText,
+                  }}
                   onChange={(e) => {
                     setItem({ ...item, [e.target.name]: e.target.value });
                   }}
@@ -158,6 +170,9 @@ export default function AddItem() {
                   fullWidth
                   name="price"
                   variant="standard"
+                  inputProps={{
+                    className: classes.inputText,
+                  }}
                   multiline
                   required
                   onClick={(e) => {
@@ -177,6 +192,9 @@ export default function AddItem() {
                   name="image"
                   variant="standard"
                   required
+                  inputProps={{
+                    className: classes.inputText,
+                  }}
                   onChange={(e) => {
                     setItem({ ...item, [e.target.name]: e.target.value });
                   }}

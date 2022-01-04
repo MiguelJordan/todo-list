@@ -8,7 +8,8 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import IconButton from "@mui/material/IconButton";
 import { colors, Tooltip } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+import { makeStyles } from "@material-ui/core";
+// import { makeStyles } from "@mui/styles";
 
 // get user option by role
 import useOptions from "./menuOptions";
@@ -30,14 +31,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#d58c13",
     border: "3px solid #001d42",
     zIndex: 2,
-    "&$presence_online": {
-      backgroundColor: colors.green[500],
-      width: 10,
-      height: 10,
-      display: "block",
-    },
   },
-  presence_online: {},
+  presence_online: { backgroundColor: colors.green[500] },
 }));
 
 export default function AccountMenu({ user }) {
@@ -65,12 +60,10 @@ export default function AccountMenu({ user }) {
           <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
             <div className={classes.presence_parent}>
               <div
-                className={
-                  socketConnected
-                    ? `${classes.presence_dot} ${classes.presence_online}`
-                    : classes.presence_dot
-                }
-              ></div>
+                className={`${classes.presence_dot} ${
+                  socketConnected && classes.presence_online
+                }`}
+              />
               <Avatar alt={user?.firstName} src={user?.profilePic}>
                 {user?.firstName[0]}
               </Avatar>

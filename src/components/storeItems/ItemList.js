@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Typography } from "@mui/material";
 import { makeStyles } from "@material-ui/core";
+// import { makeStyles } from "@mui/styles";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
@@ -58,8 +59,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const apiUrl = process.env.REACT_APP_API_URL;
-
 export default function ItemList({ items = [], preview = true, role = "" }) {
   const classes = useStyles();
 
@@ -70,7 +69,7 @@ export default function ItemList({ items = [], preview = true, role = "" }) {
           <Card className={classes.card} key={item.id}>
             <CardMedia
               className={classes.media}
-              image={apiUrl + item.imageUrl}
+              image={item.imageUrl}
               title={item.name}
             />
             <CardContent className={classes.content}>

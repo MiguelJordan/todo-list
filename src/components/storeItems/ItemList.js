@@ -69,7 +69,11 @@ export default function ItemList({ items = [], preview = true, role = "" }) {
           <Card className={classes.card} key={item.id}>
             <CardMedia
               className={classes.media}
-              image={item.imageUrl}
+              image={
+                process.env.NODE_ENV == "production"
+                  ? item.imageUrl
+                  : process.env.REACT_APP_API_URL + item.imageUrl
+              }
               title={item.name}
             />
             <CardContent className={classes.content}>

@@ -12,8 +12,11 @@ export default function Auth({ page, roles = [] }) {
   if (user && roles.includes(user?.role)) return page;
 
   // if user is auth but no rights
-  if (user) return <Navigate to={"/"} />;
+  if (user) return <Navigate to={`/${user?.role ?? ""}`} />;
 
+  // if user not logged in and page
+  // is protected from logged in users
+  // pages like login, sigin, etc.
   if (!roles.length) return page;
 
   // redirect to login otherwise

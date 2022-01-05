@@ -15,7 +15,6 @@ const TrCProvider = ({ children }) => {
 
     // return translation or the last key;
     // which is the actual word or phrase to be translated
-
     return (
       translateNested(language, keys) ??
       translateNested(fallback, keys) ??

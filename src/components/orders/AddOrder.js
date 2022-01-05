@@ -36,6 +36,7 @@ export default function AddOrder() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
 
     if (!orderInfo.tableName) return setError("Invalid table name");
 
@@ -43,10 +44,9 @@ export default function AddOrder() {
       return setError("Invalid consumption point");
     }
 
-    if (orderInfo.balanceForward < 0)
+    if (orderInfo.balanceForward < 0) {
       return setError("Invalid balance forward");
-
-    setError("");
+    }
 
     // request order creation
     const res = await post(apiUrl + "/orders", orderInfo);
@@ -162,9 +162,7 @@ export default function AddOrder() {
         <TextField
           required
           fullWidth
-          inputProps={{
-            className: classes.inputText,
-          }}
+          inputProps={{ className: classes.inputText }}
           type="text"
           name="consumptionPoint"
           variant="standard"

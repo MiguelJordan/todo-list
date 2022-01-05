@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 import { Button, Typography } from "@mui/material";
 import { makeStyles } from "@material-ui/core";
-// import { makeStyles } from "@mui/styles";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
@@ -9,6 +8,8 @@ import { useParams } from "react-router-dom";
 
 import Dropdown from "../subComponents/Dropdown";
 import SnackBar from "../subComponents/SnackBar";
+
+import { TrContext } from "../../contexts/TranslationContext";
 
 import { capitalise } from "../../functions/data";
 import { OrderContext } from "../../contexts/OrderContext";
@@ -63,6 +64,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ItemList({ items = [], preview = true, role = "" }) {
+  const { t } = useContext(TrContext);
   const classes = useStyles();
   const { findOrder } = useContext(OrderContext);
 
@@ -120,7 +122,7 @@ export default function ItemList({ items = [], preview = true, role = "" }) {
     <div className={classes.container}>
       <SnackBar msg={msg.name} color={msg.color} open={Open} close={setOpen} />
       {items.length !== 0 ? (
-        items.map((item, id) => (
+        items.map((item, index) => (
           <Card className={classes.card} key={item.id}>
             <CardMedia
               className={classes.media}
@@ -150,13 +152,14 @@ export default function ItemList({ items = [], preview = true, role = "" }) {
                 className={classes.formControl}
                 onSubmit={(e) => handleAdd(items[id], e)}
               >
-                <label>Prix: </label>
-
-                <Dropdown values={item.prices} />
-
+                <Dropdown
+                  label={t("compo.item.price")}
+                  labelId={`store-item-${item.id ?? index}`}
+                  values={item.prices}
+                />
                 <br />
                 <br />
-                <label htmlFor="">Quantite En Stock : </label>
+                <label htmlFor="">{t("compo.item.quantity")}: </label>
                 <output
                   type="number"
                   style={{
@@ -201,7 +204,7 @@ export default function ItemList({ items = [], preview = true, role = "" }) {
                       variant="outlined"
                       style={{ border: "4px solid #2B4362" }}
                     >
-                      Ajouter
+                      {t("compo.item.add-btn")}
                     </Button>
                   </>
                 )}
@@ -217,7 +220,9 @@ export default function ItemList({ items = [], preview = true, role = "" }) {
           </Card>
         ))
       ) : (
-        <h2 style={{ marginTop: "100px" }}>No Item Found</h2>
+        <h2 style={{ marginTop: "100px" }}>
+          {t("pages.waiter.items.not-found")}
+        </h2>
       )}
     </div>
   );

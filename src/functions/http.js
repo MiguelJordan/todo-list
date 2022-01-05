@@ -1,4 +1,4 @@
-export const get = async (url, params = {}) => {
+export const get = async ({ url, params = {} }) => {
   try {
     const reqUrl = new URL(url);
 
@@ -9,7 +9,7 @@ export const get = async (url, params = {}) => {
   }
 };
 
-export const post = async (url, body = {}) => {
+export const post = async ({ url, body = {} }) => {
   try {
     return await (
       await fetch(url, {

@@ -31,7 +31,7 @@ const OrderContextProvider = ({ children }) => {
       };
     }
 
-    const _orders = await get(apiUrl + "/orders", query);
+    const _orders = await get({ url: apiUrl + "/orders", params: query });
 
     if (_orders?.error) return console.log(_orders?.error);
     console.log("Orders", _orders);
@@ -48,7 +48,7 @@ const OrderContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (!["admin", "waiter"].includes(user?.role)) return;
+    if (!["waiter"].includes(user?.role)) return;
     // if (!["admin", "cashier", "waiter"].includes(user?.role)) return;
     getOrders();
   }, [user]);

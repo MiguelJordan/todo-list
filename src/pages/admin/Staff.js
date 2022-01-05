@@ -57,7 +57,7 @@ export default function Staff() {
       <div
         style={{
           maxWidth: "500px",
-          minWidth: "330px",
+          minWidth: "300px",
           height: "68vh",
           overflowY: "auto",
         }}

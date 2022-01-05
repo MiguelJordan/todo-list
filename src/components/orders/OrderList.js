@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core";
 // import { useNavigate } from "react-router-dom";
 
 import DoneIcon from "@mui/icons-material/Done";
+import { TextField } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -52,6 +53,10 @@ const useStyles = makeStyles((theme) => ({
       height: "75vh",
     },
   },
+  inputText: {
+    color: "black",
+    fontSize: 20,
+  },
 }));
 
 export default function OrderList({ role = "", array = [] }) {
@@ -79,13 +84,28 @@ export default function OrderList({ role = "", array = [] }) {
                 <span
                   style={{
                     fontSize: 28,
-                    color: "#001D42",
+                    color: "black",
                     textAlign: "left",
                   }}
                 >
-                  {role === "waiter" || role === "cashier"
-                    ? `Table: ${order.tableName}`
-                    : ` Serveur: ${order.waiter.name}`}
+                  <TextField
+                    variant="standard"
+                    label={
+                      role === "waiter" || role === "cashier"
+                        ? `Table`
+                        : `Serveur`
+                    }
+                    value={
+                      role === "waiter" || role === "cashier"
+                        ? order.tableName
+                        : order.waiter.name
+                    }
+                    inputProps={{
+                      className: classes.inputText,
+                      readOnly: true,
+                    }}
+                    style={{ color: "black", fontSize: 20 }}
+                  />
                 </span>
 
                 <span
@@ -105,7 +125,7 @@ export default function OrderList({ role = "", array = [] }) {
                 color="gray"
                 style={{
                   color: "#B3B3B3",
-                  height: 2,
+                  height: 0.5,
                   marginTop: "5px",
                   alignSelf: "center",
                 }}
@@ -127,7 +147,7 @@ export default function OrderList({ role = "", array = [] }) {
                     alignSelf: "flex-start",
                   }}
                 >
-                  {order.drink ? `Boisson: ${order.drink}` : "Boisson:"}
+                  {order.drink ? `Produit: ${order.drink}` : "Produit:"}
                 </span>
 
                 <span
@@ -138,7 +158,7 @@ export default function OrderList({ role = "", array = [] }) {
                     alignSelf: "flex-start",
                   }}
                 >
-                  {order.meal ? `Repas: ${order.meal}` : "Repas:"}
+                  {order.meal ? `Cout: ${order.meal}` : "Cout:"}
                 </span>
               </div>
               {order.isPaid && (

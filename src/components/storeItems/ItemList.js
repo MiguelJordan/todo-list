@@ -5,8 +5,10 @@ import { makeStyles } from "@material-ui/core";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
+import { useParams } from "react-router-dom";
 
 import Dropdown from "../subComponents/Dropdown";
+import SnackBar from "../subComponents/SnackBar";
 
 import { capitalise } from "../../functions/data";
 
@@ -62,10 +64,47 @@ const useStyles = makeStyles((theme) => ({
 export default function ItemList({ items = [], preview = true, role = "" }) {
   const classes = useStyles();
 
+  let { id } = useParams();
+
+  const [Open, setOpen] = useState(false);
+  const [msg, setMsg] = useState({
+    name: "Item Added Successfully",
+    color: "success",
+  });
+
+  const [itemPrice, setItemPrice] = useState("");
+  const [itemQuantity, setItemQuantity] = useState();
+  const [itemOffer, setItemOffer] = useState("Non");
+
+  const handleAdd = (item) => {
+    let itemInfo = {
+      name: item.name,
+      quantity: itemQuantity,
+      offer: itemOffer,
+      price: itemPrice,
+      category: item.category,
+      family: item.family,
+    };
+    console.log(itemInfo);
+    if (
+      itemInfo.quantity > item.quantity ||
+      itemInfo.quantity < 1 ||
+      !itemInfo.quantity
+    ) {
+      setMsg({ name: "Invalid Quantity", color: "error" });
+      setOpen(true);
+      console.log(msg.name);
+    } else {
+      setMsg({ name: "Product Added", color: "success" });
+      setOpen(true);
+      console.log(msg.name);
+    }
+  };
+
   return (
     <div className={classes.container}>
       {items.length !== 0 ? (
-        items.map((item) => (
+        items.map((item, id) => (
           <Card className={classes.card} key={item.id}>
             <CardMedia
               className={classes.media}
@@ -89,7 +128,11 @@ export default function ItemList({ items = [], preview = true, role = "" }) {
               </Typography>
               <form className={classes.formControl}>
                 <label>Prix: </label>
-                <Dropdown values={item.prices} defaultVal={item.prices[0]} />
+                <Dropdown
+                  values={item.prices}
+                  defaultVal={item.prices[0]}
+                  onchange={setItemPrice}
+                />
                 <br />
                 <br />
                 <label htmlFor="">Quantite En Stock : </label>
@@ -111,10 +154,17 @@ export default function ItemList({ items = [], preview = true, role = "" }) {
                   <>
                     <br />
                     <br />
+                    <label>Offre: </label>
+                    <Dropdown values={["Non", "Oui"]} onchange={setItemOffer} />
+                    <br />
+                    <br />
                     <label htmlFor="">Quantite :</label>
                     <input
                       width={2}
                       type="number"
+                      name="quantity"
+                      min={0}
+                      max={item.quantity}
                       style={{
                         width: "30px",
                         marginLeft: 8,
@@ -122,12 +172,14 @@ export default function ItemList({ items = [], preview = true, role = "" }) {
                         color: "#FFFFFF",
                       }}
                       className={classes.inp}
+                      onChange={(e) => setItemQuantity(e.target.value)}
                     />
                     <br />
                     <br />
                     <Button
                       variant="outlined"
                       style={{ border: "4px solid #2B4362" }}
+                      onClick={() => handleAdd(item)}
                     >
                       Ajouter
                     </Button>
@@ -147,6 +199,8 @@ export default function ItemList({ items = [], preview = true, role = "" }) {
       ) : (
         <h2 style={{ marginTop: "100px" }}>No Item Found</h2>
       )}
+
+      {Open && <SnackBar msg={msg.name} color={msg.color} />}
     </div>
   );
 }

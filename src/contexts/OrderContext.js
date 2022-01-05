@@ -43,13 +43,17 @@ const OrderContextProvider = ({ children }) => {
     setOrders(getUnique([...orders, ...data]));
   };
 
+  const findOrder = ({ key = "id", value = "" }) => {
+    return orders.find((order) => order[key] == value);
+  };
+
   useEffect(() => {
     if (!["admin", "waiter"].includes(user?.role)) return;
     // if (!["admin", "cashier", "waiter"].includes(user?.role)) return;
     getOrders();
   }, [user]);
 
-  const context = { orders, updateOrders };
+  const context = { orders, findOrder, updateOrders };
   return (
     <OrderContext.Provider value={context}>{children}</OrderContext.Provider>
   );

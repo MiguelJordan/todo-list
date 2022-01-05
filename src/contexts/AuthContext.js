@@ -26,7 +26,7 @@ const AuthContextProvider = ({ children }) => {
 
     try {
       const data = await post({
-        url: apiUrl + "/accounts/login",
+        url: `${apiUrl}/accounts/login`,
         body: credentials,
       });
 
@@ -46,7 +46,7 @@ const AuthContextProvider = ({ children }) => {
     let res;
 
     try {
-      const data = await get({ url: apiUrl + "/accounts/logout" });
+      const data = await get({ url: `${apiUrl}/accounts/logout` });
 
       if (data.success) removeUser();
       res = data;

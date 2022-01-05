@@ -31,7 +31,7 @@ const OrderContextProvider = ({ children }) => {
       };
     }
 
-    const _orders = await get({ url: apiUrl + "/orders", params: query });
+    const _orders = await get({ url: `${apiUrl}/orders`, params: query });
 
     if (_orders?.error) return console.log(_orders?.error);
     console.log("Orders", _orders);

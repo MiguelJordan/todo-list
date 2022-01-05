@@ -10,14 +10,10 @@ export default function Dropdown({
 }) {
   const [value, setValue] = useState("");
 
-  if (values) {
-    onchange(values[0]);
-  }
-
   return (
     <Select
       variant="standard"
-      style={{ color: "black" }}
+      style={{ color: "#B3B3B3" }}
       value={value || defaultVal || values[0]}
       onChange={(e) => {
         if (field) onchange([{ field: e.target.value }]);

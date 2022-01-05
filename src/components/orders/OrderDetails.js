@@ -40,8 +40,6 @@ const useStyles = makeStyles((theme) => ({
   },
   table: {
     maxHeight: 250,
-    backgroundColor: "blue",
-
     //minWidth: 400,
     [theme.breakpoints.down("sm")]: {
       maxWidth: 670,
@@ -109,6 +107,9 @@ const useStyles = makeStyles((theme) => ({
   text: {
     color: "#B3B3B3",
   },
+  inputText: {
+    color: "#FFFFFF",
+  },
 }));
 
 export default function OrderDetails({
@@ -132,8 +133,8 @@ export default function OrderDetails({
   const handleCloseUser = () => {
     setAnchorElUser(null);
   };
-  const DeleteItem = () => {
-    console.log("Delete");
+  const DeleteItem = (item) => {
+    console.log("Delete", item);
   };
 
   const ModifyItem = () => {
@@ -151,12 +152,19 @@ export default function OrderDetails({
   };
 
   const familly = Object.keys(list);
+  let total = 0;
+
+  familly.map((fam) => {
+    list[fam].map((item) => {
+      total += item.total;
+    });
+  });
 
   const option = [
     {
       name: "Supprimer",
       color: "#FF0000",
-      func: DeleteItem,
+      func: (item) => DeleteItem(item),
       Icon: <DeleteRounded />,
     },
     {
@@ -168,7 +176,7 @@ export default function OrderDetails({
   ];
 
   return (
-    <Container>
+    <div style={{ display: "flex", flexFlow: "column" }}>
       <div
         style={{
           display: "grid",
@@ -198,75 +206,25 @@ export default function OrderDetails({
               </AccordionSummary>
               <AccordionDetails className={classes.accordion}>
                 <TableContainer className={classes.table}>
-                  <Table
-                    stickyHeader
-                    aria-label="simple table"
-                    className={classes.accordion}
-                  >
-                    <TableHead>
-                      <TableRow>
-                        <TableCell
-                          align="center"
-                          style={{
-                            backgroundColor: "#28405F",
+                  <form onSubmit={(e) => console.log(e)}>
+                    <Table
+                      stickyHeader
+                      aria-label="simple table"
+                      className={classes.accordion}
+                    >
+                      <TableHead>
+                        <TableRow>
+                          <TableCell
+                            align="center"
+                            style={{
+                              backgroundColor: "#28405F",
 
-                            color: "#B3B3B3",
-                            fontSize: 20,
-                          }}
-                        >
-                          Nom
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          style={{
-                            backgroundColor: "#28405F",
-                            fontSize: 20,
-                            color: "#B3B3B3",
-                          }}
-                        >
-                          Categorie
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          style={{
-                            backgroundColor: "#28405F",
-                            fontSize: 20,
-                            color: "#B3B3B3",
-                          }}
-                        >
-                          Quantite
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          style={{
-                            backgroundColor: "#28405F",
-                            fontSize: 20,
-                            color: "#B3B3B3",
-                          }}
-                        >
-                          Unite_de_mesure&nbsp;
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          style={{
-                            backgroundColor: "#28405F",
-                            fontSize: 20,
-                            color: "#B3B3B3",
-                          }}
-                        >
-                          Prix&nbsp;
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          style={{
-                            backgroundColor: "#28405F",
-                            fontSize: 20,
-                            color: "#B3B3B3",
-                          }}
-                        >
-                          Total&nbsp;
-                        </TableCell>
-                        {role === "waiter" && (
+                              color: "#B3B3B3",
+                              fontSize: 20,
+                            }}
+                          >
+                            Nom
+                          </TableCell>
                           <TableCell
                             align="center"
                             style={{
@@ -275,117 +233,175 @@ export default function OrderDetails({
                               color: "#B3B3B3",
                             }}
                           >
-                            Action&nbsp;
+                            Categorie
                           </TableCell>
-                        )}
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {list[fam].map((row) => (
-                        <TableRow
-                          key={row.name}
-                          sx={{
-                            "&:last-child td, &:last-child th": {
-                              border: 0,
-                            },
-                          }}
-                        >
                           <TableCell
-                            component="th"
-                            scope="row"
                             align="center"
                             style={{
-                              color: "#7f8893",
-                              fontSize: 25,
+                              backgroundColor: "#28405F",
+                              fontSize: 20,
+                              color: "#B3B3B3",
                             }}
                           >
-                            {row.name}
-                          </TableCell>
-                          <TableCell
-                            component="th"
-                            scope="row"
-                            align="center"
-                            style={{ color: "#7f8893", fontSize: 25 }}
-                          >
-                            {row.category}
+                            Quantite
                           </TableCell>
                           <TableCell
                             align="center"
-                            style={{ color: "#7f8893", fontSize: 25 }}
+                            style={{
+                              backgroundColor: "#28405F",
+                              fontSize: 20,
+                              color: "#B3B3B3",
+                            }}
                           >
-                            {row.quantity}
+                            Unite_de_mesure&nbsp;
                           </TableCell>
                           <TableCell
                             align="center"
-                            style={{ color: "#7f8893", fontSize: 25 }}
+                            style={{
+                              backgroundColor: "#28405F",
+                              fontSize: 20,
+                              color: "#B3B3B3",
+                            }}
                           >
-                            {row.measureUnit}
+                            Prix&nbsp;
                           </TableCell>
                           <TableCell
                             align="center"
-                            style={{ color: "#B3B3B3", fontSize: 25 }}
+                            style={{
+                              backgroundColor: "#28405F",
+                              fontSize: 20,
+                              color: "#B3B3B3",
+                            }}
                           >
-                            {row.price}
-                          </TableCell>
-                          <TableCell
-                            align="center"
-                            style={{ color: "#B3B3B3", fontSize: 25 }}
-                          >
-                            {row.total}
+                            Total&nbsp;
                           </TableCell>
                           {role === "waiter" && (
                             <TableCell
                               align="center"
-                              style={{ color: "#B3B3B3", fontSize: 25 }}
+                              style={{
+                                backgroundColor: "#28405F",
+                                fontSize: 20,
+                                color: "#B3B3B3",
+                              }}
                             >
-                              <Tooltip title="Action">
-                                <IconButton onClick={handleOpenUser}>
-                                  <Avatar
-                                    alt={row.name.toUpperCase()}
-                                    src="/broken-image.jpg"
-                                  />
-                                </IconButton>
-                              </Tooltip>
-                              <Menu
-                                anchorEl={anchorElUser}
-                                anchorOrigin={{
-                                  vertical: "top",
-                                  horizontal: "right",
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                  vertical: "top",
-                                  horizontal: "right",
-                                }}
-                                open={Boolean(anchorElUser)}
-                                onClose={handleCloseUser}
-                              >
-                                {option.map((item) => (
-                                  <MenuItem key={item.name} onClick={item.func}>
-                                    <ListItemIcon
-                                      style={{
-                                        color: `${item.color}`,
-                                      }}
-                                    >
-                                      {item.Icon}
-                                    </ListItemIcon>
-                                    <Typography
-                                      textAlign={"center"}
-                                      style={{
-                                        color: "white",
-                                      }}
-                                    >
-                                      {item.name}
-                                    </Typography>
-                                  </MenuItem>
-                                ))}
-                              </Menu>
+                              Action&nbsp;
                             </TableCell>
                           )}
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
+                      </TableHead>
+                      <TableBody>
+                        {list[fam].map((row) => (
+                          <TableRow
+                            key={row.name}
+                            sx={{
+                              "&:last-child td, &:last-child th": {
+                                border: 0,
+                              },
+                            }}
+                          >
+                            <TableCell
+                              component="th"
+                              scope="row"
+                              align="center"
+                              style={{
+                                color: "#7f8893",
+                                fontSize: 25,
+                              }}
+                            >
+                              {row.name}
+                            </TableCell>
+                            <TableCell
+                              component="th"
+                              scope="row"
+                              align="center"
+                              style={{ color: "#7f8893", fontSize: 25 }}
+                            >
+                              {row.category}
+                            </TableCell>
+                            <TableCell
+                              align="center"
+                              style={{ color: "#7f8893", fontSize: 25 }}
+                            >
+                              {row.quantity}
+                            </TableCell>
+                            <TableCell
+                              align="center"
+                              style={{ color: "#7f8893", fontSize: 25 }}
+                            >
+                              {row.measureUnit}
+                            </TableCell>
+                            <TableCell
+                              align="center"
+                              style={{ color: "#B3B3B3", fontSize: 25 }}
+                            >
+                              {row.price}
+                            </TableCell>
+                            <TableCell
+                              align="center"
+                              style={{ color: "#B3B3B3", fontSize: 25 }}
+                            >
+                              {row.total}
+                            </TableCell>
+                            {role === "waiter" && (
+                              <TableCell
+                                align="center"
+                                style={{ color: "#B3B3B3", fontSize: 25 }}
+                              >
+                                <Tooltip title="Action">
+                                  <IconButton onClick={handleOpenUser}>
+                                    <Avatar
+                                      alt={row.name.toUpperCase()}
+                                      src="/broken-image.jpg"
+                                    />
+                                  </IconButton>
+                                </Tooltip>
+                                <Menu
+                                  anchorEl={anchorElUser}
+                                  anchorOrigin={{
+                                    vertical: "top",
+                                    horizontal: "right",
+                                  }}
+                                  keepMounted
+                                  transformOrigin={{
+                                    vertical: "top",
+                                    horizontal: "right",
+                                  }}
+                                  open={Boolean(anchorElUser)}
+                                  onClose={handleCloseUser}
+                                >
+                                  {option.map((item) => (
+                                    <MenuItem
+                                      key={item.name}
+                                      onClick={(e) =>
+                                        console.log(e.target.innerHTML, row)
+                                      }
+                                      type="submit"
+                                    >
+                                      <ListItemIcon
+                                        style={{
+                                          color: `${item.color}`,
+                                        }}
+                                      >
+                                        {item.Icon}
+                                      </ListItemIcon>
+                                      <Typography
+                                        textAlign={"center"}
+                                        style={{
+                                          color: "white",
+                                        }}
+                                      >
+                                        {item.name}
+                                      </Typography>
+                                    </MenuItem>
+                                  ))}
+                                </Menu>
+                              </TableCell>
+                            )}
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </form>
                 </TableContainer>
               </AccordionDetails>
             </Accordion>
@@ -571,6 +587,25 @@ export default function OrderDetails({
           </div>
         </div>
       )}
-    </Container>
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          marginBottom: "auto",
+          alignItems: "flex-end",
+        }}
+      >
+        <TextField
+          variant="standard"
+          label="Total"
+          inputProps={{
+            className: classes.inputText,
+            readOnly: true,
+          }}
+          value={total}
+        />
+      </div>
+    </div>
   );
 }

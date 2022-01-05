@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // components
 import ItemList from "../../components/storeItems/ItemList";
@@ -12,8 +13,11 @@ import { ItemContext } from "../../contexts/ItemContext";
 
 // functions
 import { filter, getList, groupData } from "../../functions/data";
+import { ArrowBack } from "@mui/icons-material";
+import { Button } from "@mui/material";
 
 export default function AddItems() {
+  const navigate = useNavigate();
   // const { user } = useContext(AuthContext);
   // const { t } = useContext(TrContext);
   const { items } = useContext(ItemContext);
@@ -58,6 +62,31 @@ export default function AddItems() {
 
   return (
     <>
+      <div
+        style={{
+          display: "flex",
+          marginTop: "10px",
+          position: "relative",
+
+          justifyContent: "flex-start",
+        }}
+      >
+        <Button onClick={() => navigate("/waiter/orders")}>
+          <ArrowBack />
+        </Button>
+        <span style={{ marginTop: "12px" }}>{"Toutes les Commandes"}</span>
+      </div>
+
+      <hr
+        width="100%"
+        color="gray"
+        height="2"
+        style={{
+          height: 0.1,
+          //marginLeft: "5%",
+          //marginRight: "10%",
+        }}
+      />
       <div
         style={{
           display: "flex",

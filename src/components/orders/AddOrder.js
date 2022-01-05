@@ -34,8 +34,6 @@ export default function AddOrder() {
   });
   const [error, setError] = useState("");
 
-  console.log(new Date().toDateString());
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 

@@ -76,7 +76,7 @@ const Page = () => {
         transform: "translate(-50%,-50%)",
         top: "50%",
         left: "50%",
-        height: "320px",
+        height: "350px",
       }}
     >
       <Avatar
@@ -85,6 +85,7 @@ const Page = () => {
           display: "flex",
           alignItems: "center",
           alignSelf: "center",
+          marginTop: "5px",
         }}
       >
         <LockCloseOutlined />

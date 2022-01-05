@@ -7,7 +7,6 @@ import { SocketContext } from "../../contexts/SocketContext";
 import { post } from "../../functions/http";
 
 import { useNavigate } from "react-router-dom";
-import Dropdown from "../subComponents/Dropdown";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -25,11 +24,9 @@ export default function AddOrder() {
 
   const classes = useStyles();
 
-  const [Cpt, setCpt] = useState("snack bar");
-
   const [orderInfo, setOrderInfo] = useState({
     tableName: "",
-    consumptionPoint: Cpt,
+    consumptionPoint: "",
     balanceForward: "",
     companyCode: user.company.code,
     unitCode: user.workUnit.code,
@@ -37,46 +34,45 @@ export default function AddOrder() {
   });
   const [error, setError] = useState("");
 
+  console.log(new Date().toDateString());
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(orderInfo);
-    console.log(Cpt);
+    if (!orderInfo.tableName) return setError("Invalid table name");
 
-    // if (!orderInfo.tableName) return setError("Invalid table name");
+    if (!orderInfo.consumptionPoint) {
+      return setError("Invalid consumption point");
+    }
 
-    // if (!orderInfo.consumptionPoint) {
-    //   return setError("Invalid consumption point");
-    // }
+    if (orderInfo.balanceForward < 0)
+      return setError("Invalid balance forward");
 
-    // if (orderInfo.balanceForward < 0)
-    //   return setError("Invalid balance forward");
+    setError("");
 
-    // setError("");
+    // request order creation
+    const res = await post(apiUrl + "/orders", orderInfo);
 
-    // // request order creation
-    // const res = await post(apiUrl + "/orders", orderInfo);
+    // handle order creation errors
+    if (res?.error) return setError(res.error);
 
-    // // handle order creation errors
-    // if (res?.error) return setError(res.error);
+    navigate(`/waiter/orders/add/${res.insertedId}`);
 
-    // navigate(`/waiter/orders/add/${res.insertedId}`);
+    console.log(res);
 
-    // console.log(res);
-
-    // // sending order created event
-    // sendEvent({
-    //   name: "cE-order-created",
-    //   props: {
-    //     date: true,
-    //     companyCode: user.company.code,
-    //     source: "waiter",
-    //     startTime: new Date(),
-    //     unitCode: user.workUnit.code,
-    //     waiterId: user.id,
-    //   },
-    //   rooms: [user.workUnit.code],
-    // });
+    // sending order created event
+    sendEvent({
+      name: "cE-order-created",
+      props: {
+        date: true,
+        companyCode: user.company.code,
+        source: "waiter",
+        startTime: new Date(),
+        unitCode: user.workUnit.code,
+        waiterId: user.id,
+      },
+      rooms: [user.workUnit.code],
+    });
   };
 
   return (
@@ -165,8 +161,24 @@ export default function AddOrder() {
           }
           label="Balance Forward"
         />
-
-        <Dropdown values={["snack bar", "cabaret"]} onchange={setCpt} />
+        <TextField
+          required
+          fullWidth
+          inputProps={{
+            className: classes.inputText,
+          }}
+          type="text"
+          name="consumptionPoint"
+          variant="standard"
+          style={{ color: "black", marginBottom: "5px" }}
+          onChange={(e) =>
+            setOrderInfo({
+              ...orderInfo,
+              [e.target.name]: e.target.value.trim(),
+            })
+          }
+          label=" consumptionPoint"
+        />
         <Button variant="contained" type="submit" style={{ marginTop: "15px" }}>
           Ajouter
         </Button>

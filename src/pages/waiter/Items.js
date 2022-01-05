@@ -7,7 +7,7 @@ import Dropdown from "../../components/subComponents/Dropdown";
 
 // contexts
 // import { AuthContext } from "../../contexts/AuthContext";
-// import { TrContext } from "../../contexts/TranslationContext";
+import { TrContext } from "../../contexts/TranslationContext";
 import { ItemContext } from "../../contexts/ItemContext";
 
 // functions
@@ -15,7 +15,7 @@ import { filter, getList, groupData } from "../../functions/data";
 
 export default function Items() {
   // const { user } = useContext(AuthContext);
-  // const { t } = useContext(TrContext);
+  const { t } = useContext(TrContext);
   const { items } = useContext(ItemContext);
   const [searchVal, setSearchVal] = useState("");
 
@@ -68,22 +68,19 @@ export default function Items() {
           margin: "15px 0",
         }}
       >
-        {/* <span>
-          Family:{" "}
-          <Dropdown
-            values={families}
-            onchange={(value) => setFam(value)}
-            defaultVal={family}
-          />
-        </span> */}
-        <span>
-          Category:{" "}
-          <Dropdown
-            values={categories}
-            onchange={(value) => setCat(value)}
-            defaultVal={""}
-          />
-        </span>
+        <Dropdown
+          translated={true}
+          label={t("pages.waiter.items.dropdown.families")}
+          labelId="waiter-items-families"
+          values={families}
+          onchange={(value) => setFam(value)}
+        />
+        <Dropdown
+          label={t("pages.waiter.items.dropdown.categories")}
+          labelId="waiter-items-categories"
+          values={categories}
+          onchange={(value) => setCat(value)}
+        />
         <Search onChange={setSearchVal} />
       </div>
       <ItemList items={filterArray} role="waiter" />

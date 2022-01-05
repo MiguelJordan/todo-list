@@ -161,6 +161,7 @@ const Nav = ({ links = [], showLoginBtn = true }) => {
                         width: "95%",
                         marginTop: "-10px",
                         backgroundColor: "hsl(184, 92%, 41%)",
+                        borderRadius: "5px 5px 0 0",
                       }}
                     />
                   )}

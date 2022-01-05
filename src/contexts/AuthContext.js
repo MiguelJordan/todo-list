@@ -1,5 +1,7 @@
 import { createContext, useState } from "react";
 
+import { get, post } from "../functions/http";
+
 const apiUrl = process.env.REACT_APP_API_URL;
 
 export const AuthContext = createContext();
@@ -23,13 +25,10 @@ const AuthContextProvider = ({ children }) => {
     let res;
 
     try {
-      const data = await (
-        await fetch(apiUrl + "/accounts/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(credentials),
-        })
-      ).json();
+      const data = await post({
+        url: apiUrl + "/accounts/login",
+        body: credentials,
+      });
 
       if (data.error) throw new Error(data.error);
 
@@ -47,7 +46,7 @@ const AuthContextProvider = ({ children }) => {
     let res;
 
     try {
-      const data = await (await fetch(apiUrl + "/accounts/logout")).json();
+      const data = await get({ url: apiUrl + "/accounts/logout" });
 
       if (data.success) removeUser();
       res = data;

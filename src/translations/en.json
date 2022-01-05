@@ -1,5 +1,13 @@
 {
   "compo": {
+    "item": {
+      "add-btn": "Add",
+      "price": "Prices",
+      "quantity": "Quantity"
+    },
+    "search": {
+      "placeholder": "Search..."
+    },
     "nav": {
       "login_btn": "Log In",
       "account_menu": { "tooltip": "Account settings" }
@@ -13,10 +21,23 @@
     },
     "home": { "greeting": "Welcome", "page_title": "Home Page" },
     "login": { "title": "Log In" },
-    "waiter": { "items": "Items' Page", "orders": "Orders' Page" }
+    "waiter": {
+      "items": {
+        "dropdown": {
+          "categories": "Categories",
+          "families": "Families"
+        },
+        "not-found": "No such item found"
+      },
+      "orders": "Orders' Page"
+    }
   },
   "_var": {
     "*": {
+      "dropdown-translated": {
+        "drinks": "Drinks",
+        "meals": "Meals"
+      },
       "menu": {
         "dashboard": { "text": "Dashboard" },
         "logout": { "text": "Logout" }
@@ -40,8 +61,6 @@
   "server_err": {
     "Access Denied": "Access Denied",
     "Cashier not recognised in specified work unit": "Cashier not recognised in specified work unit",
-    "Company must have a name": "Company must have a name",
-    "Company must have an id": "Company must have an id",
     "Id already taken": "Id already taken",
     "Insufficient payment": "Insufficient payment",
     "Insufficient stock quantity": "Insufficient stock quantity",
@@ -69,7 +88,7 @@
     "Invalid role": "Invalid role",
     "Invalid store id": "Invalid store id",
     "Invalid store type": "Invalid store type",
-    "Invalid table name": "Invalid table name",
+    "Invalid table name": "Invalid table name/number",
     "Invalid unit code": "Invalid unit code",
     "Invalid user id": "Invalid user id",
     "Invalid waiter id": "Invalid waiter id",

@@ -85,18 +85,19 @@ export default function ItemList({ items = [], preview = true, role = "" }) {
 
     setMsg({ name: "", color: "" });
     console.log(e);
+
     //regroup data
     let itemInfo = {
       offer: Offer,
-      quantity: e.target[3].value,
+      quantity: e.target[5].value,
       name: item.name,
       price: e.target[0].defaultValue,
       category: item.category,
       family: item.family,
-      total: e.target[0].defaultValue * e.target[3].value,
+      total: e.target[0].defaultValue * e.target[5].value,
       measureUnit: item.measureUnit,
     };
-
+    console.log(itemInfo);
     setOpen(true);
 
     //validate data
@@ -150,7 +151,7 @@ export default function ItemList({ items = [], preview = true, role = "" }) {
               </Typography>
               <form
                 className={classes.formControl}
-                onSubmit={(e) => handleAdd(items[id], e)}
+                onSubmit={(e) => handleAdd(items[index], e)}
               >
                 <Dropdown
                   label={t("compo.item.price")}
@@ -178,8 +179,14 @@ export default function ItemList({ items = [], preview = true, role = "" }) {
                   <>
                     <br />
                     <br />
-                    <label>Offre: </label>
-                    <Dropdown values={["Non", "Oui"]} onchange={setOffer} />
+
+                    <Dropdown
+                      label={"Offre"}
+                      labelId={`store-item-${item.id ?? index}`}
+                      values={["Non", "Oui"]}
+                      onchange={setOffer}
+                    />
+
                     <br />
                     <br />
                     <label htmlFor="">Quantite :</label>

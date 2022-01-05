@@ -70,7 +70,6 @@ const Page = () => {
         transform: "translate(-50%,-50%)",
         top: "50%",
         left: "50%",
-        height: "350px",
       }}
     >
       <Avatar
@@ -79,7 +78,7 @@ const Page = () => {
           display: "flex",
           alignItems: "center",
           alignSelf: "center",
-          marginTop: "5px",
+          marginTop: "15px",
         }}
       >
         <LockCloseOutlined />
@@ -103,7 +102,7 @@ const Page = () => {
           display: "flex",
           flexFlow: "column",
           justifyContent: "center",
-          margin: "15px",
+          margin: "25px",
           color: "#B3B3B3",
           width: "70%",
         }}
@@ -117,7 +116,7 @@ const Page = () => {
               margin: "5px",
               display: "flex",
               justifyContent: "center",
-              marginBottom: "20px",
+              marginBottom: "15px",
             }}
           >
             <Typography variant="subtitle2" style={{ color: "black" }}>

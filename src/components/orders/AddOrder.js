@@ -7,6 +7,7 @@ import { SocketContext } from "../../contexts/SocketContext";
 import { post } from "../../functions/http";
 
 import { useNavigate } from "react-router-dom";
+import Dropdown from "../subComponents/Dropdown";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -26,7 +27,7 @@ export default function AddOrder() {
 
   const [orderInfo, setOrderInfo] = useState({
     tableName: "",
-    consumptionPoint: "",
+
     balanceForward: "",
     companyCode: user.company.code,
     unitCode: user.workUnit.code,
@@ -38,18 +39,20 @@ export default function AddOrder() {
     e.preventDefault();
     setError("");
 
-    if (!orderInfo.tableName) return setError("Invalid table name");
+    let order = { ...orderInfo, consumptionPoint: e.target[2].value };
 
-    if (!orderInfo.consumptionPoint) {
+    if (!order.tableName) return setError("Invalid table name");
+
+    if (!order.consumptionPoint) {
       return setError("Invalid consumption point");
     }
 
-    if (orderInfo.balanceForward < 0) {
+    if (order.balanceForward < 0) {
       return setError("Invalid balance forward");
     }
 
     // request order creation
-    const res = await post(apiUrl + "/orders", orderInfo);
+    const res = await post(apiUrl + "/orders", order);
 
     // handle order creation errors
     if (res?.error) return setError(res.error);
@@ -159,22 +162,13 @@ export default function AddOrder() {
           }
           label="Balance Forward"
         />
-        <TextField
-          required
-          fullWidth
-          inputProps={{ className: classes.inputText }}
-          type="text"
-          name="consumptionPoint"
+
+        <Dropdown
+          values={user.workUnit.consumptionPoints}
+          label="Consumption Point"
           variant="standard"
-          style={{ color: "black", marginBottom: "5px" }}
-          onChange={(e) =>
-            setOrderInfo({
-              ...orderInfo,
-              [e.target.name]: e.target.value.trim(),
-            })
-          }
-          label=" consumptionPoint"
         />
+
         <Button variant="contained" type="submit" style={{ marginTop: "15px" }}>
           Ajouter
         </Button>

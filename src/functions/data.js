@@ -1,10 +1,21 @@
+const toCapital = (word = "") => {
+  return word[0].toUpperCase() + word.slice(1).toLowerCase();
+};
+
 export const capitalise = (value) => {
   if (typeof value != "string") return value;
 
   value = value.trim();
   if (value == "") return value;
 
-  return value[0].toUpperCase() + value.slice(1).toLowerCase();
+  let _capitalised = "";
+
+  value.split(" ").forEach((word, index) => {
+    if (index != 0) _capitalised += " ";
+    _capitalised += toCapital(word);
+  });
+
+  return _capitalised;
 };
 
 export const filter = ({ data = [], criteria = "", value = "" }) => {

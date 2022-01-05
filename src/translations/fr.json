@@ -1,5 +1,13 @@
 {
   "compo": {
+    "item": {
+      "add-btn": "Ajouter",
+      "price": "Prix",
+      "quantity": "Quantité en stock"
+    },
+    "search": {
+      "placeholder": "Rechercher..."
+    },
     "nav": {
       "login_btn": "Connexion",
       "account_menu": { "tooltip": "Paramètres du compte" }
@@ -13,10 +21,23 @@
     },
     "home": { "greeting": "Bienvenue", "page_title": "Page D'accueil" },
     "login": { "title": "Connexion" },
-    "waiter": { "items": "Page des Produits", "orders": "Page des Commandes" }
+    "waiter": {
+      "items": {
+        "dropdown": {
+          "categories": "Catégories",
+          "families": "Familles"
+        },
+        "not-found": "Aucun élément de ce type n'a été trouvé"
+      },
+      "orders": "Page des Commandes"
+    }
   },
   "_var": {
     "*": {
+      "dropdown-translated": {
+        "drinks": "Boissons",
+        "meals": "Repas"
+      },
       "menu": {
         "dashboard": { "text": "Tableau de bord" },
         "logout": { "text": "Deconnexion" }
@@ -36,5 +57,59 @@
     "waiter": {
       "nav": { "items": "Produits", "orders": "Commandes" }
     }
+  },
+  "server_err": {
+    "Access Denied": "Accès refusé",
+    "Cashier not recognised in specified work unit": "Caissier non reconnu dans l'unité de travail spécifiée",
+    "Id already taken": "Identifiant déjà pris",
+    "Insufficient payment": "Paiement insuffisant",
+    "Insufficient stock quantity": "Quantité en stock insuffisante",
+    "Invalid balance carried forward": "Solde reporté invalide",
+    "Invalid Credentials": "Identifiants Invalides",
+    "Invalid category": "Catégorie invalide",
+    "Invalid cashier id": "Identifiant de caissier invalide",
+    "Invalid commission": "Commission invalide",
+    "Invalid commission ratio": "Taux de commission invalide",
+    "Invalid consumption point": "Point de consommation invalide",
+    "Invalid company code": "Code d'entreprise invalide",
+    "Invalid company id": "Identifiant d'entreprise invalide",
+    "Invalid company name": "Nom d'entreprise invalide",
+    "Invalid cost price": "Prix ​​d'achat invalide",
+    "Invalid discount": "Remise invalide",
+    "Invalid data source": "Source de données non valide",
+    "Invalid family": "Famille invalide",
+    "Invalid item name": "Nom de produit invalide",
+    "Invalid item id": "Identifiant de produit invalide",
+    "Invalid measure unit(s)": "Unité(s) de mesure non valide(s)",
+    "Invalid order id": "Identifiant de commande invalide",
+    "Invalid password": "Mot de passe incorrect",
+    "Invalid price": "Prix invalide",
+    "Invalid quantity": "Quantité invalide",
+    "Invalid role": "Rôle invalide",
+    "Invalid store id": "Identifiant de magasin non valide",
+    "Invalid store type": "Type de magasin non valide",
+    "Invalid table name": "Nom/numéro de table invalide",
+    "Invalid unit code": "Code d'unité invalide",
+    "Invalid user id": "identifiant d'utilisateur invalide",
+    "Invalid waiter id": "Identifiant de serveur(serveuse) invalide",
+    "Item is inaccessible": "Le produit est inaccessible",
+    "Name already taken": "Nom déjà pris",
+    "Not found cashier": "Caissier introuvable",
+    "Not found company": "Entreprise introuvable",
+    "Not found item": "Produit introuvable",
+    "Not found order": "Commande introuvable",
+    "Not found store": "Magasin introuvable",
+    "Not found user": "Utilisateur introuvable",
+    "Not found waiter": "Serveur(Serveuse) introuvable",
+    "Not found work unit": "Unité de travail introuvable",
+    "Nothing to update": "Rien à mettre à jour",
+    "Please use either date or period. Not both": "Veuillez utiliser une date ou une période. Pas les deux",
+    "Sorry only cashiers can validate orders": "Désolé seuls les caissiers peuvent valider les commandes",
+    "Sorry only waiters can take orders": "Désolé seuls les serveurs(serveuse) peuvent prendre les commandes",
+    "Sorry, this item is not modifiable": "Désolé, ce produit n'est pas modifiable",
+    "This bill costs 0.00 or less": "Cette facture coûte 0,00 ou moins",
+    "This order already has this item": "Cette commande a déjà ce produit",
+    "User not recognised in specified work unit": "Utilisateur non reconnu dans l'unité de travail spécifiée",
+    "Waiter not recognised in specified work unit": "Serveur(Serveuse) non reconnu dans l'unité de travail spécifiée"
   }
 }

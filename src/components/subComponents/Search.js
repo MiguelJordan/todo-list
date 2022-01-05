@@ -1,7 +1,9 @@
-import React from "react";
+import { useContext } from "react";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
+
+import { TrContext } from "../../contexts/TranslationContext";
 
 const _search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -39,13 +41,14 @@ export default function Search({
   list = [],
   searchProps = [{ name: "", method: () => {} }],
 }) {
+  const { t } = useContext(TrContext);
   return (
     <_search>
       <SearchIconWrapper>
         <SearchIcon />
       </SearchIconWrapper>
       <StyledInputBase
-        placeholder="Search…"
+        placeholder={t("compo.search.placeholder")}
         inputProps={{ "aria-label": "search" }}
         onChange={(event) => onChange(event.target.value)}
       />

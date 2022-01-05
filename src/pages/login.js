@@ -22,7 +22,6 @@ const Page = () => {
   const classes = useStyles();
 
   const [serverError, setServerError] = useState("");
-  const [rootRole, setRootRole] = useState("");
   const [disabled] = useState(false);
   const navigate = useNavigate();
 
@@ -38,6 +37,7 @@ const Page = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setServerError("");
 
     // validate data
     if (!user.id || !user.password) {
@@ -48,15 +48,9 @@ const Page = () => {
     const res = await login(user);
 
     // verify response
-    if (res.error) {
-      return setServerError(res.error);
-    }
+    if (res.error) return setServerError(res.error);
 
-    // log user in if successful
-    setRootRole("");
-    setServerError("");
-
-    // get routes and redirects
+    // redirect to dashboard
     return navigate(`/${res.role}`);
   };
 
@@ -126,7 +120,7 @@ const Page = () => {
             }}
           >
             <Typography variant="subtitle2" style={{ color: "black" }}>
-              {serverError}
+              {t(`server_err.${serverError}`)}
             </Typography>
           </div>
         )}

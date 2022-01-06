@@ -29,7 +29,6 @@ export default function AddOrderForm() {
 
   const [orderInfo, setOrderInfo] = useState({
     tableName: "",
-
     balanceForward: "",
     companyCode: user.company.code,
     unitCode: user.workUnit.code,

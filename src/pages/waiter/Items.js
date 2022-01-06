@@ -16,10 +16,9 @@ import { filter, getList, groupData } from "../../functions/data";
 export default function Items() {
   // const { user } = useContext(AuthContext);
   const { t } = useContext(TrContext);
-  const { items } = useContext(ItemContext);
+  const { families, items } = useContext(ItemContext);
   const [searchVal, setSearchVal] = useState("");
 
-  const [families] = useState(getList({ data: items, criteria: "family" }));
   const [family, setFam] = useState(families[0] ?? "");
 
   const data = groupData({ data: items, criteria: "family" });
@@ -33,28 +32,33 @@ export default function Items() {
     filter({ data: data[family], criteria: "category", value: category })
   );
 
-  const filterArray = [];
-
-  _items.filter((val) => {
-    if (!searchVal) return filterArray.push(val);
-    if (val.name.toLowerCase().includes(searchVal.toLowerCase().trim()))
-      return filterArray.push(val);
-    return "";
-  });
+  const [f_items, setFItems] = useState([]);
 
   useEffect(() => {
     setCats(getList({ data: data[family], criteria: "category" }));
-  }, [items, family]);
+  }, [family]);
+
+  useEffect(() => {
+    setCat(categories[0]);
+  }, [categories]);
 
   useEffect(() => {
     setItems(
       filter({ data: data[family], criteria: "category", value: category })
     );
-  }, [items, category]);
+  }, [category]);
 
   useEffect(() => {
-    setCat(categories[0]);
-  }, [items, categories]);
+    const filtered = _items.filter((item) => {
+      if (!searchVal) return true;
+      if (item.name.toLowerCase().includes(searchVal.toLowerCase().trim())) {
+        return true;
+      }
+      return false;
+    });
+
+    setFItems(filtered);
+  }, [_items, searchVal]);
 
   return (
     <>
@@ -83,7 +87,7 @@ export default function Items() {
         />
         <Search onChange={setSearchVal} />
       </div>
-      <ItemList items={filterArray} role="waiter" />
+      <ItemList items={f_items} role="waiter" />
     </>
   );
 }

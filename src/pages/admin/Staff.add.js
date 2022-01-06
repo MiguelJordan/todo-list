@@ -54,6 +54,9 @@ export default function AddStaff() {
         backgroundColor: "#FFFFFF",
         minWidth: "330px",
         borderRadius: "3px",
+        margin: "auto",
+        position: "relative",
+        top: "25%",
       }}
     >
       {/* <h1 className="center">{t("Add Staff Page")}</h1> */}

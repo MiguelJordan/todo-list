@@ -7,6 +7,7 @@ import Items from "./Items";
 import Orders from "./Orders";
 import AddItems from "./Items.add";
 import OrderDetail from "./Orders.details";
+import CreateOrder from "../../components/orders/AddOrder";
 
 const NotFound = React.lazy(() => import("../404"));
 
@@ -22,6 +23,10 @@ export default function Waiter() {
       <Route
         path="/orders"
         element={<Layout Main={Orders} links={mainLinks} />}
+      />
+      <Route
+        path="/orders/add"
+        element={<Layout Main={CreateOrder} links={mainLinks} />}
       />
       <Route
         path="/orders/add/:id"

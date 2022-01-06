@@ -8,6 +8,8 @@ import Box from "@mui/material/Box";
 
 import AddIcon from "@mui/icons-material/Add";
 
+import { useNavigate } from "react-router-dom";
+
 // const StyledFab = styled(Fab)(({ theme }) => ({
 //   // position: "relative",
 //   // zIndex: 1,
@@ -32,18 +34,8 @@ import AddIcon from "@mui/icons-material/Add";
 //   // alignSelf: "flex-end",
 // }));
 
-export default function Fabs({ Element }) {
-  const [openModal, setOpenModal] = useState(false);
-  const handleOpen = () => setOpenModal(true);
-  const handleClose = () => setOpenModal(false);
-
-  const styleModal = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    // width: 630,
-  };
+export default function Fabs({ path = "" }) {
+  const navigate = useNavigate();
 
   return (
     <>
@@ -57,25 +49,16 @@ export default function Fabs({ Element }) {
           marginBottom: "auto",
           alignItems: "flex-end",
           marginLeft: "auto",
+          marginTop: "-20px",
         }}
       >
         <AddIcon
-          onClick={handleOpen}
+          onClick={() => navigate(path)}
           style={{
             alignSelf: "center",
           }}
         />
       </Fab>
-      <Modal
-        open={openModal}
-        onClose={handleClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-      >
-        <Fade in={openModal}>
-          <Box sx={styleModal}>{Element}</Box>
-        </Fade>
-      </Modal>
     </>
   );
 }

@@ -60,11 +60,11 @@ export default function Items() {
     setFItems(filtered);
   }, [_items, searchVal]);
 
-  console.log(families);
-  console.log(family);
-  console.log(categories);
-  console.log(category);
-  console.log(f_items);
+  console.log("families:", families);
+  console.log("family:", family);
+  console.log("categories:", categories);
+  console.log("category:", category);
+  console.log("f_items:", f_items);
 
   return (
     <>

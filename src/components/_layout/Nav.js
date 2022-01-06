@@ -73,7 +73,7 @@ const Nav = ({ links = [], showLoginBtn = true }) => {
                 PaperProps={{ sx: { backgroundColor: "hsl(214, 100%, 13%)" } }}
               >
                 <Box
-                  sx={{ display: { xs: "flex", sm: "none" }, width: 250 }}
+                  sx={{ display: { xs: "flex", sm: "none" }, width: 205 }}
                   role="presentation"
                   onClick={toggleDrawer}
                   onKeyDown={toggleDrawer}
@@ -86,8 +86,10 @@ const Nav = ({ links = [], showLoginBtn = true }) => {
                         onClick={() => Navigate(link.path)}
                         sx={{
                           position: "relative",
-                          width: "240px",
+                          width: "200px",
                           paddingLeft: "25px",
+                          bgcolor: link.isActive ? "gray" : "",
+                          borderRadius: link.isActive ? "0 70px 70px 0" : 0,
                         }}
                       >
                         {link.isActive && (

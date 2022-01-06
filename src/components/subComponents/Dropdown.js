@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MenuItem, Select } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
@@ -16,6 +16,7 @@ export default function Dropdown({
 }) {
   const { t } = useContext(TrContext);
   const [value, setValue] = useState(values[0]);
+  useEffect(() => setValue(values[0]), [values]);
 
   return (
     <FormControl sx={{ m: 1, minWidth: 80 }} variant={variant}>

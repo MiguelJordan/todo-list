@@ -15,7 +15,7 @@ export default function Dropdown({
   variant = "outlined",
 }) {
   const { t } = useContext(TrContext);
-  const [value, setValue] = useState(values[0] ?? "");
+  const [value, setValue] = useState(values[0]);
 
   return (
     <FormControl sx={{ m: 1, minWidth: 80 }} variant={variant}>

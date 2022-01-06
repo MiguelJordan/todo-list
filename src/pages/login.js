@@ -21,7 +21,7 @@ const Page = () => {
   const [user, setUser] = useState({ id: "", password: "", role: "" });
   const classes = useStyles();
 
-  const [serverError, setServerError] = useState("");
+  const [error, setError] = useState();
   const [disabled] = useState(false);
   const navigate = useNavigate();
 
@@ -37,18 +37,17 @@ const Page = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setServerError("");
+    setError();
 
     // validate data
-    if (!user.id || !user.password) {
-      return setServerError("Please Enter your Id and Password");
-    }
+    if (!user.id) return setError(t("Invalid user id"));
+    if (!user.password) return setError(t("Invalid password"));
 
     // submit data
     const res = await login(user);
 
     // verify response
-    if (res.error) return setServerError(res.error);
+    if (res.error) return setError(res.error);
 
     // redirect to dashboard
     return navigate(`/${res.role}`);
@@ -64,62 +63,43 @@ const Page = () => {
         width: "330px",
         backgroundColor: "#FFFFFF",
         borderRadius: "3px",
-
-        /* to center it on the page */
-        position: "relative",
-        margin: "0 auto",
-        top: "25%",
+        margin: "50px auto",
+        padding: "20px",
       }}
     >
-      <Avatar
-        style={{
-          backgroundColor: "#001D42",
-          display: "flex",
-          alignItems: "center",
-          alignSelf: "center",
-          marginTop: "15px",
-        }}
-      >
-        <LockCloseOutlined />
-      </Avatar>
-      <span style={{ alignItems: "center" }}>
-        <Typography
-          component="h1"
-          variant="h5"
-          style={{
-            color: "#001D42",
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          {t("pages.login.title")}
-        </Typography>
-      </span>
-
       <form
         style={{
           display: "flex",
           flexFlow: "column",
           justifyContent: "center",
-          margin: "25px",
           color: "#B3B3B3",
           width: "70%",
         }}
         onSubmit={handleSubmit}
       >
-        {serverError !== "" && (
+        <Avatar style={{ backgroundColor: "#001D42", margin: "0 auto" }}>
+          <LockCloseOutlined />
+        </Avatar>
+        <Typography
+          component="h1"
+          variant="h5"
+          style={{ color: "#001D42", textAlign: "center" }}
+        >
+          {t("pages.login.title")}
+        </Typography>
+        {error && (
           <div
             style={{
               border: "2px solid red",
               color: "#001D42",
-              margin: "5px",
-              display: "flex",
-              justifyContent: "center",
-              marginBottom: "15px",
+              textAlign: "center",
+              marginBottom: "10px",
+              padding: "5px 10px",
+              borderRadius: "8px",
             }}
           >
             <Typography variant="subtitle2" style={{ color: "black" }}>
-              {t(`server_err.${serverError}`)}
+              {t(`server_err.${error}`)}
             </Typography>
           </div>
         )}

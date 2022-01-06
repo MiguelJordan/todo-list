@@ -62,12 +62,6 @@ export default function Items() {
     setFItems(filtered);
   }, [_items, searchVal]);
 
-  console.log("latest families:", families);
-  console.log("family:", family);
-  console.log("categories:", categories);
-  console.log("category:", category);
-  console.log("f_items:", f_items);
-
   return (
     <>
       <div

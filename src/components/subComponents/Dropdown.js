@@ -18,6 +18,8 @@ export default function Dropdown({
   const [value, setValue] = useState(values[0]);
   useEffect(() => setValue(values[0]), [values]);
 
+  console.log(`${label}:`, value, values);
+
   return (
     <FormControl sx={{ m: 1, minWidth: 80 }} variant={variant}>
       <InputLabel id={labelId}>{label}</InputLabel>

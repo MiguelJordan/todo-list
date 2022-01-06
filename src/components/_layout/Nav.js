@@ -88,7 +88,7 @@ const Nav = ({ links = [], showLoginBtn = true }) => {
                           position: "relative",
                           width: "200px",
                           paddingLeft: "25px",
-                          bgcolor: link.isActive ? "gray" : "",
+                          bgcolor: link.isActive ? "hsl(213, 42%, 26%)" : "",
                           borderRadius: link.isActive ? "0 70px 70px 0" : 0,
                         }}
                       >

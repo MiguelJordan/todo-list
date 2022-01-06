@@ -4,6 +4,7 @@ import { Button, TextField } from "@mui/material";
 
 import { AuthContext } from "../../contexts/AuthContext";
 import { SocketContext } from "../../contexts/SocketContext";
+import { TrContext } from "../../contexts/TranslationContext";
 import { post } from "../../functions/http";
 
 import { useNavigate } from "react-router-dom";
@@ -20,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
 export default function AddOrder() {
   const { user } = useContext(AuthContext);
   const { sendEvent } = useContext(SocketContext);
+  const { t } = useContext(TrContext);
 
   const navigate = useNavigate();
 
@@ -43,18 +45,18 @@ export default function AddOrder() {
 
     console.log(order);
 
-    if (!order.tableName) return setError("Invalid table name");
+    if (!order.tableName) return setError(t("server_err.Invalid table name"));
 
     if (!order.consumptionPoint) {
-      return setError("Invalid consumption point");
+      return setError(t("server_err.Invalid consumption point"));
     }
 
     if (order.balanceForward < 0) {
-      return setError("Invalid balance forward");
+      return setError(t("server_err.Invalid balance forward"));
     }
 
     // request order creation
-    const res = await post(apiUrl + "/orders", order);
+    const res = await post({ url: `${apiUrl}/orders`, body: order });
 
     // handle order creation errors
     if (res?.error) return setError(res.error);

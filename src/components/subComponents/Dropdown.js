@@ -8,32 +8,34 @@ import { TrContext } from "../../contexts/TranslationContext";
 export default function Dropdown({
   label = "",
   labelId = "",
-  onchange,
+  handleChange,
+  value,
   values = [],
-  field = "",
   translated = false,
   variant = "outlined",
 }) {
   const { t } = useContext(TrContext);
-  const [value, setValue] = useState(values[0]);
-
-  const getValue = (value) => (values.includes(value) ? value : values[0]);
 
   return (
-    <FormControl sx={{ m: 1, minWidth: 80 }} variant={variant}>
+    <FormControl
+      sx={{
+        m: 1,
+        minWidth: 80,
+        "& .css-19fqwvx-MuiSvgIcon-root-MuiSelect-icon": { color: "white" },
+        "& .MuiSelect-iconOpen": {
+          color: "white",
+        },
+      }}
+      variant={variant}
+    >
       <InputLabel id={labelId}>{label}</InputLabel>
       <Select
         label={label}
         labelId={labelId}
         autoWidth
         style={{ color: "#B3B3B3" }}
-        value={getValue(value)}
-        onChange={(e) => {
-          let _value = getValue(e.target.value);
-          if (field) onchange([{ field: _value }]);
-          if (onchange) onchange(_value);
-          setValue(_value);
-        }}
+        value={value}
+        onChange={(e) => handleChange(e.target.value)}
       >
         {values.map((value) => (
           <MenuItem style={{ color: "#B3B3B3" }} value={value} key={value}>

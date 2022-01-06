@@ -66,10 +66,9 @@ const Page = () => {
         borderRadius: "3px",
 
         /* to center it on the page */
-        position: "absolute",
-        transform: "translate(-50%,-50%)",
-        top: "50%",
-        left: "50%",
+        position: "relative",
+        margin: "0 auto",
+        top: "25%",
       }}
     >
       <Avatar

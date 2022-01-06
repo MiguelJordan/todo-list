@@ -41,6 +41,8 @@ export default function AddOrder() {
 
     let order = { ...orderInfo, consumptionPoint: e.target[2].value };
 
+    console.log(order);
+
     if (!order.tableName) return setError("Invalid table name");
 
     if (!order.consumptionPoint) {
@@ -87,14 +89,13 @@ export default function AddOrder() {
         backgroundColor: "#FFFFFF",
         minWidth: "330px",
         borderRadius: "3px",
-        minHeight: "350px",
       }}
     >
       <h2
         style={{
           color: "#001D42",
           display: "flex",
-          marginTop: "-10px",
+          marginTop: "15px",
           alignItems: "center",
           alignSelf: "center",
         }}
@@ -109,7 +110,7 @@ export default function AddOrder() {
             margin: "5px",
             display: "flex",
             justifyContent: "center",
-            marginTop: "-20px",
+            marginTop: "-10px",
             marginBottom: "20px",
           }}
         >
@@ -121,8 +122,8 @@ export default function AddOrder() {
           display: "flex",
           flexFlow: "column",
           justifyContent: "center",
-          margin: "15px",
-          color: "#B3B3B3",
+          margin: "20px",
+
           width: "70%",
         }}
         onSubmit={handleSubmit}

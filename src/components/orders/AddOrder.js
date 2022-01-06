@@ -7,24 +7,29 @@ import { SocketContext } from "../../contexts/SocketContext";
 import { TrContext } from "../../contexts/TranslationContext";
 import { post } from "../../functions/http";
 
+import { useNavigate } from "react-router-dom";
+import Dropdown from "../subComponents/Dropdown";
+
 const apiUrl = process.env.REACT_APP_API_URL;
 
 const useStyles = makeStyles((theme) => ({
   inputText: {
-    color: "#B3B3B3",
+    color: "black",
   },
 }));
 
-export default function AddOrder() {
+export default function AddOrderForm() {
   const { user } = useContext(AuthContext);
   const { sendEvent } = useContext(SocketContext);
   const { t } = useContext(TrContext);
+
+  const navigate = useNavigate();
 
   const classes = useStyles();
 
   const [orderInfo, setOrderInfo] = useState({
     tableName: "",
-    consumptionPoint: "",
+
     balanceForward: "",
     companyCode: user.company.code,
     unitCode: user.workUnit.code,
@@ -36,22 +41,29 @@ export default function AddOrder() {
     e.preventDefault();
     setError("");
 
-    if (!orderInfo.tableName)
-      return setError(t("server_err.Invalid table name"));
+    let order = { ...orderInfo, consumptionPoint: e.target[2].value };
 
-    if (!orderInfo.consumptionPoint) {
+    console.log(order);
+
+    if (!order.tableName) return setError(t("server_err.Invalid table name"));
+
+    if (!order.consumptionPoint) {
       return setError(t("server_err.Invalid consumption point"));
     }
 
-    if (orderInfo.balanceForward < 0) {
+    if (order.balanceForward < 0) {
       return setError(t("server_err.Invalid balance forward"));
     }
 
     // request order creation
-    const res = await post({ url: `${apiUrl}/orders`, body: orderInfo });
+    const res = await post({ url: `${apiUrl}/orders`, body: order });
 
     // handle order creation errors
     if (res?.error) return setError(res.error);
+
+    navigate(`/waiter/orders/add/${res.insertedId}`);
+
+    console.log(res);
 
     // sending order created event
     sendEvent({
@@ -81,34 +93,43 @@ export default function AddOrder() {
         borderRadius: "3px",
       }}
     >
-      <h2 style={{ color: "#001D42", marginTop: "15px" }}>
+      <h2
+        style={{
+          color: "#001D42",
+          display: "flex",
+          marginTop: "15px",
+          alignItems: "center",
+          alignSelf: "center",
+        }}
+      >
         Ajouter Une Commande
       </h2>
+      {error !== "" && (
+        <div
+          style={{
+            border: "2px solid red",
+            color: "#001D42",
+            margin: "5px",
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "-10px",
+            marginBottom: "20px",
+          }}
+        >
+          {error}
+        </div>
+      )}
       <form
         style={{
           display: "flex",
           flexFlow: "column",
           justifyContent: "center",
-          margin: "15px",
-          color: "#B3B3B3",
+          margin: "20px",
+
           width: "70%",
         }}
         onSubmit={handleSubmit}
       >
-        {error !== "" && (
-          <div
-            style={{
-              border: "2px solid red",
-              color: "#001D42",
-              margin: "5px",
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            {error}
-          </div>
-        )}
-
         <TextField
           required
           type="text"
@@ -119,7 +140,7 @@ export default function AddOrder() {
             className: classes.inputText,
           }}
           label="Table Name"
-          style={{ color: "#B3B3B3" }}
+          style={{ color: "black", marginBottom: "5px", marginTop: "-20px" }}
           onChange={(e) =>
             setOrderInfo({
               ...orderInfo,
@@ -135,7 +156,7 @@ export default function AddOrder() {
           inputProps={{
             className: classes.inputText,
           }}
-          style={{ color: "#B3B3B3" }}
+          style={{ color: "black", marginBottom: "5px" }}
           onChange={(e) =>
             setOrderInfo({
               ...orderInfo,
@@ -144,22 +165,13 @@ export default function AddOrder() {
           }
           label="Balance Forward"
         />
-        <TextField
-          required
-          fullWidth
-          inputProps={{ className: classes.inputText }}
-          type="text"
-          name="consumptionPoint"
+
+        <Dropdown
+          values={user.workUnit.consumptionPoints}
+          label="Consumption Point"
           variant="standard"
-          style={{ color: "#B3B3B3" }}
-          onChange={(e) =>
-            setOrderInfo({
-              ...orderInfo,
-              [e.target.name]: e.target.value.trim(),
-            })
-          }
-          label=" consumptionPoint"
         />
+
         <Button variant="contained" type="submit" style={{ marginTop: "15px" }}>
           Ajouter
         </Button>

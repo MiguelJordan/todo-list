@@ -50,9 +50,21 @@ export default function Fabs({ Element }) {
       <Fab
         color="primary"
         aria-label="add"
-        style={{ position: "absolute", bottom: "30px", right: "35px" }}
+        style={{
+          position: "relative",
+          display: "flex",
+
+          marginBottom: "auto",
+          alignItems: "flex-end",
+          marginLeft: "auto",
+        }}
       >
-        <AddIcon onClick={handleOpen} />
+        <AddIcon
+          onClick={handleOpen}
+          style={{
+            alignSelf: "center",
+          }}
+        />
       </Fab>
       <Modal
         open={openModal}

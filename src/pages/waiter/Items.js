@@ -44,17 +44,17 @@ export default function Items() {
 
   useEffect(() => {
     setCats(getList({ data: data[family], criteria: "category" }));
-  }, [family]);
+  }, [items, family]);
 
   useEffect(() => {
     setItems(
       filter({ data: data[family], criteria: "category", value: category })
     );
-  }, [category]);
+  }, [items, category]);
 
   useEffect(() => {
     setCat(categories[0]);
-  }, [categories]);
+  }, [items, categories]);
 
   return (
     <>

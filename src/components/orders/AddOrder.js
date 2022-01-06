@@ -52,7 +52,7 @@ export default function AddOrderForm() {
     }
 
     if (order.balanceForward < 0) {
-      return setError(t("server_err.Invalid balance forward"));
+      return setError(t("server_err.Invalid balance carried forward"));
     }
 
     // request order creation

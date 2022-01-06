@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { MenuItem, Select } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
@@ -16,9 +16,8 @@ export default function Dropdown({
 }) {
   const { t } = useContext(TrContext);
   const [value, setValue] = useState(values[0]);
-  useEffect(() => setValue(values[0]), [values]);
 
-  console.log(`${label}:`, value, values);
+  const getValue = (value) => (values.includes(value) ? value : values[0]);
 
   return (
     <FormControl sx={{ m: 1, minWidth: 80 }} variant={variant}>
@@ -28,11 +27,12 @@ export default function Dropdown({
         labelId={labelId}
         autoWidth
         style={{ color: "#B3B3B3" }}
-        value={values.includes(value) ? value : values[0]}
+        value={getValue(value)}
         onChange={(e) => {
-          if (field) onchange([{ field: e.target.value }]);
-          if (onchange) onchange(e.target.value);
-          setValue(e.target.value);
+          let _value = getValue(e.target.value);
+          if (field) onchange([{ field: _value }]);
+          if (onchange) onchange(_value);
+          setValue(_value);
         }}
       >
         {values.map((value) => (

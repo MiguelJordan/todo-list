@@ -21,10 +21,7 @@ export default function Dropdown({
       sx={{
         m: 1,
         minWidth: 80,
-        "& .css-19fqwvx-MuiSvgIcon-root-MuiSelect-icon": { color: "white" },
-        "& .MuiSelect-iconOpen": {
-          color: "white",
-        },
+        "& svg": { color: "rgb(179, 179, 179)" },
       }}
       variant={variant}
     >

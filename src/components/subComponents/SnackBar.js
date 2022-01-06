@@ -12,9 +12,12 @@ export default function SnackBar({
   open,
   close,
 }) {
+  const vertical = "top";
+  const horizontal = "right";
   return (
     <div>
       <Snackbar
+        anchorOrigin={{ vertical, horizontal }}
         open={open}
         autoHideDuration={2000}
         onClose={() => close(false)}

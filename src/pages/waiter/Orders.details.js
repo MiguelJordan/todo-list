@@ -15,27 +15,31 @@ export default function OrderDetail() {
   const { findOrder } = useContext(OrderContext);
   let { id } = useParams();
 
-  const navigate = useNavigate();
-
   const order = findOrder({ key: "id", value: id });
-  const items = order.items;
 
-  const families = [];
   let filterList = {};
 
-  items.filter((item) => {
-    if (!families.includes(item.family)) families.push(item.family);
-  });
+  const navigate = useNavigate();
 
-  families.map((fam) => {
-    filterList = { ...filterList, [fam]: [] };
-  });
+  if (order) {
+    const items = order.items;
 
-  items.map((item) => {
-    filterList[item.family].push(item);
-  });
+    const families = [];
 
-  console.log(order);
+    items.filter((item) => {
+      if (!families.includes(item.family)) families.push(item.family);
+    });
+
+    families.map((fam) => {
+      filterList = { ...filterList, [fam]: [] };
+    });
+
+    items.map((item) => {
+      filterList[item.family].push(item);
+    });
+
+    console.log(order);
+  }
 
   return (
     <>

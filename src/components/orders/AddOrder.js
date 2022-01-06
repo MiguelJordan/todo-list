@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AddOrder() {
+export default function AddOrderForm() {
   const { user } = useContext(AuthContext);
   const { sendEvent } = useContext(SocketContext);
   const { t } = useContext(TrContext);

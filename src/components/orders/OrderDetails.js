@@ -176,37 +176,44 @@ export default function OrderDetails({
   ];
 
   return (
-    <div style={{ display: "flex", flexFlow: "column" }}>
+    <>
       <div
         style={{
-          display: "grid",
-          placeContent: "center",
-          placeItems: "center",
+          display: "flex",
+          flexFlow: "column",
+          height: "65vh",
+          overflowY: "auto",
         }}
       >
-        {familly.map((fam) => (
-          <Grid
-            align="center"
-            item
-            xs={6}
-            sm={8}
-            md={10}
-            lg={12}
-            style={{ flexFlow: "column" }}
-          >
-            <Accordion>
-              <AccordionSummary
-                expandIcon={<ExpandMore />}
-                style={{
-                  backgroundColor: "#7F8DA0",
-                  color: "#FFFFFF",
-                }}
-              >
-                <Typography>{fam}</Typography>
-              </AccordionSummary>
-              <AccordionDetails className={classes.accordion}>
-                <TableContainer className={classes.table}>
-                  <form onSubmit={(e) => console.log(e)}>
+        <div
+          style={{
+            display: "grid",
+            placeContent: "center",
+            placeItems: "center",
+          }}
+        >
+          {familly.map((fam) => (
+            <Grid
+              align="center"
+              item
+              xs={6}
+              sm={8}
+              md={10}
+              lg={12}
+              style={{ flexFlow: "column" }}
+            >
+              <Accordion>
+                <AccordionSummary
+                  expandIcon={<ExpandMore />}
+                  style={{
+                    backgroundColor: "#7F8DA0",
+                    color: "#FFFFFF",
+                  }}
+                >
+                  <Typography>{fam}</Typography>
+                </AccordionSummary>
+                <AccordionDetails className={classes.accordion}>
+                  <TableContainer className={classes.table}>
                     <Table
                       stickyHeader
                       aria-label="simple table"
@@ -290,9 +297,9 @@ export default function OrderDetails({
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {list[fam].map((row) => (
+                        {list[fam].map((row, index) => (
                           <TableRow
-                            key={row.name}
+                            key={`${index}`}
                             sx={{
                               "&:last-child td, &:last-child th": {
                                 border: 0,
@@ -373,7 +380,7 @@ export default function OrderDetails({
                                     <MenuItem
                                       key={item.name}
                                       onClick={(e) =>
-                                        console.log(e.target.innerHTML, row)
+                                        console.log(e, list[fam][index], index)
                                       }
                                       type="submit"
                                     >
@@ -401,133 +408,105 @@ export default function OrderDetails({
                         ))}
                       </TableBody>
                     </Table>
-                  </form>
-                </TableContainer>
-              </AccordionDetails>
-            </Accordion>
-          </Grid>
-        ))}
-      </div>
+                  </TableContainer>
+                </AccordionDetails>
+              </Accordion>
+            </Grid>
+          ))}
+        </div>
 
-      {role === "waiter" && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: "2%",
-          }}
-        >
-          <Button variant="contained" style={{ backgroundColor: "#04A5E0" }}>
-            {"Enregistrer & Imprimer"}
-          </Button>
-          <Button
-            variant="contained"
-            style={{ backgroundColor: "#FF0000", marginLeft: "5%" }}
+        {role === "waiter" && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "2%",
+            }}
           >
-            Annuler
-          </Button>
-        </div>
-      )}
-      {role === "admin" && (
-        <div style={{ margin: "15px" }}>
-          <Grid item align="center">
-            <FormControl color="success" variant="standard">
-              <InputLabel
-                htmlFor="component-disabled"
-                style={{ color: "white" }}
-              >
-                Waiter
-              </InputLabel>
-              <Input
-                id="component-helper"
-                type="text"
-                readOnly={true}
-                //defaultValue={newVal.familly}
-                name="familly"
-                className={classes.form}
-              />
-              <FormHelperText></FormHelperText>
-            </FormControl>
-          </Grid>
-          <Grid item align="center">
-            <FormControl color="success" variant="standard">
-              <InputLabel
-                htmlFor="component-disabled"
-                style={{ color: "white" }}
-              >
-                Cashier
-              </InputLabel>
-              <Input
-                id="component-helper"
-                type="text"
-                readOnly={true}
-                //defaultValue={newVal.familly}
-                name="familly"
-                className={classes.form}
-              />
-              <FormHelperText></FormHelperText>
-            </FormControl>
-          </Grid>
-          <Grid item align="center">
-            <FormControl color="success" variant="standard">
-              <InputLabel
-                htmlFor="component-disabled"
-                style={{ color: "white" }}
-              >
-                Payment Method
-              </InputLabel>
-              <Input
-                id="component-helper"
-                type="text"
-                readOnly={true}
-                //defaultValue={newVal.familly}
-                name="familly"
-                className={classes.form}
-              />
-              <FormHelperText></FormHelperText>
-            </FormControl>
-          </Grid>
-        </div>
-      )}
+            <Button variant="contained" style={{ backgroundColor: "#04A5E0" }}>
+              {"Enregistrer & Imprimer"}
+            </Button>
+            <Button
+              variant="contained"
+              style={{ backgroundColor: "#FF0000", marginLeft: "5%" }}
+            >
+              Annuler
+            </Button>
+          </div>
+        )}
+        {role === "admin" && (
+          <div style={{ margin: "15px" }}>
+            <Grid item align="center">
+              <FormControl color="success" variant="standard">
+                <InputLabel
+                  htmlFor="component-disabled"
+                  style={{ color: "white" }}
+                >
+                  Waiter
+                </InputLabel>
+                <Input
+                  id="component-helper"
+                  type="text"
+                  readOnly={true}
+                  //defaultValue={newVal.familly}
+                  name="familly"
+                  className={classes.form}
+                />
+                <FormHelperText></FormHelperText>
+              </FormControl>
+            </Grid>
+            <Grid item align="center">
+              <FormControl color="success" variant="standard">
+                <InputLabel
+                  htmlFor="component-disabled"
+                  style={{ color: "white" }}
+                >
+                  Cashier
+                </InputLabel>
+                <Input
+                  id="component-helper"
+                  type="text"
+                  readOnly={true}
+                  //defaultValue={newVal.familly}
+                  name="familly"
+                  className={classes.form}
+                />
+                <FormHelperText></FormHelperText>
+              </FormControl>
+            </Grid>
+            <Grid item align="center">
+              <FormControl color="success" variant="standard">
+                <InputLabel
+                  htmlFor="component-disabled"
+                  style={{ color: "white" }}
+                >
+                  Payment Method
+                </InputLabel>
+                <Input
+                  id="component-helper"
+                  type="text"
+                  readOnly={true}
+                  //defaultValue={newVal.familly}
+                  name="familly"
+                  className={classes.form}
+                />
+                <FormHelperText></FormHelperText>
+              </FormControl>
+            </Grid>
+          </div>
+        )}
 
-      {role === "cashier" && (
-        <div
-          style={{
-            marginTop: "25px",
-            display: "flex",
-            justifyContent: "center",
-            flexFlow: "column",
-            alignItems: "center",
-          }}
-        >
-          <span>
-            <FormControl color="success" variant="standard">
-              <InputLabel
-                htmlFor="component-disabled"
-                style={{ color: "#B3B3B3" }}
-              >
-                Payement
-              </InputLabel>
-
-              <Dropdown values={methods} onchange={setPayment} field="name" />
-            </FormControl>
-            <TextField
-              type="number"
-              label="Prix"
-              name="price"
-              inputProps={{
-                className: classes.text,
-              }}
-              variant="standard"
-              autoFocus
-              onChange={(e) =>
-                setPayment({ ...payment, [e.target.name]: e.target.value })
-              }
-              style={{ marginLeft: "20px", color: "#B3B3B3" }}
-            />
-          </span>
-          {addPayment.map((field, idx) => (
-            <span style={{ marginTop: "20px" }} key={`${field}-${idx}`}>
+        {role === "cashier" && (
+          <div
+            style={{
+              marginTop: "25px",
+              display: "flex",
+              justifyContent: "center",
+              flexFlow: "column",
+              alignItems: "center",
+            }}
+          >
+            <span>
               <FormControl color="success" variant="standard">
                 <InputLabel
                   htmlFor="component-disabled"
@@ -536,69 +515,96 @@ export default function OrderDetails({
                   Payement
                 </InputLabel>
 
-                <Dropdown values={methods} />
+                <Dropdown values={methods} onchange={setPayment} field="name" />
               </FormControl>
               <TextField
                 type="number"
                 label="Prix"
-                variant="standard"
-                autoFocus
                 name="price"
                 inputProps={{
                   className: classes.text,
                 }}
+                variant="standard"
+                autoFocus
                 onChange={(e) =>
-                  setOrderInfo({
-                    ...orderInfo,
-                    ["paymentMethod"]: [
-                      {
-                        [e.target.name]: e.target.value,
-                      },
-                    ],
-                  })
+                  setPayment({ ...payment, [e.target.name]: e.target.value })
                 }
-                style={{ marginLeft: "20px" }}
+                style={{ marginLeft: "20px", color: "#B3B3B3" }}
               />
-              <Button
-                style={{ marginTop: "20px" }}
-                onClick={() => handleRemoveField(idx)}
-              >
-                Supprimer
-              </Button>
             </span>
-          ))}
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              margin: "15px",
-            }}
-          >
-            <Button onClick={() => console.log(payment)} variant="contained">
-              Valider
-            </Button>
-            <Button
-              variant="contained"
-              onClick={handleAddField}
-              style={{ marginLeft: "10px" }}
-            >
-              Ajouter(payement)
-            </Button>
-          </div>
-        </div>
-      )}
+            {addPayment.map((field, idx) => (
+              <span style={{ marginTop: "20px" }} key={`${field}-${idx}`}>
+                <FormControl color="success" variant="standard">
+                  <InputLabel
+                    htmlFor="component-disabled"
+                    style={{ color: "#B3B3B3" }}
+                  >
+                    Payement
+                  </InputLabel>
 
+                  <Dropdown values={methods} />
+                </FormControl>
+                <TextField
+                  type="number"
+                  label="Prix"
+                  variant="standard"
+                  autoFocus
+                  name="price"
+                  inputProps={{
+                    className: classes.text,
+                  }}
+                  onChange={(e) =>
+                    setOrderInfo({
+                      ...orderInfo,
+                      ["paymentMethod"]: [
+                        {
+                          [e.target.name]: e.target.value,
+                        },
+                      ],
+                    })
+                  }
+                  style={{ marginLeft: "20px" }}
+                />
+                <Button
+                  style={{ marginTop: "20px" }}
+                  onClick={() => handleRemoveField(idx)}
+                >
+                  Supprimer
+                </Button>
+              </span>
+            ))}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                margin: "15px",
+              }}
+            >
+              <Button onClick={() => console.log(payment)} variant="contained">
+                Valider
+              </Button>
+              <Button
+                variant="contained"
+                onClick={handleAddField}
+                style={{ marginLeft: "10px" }}
+              >
+                Ajouter(payement)
+              </Button>
+            </div>
+          </div>
+        )}
+      </div>
       <div
         style={{
           display: "flex",
           justifyContent: "flex-end",
           marginBottom: "auto",
-          alignItems: "flex-end",
+          marginTop: "20px",
         }}
       >
         <TextField
           variant="standard"
-          label="Total"
+          label="Total(FCFA)"
           inputProps={{
             className: classes.inputText,
             readOnly: true,
@@ -606,6 +612,6 @@ export default function OrderDetails({
           value={total}
         />
       </div>
-    </div>
+    </>
   );
 }

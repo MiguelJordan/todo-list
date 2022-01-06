@@ -5,7 +5,7 @@ import { OrderContext } from "../../contexts/OrderContext";
 
 // components
 import Search from "../../components/subComponents/Search";
-import AddOrder from "../../components/orders/AddOrder";
+import AddOrderForm from "../../components/orders/AddOrder";
 import Fabs from "../../components/subComponents/Fabs";
 
 export default function Orders() {
@@ -41,7 +41,7 @@ export default function Orders() {
 
       <OrderList array={filterArray} role="waiter" />
 
-      <Fabs Element={<AddOrder />} />
+      <Fabs Element={<AddOrderForm />} />
     </>
   );
 }

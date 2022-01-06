@@ -157,7 +157,7 @@ export default function OrderList({ role = "", array = [] }) {
                     alignSelf: "flex-start",
                   }}
                 >
-                  {order.drink ? `Produits: ${order.drink}` : "Produit:"}
+                  {order.drink ? `Produits: ${order.drink}` : "Produits:"}
                 </span>
 
                 <span

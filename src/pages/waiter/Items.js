@@ -34,6 +34,8 @@ export default function Items() {
 
   const [f_items, setFItems] = useState([]);
 
+  useEffect(() => setFam(families[0]), [families]);
+
   useEffect(() => {
     setCats(getList({ data: data[family], criteria: "category" }));
   }, [family]);

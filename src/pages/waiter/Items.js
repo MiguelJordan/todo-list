@@ -36,18 +36,6 @@ export default function Items() {
 
   const [f_items, setFItems] = useState(_items);
 
-  useEffect(() => {
-    console.log(families);
-    console.log(family);
-    console.log(categories);
-    console.log(category);
-    console.log(_items);
-  }, []);
-
-  useEffect(() => {
-    console.log("fams", families);
-  }, [families]);
-
   const updateFam = (value) => {
     if (!families.includes(value)) value = families[0];
     setFam(value);

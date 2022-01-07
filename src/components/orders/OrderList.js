@@ -79,7 +79,7 @@ export default function OrderList({ role = "", array = [] }) {
     console.log("Delete", e);
   };
   const handleViewOrderDetail = (e) => {
-    Navigate(`/waiter/orders/detail/${e.id}`);
+    Navigate(`/waiter/orders/${e.id}`);
   };
 
   const WaiterPopMenu = [

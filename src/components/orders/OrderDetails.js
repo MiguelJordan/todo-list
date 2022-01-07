@@ -423,7 +423,7 @@ export default function OrderDetails({
             </Button>
             <Button
               variant="contained"
-              onClick={() => navigate(`/waiter/orders/detail/add/${id}`)}
+              onClick={() => navigate(`/waiter/orders/add-item/${id}`)}
               // style={{ marginLeft: "10px" }}
             >
               {"Ajouter Produits"}

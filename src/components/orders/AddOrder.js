@@ -61,23 +61,18 @@ export default function CreateOrder() {
     // handle order creation errors
     if (res?.error) return setError(res.error);
 
-    navigate(`/waiter/orders/add/${res.insertedId}`);
-
-    console.log(res);
-
     // sending order created event
     sendEvent({
       name: "cE-order-created",
       props: {
-        date: true,
         companyCode: user.company.code,
-        source: "waiter",
-        startTime: new Date(),
-        unitCode: user.workUnit.code,
-        waiterId: user.id,
+        id: res.insertedId,
       },
       rooms: [user.workUnit.code],
     });
+
+    // navigation
+    navigate(`/waiter/orders/add/${res.insertedId}`);
   };
 
   return (

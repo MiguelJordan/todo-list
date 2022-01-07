@@ -4,13 +4,16 @@
       "drinks": "Drinks",
       "false": "False",
       "meals": "Meals",
-      "true": "True"
+      "no": "No",
+      "true": "True",
+      "yes": "Yes"
     },
     "item": {
-      "add-btn": "Add",
+      "btn-add": "Add",
       "isOffer": "Offer",
       "price": "Prices",
-      "quantity": "Quantity"
+      "quantity": "Quantity",
+      "quantity_toOrder": "Quantity to order"
     },
     "search": {
       "placeholder": "Search..."

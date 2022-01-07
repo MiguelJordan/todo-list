@@ -79,7 +79,8 @@ export default function AccountMenu({ user }) {
         PaperProps={{
           elevation: 0,
           sx: {
-            backgroundColor: "hsl(0, 0%, 7%)",
+            backgroundColor: "hsl(213, 100%, 12%)",
+            // backgroundColor: "hsl(0, 0%, 7%)",
             color: "white",
             overflow: "visible",
             filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
@@ -98,7 +99,8 @@ export default function AccountMenu({ user }) {
               right: 14,
               width: 10,
               height: 10,
-              bgcolor: "hsl(0, 0%, 7%)",
+              bgcolor: "hsl(213, 100%, 12%)",
+              // bgcolor: "hsl(0, 0%, 7%)",
               transform: "translateY(-50%) rotate(45deg)",
               zIndex: 0,
             },

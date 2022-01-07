@@ -4,13 +4,16 @@
       "drinks": "Boissons",
       "false": "Faux",
       "meals": "Repas",
-      "true": "Vrai"
+      "no": "Non",
+      "true": "Vrai",
+      "yes": "Oui"
     },
     "item": {
-      "add-btn": "Ajouter",
+      "btn-add": "Ajouter",
       "isOffer": "Offre",
       "price": "Prix",
-      "quantity": "Quantité en stock"
+      "quantity": "Quantité en stock",
+      "quantity_toOrder": "Quantité à commander"
     },
     "search": {
       "placeholder": "Rechercher..."

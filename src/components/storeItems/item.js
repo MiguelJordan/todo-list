@@ -1,18 +1,24 @@
-import React, { useEffect, useState, useContext, useRef } from "react";
-import { Button, Typography } from "@mui/material";
+import React, { useState, useContext } from "react";
+import { Button } from "@mui/material";
 import { makeStyles } from "@material-ui/core";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
-// import { useParams } from "react-router-dom";
 
-import Dropdown from "../subComponents/Dropdown";
-
+// contexts
+import { AuthContext } from "../../contexts/AuthContext";
 import { NTContext } from "../../contexts/NTContext";
+import { SocketContext } from "../../contexts/SocketContext";
 import { TrContext } from "../../contexts/TranslationContext";
 
+// components
+import Dropdown from "../subComponents/Dropdown";
+
+// functions
 import { capitalise } from "../../functions/data";
-// import { OrderContext } from "../../contexts/OrderContext";
+import { post } from "../../functions/http";
+
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -49,43 +55,77 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Item = ({ data = {}, orderId, preview = true, role = "" }) => {
-  const { t } = useContext(TrContext);
+  const { user } = useContext(AuthContext);
   const { showNotification } = useContext(NTContext);
+  const { sendEvent } = useContext(SocketContext);
+  const { t } = useContext(TrContext);
   const classes = useStyles();
 
-  const [isOffer, setIsOffer] = useState("false");
+  const [isOffer, setIsOffer] = useState("no");
   const [selectedPrice, setPrice] = useState(data.prices[0]);
 
-  const onPriceChange = (value) => setPrice(value);
-
-  const getBool = (value) => (value.toLowerCase() == "true" ? true : false);
-
-  const handleSubmit = (item, e) => {
-    e.preventDefault();
-
-    showNotification({
-      msg: `Adding ${capitalise(item.name)} as ${
-        getBool(isOffer) ? "Offer" : "non offer"
-      }`,
-      color: "success",
-    });
-    // console.log(item, e);
-
-    // regroup data
-    // let orderItem = {
-    //   isOffer:getBool(isOffer),
-    //   quantity: e.target[5].value,
-    //   name: item.name,
-    //   price: e.target[0].defaultValue,
-    //   category: item.category,
-    //   family: item.family,
-    //   total: e.target[0].defaultValue * e.target[5].value,
-    //   measureUnit: item.measureUnit,
-    // };
-    // console.log(orderItem);
+  const getBool = (value) => {
+    return ["true", "yes"].includes(value.toLowerCase()) ? true : false;
   };
 
-  // useEffect(() => console.log("orderId", orderId, data), []);
+  const handleSubmit = async (item, e) => {
+    e.preventDefault();
+
+    const _isOffer = getBool(isOffer);
+
+    // regroup data
+    let _item = {
+      companyCode: item.companyCode,
+      isOffer: _isOffer,
+      name: item.name,
+      orderId,
+      qty: parseFloat(e.target[5].value),
+      selectedPrice: _isOffer ? 0 : selectedPrice,
+      storeId: item.storeId,
+    };
+    // console.log(_item);
+
+    if (
+      !_isOffer &&
+      (!_item.qty || _item.qty <= 0 || _item.qty > item.quantity)
+    ) {
+      return showNotification({
+        msg: t("server_err.Invalid quantity"),
+        color: "error",
+      });
+    }
+
+    const res = await post({ url: `${apiUrl}/orderItems`, body: _item });
+    console.log(res);
+
+    if (res?.error) {
+      return showNotification({
+        msg: t(`server_err.${res.error}`),
+        color: "error",
+      });
+    }
+
+    // sending store item updated event
+    sendEvent({
+      name: "cE-store-item-updated",
+      props: {
+        companyCode: user.company.code,
+        name: item.name,
+        storeId: user.workUnit.storeId,
+      },
+      rooms: [user.workUnit.code],
+    });
+
+    // sending order item created event
+    sendEvent({
+      name: "cE-order-item-created",
+      props: {
+        companyCode: user.company.code,
+        id: res.insertedId,
+      },
+      rooms: [user.workUnit.code],
+    });
+  };
 
   return (
     <>
@@ -100,12 +140,21 @@ const Item = ({ data = {}, orderId, preview = true, role = "" }) => {
           title={data.name}
         />
         <CardContent className={classes.content}>
-          <Typography
-            variant="h6"
-            style={{ color: "#B3B3B3", textAlign: "center", padding: "5px" }}
-          >
-            {capitalise(data.name)}
-          </Typography>
+          <input
+            readOnly
+            value={capitalise(data.name)}
+            style={{
+              fontSize: "larger",
+              backgroundColor: "transparent",
+              width: "100%",
+              color: "#B3B3B3",
+              textAlign: "center",
+              margin: "5px auto",
+              padding: "10px 0",
+              border: "none",
+              outline: "none",
+            }}
+          />
           <hr
             style={{
               color: "#B3B3B3",
@@ -120,20 +169,20 @@ const Item = ({ data = {}, orderId, preview = true, role = "" }) => {
           >
             <div>
               <Dropdown
+                sx={{ display: getBool(isOffer) ? "none" : "" }}
                 label={t("compo.item.price")}
                 labelId={`store-item-price-${data.id}`}
                 value={selectedPrice}
                 values={data.prices}
-                handleChange={onPriceChange}
+                handleChange={setPrice}
               />
-
               {!preview && role == "waiter" && (
                 <Dropdown
                   translated={true}
                   label={t("compo.item.isOffer")}
                   labelId={`store-item-isOffer-${data.id}`}
                   value={isOffer}
-                  values={["false", "true"]}
+                  values={["no", "yes"]}
                   handleChange={(val) => setIsOffer(val)}
                 />
               )}
@@ -145,7 +194,6 @@ const Item = ({ data = {}, orderId, preview = true, role = "" }) => {
                 type="number"
                 style={{
                   backgroundColor: "#415672",
-                  // width: "70px",
                   color: "#FFFFFF",
                   strokewidth: 40,
                   marginLeft: 4,
@@ -159,7 +207,7 @@ const Item = ({ data = {}, orderId, preview = true, role = "" }) => {
             {!preview && role == "waiter" && (
               <>
                 <div style={{ margin: "10px auto" }}>
-                  <label htmlFor="">Quantite :</label>
+                  <label htmlFor="">{t("compo.item.quantity_toOrder")} :</label>
                   <input
                     width={2}
                     type="number"
@@ -180,7 +228,7 @@ const Item = ({ data = {}, orderId, preview = true, role = "" }) => {
                   variant="outlined"
                   style={{ border: "4px solid #2B4362" }}
                 >
-                  {t("compo.item.add-btn")}
+                  {t("compo.item.btn-add")}
                 </Button>
               </>
             )}

@@ -72,7 +72,10 @@ export default function ItemList({ items = [], preview = true, role = "" }) {
       if (order.items.length !== 0) {
         let result = false;
         for (const orderItem of order.items) {
-          if (orderItem.name === itemInfo.name) {
+          if (
+            orderItem.name === itemInfo.name &&
+            orderItem.offer === itemInfo.offer
+          ) {
             result = true;
             break;
           }

@@ -1,3 +1,4 @@
+import React from "react";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -17,7 +18,7 @@ import { filter, getList, groupData } from "../../functions/data";
 import { ArrowBack } from "@mui/icons-material";
 import { Button } from "@mui/material";
 
-export default function AddItems() {
+export default function OrdersDetailAdd() {
   const navigate = useNavigate();
   // const { user } = useContext(AuthContext);
   const { t } = useContext(TrContext);

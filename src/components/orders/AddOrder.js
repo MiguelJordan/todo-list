@@ -33,6 +33,7 @@ export default function CreateOrder() {
     companyCode: user.company.code,
     unitCode: user.workUnit.code,
     waiterId: user.id,
+    consumptionPoint: "",
   });
   const [error, setError] = useState("");
 
@@ -40,7 +41,7 @@ export default function CreateOrder() {
     e.preventDefault();
     setError("");
 
-    let order = { ...orderInfo, consumptionPoint: e.target[2].value };
+    let order = { ...orderInfo };
 
     console.log(order);
 
@@ -172,6 +173,9 @@ export default function CreateOrder() {
           values={user.workUnit.consumptionPoints}
           label="Consumption Point"
           variant="standard"
+          handleChange={(val) =>
+            setOrderInfo({ ...orderInfo, ["consumptionPoint"]: val })
+          }
         />
 
         <Button

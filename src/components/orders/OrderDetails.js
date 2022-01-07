@@ -1,13 +1,7 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import {
-  ListItemIcon,
   Avatar,
-  Container,
-  IconButton,
-  Menu,
-  MenuItem,
-  Tooltip,
   Typography,
   Button,
   AccordionDetails,
@@ -26,6 +20,8 @@ import {
   InputLabel,
   TextField,
 } from "@mui/material";
+
+import { useNavigate, useParams } from "react-router-dom";
 
 //icons
 import { DeleteRounded, EditRounded, ExpandMore } from "@mui/icons-material";
@@ -121,6 +117,8 @@ export default function OrderDetails({
   point = [],
 }) {
   const classes = useStyles();
+  const navigate = useNavigate();
+  let { id } = useParams();
 
   //contain the item to be delete or modified
   const [element, setElement] = useState({ modify: "", delete: "" });
@@ -423,6 +421,13 @@ export default function OrderDetails({
               style={{ backgroundColor: "#65C466", marginLeft: "10px" }}
             >
               {"Imprimer"}
+            </Button>
+            <Button
+              variant="contained"
+              onClick={() => navigate(`/waiter/orders/detail/add/${id}`)}
+              style={{ marginLeft: "10px" }}
+            >
+              {"Ajouter Produits"}
             </Button>
             <Button
               variant="contained"

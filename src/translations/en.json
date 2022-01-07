@@ -1,4 +1,26 @@
 {
+  "_var": {
+    "*": {
+      "menu": {
+        "dashboard": { "text": "Dashboard" },
+        "logout": { "text": "Logout" }
+      }
+    },
+    "admin": {
+      "nav": {
+        "bills": "Bills",
+        "staff": "Staff",
+        "staff_add": "Add User",
+        "stores": "Stores"
+      }
+    },
+    "cashier": {
+      "nav": { "bills": "Bills" }
+    },
+    "waiter": {
+      "nav": { "items": "Items", "orders": "Orders" }
+    }
+  },
   "compo": {
     "dropdown": {
       "drinks": "Drinks",
@@ -23,6 +45,11 @@
       "account_menu": { "tooltip": "Account settings" }
     }
   },
+  "feedback": {
+    "waiter": {
+      "order item created success": "Order item created successfully"
+    }
+  },
   "pages": {
     "404": { "back_home": "Back to Home", "message": "Page Not Found" },
     "auth": {
@@ -40,28 +67,6 @@
         "not-found": "No such item found"
       },
       "orders": "Orders' Page"
-    }
-  },
-  "_var": {
-    "*": {
-      "menu": {
-        "dashboard": { "text": "Dashboard" },
-        "logout": { "text": "Logout" }
-      }
-    },
-    "admin": {
-      "nav": {
-        "bills": "Bills",
-        "staff": "Staff",
-        "staff_add": "Add User",
-        "stores": "Stores"
-      }
-    },
-    "cashier": {
-      "nav": { "bills": "Bills" }
-    },
-    "waiter": {
-      "nav": { "items": "Items", "orders": "Orders" }
     }
   },
   "server_err": {

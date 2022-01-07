@@ -105,6 +105,7 @@ const Item = ({ data = {}, orderId, preview = true, role = "" }) => {
       });
     }
 
+    // reset form is all is good
     e.target.reset();
 
     // sending store item updated event
@@ -126,6 +127,11 @@ const Item = ({ data = {}, orderId, preview = true, role = "" }) => {
         id: orderId,
       },
       rooms: [user.workUnit.code],
+    });
+
+    showNotification({
+      msg: t("feedback.waiter.order item created success"),
+      color: "success",
     });
   };
 

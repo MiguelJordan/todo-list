@@ -1,7 +1,14 @@
 {
   "compo": {
+    "dropdown": {
+      "drinks": "Drinks",
+      "false": "False",
+      "meals": "Meals",
+      "true": "True"
+    },
     "item": {
       "add-btn": "Add",
+      "isOffer": "Offer",
       "price": "Prices",
       "quantity": "Quantity"
     },
@@ -34,10 +41,6 @@
   },
   "_var": {
     "*": {
-      "dropdown-translated": {
-        "drinks": "Drinks",
-        "meals": "Meals"
-      },
       "menu": {
         "dashboard": { "text": "Dashboard" },
         "logout": { "text": "Logout" }

@@ -1,7 +1,14 @@
 {
   "compo": {
+    "dropdown": {
+      "drinks": "Boissons",
+      "false": "Faux",
+      "meals": "Repas",
+      "true": "Vrai"
+    },
     "item": {
       "add-btn": "Ajouter",
+      "isOffer": "Offre",
       "price": "Prix",
       "quantity": "Quantité en stock"
     },
@@ -34,10 +41,6 @@
   },
   "_var": {
     "*": {
-      "dropdown-translated": {
-        "drinks": "Boissons",
-        "meals": "Repas"
-      },
       "menu": {
         "dashboard": { "text": "Tableau de bord" },
         "logout": { "text": "Deconnexion" }

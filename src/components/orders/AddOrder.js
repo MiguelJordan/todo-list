@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AddOrderForm() {
+export default function CreateOrder() {
   const { user } = useContext(AuthContext);
   const { sendEvent } = useContext(SocketContext);
   const { t } = useContext(TrContext);
@@ -33,6 +33,7 @@ export default function AddOrderForm() {
     companyCode: user.company.code,
     unitCode: user.workUnit.code,
     waiterId: user.id,
+    consumptionPoint: "",
   });
   const [error, setError] = useState("");
 
@@ -40,7 +41,7 @@ export default function AddOrderForm() {
     e.preventDefault();
     setError("");
 
-    let order = { ...orderInfo, consumptionPoint: e.target[2].value };
+    let order = { ...orderInfo };
 
     console.log(order);
 
@@ -86,17 +87,20 @@ export default function AddOrderForm() {
         flexFlow: "column",
         justifyContent: "center",
         alignItems: "center",
-        maxWidth: "500px",
+        maxWidth: "400px",
         backgroundColor: "#FFFFFF",
         minWidth: "330px",
         borderRadius: "3px",
+        margin: "auto",
+        position: "relative",
+        top: "25%",
       }}
     >
       <h2
         style={{
           color: "#001D42",
           display: "flex",
-          marginTop: "15px",
+          marginTop: "35px",
           alignItems: "center",
           alignSelf: "center",
         }}
@@ -169,9 +173,16 @@ export default function AddOrderForm() {
           values={user.workUnit.consumptionPoints}
           label="Consumption Point"
           variant="standard"
+          handleChange={(val) =>
+            setOrderInfo({ ...orderInfo, ["consumptionPoint"]: val })
+          }
         />
 
-        <Button variant="contained" type="submit" style={{ marginTop: "15px" }}>
+        <Button
+          variant="contained"
+          type="submit"
+          style={{ marginTop: "10px", marginBottom: "25px" }}
+        >
           Ajouter
         </Button>
       </form>

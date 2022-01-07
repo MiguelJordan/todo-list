@@ -1,13 +1,7 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import {
-  ListItemIcon,
   Avatar,
-  Container,
-  IconButton,
-  Menu,
-  MenuItem,
-  Tooltip,
   Typography,
   Button,
   AccordionDetails,
@@ -27,10 +21,14 @@ import {
   TextField,
 } from "@mui/material";
 
+import { useNavigate, useParams } from "react-router-dom";
+
 //icons
 import { DeleteRounded, EditRounded, ExpandMore } from "@mui/icons-material";
 
 import Dropdown from "../subComponents/Dropdown";
+import PopOver from "../subComponents/PopOver";
+import Dialogs from "../subComponents/Dialog";
 
 const useStyles = makeStyles((theme) => ({
   accordion: {
@@ -119,27 +117,49 @@ export default function OrderDetails({
   point = [],
 }) {
   const classes = useStyles();
-  const [anchorElUser, setAnchorElUser] = useState(null);
+  const navigate = useNavigate();
+  let { id } = useParams();
 
+  //contain the item to be delete or modified
+  const [element, setElement] = useState({ modify: "", delete: "" });
+
+  //control dialog
+  const [openDialog, setOpenDialog] = useState(false);
+  const [msgDialog, setMsgDialog] = useState("");
+
+  //add another payment for an order
   const [addPayment, setAddPayement] = useState([]);
   const [payment, setPayment] = React.useState([]);
   const [orderInfo, setOrderInfo] = useState({
     paymentMethod: payment,
   });
 
-  const handleOpenUser = (e) => {
-    setAnchorElUser(e.currentTarget);
-  };
-  const handleCloseUser = () => {
-    setAnchorElUser(null);
-  };
-  const DeleteItem = (item) => {
-    console.log("Delete", item);
+  //func that completely delete an item
+  const handleDelete = () => {
+    setOpenDialog(false);
+    console.log("Delete", element.delete);
   };
 
-  const ModifyItem = () => {
-    console.log("Modify");
+  //use to close the dialog
+  const CloseDialog = () => {
+    setOpenDialog(false);
   };
+
+  //trigger the dialog to delete an item
+  const DeleteItem = (item) => {
+    console.log("Delete", item);
+    setMsgDialog(`Are you sure you want to delete this product(${item.name})?`);
+    setElement({ ...element, ["delete"]: item });
+    setOpenDialog(true);
+  };
+
+  //used modify an item
+  const ModifyItem = (item) => {
+    console.log("Modify", item);
+    setElement({ ...element, ["modify"]: item });
+  };
+
+  //used by cashier to add payment field
   const handleRemoveField = (i) => {
     const values = [...addPayment];
     values.splice(i, 1);
@@ -151,6 +171,7 @@ export default function OrderDetails({
     setAddPayement(values);
   };
 
+  //these expressions are used to calculate the total amount of an order
   const familly = Object.keys(list);
   let total = 0;
 
@@ -160,23 +181,30 @@ export default function OrderDetails({
     });
   });
 
-  const option = [
+  //contains pop over options
+  const popMenu = [
     {
       name: "Supprimer",
       color: "#FF0000",
-      func: (item) => DeleteItem(item),
+      action: (item) => DeleteItem(item),
       Icon: <DeleteRounded />,
     },
     {
       name: "Modifier",
       color: "#04A5E0",
-      func: ModifyItem,
+      action: (item) => ModifyItem(item),
       Icon: <EditRounded />,
     },
   ];
 
   return (
     <>
+      <Dialogs
+        content={<Typography>{msgDialog}</Typography>}
+        openDialog={openDialog}
+        closeDialog={CloseDialog}
+        PositiveRes={handleDelete}
+      />
       <div
         style={{
           display: "flex",
@@ -354,54 +382,16 @@ export default function OrderDetails({
                                 align="center"
                                 style={{ color: "#B3B3B3", fontSize: 25 }}
                               >
-                                <Tooltip title="Action">
-                                  <IconButton onClick={handleOpenUser}>
+                                <PopOver
+                                  items={popMenu}
+                                  Icon={
                                     <Avatar
                                       alt={row.name.toUpperCase()}
                                       src="/broken-image.jpg"
                                     />
-                                  </IconButton>
-                                </Tooltip>
-                                <Menu
-                                  anchorEl={anchorElUser}
-                                  anchorOrigin={{
-                                    vertical: "top",
-                                    horizontal: "right",
-                                  }}
-                                  keepMounted
-                                  transformOrigin={{
-                                    vertical: "top",
-                                    horizontal: "right",
-                                  }}
-                                  open={Boolean(anchorElUser)}
-                                  onClose={handleCloseUser}
-                                >
-                                  {option.map((item) => (
-                                    <MenuItem
-                                      key={item.name}
-                                      onClick={(e) =>
-                                        console.log(e, list[fam][index], index)
-                                      }
-                                      type="submit"
-                                    >
-                                      <ListItemIcon
-                                        style={{
-                                          color: `${item.color}`,
-                                        }}
-                                      >
-                                        {item.Icon}
-                                      </ListItemIcon>
-                                      <Typography
-                                        textAlign={"center"}
-                                        style={{
-                                          color: "white",
-                                        }}
-                                      >
-                                        {item.name}
-                                      </Typography>
-                                    </MenuItem>
-                                  ))}
-                                </Menu>
+                                  }
+                                  event={row}
+                                />
                               </TableCell>
                             )}
                           </TableRow>
@@ -424,11 +414,24 @@ export default function OrderDetails({
             }}
           >
             <Button variant="contained" style={{ backgroundColor: "#04A5E0" }}>
-              {"Enregistrer & Imprimer"}
+              {"Enregistrer"}
             </Button>
             <Button
               variant="contained"
-              style={{ backgroundColor: "#FF0000", marginLeft: "5%" }}
+              style={{ backgroundColor: "#65C466", marginLeft: "10px" }}
+            >
+              {"Imprimer"}
+            </Button>
+            <Button
+              variant="contained"
+              onClick={() => navigate(`/waiter/orders/detail/add/${id}`)}
+              style={{ marginLeft: "10px" }}
+            >
+              {"Ajouter Produits"}
+            </Button>
+            <Button
+              variant="contained"
+              style={{ backgroundColor: "#FF0000", marginLeft: "10px" }}
             >
               Annuler
             </Button>

@@ -5,11 +5,13 @@ import { useNavigate } from "react-router-dom";
 
 import { OrderContext } from "../../contexts/OrderContext";
 
-import DoneIcon from "@mui/icons-material/Done";
-import { TextField } from "@mui/material";
+import PopOver from "../subComponents/PopOver";
 
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
+import DoneIcon from "@mui/icons-material/Done";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { Button, TextField } from "@mui/material";
+
+import { DeleteRounded, EditRounded, ExpandMore } from "@mui/icons-material";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -61,6 +63,10 @@ const useStyles = makeStyles((theme) => ({
   inputText: {
     color: "black",
     fontSize: 20,
+    width: "80px",
+    height: "20px",
+    overflowY: "auto",
+    overflowX: "hidden",
   },
 }));
 
@@ -69,9 +75,35 @@ export default function OrderList({ role = "", array = [] }) {
   const Navigate = useNavigate();
   const { orders } = React.useContext(OrderContext);
 
-  const handleDelete = (orderId) => {
-    console.log("Delete order with id", orderId);
+  const handleDeleteOrder = (e) => {
+    console.log("Delete", e);
   };
+  const handleViewOrderDetail = (e) => {
+    Navigate(`/waiter/orders/detail/${e.id}`);
+  };
+
+  const WaiterPopMenu = [
+    {
+      name: "Supprimer",
+      Icon: <DeleteRounded />,
+      color: "#FF0000",
+      action: (e) => handleDeleteOrder(e),
+    },
+    {
+      name: "Modifier",
+      color: "#04A5E0",
+      Icon: <EditRounded />,
+      action: (e) => handleViewOrderDetail(e),
+    },
+  ];
+  const AdminPopMenu = [
+    {
+      name: "Modifier",
+      color: "#04A5E0",
+      Icon: <EditRounded />,
+      action: (e) => handleViewOrderDetail(e),
+    },
+  ];
 
   return (
     <div className={classes.container}>
@@ -84,9 +116,7 @@ export default function OrderList({ role = "", array = [] }) {
               <div
                 style={{
                   display: "flex",
-                  justifyContent: "flex-start",
-                  alignItems: "flex-start",
-                  flexFlow: "column",
+                  justifyContent: "space-between",
                   marginTop: "-2px",
                   padding: "5px",
                 }}
@@ -96,6 +126,7 @@ export default function OrderList({ role = "", array = [] }) {
                     fontSize: 28,
                     color: "black",
                     textAlign: "left",
+                    alignSelf: "flex-start",
                   }}
                 >
                   <TextField
@@ -114,10 +145,36 @@ export default function OrderList({ role = "", array = [] }) {
                       className: classes.inputText,
                       readOnly: true,
                     }}
-                    style={{ color: "black", fontSize: 20 }}
+                    style={{ color: "black", fontSize: 20, height: "15px" }}
                   />
                 </span>
+                <span style={{ alignSelf: "flex-end" }}>
+                  <Button>
+                    {role === "waiter" || role === "cashier" ? (
+                      <PopOver
+                        items={WaiterPopMenu}
+                        Icon={<MoreVertIcon />}
+                        event={order}
+                      />
+                    ) : (
+                      <PopOver
+                        items={AdminPopMenu}
+                        Icon={<MoreVertIcon />}
+                        event={order}
+                      />
+                    )}
+                  </Button>
+                </span>
+              </div>
 
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  alignItems: "flex-start",
+                  flexFlow: "column",
+                }}
+              >
                 <span
                   style={{
                     fontSize: 15,
@@ -171,28 +228,6 @@ export default function OrderList({ role = "", array = [] }) {
                   {order.meal ? `Cout: ${order.meal}` : "Cout:"}
                 </span>
               </div>
-
-              {role === "waiter" && (
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    marginTop: "-5px",
-                    marginBottom: "4px",
-                  }}
-                >
-                  <DeleteIcon
-                    style={{ marginRight: "20px", color: "#FF0000" }}
-                    onClick={() => handleDelete(order.id)}
-                  />
-                  <EditIcon
-                    style={{ marginLeft: "20px", color: "#04A5E0" }}
-                    onClick={() =>
-                      Navigate(`/waiter/orders/detail/${order.id}`)
-                    }
-                  />
-                </div>
-              )}
             </Box>
           );
         })

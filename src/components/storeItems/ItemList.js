@@ -40,8 +40,6 @@ export default function ItemList({ items = [], preview = true, role = "" }) {
     color: "success",
   });
 
-  const [Offer, setOffer] = useState("Non");
-
   const handleAdd = (item, e) => {
     e.preventDefault();
 
@@ -50,7 +48,7 @@ export default function ItemList({ items = [], preview = true, role = "" }) {
 
     // regroup data
     let itemInfo = {
-      offer: Offer,
+      offer: e.target[3].value,
       quantity: e.target[5].value,
       name: item.name,
       price: e.target[0].defaultValue,
@@ -71,12 +69,34 @@ export default function ItemList({ items = [], preview = true, role = "" }) {
       setMsg({ name: "Invalid Quantity", color: "error" });
     } else {
       // if no error add product to the list of items
-      setMsg({
-        name: `${itemInfo.quantity} ${itemInfo.name} successfully added`,
-        color: "success",
-      });
+      if (order.items.length !== 0) {
+        let result = false;
+        for (const orderItem of order.items) {
+          if (orderItem.name === itemInfo.name) {
+            result = true;
+            break;
+          }
+        }
 
-      order.items.push(itemInfo);
+        if (result) {
+          setMsg({
+            name: ` ${itemInfo.name} already exist`,
+            color: "error",
+          });
+        } else {
+          setMsg({
+            name: `${itemInfo.quantity} ${itemInfo.name} successfully added`,
+            color: "success",
+          });
+          order.items.push(itemInfo);
+        }
+      } else {
+        setMsg({
+          name: `${itemInfo.quantity} ${itemInfo.name} successfully added`,
+          color: "success",
+        });
+        order.items.push(itemInfo);
+      }
     }
   };
 
@@ -85,7 +105,13 @@ export default function ItemList({ items = [], preview = true, role = "" }) {
       <SnackBar msg={msg.name} color={msg.color} open={Open} close={setOpen} />
       {items.length !== 0 ? (
         items.map((item) => (
-          <Item data={item} preview={preview} role={role} key={item.id} />
+          <Item
+            data={item}
+            preview={preview}
+            role={role}
+            key={item.id}
+            onSubmit={handleAdd}
+          />
         ))
       ) : (
         <h2 style={{ marginTop: "100px" }}>

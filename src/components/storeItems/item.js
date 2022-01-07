@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Item = ({ data = {}, preview = true, role = "" }) => {
+const Item = ({ data = {}, preview = true, role = "", onSubmit }) => {
   const { t } = useContext(TrContext);
   const [isOffer, setIsOffer] = useState(false);
   const [selectedPrice, setPrice] = useState(data.prices[0]);
@@ -85,7 +85,7 @@ const Item = ({ data = {}, preview = true, role = "" }) => {
         />
         <form
           className={classes.formControl}
-          //   onSubmit={(e) => handleAdd(items[index], e)}
+          onSubmit={(e) => onSubmit(data, e)}
         >
           <Dropdown
             label={t("compo.item.price")}
@@ -94,7 +94,7 @@ const Item = ({ data = {}, preview = true, role = "" }) => {
             values={data.prices}
             handleChange={onPriceChange}
           />
-          <br />
+
           <br />
           <label htmlFor="">{t("compo.item.quantity")}: </label>
           <output
@@ -124,7 +124,6 @@ const Item = ({ data = {}, preview = true, role = "" }) => {
                 handleChange={(val) => setIsOffer(val)}
               />
 
-              <br />
               <br />
               <label htmlFor="">Quantite :</label>
               <input

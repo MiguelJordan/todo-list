@@ -104,7 +104,7 @@ export default function Staff() {
         </List>
       </div>
 
-      <Fabs Element={<AddStaff />} />
+      <Fabs path="/admin/staff/add" />
     </div>
   );
 }

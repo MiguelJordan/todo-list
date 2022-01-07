@@ -27,6 +27,7 @@ export const getList = ({ data = [], criteria }) => {
 };
 
 export const groupData = ({ data = [], criteria = "" }) => {
+  if (!data) return [];
   return data.reduce((prev, next) => {
     const _criteria = next[criteria];
     if (prev[_criteria]) {

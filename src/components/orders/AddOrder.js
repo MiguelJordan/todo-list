@@ -29,7 +29,6 @@ export default function CreateOrder() {
 
   const [orderInfo, setOrderInfo] = useState({
     tableName: "",
-
     balanceForward: "",
     companyCode: user.company.code,
     unitCode: user.workUnit.code,
@@ -52,7 +51,7 @@ export default function CreateOrder() {
     }
 
     if (order.balanceForward < 0) {
-      return setError(t("server_err.Invalid balance forward"));
+      return setError(t("server_err.Invalid balance carried forward"));
     }
 
     // request order creation

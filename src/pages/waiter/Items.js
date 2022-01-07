@@ -16,45 +16,70 @@ import { filter, getList, groupData } from "../../functions/data";
 export default function Items() {
   // const { user } = useContext(AuthContext);
   const { t } = useContext(TrContext);
-  const { items } = useContext(ItemContext);
+  const { families, items } = useContext(ItemContext);
   const [searchVal, setSearchVal] = useState("");
 
-  const [families] = useState(getList({ data: items, criteria: "family" }));
   const [family, setFam] = useState(families[0] ?? "");
 
-  const data = groupData({ data: items, criteria: "family" });
+  const [data, setData] = useState(
+    groupData({ data: items, criteria: "family" })
+  );
 
   const [categories, setCats] = useState(
-    getList({ data: data[family], criteria: "category" })
+    getList({ data: data[family], criteria: "category" }) ?? []
   );
-  const [category, setCat] = useState(categories[0]);
+  const [category, setCat] = useState(categories[0] ?? "");
 
   const [_items, setItems] = useState(
     filter({ data: data[family], criteria: "category", value: category })
   );
 
-  const filterArray = [];
+  const [f_items, setFItems] = useState(_items);
 
-  _items.filter((val) => {
-    if (!searchVal) return filterArray.push(val);
-    if (val.name.toLowerCase().includes(searchVal.toLowerCase().trim()))
-      return filterArray.push(val);
-    return "";
-  });
+  const updateFam = (value) => {
+    if (!families.includes(value)) value = families[0];
+    setFam(value);
+  };
+
+  const updateCat = (value) => {
+    if (!categories.includes(value)) value = categories[0];
+    setCat(value);
+  };
+
+  useEffect(() => setFam(families[0]), [families]);
+
+  useEffect(
+    () => setData(groupData({ data: items, criteria: "family" })),
+    [items]
+  );
 
   useEffect(() => {
-    setCats(getList({ data: data[family], criteria: "category" }));
-  }, [family]);
+    if (family) {
+      setCats(getList({ data: data[family], criteria: "category" }));
+    }
+  }, [data, family]);
+
+  useEffect(() => setCat(categories[0]), [categories]);
 
   useEffect(() => {
-    setItems(
-      filter({ data: data[family], criteria: "category", value: category })
-    );
-  }, [category]);
+    if (category && family) {
+      setItems(
+        filter({ data: data[family], criteria: "category", value: category })
+      );
+    }
+  }, [category, data, family]);
 
   useEffect(() => {
-    setCat(categories[0]);
-  }, [categories]);
+    const filtered = _items.filter((item) => {
+      if (!searchVal) return true;
+      if (item.name.toLowerCase().includes(searchVal.toLowerCase().trim())) {
+        return true;
+      }
+      return false;
+    });
+
+    setFItems(filtered);
+  }, [_items, searchVal]);
 
   return (
     <>
@@ -72,18 +97,20 @@ export default function Items() {
           translated={true}
           label={t("pages.waiter.items.dropdown.families")}
           labelId="waiter-items-families"
+          value={family}
           values={families}
-          onchange={(value) => setFam(value)}
+          handleChange={updateFam}
         />
         <Dropdown
           label={t("pages.waiter.items.dropdown.categories")}
           labelId="waiter-items-categories"
+          value={category}
           values={categories}
-          onchange={(value) => setCat(value)}
+          handleChange={updateCat}
         />
         <Search onChange={setSearchVal} />
       </div>
-      <ItemList items={filterArray} role="waiter" />
+      <ItemList items={f_items} role="waiter" />
     </>
   );
 }

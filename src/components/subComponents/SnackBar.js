@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 
@@ -15,21 +15,19 @@ export default function SnackBar({
   const vertical = "top";
   const horizontal = "right";
   return (
-    <div>
-      <Snackbar
-        anchorOrigin={{ vertical, horizontal }}
-        open={open}
-        autoHideDuration={2000}
+    <Snackbar
+      anchorOrigin={{ vertical, horizontal }}
+      open={open}
+      autoHideDuration={2000}
+      onClose={() => close(false)}
+    >
+      <Alert
         onClose={() => close(false)}
+        severity={color}
+        sx={{ width: "100%" }}
       >
-        <Alert
-          onClose={() => close(false)}
-          severity={color}
-          sx={{ width: "100%" }}
-        >
-          {msg}
-        </Alert>
-      </Snackbar>
-    </div>
+        {msg}
+      </Alert>
+    </Snackbar>
   );
 }

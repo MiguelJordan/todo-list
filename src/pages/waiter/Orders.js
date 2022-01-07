@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import OrderList from "../../components/orders/OrderList";
 // import { TrContext } from "../../contexts/TranslationContext";
 import { OrderContext } from "../../contexts/OrderContext";
@@ -13,14 +13,21 @@ export default function Orders() {
 
   const [searchVal, setSearchVal] = useState();
 
-  const filterArray = [];
+  const [_orders, setOrders] = useState([]);
 
-  orders.filter((val) => {
-    if (!searchVal) return filterArray.push(val);
-    if (val.tableName.toLowerCase().includes(searchVal.toLowerCase().trim()))
-      return filterArray.push(val);
-    return "";
-  });
+  useEffect(() => {
+    const filtered = orders.filter((order) => {
+      if (!searchVal) return true;
+      if (
+        order.tableName.toLowerCase().includes(searchVal.toLowerCase().trim())
+      ) {
+        return true;
+      }
+      return false;
+    });
+
+    setOrders(filtered);
+  }, [orders, searchVal]);
 
   return (
     <>
@@ -38,7 +45,7 @@ export default function Orders() {
         <Search onChange={setSearchVal} />
       </div>
 
-      <OrderList array={filterArray} role="waiter" />
+      <OrderList array={_orders} role="waiter" />
 
       <Fabs path="/waiter/orders/add" />
     </>

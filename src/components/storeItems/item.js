@@ -139,7 +139,7 @@ const Item = ({ data = {}, orderId, preview = true, role = "" }) => {
               )}
             </div>
 
-            <div>
+            <div style={{ marginBottom: "10px" }}>
               <label htmlFor="">{t("compo.item.quantity")}: </label>
               <output
                 type="number"

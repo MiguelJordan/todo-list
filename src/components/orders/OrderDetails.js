@@ -108,6 +108,14 @@ const useStyles = makeStyles((theme) => ({
   inputText: {
     color: "#FFFFFF",
   },
+  buttonGroup: {
+    display: "flex",
+    justifyContent: "center",
+    marginTop: "20px",
+    flexWrap: "wrap",
+
+    gap: "15px",
+  },
 }));
 
 export default function OrderDetails({
@@ -406,33 +414,21 @@ export default function OrderDetails({
         </div>
 
         {role === "waiter" && (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              marginTop: "2%",
-            }}
-          >
+          <div className={classes.buttonGroup}>
             <Button variant="contained" style={{ backgroundColor: "#04A5E0" }}>
               {"Enregistrer"}
             </Button>
-            <Button
-              variant="contained"
-              style={{ backgroundColor: "#65C466", marginLeft: "10px" }}
-            >
+            <Button variant="contained" style={{ backgroundColor: "#65C466" }}>
               {"Imprimer"}
             </Button>
             <Button
               variant="contained"
               onClick={() => navigate(`/waiter/orders/detail/add/${id}`)}
-              style={{ marginLeft: "10px" }}
+              // style={{ marginLeft: "10px" }}
             >
               {"Ajouter Produits"}
             </Button>
-            <Button
-              variant="contained"
-              style={{ backgroundColor: "#FF0000", marginLeft: "10px" }}
-            >
+            <Button variant="contained" style={{ backgroundColor: "#FF0000" }}>
               Annuler
             </Button>
           </div>

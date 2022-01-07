@@ -50,6 +50,9 @@ const DLContextProvider = ({ children }) => {
     // orders
     socket.on("cE-order-created", orderCreated);
 
+    // order items
+    socket.on("cE-order-item-created", orderCreated);
+
     // store items
     socket.on("cE-store-item-updated", storeItemUpdated);
 
@@ -57,10 +60,13 @@ const DLContextProvider = ({ children }) => {
       // orders
       socket.off("cE-order-created", orderCreated);
 
+      // order items
+      socket.on("cE-order-item-created", orderCreated);
+
       // store items
       socket.off("cE-store-item-updated", storeItemUpdated);
     };
-  }, [user, socket]);
+  }, [user, updateItems, updateOrders, socket]);
 
   const context = {};
   return <DLContext.Provider value={context}>{children}</DLContext.Provider>;

@@ -96,7 +96,7 @@ const Item = ({ data = {}, orderId, preview = true, role = "" }) => {
     }
 
     const res = await post({ url: `${apiUrl}/orderItems`, body: _item });
-    console.log(res);
+    // console.log(res);
 
     if (res?.error) {
       return showNotification({
@@ -104,6 +104,8 @@ const Item = ({ data = {}, orderId, preview = true, role = "" }) => {
         color: "error",
       });
     }
+
+    e.target.reset();
 
     // sending store item updated event
     sendEvent({
@@ -121,7 +123,7 @@ const Item = ({ data = {}, orderId, preview = true, role = "" }) => {
       name: "cE-order-item-created",
       props: {
         companyCode: user.company.code,
-        id: res.insertedId,
+        id: orderId,
       },
       rooms: [user.workUnit.code],
     });

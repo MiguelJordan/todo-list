@@ -26,9 +26,9 @@ const ItemContexProvider = ({ children }) => {
     const _items = await get({ url: `${apiUrl}/storeItems`, params: query });
 
     if (_items?.error) return console.log(_items?.error);
-    console.log("Store items", _items);
+    // console.log("Store items", _items);
     const _families = getList({ data: _items, criteria: "family" });
-    console.log("Families", _families);
+    // console.log("Families", _families);
     setItems(_items);
     setFams(_families);
   };

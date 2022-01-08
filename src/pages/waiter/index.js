@@ -6,8 +6,8 @@ import Layout from "../../components/_layout/Layout";
 import Items from "./Items";
 import Orders from "./Orders";
 import AddItems from "./Items.add";
+import CreateOrder from "./Order.add";
 import OrderDetail from "./Orders.details";
-import CreateOrder from "../../components/orders/AddOrder";
 
 const NotFound = React.lazy(() => import("../404"));
 

@@ -7,7 +7,7 @@ import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import IconButton from "@mui/material/IconButton";
-import { colors, Tooltip } from "@mui/material";
+import Tooltip from "@mui/material/Tooltip";
 import { makeStyles } from "@material-ui/core";
 // import { makeStyles } from "@mui/styles";
 
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     border: "3px solid #001d42",
     zIndex: 2,
   },
-  presence_online: { backgroundColor: colors.blue[500] },
+  presence_online: { backgroundColor: "hsl(184, 92%, 41%)" },
 }));
 
 export default function AccountMenu({ user }) {

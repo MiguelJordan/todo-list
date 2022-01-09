@@ -47,7 +47,8 @@
   },
   "feedback": {
     "waiter": {
-      "order item created success": "Order item created successfully"
+      "order item created success": "Order item created successfully",
+      "order deleted success": "Order deleted successfully"
     }
   },
   "pages": {
@@ -66,7 +67,7 @@
         },
         "not-found": "No such item found"
       },
-      "orders": "Orders' Page"
+      "orders": { "form_add_order": { "title": "New Order", "add_btn": "Add" } }
     }
   },
   "server_err": {
@@ -95,6 +96,7 @@
     "Invalid item id": "Invalid item id",
     "Invalid last name": "Invalid last name",
     "Invalid measure unit(s)": "Invalid measure unit(s)",
+    "Invalid operation": "Invalid Operation",
     "Invalid order id": "Invalid order id",
     "Invalid password": "Invalid password",
     "Invalid price": "Invalid price",

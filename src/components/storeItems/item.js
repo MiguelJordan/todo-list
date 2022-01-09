@@ -95,7 +95,7 @@ const Item = ({ data = {}, orderId, preview = true, role = "" }) => {
       });
     }
 
-    const res = await post({ url: `${apiUrl}/orderItems`, body: _item });
+    const res = await post({ url: "/orderItems", body: _item });
     // console.log(res);
 
     if (res?.error) {
@@ -108,7 +108,7 @@ const Item = ({ data = {}, orderId, preview = true, role = "" }) => {
     // reset form is all is good
     e.target.reset();
 
-    // sending store item updated event
+    // send store item updated event
     sendEvent({
       name: "cE-store-item-updated",
       props: {
@@ -119,7 +119,7 @@ const Item = ({ data = {}, orderId, preview = true, role = "" }) => {
       rooms: [user.workUnit.code],
     });
 
-    // sending order item created event
+    // send order item created event
     sendEvent({
       name: "cE-order-item-created",
       props: {

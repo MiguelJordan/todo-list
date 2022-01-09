@@ -45,11 +45,8 @@ export default function Fabs({ path = "" }) {
         style={{
           position: "relative",
           display: "flex",
-
-          marginBottom: "auto",
           alignItems: "flex-end",
           marginLeft: "auto",
-          marginTop: "-20px",
         }}
       >
         <AddIcon

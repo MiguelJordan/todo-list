@@ -18,8 +18,15 @@ export const capitalise = (value) => {
   return _capitalised;
 };
 
-export const filter = ({ data = [], criteria = "", value = "" }) => {
-  return data.filter((dt) => dt?.[criteria] == value);
+export const filter = ({
+  data = [],
+  criteria = "",
+  value = "",
+  not = false,
+}) => {
+  return data.filter((dt) =>
+    not ? dt?.[criteria] !== value : dt?.[criteria] === value
+  );
 };
 
 export const getList = ({ data = [], criteria }) => {

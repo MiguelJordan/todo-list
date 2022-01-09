@@ -18,7 +18,7 @@ import { DeleteRounded, EditRounded } from "@mui/icons-material";
 
 import Dropdown from "../subComponents/Dropdown";
 // import PopOver from "../subComponents/PopOver";
-import Dialogs from "../subComponents/Dialog";
+import Dialog from "../subComponents/Dialog";
 
 const useStyles = makeStyles((theme) => ({
   accordion: {
@@ -158,13 +158,17 @@ export default function OrderDetails({ items = [], role = "", methods = [] }) {
     values.splice(i, 1);
     setAddPayement(values);
   };
+
   const handleAddField = () => {
     const values = [...addPayment];
     values.push({ value: null });
     setAddPayement(values);
   };
 
-  let total = items.reduce((prev, next) => (prev += next.selectedPrice), 0);
+  let total = items.reduce((prev, next) => {
+    if (next.isOffer) return prev;
+    return (prev += next.quantity * next.selectedPrice);
+  }, 0);
 
   //contains pop over options
   const popMenu = [
@@ -184,7 +188,7 @@ export default function OrderDetails({ items = [], role = "", methods = [] }) {
 
   return (
     <>
-      <Dialogs
+      <Dialog
         content={<Typography>{msgDialog}</Typography>}
         openDialog={openDialog}
         closeDialog={CloseDialog}

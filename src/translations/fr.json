@@ -47,7 +47,8 @@
   },
   "feedback": {
     "waiter": {
-      "order item created success": "Article de commande créé avec succès"
+      "order item created success": "Article de commande créé avec succès",
+      "order deleted success": "Commande supprimée avec succès"
     }
   },
   "pages": {
@@ -66,7 +67,9 @@
         },
         "not-found": "Aucun élément de ce type n'a été trouvé"
       },
-      "orders": "Page des Commandes"
+      "orders": {
+        "form_add_order": { "title": "Nouvelle Commande", "add_btn": "Ajouter" }
+      }
     }
   },
   "server_err": {
@@ -95,6 +98,7 @@
     "Invalid item id": "Identifiant de produit invalide",
     "Invalid last name": "Nom de famille Invalide",
     "Invalid measure unit(s)": "Unité(s) de mesure non valide(s)",
+    "Invalid operation": "Opération Invalide",
     "Invalid order id": "Identifiant de commande invalide",
     "Invalid password": "Mot de passe incorrect",
     "Invalid price": "Prix invalide",

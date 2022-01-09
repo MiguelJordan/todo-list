@@ -1,29 +1,68 @@
-import React from "react";
-import Box from "@mui/material/Box";
+import { useContext } from "react";
 import { makeStyles } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
-
-import { OrderContext } from "../../contexts/OrderContext";
+import dayjs from "dayjs";
 
 import PopOver from "../subComponents/PopOver";
 
-import DoneIcon from "@mui/icons-material/Done";
+// import DoneIcon from "@mui/icons-material/Done";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { Button, TextField } from "@mui/material";
 
-import { DeleteRounded, EditRounded, ExpandMore } from "@mui/icons-material";
+import { DeleteRounded, EditRounded } from "@mui/icons-material";
+import TimeAgo from "../subComponents/TimeAgo";
+import DateTime from "../subComponents/DateTime";
+
+// contexts
+import { AuthContext } from "../../contexts/AuthContext";
+import { NTContext } from "../../contexts/NTContext";
+import { SocketContext } from "../../contexts/SocketContext";
+import { TrContext } from "../../contexts/TranslationContext";
+
+// functions
+import { _delete } from "../../functions/http";
 
 const useStyles = makeStyles((theme) => ({
+  container: {
+    display: "flex",
+    flexFlow: "row",
+    justifyContent: "center",
+    overflowY: "auto",
+    flexWrap: "wrap",
+    height: ({ role }) => {
+      if (role === "admin") return "63vh";
+      return "68vh";
+    },
+    [theme.breakpoints.up("sm")]: {
+      height: "75vh",
+    },
+  },
   card: {
+    color: "#707070",
+    position: "relative",
+    padding: "5px",
+    paddingLeft: "15px",
     margin: "8px",
     minWidth: "250px",
-    maxWidth: "280px",
-    maxHeight: "170px",
-    flexBasis: "33.33333%",
-    backgroundColor: "white",
+    // maxWidth: "280px",
+    height: "fit-content",
+    // flexBasis: "33.33333%",
+    backgroundColor: "hsl(214, 53%, 22%)",
+    border: "3px solid #2B4362",
     borderRadius: "8px",
-    flex: "auto",
   },
+  orderStatus: {
+    position: "absolute",
+    width: "5px",
+    height: "90%",
+    left: -1,
+    top: "50%",
+    transform: "translateY(-50%)",
+    margin: 0,
+    borderRadius: "0 5px 5px 0",
+    // backgroundColor: "green",
+    backgroundColor: "#2B4362",
+  },
+  orderPaid: { backgroundColor: "green" },
   grid: {
     justifyContent: "center",
     alignItems: "center",
@@ -41,23 +80,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.between("sm", "md")]: {
       //marginLeft: "1%",
       //marginRight: "20%",
-      width: "100%",
-    },
-  },
-  container: {
-    display: "flex",
-    flexFlow: "row",
-    justifyContent: "center",
-    alignitems: "center",
-    overflowY: "auto",
-    height: ({ role }) => {
-      if (role === "admin") return "63vh";
-      return "68vh";
-    },
-    flexWrap: "wrap",
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      height: "75vh",
+      // width: "100%",
     },
   },
   inputText: {
@@ -70,16 +93,64 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function OrderList({ role = "", array = [] }) {
+export default function OrderList({ role = "", orders = [] }) {
+  const { user } = useContext(AuthContext);
+  const { showNotification } = useContext(NTContext);
+  const { sendEvent } = useContext(SocketContext);
+  const { t } = useContext(TrContext);
   const classes = useStyles({ role });
-  const Navigate = useNavigate();
-  const { orders } = React.useContext(OrderContext);
+  const navigate = useNavigate();
 
-  const handleDeleteOrder = (e) => {
-    console.log("Delete", e);
+  const deleteOrder = async (order) => {
+    if (!["admin", "waiter"].includes(user.role)) return;
+
+    if (order.isPaid && user.role != "admin") {
+      return showNotification({
+        msg: t("server_err.Invalid operation"),
+        color: "error",
+      });
+    }
+
+    const res = await _delete({
+      url: "/orders",
+      params: { companyCode: user.company.code, id: order.id },
+    });
+
+    if (res.error) {
+      return showNotification({
+        msg: t(`server_err.${res.error}`),
+        color: "error",
+      });
+    }
+
+    // send order deleted event
+    sendEvent({
+      name: "cE-order-deleted",
+      props: { id: order.id },
+      rooms: [user.workUnit.code],
+    });
+
+    if (!order.isPaid && order.items.length) {
+      // send order deleted event
+      sendEvent({
+        name: "cE-store-items-updated",
+        props: {
+          companyCode: user.company.code,
+          name: { $in: order.items.map((item) => item.name) },
+          storeId: user.workUnit.storeId,
+        },
+        rooms: [user.workUnit.code],
+      });
+    }
+
+    return showNotification({
+      msg: t("feedback.waiter.order deleted success"),
+      color: "success",
+    });
   };
-  const handleViewOrderDetail = (e) => {
-    Navigate(`/waiter/orders/${e.id}`);
+
+  const viewOrderDetails = (e) => {
+    navigate(`/waiter/orders/${e.id}`);
   };
 
   const WaiterPopMenu = [
@@ -87,148 +158,108 @@ export default function OrderList({ role = "", array = [] }) {
       name: "Supprimer",
       Icon: <DeleteRounded />,
       color: "#FF0000",
-      action: (e) => handleDeleteOrder(e),
+      action: (order) => deleteOrder(order),
     },
     {
       name: "Modifier",
       color: "#04A5E0",
       Icon: <EditRounded />,
-      action: (e) => handleViewOrderDetail(e),
+      action: (order) => viewOrderDetails(order),
     },
   ];
+
   const AdminPopMenu = [
     {
       name: "Modifier",
       color: "#04A5E0",
       Icon: <EditRounded />,
-      action: (e) => handleViewOrderDetail(e),
+      action: (e) => viewOrderDetails(e),
     },
   ];
 
   return (
     <div className={classes.container}>
-      {array.length === 0 ? (
+      {orders.length === 0 ? (
         <h2 style={{ marginTop: "100px" }}>No Order Found</h2>
       ) : (
-        array.map((order) => {
+        orders.map((order) => {
           return (
-            <Box className={classes.card} key={order.id}>
+            <div className={classes.card} key={order.id}>
               <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  marginTop: "-2px",
-                  padding: "5px",
-                }}
-              >
-                <span
-                  style={{
-                    fontSize: 28,
-                    color: "black",
-                    textAlign: "left",
-                    alignSelf: "flex-start",
-                  }}
-                >
-                  <TextField
-                    variant="standard"
-                    label={
-                      role === "waiter" || role === "cashier"
-                        ? `Table`
-                        : `Serveur`
-                    }
-                    value={
-                      role === "waiter" || role === "cashier"
-                        ? order.tableName
-                        : order.waiter.name
-                    }
-                    inputProps={{
-                      className: classes.inputText,
-                      readOnly: true,
-                    }}
-                    style={{ color: "black", fontSize: 20, height: "15px" }}
-                  />
-                </span>
-                <span style={{ alignSelf: "flex-end" }}>
-                  <Button>
-                    {role === "waiter" || role === "cashier" ? (
-                      <PopOver
-                        items={WaiterPopMenu}
-                        Icon={<MoreVertIcon />}
-                        event={order}
-                      />
-                    ) : (
-                      <PopOver
-                        items={AdminPopMenu}
-                        Icon={<MoreVertIcon />}
-                        event={order}
-                      />
-                    )}
-                  </Button>
-                </span>
-              </div>
+                className={`${classes.orderStatus} ${
+                  order.isPaid ? classes.orderPaid : ""
+                }`}
+              />
 
               <div
                 style={{
                   display: "flex",
-                  justifyContent: "flex-start",
-                  alignItems: "flex-start",
-                  flexFlow: "column",
+                  flexFlow: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
                 }}
               >
                 <span
                   style={{
                     fontSize: 15,
-                    color: "#707070",
-                    alignItems: "flex-start",
-                    alignSelf: "flex-start",
-                    marginTop: "4px",
+                    textAlign: "left",
                   }}
                 >
-                  {new Date(order.createdAt).toUTCString()}
+                  {role === "waiter" || role === "cashier"
+                    ? order.tableName
+                    : order.waiter.name}
                 </span>
+
+                <div style={{ fontSize: 15 }}>
+                  {dayjs(new Date()).diff(order.createdAt, "day") < 1 ? (
+                    <TimeAgo date={order.createdAt} />
+                  ) : (
+                    <DateTime date={order.createdAt} />
+                  )}
+                </div>
               </div>
-              <hr
-                width="95%"
-                color="gray"
-                style={{
-                  color: "#B3B3B3",
-                  height: 0.5,
-                  marginTop: "5px",
-                  alignSelf: "center",
-                }}
-              />
+
               <div
                 style={{
                   display: "flex",
-                  justifyContent: "flex-start",
-                  alignItems: "flex-start",
-                  flexFlow: "column",
-                  padding: "5px",
+                  flexFlow: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
                 }}
               >
-                <span
+                <div
                   style={{
-                    fontSize: 20,
-                    color: "#707070",
-                    alignItems: "flex-start",
-                    alignSelf: "flex-start",
+                    display: "flex",
+                    flexFlow: "column",
+                    justifyContent: "space-around",
                   }}
                 >
-                  {order.drink ? `Produits: ${order.drink}` : "Produits:"}
-                </span>
-
-                <span
-                  style={{
-                    fontSize: 20,
-                    color: "#707070",
-                    alignItems: "flex-start",
-                    alignSelf: "flex-start",
-                  }}
-                >
-                  {order.meal ? `Cout: ${order.meal}` : "Cout:"}
+                  <div>Items: {order.items.length}</div>
+                  <div>
+                    Total:{" "}
+                    {order.items.reduce((prev, next) => {
+                      if (next.isOffer) return prev;
+                      return (prev += next.quantity * next.selectedPrice);
+                    }, 0)}
+                  </div>
+                </div>
+                <span>
+                  {role === "waiter" || role === "cashier" ? (
+                    <PopOver
+                      items={WaiterPopMenu}
+                      Icon={<MoreVertIcon />}
+                      event={order}
+                    />
+                  ) : (
+                    <PopOver
+                      items={AdminPopMenu}
+                      Icon={<MoreVertIcon />}
+                      event={order}
+                    />
+                  )}
                 </span>
               </div>
-            </Box>
+            </div>
           );
         })
       )}

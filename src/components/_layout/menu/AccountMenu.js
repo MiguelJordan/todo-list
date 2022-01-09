@@ -1,4 +1,4 @@
-import { Fragment, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import { Divider } from "@mui/material";
@@ -54,7 +54,7 @@ export default function AccountMenu({ user }) {
   const _menu = useOptions(user);
 
   return (
-    <Fragment>
+    <>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
         <Tooltip title={t("compo.nav.account_menu.tooltip")}>
           <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
@@ -144,6 +144,6 @@ export default function AccountMenu({ user }) {
           );
         })}
       </Menu>
-    </Fragment>
+    </>
   );
 }

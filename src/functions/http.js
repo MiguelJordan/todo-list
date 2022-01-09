@@ -1,29 +1,45 @@
-export const get = async ({ url, params = {} }) => {
-  try {
-    const reqUrl = new URL(url);
+import axios from "axios";
 
-    reqUrl.search = new URLSearchParams(params).toString();
-    return await (await fetch(reqUrl)).json();
+const apiUrl = process.env.REACT_APP_API_URL;
+
+const getUrl = (url, params) => {
+  const reqUrl = new URL(url);
+  reqUrl.search = new URLSearchParams(params).toString();
+  return reqUrl;
+};
+
+export const _delete = async ({ url = "", params = {}, fullUrl = false }) => {
+  try {
+    if (!fullUrl) url = apiUrl + url;
+    const reqUrl = getUrl(url, params);
+    return (await axios.delete(reqUrl)).data;
   } catch (err) {
-    return { error: err.message };
+    return { error: err?.response?.data?.error ?? err.message };
   }
 };
 
-export const post = async ({ url, body = {} }) => {
+export const get = async ({ url = "", params = {}, fullUrl = false }) => {
   try {
+    if (!fullUrl) url = apiUrl + url;
+    const reqUrl = getUrl(url, params);
+    return (await axios.get(reqUrl)).data;
+  } catch (err) {
+    return { error: err?.response?.data?.error ?? err.message };
+  }
+};
+
+export const post = async ({ url = "", body = {}, fullUrl = false }) => {
+  try {
+    if (!fullUrl) url = apiUrl + url;
     return await (
-      await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      })
-    ).json();
+      await axios.post(url, body)
+    ).data;
   } catch (err) {
-    return { error: err.message };
+    return { error: err?.response?.data?.error ?? err.message };
   }
 };
 
-export const postFormData = async (url, values = {}) => {
+export const postFormData = async (url = "", values = {}, fullUrl = false) => {
   const formData = new FormData();
 
   for (let prop in values) {
@@ -42,6 +58,6 @@ export const postFormData = async (url, values = {}) => {
       })
     ).json();
   } catch (err) {
-    return { error: err.message };
+    return { error: err?.response?.data?.error ?? err.message };
   }
 };

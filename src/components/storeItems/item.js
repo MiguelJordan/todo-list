@@ -150,7 +150,7 @@ const Item = ({ data = {}, orderId, preview = true, role = "" }) => {
         <CardMedia
           className={classes.media}
           image={
-            process.env.NODE_ENV == "production"
+            process.env.NODE_ENV === "production"
               ? data.imageUrl
               : process.env.REACT_APP_API_URL + data.imageUrl
           }
@@ -193,7 +193,7 @@ const Item = ({ data = {}, orderId, preview = true, role = "" }) => {
                 values={data.prices}
                 handleChange={setPrice}
               />
-              {!preview && role == "waiter" && (
+              {!preview && role === "waiter" && (
                 <Dropdown
                   translated={true}
                   label={t("compo.item.isOffer")}
@@ -221,7 +221,7 @@ const Item = ({ data = {}, orderId, preview = true, role = "" }) => {
                 {data.quantity}
               </output>
             </div>
-            {!preview && role == "waiter" && (
+            {!preview && role === "waiter" && (
               <>
                 <div style={{ margin: "10px auto" }}>
                   <label htmlFor="">{t("compo.item.quantity_toOrder")} :</label>

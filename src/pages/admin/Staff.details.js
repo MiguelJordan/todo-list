@@ -21,8 +21,8 @@ export default function StaffDetail({
     tel: "68555255",
   },
 }) {
-  const { t } = useContext(TrContext);
-  const { user } = useContext(AuthContext);
+  //const { t } = useContext(TrContext);
+  //const { user } = useContext(AuthContext);
   const classes = useStyles();
 
   const [read, setRead] = useState(true);

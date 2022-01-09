@@ -7,11 +7,10 @@ import { OrderContext } from "../../contexts/OrderContext";
 
 import PopOver from "../subComponents/PopOver";
 
-import DoneIcon from "@mui/icons-material/Done";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { Button, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 
-import { DeleteRounded, EditRounded, ExpandMore } from "@mui/icons-material";
+import { DeleteRounded, EditRounded } from "@mui/icons-material";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -149,21 +148,19 @@ export default function OrderList({ role = "", array = [] }) {
                   />
                 </span>
                 <span style={{ alignSelf: "flex-end" }}>
-                  <Button>
-                    {role === "waiter" || role === "cashier" ? (
-                      <PopOver
-                        items={WaiterPopMenu}
-                        Icon={<MoreVertIcon />}
-                        event={order}
-                      />
-                    ) : (
-                      <PopOver
-                        items={AdminPopMenu}
-                        Icon={<MoreVertIcon />}
-                        event={order}
-                      />
-                    )}
-                  </Button>
+                  {role === "waiter" || role === "cashier" ? (
+                    <PopOver
+                      items={WaiterPopMenu}
+                      Icon={<MoreVertIcon />}
+                      event={order}
+                    />
+                  ) : (
+                    <PopOver
+                      items={AdminPopMenu}
+                      Icon={<MoreVertIcon />}
+                      event={order}
+                    />
+                  )}
                 </span>
               </div>
 

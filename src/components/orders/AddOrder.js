@@ -87,8 +87,9 @@ export default function CreateOrder() {
         flexFlow: "column",
         justifyContent: "center",
         backgroundColor: "#FFFFFF",
-        margin: "170px auto",
+        margin: "160px auto",
         maxWidth: "350px",
+        minWidth: "250px",
         padding: "20px",
         color: "#B3B3B3",
       }}
@@ -139,7 +140,7 @@ export default function CreateOrder() {
         label="Consumption Point"
         variant="standard"
         handleChange={(val) =>
-          setOrderInfo({ ...orderInfo, ["consumptionPoint"]: val })
+          setOrderInfo({ ...orderInfo, [orderInfo.consumptionPoint]: val })
         }
       />
 

@@ -169,7 +169,7 @@ export default function CreateOrder() {
           label="Consumption Point"
           variant="standard"
           handleChange={(val) =>
-            setOrderInfo({ ...orderInfo, ["consumptionPoint"]: val })
+            setOrderInfo({ ...orderInfo, [orderInfo.consumptionPoint]: val })
           }
         />
 

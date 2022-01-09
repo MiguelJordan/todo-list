@@ -7,8 +7,8 @@ import Search from "../../components/subComponents/Search";
 import ItemList from "../../components/storeItems/ItemList";
 
 export default function Drinks() {
-  const { t } = useContext(TrContext);
-  const { items } = useContext(ItemContext);
+  // const { t } = useContext(TrContext);
+  //const { items } = useContext(ItemContext);
 
   const list = [
     { id: "1", name: "Castel", prices: [1000, 2000], quantity: 50 },

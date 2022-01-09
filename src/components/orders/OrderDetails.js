@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import {
-  Typography,
   Button,
   Grid,
   FormControl,
@@ -183,9 +182,9 @@ export default function OrderDetails({ items = [], role = "", methods = [] }) {
   ];
 
   return (
-    <>
+    <div>
       <Dialogs
-        content={<Typography>{msgDialog}</Typography>}
+        content={msgDialog}
         openDialog={openDialog}
         closeDialog={CloseDialog}
         PositiveRes={handleDelete}
@@ -340,7 +339,7 @@ export default function OrderDetails({ items = [], role = "", methods = [] }) {
                   onChange={(e) =>
                     setOrderInfo({
                       ...orderInfo,
-                      ["paymentMethod"]: [
+                      [orderInfo.paymentMethod]: [
                         {
                           [e.target.name]: e.target.value,
                         },
@@ -396,6 +395,6 @@ export default function OrderDetails({ items = [], role = "", methods = [] }) {
           value={total}
         />
       </div>
-    </>
+    </div>
   );
 }

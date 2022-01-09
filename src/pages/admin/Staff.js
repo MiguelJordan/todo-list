@@ -6,12 +6,10 @@ import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
 import Avatar from "@mui/material/Avatar";
-import Grid from "@mui/material/Grid";
 
 //icon
 import EditRounded from "@mui/icons-material/EditRounded";
 import Fabs from "../../components/subComponents/Fabs";
-import AddStaff from "./Staff.add";
 import Search from "../../components/subComponents/Search";
 
 export default function Staff() {

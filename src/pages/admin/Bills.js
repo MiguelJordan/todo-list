@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Bills() {
-  const { t } = useContext(TrContext);
+  //const { t } = useContext(TrContext);
   const classes = useStyles();
 
   const list = [

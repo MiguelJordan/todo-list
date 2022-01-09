@@ -7,7 +7,7 @@ import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import IconButton from "@mui/material/IconButton";
-import { colors, Tooltip } from "@mui/material";
+import Tooltip from "@mui/material/Tooltip";
 import { makeStyles } from "@material-ui/core";
 // import { makeStyles } from "@mui/styles";
 
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     border: "3px solid #001d42",
     zIndex: 2,
   },
-  presence_online: { backgroundColor: colors.green[500] },
+  presence_online: { backgroundColor: "hsl(184, 92%, 41%)" },
 }));
 
 export default function AccountMenu({ user }) {
@@ -79,7 +79,8 @@ export default function AccountMenu({ user }) {
         PaperProps={{
           elevation: 0,
           sx: {
-            backgroundColor: "hsl(0, 0%, 7%)",
+            backgroundColor: "hsl(213, 100%, 12%)",
+            // backgroundColor: "hsl(0, 0%, 7%)",
             color: "white",
             overflow: "visible",
             filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
@@ -98,7 +99,8 @@ export default function AccountMenu({ user }) {
               right: 14,
               width: 10,
               height: 10,
-              bgcolor: "hsl(0, 0%, 7%)",
+              bgcolor: "hsl(213, 100%, 12%)",
+              // bgcolor: "hsl(0, 0%, 7%)",
               transform: "translateY(-50%) rotate(45deg)",
               zIndex: 0,
             },

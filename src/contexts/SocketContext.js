@@ -72,7 +72,7 @@ const SocketContextProvider = ({ children }) => {
 
   const sendEvent = ({ name = "", props = {}, rooms = [] }) => {
     if (!socketConnected || !name || !rooms.length) return;
-    console.log("event:", { name, props, rooms });
+    // console.log("event:", { name, props, rooms });
     return socket.emit("_clientEvent", { name, props, rooms });
   };
 

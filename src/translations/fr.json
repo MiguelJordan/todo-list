@@ -1,9 +1,41 @@
 {
+  "_var": {
+    "*": {
+      "menu": {
+        "dashboard": { "text": "Tableau de bord" },
+        "logout": { "text": "Deconnexion" }
+      }
+    },
+    "admin": {
+      "nav": {
+        "bills": "Factures",
+        "staff": "Personnel",
+        "staff_add": "Ajouter User",
+        "stores": "Magazins"
+      }
+    },
+    "cashier": {
+      "nav": { "bills": "Factures" }
+    },
+    "waiter": {
+      "nav": { "items": "Produits", "orders": "Commandes" }
+    }
+  },
   "compo": {
+    "dropdown": {
+      "drinks": "Boissons",
+      "false": "Faux",
+      "meals": "Repas",
+      "no": "Non",
+      "true": "Vrai",
+      "yes": "Oui"
+    },
     "item": {
-      "add-btn": "Ajouter",
+      "btn-add": "Ajouter",
+      "isOffer": "Offre",
       "price": "Prix",
-      "quantity": "Quantité en stock"
+      "quantity": "Quantité en stock",
+      "quantity_toOrder": "Quantité à commander"
     },
     "search": {
       "placeholder": "Rechercher..."
@@ -11,6 +43,11 @@
     "nav": {
       "login_btn": "Connexion",
       "account_menu": { "tooltip": "Paramètres du compte" }
+    }
+  },
+  "feedback": {
+    "waiter": {
+      "order item created success": "Article de commande créé avec succès"
     }
   },
   "pages": {
@@ -30,32 +67,6 @@
         "not-found": "Aucun élément de ce type n'a été trouvé"
       },
       "orders": "Page des Commandes"
-    }
-  },
-  "_var": {
-    "*": {
-      "dropdown-translated": {
-        "drinks": "Boissons",
-        "meals": "Repas"
-      },
-      "menu": {
-        "dashboard": { "text": "Tableau de bord" },
-        "logout": { "text": "Deconnexion" }
-      }
-    },
-    "admin": {
-      "nav": {
-        "bills": "Factures",
-        "staff": "Personnel",
-        "staff_add": "Ajouter User",
-        "stores": "Magazins"
-      }
-    },
-    "cashier": {
-      "nav": { "bills": "Factures" }
-    },
-    "waiter": {
-      "nav": { "items": "Produits", "orders": "Commandes" }
     }
   },
   "server_err": {

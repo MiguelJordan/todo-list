@@ -1,5 +1,9 @@
 import { createContext, useContext, useEffect, useState } from "react";
+
+// contexts
 import { AuthContext } from "./AuthContext";
+
+// functions
 import { getUnique } from "../functions/data";
 import { get } from "../functions/http";
 
@@ -34,13 +38,13 @@ const OrderContextProvider = ({ children }) => {
     const _orders = await get({ url: `${apiUrl}/orders`, params: query });
 
     if (_orders?.error) return console.log(_orders?.error);
-    console.log("Orders", _orders);
+    // console.log("Orders", _orders);
 
     setOrders(_orders);
   };
 
-  const updateOrders = (data = []) => {
-    setOrders(getUnique([...orders, ...data]));
+  const updateOrders = (_orders = []) => {
+    setOrders(getUnique({ data: [...orders, ..._orders] }));
   };
 
   const findOrder = ({ key = "id", value = "" }) => {

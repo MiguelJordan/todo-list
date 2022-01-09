@@ -1,40 +1,72 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect } from "react";
 
 import { AuthContext } from "./AuthContext";
 import { OrderContext } from "./OrderContext";
 import { SocketContext } from "./SocketContext";
+import { ItemContext } from "./ItemContext";
 
-// const apiUrl = process.env.REACT_APP_API_URL;
-
-// data layer context
-// to handle client events
+// data layer context to handle
+// client state/context data to be
+// updated in realtime
 export const DLContext = createContext();
 
 const DLContextProvider = ({ children }) => {
   const { user } = useContext(AuthContext);
+  const { updateItems } = useContext(ItemContext);
   const { updateOrders } = useContext(OrderContext);
   const { socket } = useContext(SocketContext);
 
-  const orderCreated = (data = []) => {
+  const orderCreated = (_order) => {
     if (!["admin", "cashier", "waiter"].includes(user?.role)) {
       return;
     }
 
     if (user.role == "waiter") {
-      data = data.filter((order) => order.waiterId == user.id);
-      if (!data.length) return;
+      if (_order.waiterId != user.id) return;
     }
 
-    updateOrders(data);
+    updateOrders([_order]);
+  };
+
+  const storeItemUpdated = (_item) => {
+    if (!["admin", "waiter"].includes(user?.role)) {
+      return;
+    }
+
+    if (user.role == "admin") {
+      // group data by stores
+      // if (!data.length) return;
+      return;
+      // updateAdminStore(_items)
+    }
+
+    if (user.role == "waiter") {
+      if (_item.isBlocked) return;
+      updateItems([_item]);
+    }
   };
 
   useEffect(() => {
+    // orders
     socket.on("cE-order-created", orderCreated);
 
+    // order items
+    socket.on("cE-order-item-created", orderCreated);
+
+    // store items
+    socket.on("cE-store-item-updated", storeItemUpdated);
+
     return () => {
+      // orders
       socket.off("cE-order-created", orderCreated);
+
+      // order items
+      socket.on("cE-order-item-created", orderCreated);
+
+      // store items
+      socket.off("cE-store-item-updated", storeItemUpdated);
     };
-  }, [user, socket]);
+  }, [user, updateItems, updateOrders, socket]);
 
   const context = {};
   return <DLContext.Provider value={context}>{children}</DLContext.Provider>;

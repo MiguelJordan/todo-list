@@ -13,7 +13,7 @@ import { ItemContext } from "../../contexts/ItemContext";
 // functions
 import { filter, getList, groupData } from "../../functions/data";
 
-export default function Items() {
+export default function Items({ orderId, preview = true }) {
   // const { user } = useContext(AuthContext);
   const { t } = useContext(TrContext);
   const { families, items } = useContext(ItemContext);
@@ -110,7 +110,12 @@ export default function Items() {
         />
         <Search onChange={setSearchVal} />
       </div>
-      <ItemList items={f_items} role="waiter" preview={false} />
+      <ItemList
+        items={f_items}
+        role="waiter"
+        orderId={orderId}
+        preview={preview}
+      />
     </>
   );
 }

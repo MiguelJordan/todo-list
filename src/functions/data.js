@@ -39,7 +39,7 @@ export const groupData = ({ data = [], criteria = "" }) => {
   }, {});
 };
 
-export const getUnique = (data = [], key = "id") => {
+export const getUnique = ({ data = [], key = "id" }) => {
   const obj = {};
 
   data.forEach((dt) => (obj[dt[key]] = dt));

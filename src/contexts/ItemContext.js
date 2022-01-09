@@ -1,9 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
+
+// contexts
 import { AuthContext } from "./AuthContext";
 import { get } from "../functions/http";
 
 // functions
-import { getList } from "../functions/data";
+import { getList, getUnique } from "../functions/data";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -24,11 +26,15 @@ const ItemContexProvider = ({ children }) => {
     const _items = await get({ url: `${apiUrl}/storeItems`, params: query });
 
     if (_items?.error) return console.log(_items?.error);
-    console.log("Store items", _items);
+    // console.log("Store items", _items);
     const _families = getList({ data: _items, criteria: "family" });
-    console.log("Families", _families);
+    // console.log("Families", _families);
     setItems(_items);
     setFams(_families);
+  };
+
+  const updateItems = (_items = []) => {
+    setItems(getUnique({ data: [...items, ..._items] }));
   };
 
   useEffect(() => {
@@ -36,7 +42,7 @@ const ItemContexProvider = ({ children }) => {
     getItems();
   }, [user]);
 
-  const context = { families, items };
+  const context = { families, items, updateItems };
   return (
     <ItemContext.Provider value={context}>{children}</ItemContext.Provider>
   );

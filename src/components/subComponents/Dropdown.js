@@ -6,13 +6,14 @@ import FormControl from "@mui/material/FormControl";
 import { TrContext } from "../../contexts/TranslationContext";
 
 export default function Dropdown({
+  handleChange,
   label = "",
   labelId = "",
-  handleChange,
+  translated = false,
   value,
   values = [],
-  translated = false,
   variant = "outlined",
+  sx = {},
 }) {
   const { t } = useContext(TrContext);
 
@@ -22,6 +23,7 @@ export default function Dropdown({
         m: 1,
         minWidth: 80,
         "& svg": { color: "rgb(179, 179, 179)" },
+        ...sx,
       }}
       variant={variant}
     >
@@ -36,7 +38,7 @@ export default function Dropdown({
       >
         {values.map((value) => (
           <MenuItem style={{ color: "#B3B3B3" }} value={value} key={value}>
-            {translated ? t(`_var.*.dropdown-translated.${value}`) : value}
+            {translated ? t(`compo.dropdown.${value}`) : value}
           </MenuItem>
         ))}
       </Select>

@@ -1,18 +1,8 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import {
-  Avatar,
   Typography,
   Button,
-  AccordionDetails,
-  AccordionSummary,
-  Accordion,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   Grid,
   FormControl,
   FormHelperText,
@@ -23,11 +13,11 @@ import {
 
 import { useNavigate, useParams } from "react-router-dom";
 
-//icons
-import { DeleteRounded, EditRounded, ExpandMore } from "@mui/icons-material";
+// icons
+import { DeleteRounded, EditRounded } from "@mui/icons-material";
 
 import Dropdown from "../subComponents/Dropdown";
-import PopOver from "../subComponents/PopOver";
+// import PopOver from "../subComponents/PopOver";
 import Dialogs from "../subComponents/Dialog";
 
 const useStyles = makeStyles((theme) => ({
@@ -118,12 +108,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function OrderDetails({
-  list = [],
-  role = "",
-  methods = [],
-  point = [],
-}) {
+export default function OrderDetails({ items = [], role = "", methods = [] }) {
   const classes = useStyles();
   const navigate = useNavigate();
   let { id } = useParams();
@@ -179,15 +164,7 @@ export default function OrderDetails({
     setAddPayement(values);
   };
 
-  //these expressions are used to calculate the total amount of an order
-  const familly = Object.keys(list);
-  let total = 0;
-
-  familly.map((fam) => {
-    list[fam].map((item) => {
-      total += item.total;
-    });
-  });
+  let total = items.reduce((prev, next) => (prev += next.selectedPrice), 0);
 
   //contains pop over options
   const popMenu = [
@@ -221,198 +198,6 @@ export default function OrderDetails({
           overflowY: "auto",
         }}
       >
-        <div
-          style={{
-            display: "grid",
-            placeContent: "center",
-            placeItems: "center",
-          }}
-        >
-          {familly.map((fam) => (
-            <Grid
-              align="center"
-              item
-              xs={6}
-              sm={8}
-              md={10}
-              lg={12}
-              style={{ flexFlow: "column" }}
-            >
-              <Accordion>
-                <AccordionSummary
-                  expandIcon={<ExpandMore />}
-                  style={{
-                    backgroundColor: "#7F8DA0",
-                    color: "#FFFFFF",
-                  }}
-                >
-                  <Typography>{fam}</Typography>
-                </AccordionSummary>
-                <AccordionDetails className={classes.accordion}>
-                  <TableContainer className={classes.table}>
-                    <Table
-                      stickyHeader
-                      aria-label="simple table"
-                      className={classes.accordion}
-                    >
-                      <TableHead>
-                        <TableRow>
-                          <TableCell
-                            align="center"
-                            style={{
-                              backgroundColor: "#28405F",
-
-                              color: "#B3B3B3",
-                              fontSize: 20,
-                            }}
-                          >
-                            Nom
-                          </TableCell>
-                          <TableCell
-                            align="center"
-                            style={{
-                              backgroundColor: "#28405F",
-                              fontSize: 20,
-                              color: "#B3B3B3",
-                            }}
-                          >
-                            Categorie
-                          </TableCell>
-                          <TableCell
-                            align="center"
-                            style={{
-                              backgroundColor: "#28405F",
-                              fontSize: 20,
-                              color: "#B3B3B3",
-                            }}
-                          >
-                            Quantite
-                          </TableCell>
-                          <TableCell
-                            align="center"
-                            style={{
-                              backgroundColor: "#28405F",
-                              fontSize: 20,
-                              color: "#B3B3B3",
-                            }}
-                          >
-                            Unite_de_mesure&nbsp;
-                          </TableCell>
-                          <TableCell
-                            align="center"
-                            style={{
-                              backgroundColor: "#28405F",
-                              fontSize: 20,
-                              color: "#B3B3B3",
-                            }}
-                          >
-                            Prix&nbsp;
-                          </TableCell>
-                          <TableCell
-                            align="center"
-                            style={{
-                              backgroundColor: "#28405F",
-                              fontSize: 20,
-                              color: "#B3B3B3",
-                            }}
-                          >
-                            Total&nbsp;
-                          </TableCell>
-                          {role === "waiter" && (
-                            <TableCell
-                              align="center"
-                              style={{
-                                backgroundColor: "#28405F",
-                                fontSize: 20,
-                                color: "#B3B3B3",
-                              }}
-                            >
-                              Action&nbsp;
-                            </TableCell>
-                          )}
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {list[fam].map((row, index) => (
-                          <TableRow
-                            key={`${index}`}
-                            sx={{
-                              "&:last-child td, &:last-child th": {
-                                border: 0,
-                              },
-                            }}
-                          >
-                            <TableCell
-                              component="th"
-                              scope="row"
-                              align="center"
-                              style={{
-                                color: "#7f8893",
-                                fontSize: 25,
-                              }}
-                            >
-                              {row.name}
-                            </TableCell>
-                            <TableCell
-                              component="th"
-                              scope="row"
-                              align="center"
-                              style={{ color: "#7f8893", fontSize: 25 }}
-                            >
-                              {row.category}
-                            </TableCell>
-                            <TableCell
-                              align="center"
-                              style={{ color: "#7f8893", fontSize: 25 }}
-                            >
-                              {row.quantity}
-                            </TableCell>
-                            <TableCell
-                              align="center"
-                              style={{ color: "#7f8893", fontSize: 25 }}
-                            >
-                              {row.measureUnit}
-                            </TableCell>
-                            <TableCell
-                              align="center"
-                              style={{ color: "#B3B3B3", fontSize: 25 }}
-                            >
-                              {row.price}
-                            </TableCell>
-                            <TableCell
-                              align="center"
-                              style={{ color: "#B3B3B3", fontSize: 25 }}
-                            >
-                              {row.total}
-                            </TableCell>
-                            {role === "waiter" && (
-                              <TableCell
-                                align="center"
-                                style={{ color: "#B3B3B3", fontSize: 25 }}
-                              >
-                                <PopOver
-                                  items={popMenu}
-                                  Icon={
-                                    <Avatar
-                                      alt={row.name.toUpperCase()}
-                                      src="/broken-image.jpg"
-                                    />
-                                  }
-                                  event={row}
-                                />
-                              </TableCell>
-                            )}
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                </AccordionDetails>
-              </Accordion>
-            </Grid>
-          ))}
-        </div>
-
         {role === "waiter" && (
           <div className={classes.buttonGroup}>
             <Button variant="contained" style={{ backgroundColor: "#04A5E0" }}>
@@ -423,7 +208,7 @@ export default function OrderDetails({
             </Button>
             <Button
               variant="contained"
-              onClick={() => navigate(`/waiter/orders/detail/add/${id}`)}
+              onClick={() => navigate(`/waiter/orders/add-item/${id}`)}
               // style={{ marginLeft: "10px" }}
             >
               {"Ajouter Produits"}

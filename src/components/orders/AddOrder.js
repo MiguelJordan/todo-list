@@ -81,111 +81,71 @@ export default function CreateOrder() {
   };
 
   return (
-    <div
+    <form
       style={{
         display: "flex",
         flexFlow: "column",
         justifyContent: "center",
-        alignItems: "center",
-        maxWidth: "400px",
         backgroundColor: "#FFFFFF",
-        minWidth: "330px",
-        borderRadius: "3px",
-        margin: "auto",
-        position: "relative",
-        top: "25%",
+        margin: "170px auto",
+        maxWidth: "350px",
+        padding: "20px",
+        color: "#B3B3B3",
       }}
+      onSubmit={handleSubmit}
     >
-      <h2
-        style={{
-          color: "#001D42",
-          display: "flex",
-          marginTop: "35px",
-          alignItems: "center",
-          alignSelf: "center",
-        }}
-      >
+      <h2 style={{ color: "#001D42", margin: "10px auto" }}>
         Ajouter Une Commande
       </h2>
-      {error !== "" && (
-        <div
-          style={{
-            border: "2px solid red",
-            color: "#001D42",
-            margin: "5px",
-            display: "flex",
-            justifyContent: "center",
-            marginTop: "-10px",
-            marginBottom: "20px",
-          }}
-        >
-          {error}
-        </div>
-      )}
-      <form
-        style={{
-          display: "flex",
-          flexFlow: "column",
-          justifyContent: "center",
-          margin: "20px",
-
-          width: "70%",
+      {error && <div className="formError">{error}</div>}
+      <TextField
+        required
+        type="text"
+        variant="standard"
+        name="tableName"
+        fullWidth
+        inputProps={{
+          className: classes.inputText,
         }}
-        onSubmit={handleSubmit}
-      >
-        <TextField
-          required
-          type="text"
-          variant="standard"
-          name="tableName"
-          fullWidth
-          inputProps={{
-            className: classes.inputText,
-          }}
-          label="Table Name"
-          style={{ color: "black", marginBottom: "5px", marginTop: "-20px" }}
-          onChange={(e) =>
-            setOrderInfo({
-              ...orderInfo,
-              [e.target.name]: e.target.value.trim(),
-            })
-          }
-        />
-        <TextField
-          fullWidth
-          type="number"
-          name="balanceForward"
-          variant="standard"
-          inputProps={{
-            className: classes.inputText,
-          }}
-          style={{ color: "black", marginBottom: "5px" }}
-          onChange={(e) =>
-            setOrderInfo({
-              ...orderInfo,
-              [e.target.name]: e.target.value.trim(),
-            })
-          }
-          label="Balance Forward"
-        />
+        label="Table Name"
+        style={{ color: "black" }}
+        onChange={(e) =>
+          setOrderInfo({
+            ...orderInfo,
+            [e.target.name]: e.target.value.trim(),
+          })
+        }
+      />
+      <TextField
+        fullWidth
+        type="number"
+        name="balanceForward"
+        variant="standard"
+        inputProps={{
+          className: classes.inputText,
+        }}
+        style={{ color: "black" }}
+        onChange={(e) =>
+          setOrderInfo({
+            ...orderInfo,
+            [e.target.name]: e.target.value.trim(),
+          })
+        }
+        label="Balance Forward"
+      />
 
-        <Dropdown
-          values={user.workUnit.consumptionPoints}
-          label="Consumption Point"
-          variant="standard"
-          handleChange={(val) =>
-            setOrderInfo({ ...orderInfo, ["consumptionPoint"]: val })
-          }
-        />
+      <Dropdown
+        values={user.workUnit.consumptionPoints}
+        label="Consumption Point"
+        variant="standard"
+        handleChange={(val) =>
+          setOrderInfo({ ...orderInfo, ["consumptionPoint"]: val })
+        }
+      />
 
-        <Button
-          variant="contained"
-          type="submit"
-          style={{ marginTop: "10px", marginBottom: "25px" }}
-        >
-          Ajouter
-        </Button>
-      </form>
-    </div>
+      <Button variant="contained" type="submit" style={{ margin: "15px auto" }}>
+        Ajouter
+      </Button>
+    </form>
   );
 }

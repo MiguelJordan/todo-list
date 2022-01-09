@@ -43,6 +43,15 @@ body {
   }
 }
 
+.formError {
+  border: 2px solid red;
+  color: #001d42;
+  text-align: center;
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+
 span {
   color: beige;
 }

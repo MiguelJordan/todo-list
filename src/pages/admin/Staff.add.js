@@ -49,27 +49,14 @@ export default function AddStaff() {
         flexFlow: "column",
         justifyContent: "center",
         backgroundColor: "#FFFFFF",
-        margin: "50px auto",
+        margin: "170px auto",
         padding: "20px",
         color: "#B3B3B3",
       }}
       onSubmit={handleSubmit}
     >
       <h2 style={{ color: "#001D42", margin: "10px auto" }}>Create User</h2>
-      {error && (
-        <div
-          style={{
-            border: "2px solid red",
-            color: "#001D42",
-            textAlign: "center",
-            marginBottom: "10px",
-            padding: "5px 10px",
-            borderRadius: "8px",
-          }}
-        >
-          {error}
-        </div>
-      )}
+      {error && <div className="formError">{error}</div>}
 
       <TextField
         required

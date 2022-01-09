@@ -110,7 +110,7 @@ export default function Items() {
         />
         <Search onChange={setSearchVal} />
       </div>
-      <ItemList items={f_items} role="waiter" />
+      <ItemList items={f_items} role="waiter" preview={false} />
     </>
   );
 }

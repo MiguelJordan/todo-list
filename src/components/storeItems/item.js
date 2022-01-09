@@ -48,6 +48,15 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "280px",
     flexBasis: "33.33333%",
   },
+  inp: {
+    borderStyle: "solid",
+    backgroundColor: "#415672",
+    borderRadius: "4px",
+    borderColor: "#415672",
+    "&:focus": {
+      borderColor: "#415672",
+    },
+  },
 }));
 
 const Item = ({ data = {}, preview = true, role = "", onSubmit }) => {
@@ -59,7 +68,7 @@ const Item = ({ data = {}, preview = true, role = "", onSubmit }) => {
   const onPriceChange = (value) => setPrice(value);
 
   return (
-    <Card className={classes.card}>
+    <Card className={classes.card} sx={{ boxShadow: 0 }}>
       <CardMedia
         className={classes.media}
         image={

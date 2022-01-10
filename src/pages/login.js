@@ -18,15 +18,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Page = () => {
-  const [user, setUser] = useState({ id: "", password: "", role: "" });
-  const classes = useStyles();
-
-  const [error, setError] = useState();
-  const [disabled] = useState(false);
-  const navigate = useNavigate();
-
   const { login } = useContext(AuthContext);
   const { t } = useContext(TrContext);
+  const classes = useStyles();
+  const navigate = useNavigate();
+
+  const [user, setUser] = useState({ id: "", password: "" });
+  const [disabled] = useState(false);
+  const [error, setError] = useState();
 
   const handleChange = (e) => {
     setUser({

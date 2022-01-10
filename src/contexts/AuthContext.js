@@ -24,7 +24,7 @@ const AuthContextProvider = ({ children }) => {
 
     try {
       const data = await post({
-        url: "accounts/login",
+        url: "/accounts/login",
         body: credentials,
       });
 

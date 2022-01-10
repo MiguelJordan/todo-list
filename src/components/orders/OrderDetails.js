@@ -187,7 +187,7 @@ export default function OrderDetails({ items = [], role = "", methods = [] }) {
 
   return (
     <div>
-      <Dialogs
+      <Dialog
         content={msgDialog}
         openDialog={openDialog}
         closeDialog={CloseDialog}

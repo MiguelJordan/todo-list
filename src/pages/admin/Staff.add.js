@@ -49,9 +49,10 @@ export default function AddStaff() {
         flexFlow: "column",
         justifyContent: "center",
         backgroundColor: "#FFFFFF",
-        margin: "170px auto",
+        margin: "130px auto",
         padding: "20px",
         color: "#B3B3B3",
+        maxWidth: "350px",
       }}
       onSubmit={handleSubmit}
     >

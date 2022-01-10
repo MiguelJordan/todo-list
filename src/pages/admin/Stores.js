@@ -22,7 +22,7 @@ export default function Drinks() {
   ];
 
   const [searchVal, setSearchVal] = useState("");
-  const [store, setStore] = useState("");
+  const [store, setStore] = useState("Unit");
 
   const filterArray = [];
 
@@ -57,11 +57,11 @@ export default function Drinks() {
           />
         </span> */}
         <span>
-          Store:{" "}
           <Dropdown
+            label="Store"
             values={["Central", "Unit"]}
-            onchange={setStore}
-            defaultVal={""}
+            value={store}
+            handleChange={setStore}
           />
         </span>
         <Search onChange={setSearchVal} />

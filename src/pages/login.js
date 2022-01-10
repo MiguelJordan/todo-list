@@ -59,10 +59,10 @@ const Page = () => {
         flexFlow: "column",
         justifyContent: "center",
         alignItems: "center",
-        maxWidth: "400px",
+        maxWidth: "350px",
         backgroundColor: "#FFFFFF",
         borderRadius: "3px",
-        margin: "160px auto",
+        margin: "170px auto",
         padding: "20px",
       }}
     >

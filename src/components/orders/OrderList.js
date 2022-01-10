@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "5px",
     paddingLeft: "15px",
     margin: "8px",
-    minWidth: "250px",
+    width: "250px",
     // maxWidth: "280px",
     height: "fit-content",
     // flexBasis: "33.33333%",
@@ -65,34 +65,6 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#2B4362",
   },
   orderPaid: { backgroundColor: "green" },
-  grid: {
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
-    margin: "0",
-    // verticalAlign: "middle",
-    //flexWrap: "wrap",
-
-    //margin: 0,
-    [theme.breakpoints.down("sm")]: {
-      // marginLeft: 0,
-      // marginRight: "20%",
-      // marginBottom: 0,
-    },
-    [theme.breakpoints.between("sm", "md")]: {
-      //marginLeft: "1%",
-      //marginRight: "20%",
-      // width: "100%",
-    },
-  },
-  inputText: {
-    color: "black",
-    fontSize: 20,
-    width: "80px",
-    height: "20px",
-    overflowY: "auto",
-    overflowX: "hidden",
-  },
 }));
 
 export default function OrderList({ role = "", orders = [] }) {

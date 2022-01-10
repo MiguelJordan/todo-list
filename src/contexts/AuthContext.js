@@ -2,8 +2,6 @@ import { createContext, useState } from "react";
 
 import { get, post } from "../functions/http";
 
-const apiUrl = process.env.REACT_APP_API_URL;
-
 export const AuthContext = createContext();
 
 const loadUser = () => JSON.parse(localStorage.getItem("user"));
@@ -26,7 +24,7 @@ const AuthContextProvider = ({ children }) => {
 
     try {
       const data = await post({
-        url: `${apiUrl}/accounts/login`,
+        url: "/accounts/login",
         body: credentials,
       });
 
@@ -46,7 +44,7 @@ const AuthContextProvider = ({ children }) => {
     let res;
 
     try {
-      const data = await get({ url: `${apiUrl}/accounts/logout` });
+      const data = await get({ url: "/accounts/logout" });
 
       if (data.success) removeUser();
       res = data;

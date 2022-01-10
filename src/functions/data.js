@@ -1,3 +1,6 @@
+const apiUrl = process.env.REACT_APP_API_URL;
+const nodeEnv = process.env.NODE_ENV;
+
 const toCapital = (word = "") => {
   return word[0].toUpperCase() + word.slice(1).toLowerCase();
 };
@@ -18,8 +21,22 @@ export const capitalise = (value) => {
   return _capitalised;
 };
 
-export const filter = ({ data = [], criteria = "", value = "" }) => {
-  return data.filter((dt) => dt?.[criteria] == value);
+export const filter = ({
+  data = [],
+  criteria = "",
+  value = "",
+  exclude = false,
+}) => {
+  return data.filter((dt) =>
+    exclude ? dt?.[criteria] !== value : dt?.[criteria] === value
+  );
+};
+
+export const getImage = ({ url = "", fullUrl = false }) => {
+  // this is in case the resource
+  // is independent of NODE_ENV
+  if (fullUrl) return url;
+  return nodeEnv === "production" ? url : apiUrl + url;
 };
 
 export const getList = ({ data = [], criteria }) => {

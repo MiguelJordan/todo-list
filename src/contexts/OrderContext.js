@@ -4,10 +4,8 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 
 // functions
-import { getUnique } from "../functions/data";
+import { filter, getUnique } from "../functions/data";
 import { get } from "../functions/http";
-
-const apiUrl = process.env.REACT_APP_API_URL;
 
 export const OrderContext = createContext();
 
@@ -15,27 +13,35 @@ const OrderContextProvider = ({ children }) => {
   const [orders, setOrders] = useState([]);
   const { user } = useContext(AuthContext);
 
-  const getOrders = async () => {
+  const getQuery = () => {
     let query = {
       companyCode: user.company.code,
       unitCode: user.workUnit.code,
     };
 
     if (user.role == "admin") {
-      query = { ...query, date: true, source: "unit", startTime: new Date() };
-    } else if (user.role == "cashier") {
-      query = { ...query, date: true, source: "unit", startTime: new Date() };
-    } else if (user.role == "waiter") {
-      query = {
+      return { ...query, date: true, source: "unit", startTime: new Date() };
+    }
+
+    if (user.role == "cashier") {
+      return { ...query, date: true, source: "unit", startTime: new Date() };
+    }
+
+    if (user.role == "waiter") {
+      return {
         ...query,
-        date: true,
+        // date: true,
         source: "waiter",
-        startTime: new Date(),
+        // startTime: new Date(),
         waiterId: user.id,
       };
     }
+  };
 
-    const _orders = await get({ url: `${apiUrl}/orders`, params: query });
+  const getOrders = async () => {
+    const query = getQuery();
+
+    const _orders = await get({ url: "/orders", params: query });
 
     if (_orders?.error) return console.log(_orders?.error);
     // console.log("Orders", _orders);
@@ -43,12 +49,18 @@ const OrderContextProvider = ({ children }) => {
     setOrders(_orders);
   };
 
-  const updateOrders = (_orders = []) => {
-    setOrders(getUnique({ data: [...orders, ..._orders] }));
+  const findOrder = ({ key = "id", value = "" }) => {
+    return orders.find((order) => order[key] === value);
   };
 
-  const findOrder = ({ key = "id", value = "" }) => {
-    return orders.find((order) => order[key] == value);
+  const removeOrder = (id) => {
+    setOrders(
+      filter({ data: orders, criteria: "id", value: id, exclude: true })
+    );
+  };
+
+  const updateOrders = (_orders = []) => {
+    setOrders(getUnique({ data: [...orders, ..._orders] }));
   };
 
   useEffect(() => {
@@ -57,7 +69,7 @@ const OrderContextProvider = ({ children }) => {
     getOrders();
   }, [user]);
 
-  const context = { orders, findOrder, updateOrders };
+  const context = { orders, findOrder, removeOrder, updateOrders };
   return (
     <OrderContext.Provider value={context}>{children}</OrderContext.Provider>
   );

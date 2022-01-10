@@ -1,7 +1,7 @@
-import { Fragment, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
-import { Divider } from "@mui/material";
+import { colors, Divider } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     border: "3px solid #001d42",
     zIndex: 2,
   },
-  presence_online: { backgroundColor: "hsl(184, 92%, 41%)" },
+  presence_online: { backgroundColor: colors.green[500] },
 }));
 
 export default function AccountMenu({ user }) {
@@ -54,7 +54,7 @@ export default function AccountMenu({ user }) {
   const _menu = useOptions(user);
 
   return (
-    <Fragment>
+    <>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
         <Tooltip title={t("compo.nav.account_menu.tooltip")}>
           <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
@@ -79,8 +79,8 @@ export default function AccountMenu({ user }) {
         PaperProps={{
           elevation: 0,
           sx: {
-            backgroundColor: "hsl(213, 100%, 12%)",
-            // backgroundColor: "hsl(0, 0%, 7%)",
+            // backgroundColor: "hsl(213, 100%, 12%)",
+            backgroundColor: "hsl(0, 0%, 7%)",
             color: "white",
             overflow: "visible",
             filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
@@ -144,6 +144,6 @@ export default function AccountMenu({ user }) {
           );
         })}
       </Menu>
-    </Fragment>
+    </>
   );
 }

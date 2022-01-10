@@ -35,6 +35,7 @@ export default function CreateOrder() {
     waiterId: user.id,
     consumptionPoint: "",
   });
+
   const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
@@ -43,7 +44,7 @@ export default function CreateOrder() {
 
     let order = { ...orderInfo };
 
-    console.log(order);
+    // console.log(order);
 
     if (!order.tableName) return setError(t("server_err.Invalid table name"));
 
@@ -56,7 +57,7 @@ export default function CreateOrder() {
     }
 
     // request order creation
-    const res = await post({ url: `${apiUrl}/orders`, body: order });
+    const res = await post({ url: "/orders", body: order });
 
     // handle order creation errors
     if (res?.error) return setError(res.error);
@@ -100,7 +101,7 @@ export default function CreateOrder() {
           alignSelf: "center",
         }}
       >
-        Ajouter Une Commande
+        {t("pages.waiter.orders.form_add_order.title")}
       </h2>
       {error !== "" && (
         <div
@@ -114,7 +115,7 @@ export default function CreateOrder() {
             marginBottom: "20px",
           }}
         >
-          {error}
+          {t(`server_err.${error}`)}
         </div>
       )}
       <form
@@ -123,7 +124,6 @@ export default function CreateOrder() {
           flexFlow: "column",
           justifyContent: "center",
           margin: "20px",
-
           width: "70%",
         }}
         onSubmit={handleSubmit}
@@ -178,7 +178,7 @@ export default function CreateOrder() {
           type="submit"
           style={{ marginTop: "10px", marginBottom: "25px" }}
         >
-          Ajouter
+          {t("pages.waiter.orders.form_add_order.add_btn")}
         </Button>
       </form>
     </div>

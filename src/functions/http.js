@@ -2,6 +2,10 @@ import axios from "axios";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
+const getError = (err) => {
+  return { error: err?.response?.data?.error?.message ?? err?.message };
+};
+
 const getUrl = (url, params) => {
   const reqUrl = new URL(url);
   reqUrl.search = new URLSearchParams(params).toString();
@@ -14,7 +18,7 @@ export const _delete = async ({ url = "", params = {}, fullUrl = false }) => {
     const reqUrl = getUrl(url, params);
     return (await axios.delete(reqUrl)).data;
   } catch (err) {
-    return { error: err?.response?.data?.error ?? err.message };
+    return getError(err);
   }
 };
 
@@ -24,7 +28,7 @@ export const get = async ({ url = "", params = {}, fullUrl = false }) => {
     const reqUrl = getUrl(url, params);
     return (await axios.get(reqUrl)).data;
   } catch (err) {
-    return { error: err?.response?.data?.error ?? err.message };
+    return getError(err);
   }
 };
 
@@ -35,7 +39,7 @@ export const post = async ({ url = "", body = {}, fullUrl = false }) => {
       await axios.post(url, body)
     ).data;
   } catch (err) {
-    return { error: err?.response?.data?.error ?? err.message };
+    return getError(err);
   }
 };
 
@@ -58,6 +62,6 @@ export const postFormData = async (url = "", values = {}, fullUrl = false) => {
       })
     ).json();
   } catch (err) {
-    return { error: err?.response?.data?.error ?? err.message };
+    return getError(err);
   }
 };

@@ -52,18 +52,19 @@ export default function Items({ orderId, preview = true }) {
     }
   }, [family, families]);
 
-  useEffect(
-    () => setData(groupData({ data: items, criteria: "family" })),
-    [items]
-  );
+  useEffect(() => {
+    setData(groupData({ data: items, criteria: "family" }));
+  }, [family, items]);
 
   useEffect(() => {
-    if (family) {
-      setCats(getList({ data: data[family], criteria: "category" }));
-    }
+    setCats(getList({ data: data[family], criteria: "category" }));
   }, [data, family]);
 
-  useEffect(() => setCat(categories[0]), [categories]);
+  useEffect(() => {
+    if (!categories.includes(category)) {
+      setCat(categories[0]);
+    }
+  }, [category, categories]);
 
   useEffect(() => {
     if (category && family) {

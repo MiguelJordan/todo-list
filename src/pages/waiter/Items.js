@@ -46,7 +46,11 @@ export default function Items({ orderId, preview = true }) {
     setCat(value);
   };
 
-  useEffect(() => setFam(families[0]), [families]);
+  useEffect(() => {
+    if (!families.includes(family)) {
+      setFam(families[0]);
+    }
+  }, [family, families]);
 
   useEffect(
     () => setData(groupData({ data: items, criteria: "family" })),

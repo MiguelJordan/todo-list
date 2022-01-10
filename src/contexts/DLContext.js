@@ -35,6 +35,8 @@ const DLContextProvider = ({ children }) => {
   const deleteOrder = (id) => (user ? removeOrder(id) : null);
 
   const updateStoreItems = (_items = []) => {
+    console.log("Updated items:", _items);
+
     if (!["admin", "waiter"].includes(user?.role)) {
       return;
     }

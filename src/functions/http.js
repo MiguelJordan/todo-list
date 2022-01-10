@@ -3,7 +3,7 @@ import axios from "axios";
 const apiUrl = process.env.REACT_APP_API_URL;
 
 const getError = (err) => {
-  return { error: err?.response?.data?.error?.message ?? err?.message };
+  return { error: err?.response?.data?.error ?? err?.message };
 };
 
 const getUrl = (url, params) => {

@@ -18,6 +18,7 @@ import DisplayField from "../subComponents/DisplayField";
 // functions
 import { capitalise, getImage } from "../../functions/data";
 import { post } from "../../functions/http";
+import queries from "../../functions/queries";
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -109,11 +110,13 @@ const Item = ({ data = {}, orderId, preview = true, role = "" }) => {
 
     // send store item updated event
     sendEvent({
-      name: "cE-store-item-updated",
+      name: "cE-store-items-updated",
       props: {
         companyCode: user.company.code,
-        name: item.name,
-        storeId: user.workUnit.storeId,
+        query: queries["cE-store-items-updated"]({
+          items: [item.name],
+          storeId: item.storeId,
+        }),
       },
       rooms: [user.workUnit.code],
     });

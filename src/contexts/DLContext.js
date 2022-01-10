@@ -20,7 +20,7 @@ const DLContextProvider = ({ children }) => {
   const { removeOrder, updateOrders } = useContext(OrderContext);
   const { socket } = useContext(SocketContext);
 
-  const orderCreated = (_order) => {
+  const createOrder = (_order) => {
     if (!["admin", "cashier", "waiter"].includes(user?.role)) {
       return;
     }
@@ -32,9 +32,9 @@ const DLContextProvider = ({ children }) => {
     updateOrders([_order]);
   };
 
-  const orderDeleted = (id) => removeOrder(id);
+  const deleteOrder = (id) => (user ? removeOrder(id) : null);
 
-  const storeItemUpdated = (_item) => {
+  const updateStoreItems = (_items = []) => {
     if (!["admin", "waiter"].includes(user?.role)) {
       return;
     }
@@ -47,40 +47,34 @@ const DLContextProvider = ({ children }) => {
     }
 
     if (user.role == "waiter") {
-      if (_item.isBlocked) return;
-      updateItems([_item]);
+      _items = filter({ data: _items, criteria: "isBlocked", value: false });
+      updateItems(_items);
     }
-  };
-
-  const storeItemsUpdated = (_items = []) => {
-    _items.forEach((item) => storeItemUpdated(item));
   };
 
   useEffect(() => {
     // orders
-    socket.on("cE-order-created", orderCreated);
-    socket.on("cE-order-deleted", orderDeleted);
+    socket.on("cE-order-created", createOrder);
+    socket.on("cE-order-deleted", deleteOrder);
 
     // order items
-    socket.on("cE-order-item-created", orderCreated);
+    socket.on("cE-order-item-created", createOrder);
 
     // store items
-    socket.on("cE-store-item-updated", storeItemUpdated);
-    socket.on("cE-store-items-updated", storeItemsUpdated);
+    socket.on("cE-store-items-updated", updateStoreItems);
 
     return () => {
       // orders
-      socket.off("cE-order-created", orderCreated);
-      socket.off("cE-order-deleted", orderDeleted);
+      socket.off("cE-order-created", createOrder);
+      socket.off("cE-order-deleted", deleteOrder);
 
       // order items
-      socket.off("cE-order-item-created", orderCreated);
+      socket.off("cE-order-item-created", createOrder);
 
       // store items
-      socket.off("cE-store-item-updated", storeItemUpdated);
-      socket.off("cE-store-items-updated", storeItemsUpdated);
+      socket.off("cE-store-items-updated", updateStoreItems);
     };
-  }, [removeOrder, socket, user, updateItems, updateOrders]);
+  }, [removeOrder, socket, updateItems, updateOrders, user]);
 
   const context = {};
   return <DLContext.Provider value={context}>{children}</DLContext.Provider>;

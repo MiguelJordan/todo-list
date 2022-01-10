@@ -30,6 +30,7 @@
       "true": "Vrai",
       "yes": "Oui"
     },
+    "order": { "items": "Produits" },
     "item": {
       "btn-add": "Ajouter",
       "isOffer": "Offre",

@@ -54,7 +54,9 @@ const OrderContextProvider = ({ children }) => {
   };
 
   const removeOrder = (id) => {
-    setOrders(filter({ data: orders, criteria: "id", value: id, not: true }));
+    setOrders(
+      filter({ data: orders, criteria: "id", value: id, exclude: true })
+    );
   };
 
   const updateOrders = (_orders = []) => {

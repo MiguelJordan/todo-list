@@ -22,6 +22,7 @@ import { TrContext } from "../../contexts/TranslationContext";
 
 // functions
 import { _delete } from "../../functions/http";
+import queries from "../../functions/queries";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -108,8 +109,10 @@ export default function OrderList({ role = "", orders = [] }) {
         name: "cE-store-items-updated",
         props: {
           companyCode: user.company.code,
-          name: { $in: order.items.map((item) => item.name) },
-          storeId: user.workUnit.storeId,
+          query: queries["cE-store-items-updated"]({
+            items: order.items.map((item) => item.name),
+            storeId: user.workUnit.storeId,
+          }),
         },
         rooms: [user.workUnit.code],
       });
@@ -211,7 +214,9 @@ export default function OrderList({ role = "", orders = [] }) {
                     justifyContent: "space-around",
                   }}
                 >
-                  <div>Items: {order.items.length}</div>
+                  <div>
+                    {t("compo.order.items")}: {order.items.length}
+                  </div>
                   <div>
                     Total:{" "}
                     {order.items.reduce((prev, next) => {

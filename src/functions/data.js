@@ -25,10 +25,10 @@ export const filter = ({
   data = [],
   criteria = "",
   value = "",
-  not = false,
+  exclude = false,
 }) => {
   return data.filter((dt) =>
-    not ? dt?.[criteria] !== value : dt?.[criteria] === value
+    exclude ? dt?.[criteria] !== value : dt?.[criteria] === value
   );
 };
 

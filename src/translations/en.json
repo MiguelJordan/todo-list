@@ -30,6 +30,7 @@
       "true": "True",
       "yes": "Yes"
     },
+    "order": { "items": "Items" },
     "item": {
       "btn-add": "Add",
       "isOffer": "Offer",

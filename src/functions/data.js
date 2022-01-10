@@ -1,3 +1,6 @@
+const apiUrl = process.env.REACT_APP_API_URL;
+const nodeEnv = process.env.NODE_ENV;
+
 const toCapital = (word = "") => {
   return word[0].toUpperCase() + word.slice(1).toLowerCase();
 };
@@ -27,6 +30,13 @@ export const filter = ({
   return data.filter((dt) =>
     not ? dt?.[criteria] !== value : dt?.[criteria] === value
   );
+};
+
+export const getImage = ({ url = "", fullUrl = false }) => {
+  // this is in case the resource
+  // is independent of NODE_ENV
+  if (fullUrl) return url;
+  return nodeEnv === "production" ? url : apiUrl + url;
 };
 
 export const getList = ({ data = [], criteria }) => {

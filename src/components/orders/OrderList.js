@@ -3,14 +3,16 @@ import { makeStyles } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 
-import PopOver from "../subComponents/PopOver";
-
-// import DoneIcon from "@mui/icons-material/Done";
+// icons
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-
 import { DeleteRounded, EditRounded } from "@mui/icons-material";
+
 import TimeAgo from "../subComponents/TimeAgo";
 import DateTime from "../subComponents/DateTime";
+
+// components
+import DisplayField from "../subComponents/DisplayField";
+import PopOver from "../subComponents/PopOver";
 
 // contexts
 import { AuthContext } from "../../contexts/AuthContext";
@@ -37,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   card: {
-    color: "#707070",
+    color: "#B3B3B3",
     position: "relative",
     padding: "5px",
     paddingLeft: "15px",
@@ -197,19 +199,24 @@ export default function OrderList({ role = "", orders = [] }) {
                   flexFlow: "row",
                   justifyContent: "space-between",
                   alignItems: "center",
+                  marginBottom: 5,
                 }}
               >
-                <span
-                  style={{
-                    fontSize: 15,
+                <DisplayField
+                  value={
+                    ["cashier", "waiter"].includes(role)
+                      ? order.tableName
+                      : `${order.waiter.name} (${order.waiter.id})`
+                  }
+                  sx={{
+                    margin: 0,
+                    padding: 0,
+                    width: "45%",
+                    color: "white",
+                    fontSize: 18,
                     textAlign: "left",
                   }}
-                >
-                  {role === "waiter" || role === "cashier"
-                    ? order.tableName
-                    : order.waiter.name}
-                </span>
-
+                />
                 <div style={{ fontSize: 15 }}>
                   {dayjs(new Date()).diff(order.createdAt, "day") < 1 ? (
                     <TimeAgo date={order.createdAt} />
@@ -243,8 +250,9 @@ export default function OrderList({ role = "", orders = [] }) {
                     }, 0)}
                   </div>
                 </div>
+
                 <span>
-                  {role === "waiter" || role === "cashier" ? (
+                  {["cashier", "waiter"].includes(role) ? (
                     <PopOver
                       items={WaiterPopMenu}
                       Icon={<MoreVertIcon />}

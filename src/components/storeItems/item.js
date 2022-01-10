@@ -13,12 +13,11 @@ import { TrContext } from "../../contexts/TranslationContext";
 
 // components
 import Dropdown from "../subComponents/Dropdown";
+import DisplayField from "../subComponents/DisplayField";
 
 // functions
-import { capitalise } from "../../functions/data";
+import { capitalise, getImage } from "../../functions/data";
 import { post } from "../../functions/http";
-
-const apiUrl = process.env.REACT_APP_API_URL;
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -140,29 +139,11 @@ const Item = ({ data = {}, orderId, preview = true, role = "" }) => {
       <Card className={classes.card}>
         <CardMedia
           className={classes.media}
-          image={
-            process.env.NODE_ENV == "production"
-              ? data.imageUrl
-              : process.env.REACT_APP_API_URL + data.imageUrl
-          }
+          image={getImage({ url: data.imageUrl })}
           title={data.name}
         />
         <CardContent className={classes.content}>
-          <input
-            readOnly
-            value={capitalise(data.name)}
-            style={{
-              fontSize: "larger",
-              backgroundColor: "transparent",
-              width: "100%",
-              color: "#B3B3B3",
-              textAlign: "center",
-              margin: "5px auto",
-              padding: "10px 0",
-              border: "none",
-              outline: "none",
-            }}
-          />
+          <DisplayField value={capitalise(data.name)} sx={{ width: "100%" }} />
           <hr
             style={{
               color: "#B3B3B3",

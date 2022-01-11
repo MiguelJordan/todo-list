@@ -25,7 +25,7 @@ export default function Bills() {
   const { orders } = useContext(OrderContext);
   const [_orders, setOrders] = useState([]);
 
-  const createdDate = dayjs(new Date(user.company.createdAt)).format(
+  const createdDate = dayjs(new Date(user.workUnit.createdAt)).format(
     "YYYY-MM-DD"
   );
 

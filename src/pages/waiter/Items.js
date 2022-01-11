@@ -46,20 +46,25 @@ export default function Items({ orderId, preview = true }) {
     setCat(value);
   };
 
-  useEffect(() => setFam(families[0]), [families]);
-
-  useEffect(
-    () => setData(groupData({ data: items, criteria: "family" })),
-    [items]
-  );
+  useEffect(() => {
+    if (!families.includes(family)) {
+      setFam(families[0]);
+    }
+  }, [family, families]);
 
   useEffect(() => {
-    if (family) {
-      setCats(getList({ data: data[family], criteria: "category" }));
-    }
+    setData(groupData({ data: items, criteria: "family" }));
+  }, [family, items]);
+
+  useEffect(() => {
+    setCats(getList({ data: data[family], criteria: "category" }));
   }, [data, family]);
 
-  useEffect(() => setCat(categories[0]), [categories]);
+  useEffect(() => {
+    if (!categories.includes(category)) {
+      setCat(categories[0]);
+    }
+  }, [category, categories]);
 
   useEffect(() => {
     if (category && family) {

@@ -16,5 +16,5 @@ export default function AddItems() {
 
   if (!order) return <Navigate to={`/${user.role}/orders`} />;
 
-  return <Items orderId={id} preview={false} />;
+  return <Items orderId={id} orderItems={order.items} preview={false} />;
 }

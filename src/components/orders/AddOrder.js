@@ -33,9 +33,10 @@ export default function CreateOrder() {
     companyCode: user.company.code,
     unitCode: user.workUnit.code,
     waiterId: user.id,
-    consumptionPoint: "",
+    consumptionPoint: user.workUnit.consumptionPoints[0],
   });
   const [error, setError] = useState("");
+  console.log(orderInfo.consumptionPoint);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -138,10 +139,11 @@ export default function CreateOrder() {
       <Dropdown
         values={user.workUnit.consumptionPoints}
         label="Consumption Point"
-        variant="standard"
+        value={orderInfo.consumptionPoint}
         handleChange={(val) =>
-          setOrderInfo({ ...orderInfo, [orderInfo.consumptionPoint]: val })
+          setOrderInfo({ ...orderInfo, consumptionPoint: val })
         }
+        sx={{ margin: "8px" }}
       />
 
       <Button variant="contained" type="submit" style={{ margin: "15px auto" }}>

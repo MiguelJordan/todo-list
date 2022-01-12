@@ -16,6 +16,24 @@ const useStyles = makeStyles((theme) => ({
   inputText: {
     color: "black",
   },
+  form: {
+    display: "flex",
+    flexFlow: "column",
+    justifyContent: "center",
+    backgroundColor: "#FFFFFF",
+    margin: "auto",
+    maxWidth: "350px",
+
+    padding: "20px",
+    color: "#B3B3B3",
+    borderRadius: "3px",
+    [theme.breakpoints.down("sm")]: {
+      marginTop: "160px",
+    },
+    [theme.breakpoints.up("md")]: {
+      marginTop: "200px",
+    },
+  },
 }));
 
 export default function CreateOrder() {
@@ -33,7 +51,7 @@ export default function CreateOrder() {
     companyCode: user.company.code,
     unitCode: user.workUnit.code,
     waiterId: user.id,
-    consumptionPoint: "",
+    consumptionPoint: user.workUnit.consumptionPoints[0],
   });
 
   const [error, setError] = useState("");
@@ -44,7 +62,7 @@ export default function CreateOrder() {
 
     let order = { ...orderInfo };
 
-    // console.log(order);
+    console.log(order);
 
     if (!order.tableName) return setError(t("server_err.Invalid table name"));
 
@@ -56,7 +74,7 @@ export default function CreateOrder() {
       return setError(t("server_err.Invalid balance carried forward"));
     }
 
-    // request order creation
+    //request order creation
     const res = await post({ url: "/orders", body: order });
 
     // handle order creation errors
@@ -77,110 +95,72 @@ export default function CreateOrder() {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexFlow: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        maxWidth: "400px",
-        backgroundColor: "#FFFFFF",
-        minWidth: "330px",
-        borderRadius: "3px",
-        margin: "auto",
-        position: "relative",
-        top: "25%",
-      }}
-    >
+    <form className={classes.form} onSubmit={handleSubmit}>
       <h2
         style={{
           color: "#001D42",
-          display: "flex",
-          marginTop: "35px",
-          alignItems: "center",
+          marginTop: "15px",
           alignSelf: "center",
         }}
       >
         {t("pages.waiter.orders.form_add_order.title")}
       </h2>
-      {error !== "" && (
-        <div
-          style={{
-            border: "2px solid red",
-            color: "#001D42",
-            margin: "5px",
-            display: "flex",
-            justifyContent: "center",
-            marginTop: "-10px",
-            marginBottom: "20px",
-          }}
-        >
-          {t(`server_err.${error}`)}
-        </div>
-      )}
-      <form
-        style={{
-          display: "flex",
-          flexFlow: "column",
-          justifyContent: "center",
-          margin: "20px",
-          width: "70%",
+      {error && <div className="formError"> {t(`server_err.${error}`)}</div>}
+      <TextField
+        required
+        type="text"
+        variant="standard"
+        name="tableName"
+        fullWidth
+        inputProps={{
+          className: classes.inputText,
         }}
-        onSubmit={handleSubmit}
+        label="Table Name"
+        style={{ color: "black", marginBottom: "5px", marginTop: "0px" }}
+        onChange={(e) =>
+          setOrderInfo({
+            ...orderInfo,
+            [e.target.name]: e.target.value.trim(),
+          })
+        }
+      />
+      <TextField
+        // fullWidth
+        type="number"
+        name="balanceForward"
+        variant="standard"
+        inputProps={{
+          className: classes.inputText,
+        }}
+        style={{ color: "black", marginBottom: "5px" }}
+        onChange={(e) =>
+          setOrderInfo({
+            ...orderInfo,
+            [e.target.name]: e.target.value.trim(),
+          })
+        }
+        label="Balance Forward"
+      />
+
+      <Dropdown
+        values={user.workUnit.consumptionPoints}
+        label="Consumption Point"
+        variant="standard"
+        value={orderInfo.consumptionPoint}
+        handleChange={(val) =>
+          setOrderInfo({ ...orderInfo, consumptionPoint: val })
+        }
+        sx={{ margin: 0 }}
+        textColor={"black"}
+      />
+
+      <Button
+        variant="contained"
+        type="submit"
+        style={{ marginTop: "20px", marginBottom: "25px" }}
       >
-        <TextField
-          required
-          type="text"
-          variant="standard"
-          name="tableName"
-          fullWidth
-          inputProps={{
-            className: classes.inputText,
-          }}
-          label="Table Name"
-          style={{ color: "black", marginBottom: "5px", marginTop: "-20px" }}
-          onChange={(e) =>
-            setOrderInfo({
-              ...orderInfo,
-              [e.target.name]: e.target.value.trim(),
-            })
-          }
-        />
-        <TextField
-          fullWidth
-          type="number"
-          name="balanceForward"
-          variant="standard"
-          inputProps={{
-            className: classes.inputText,
-          }}
-          style={{ color: "black", marginBottom: "5px" }}
-          onChange={(e) =>
-            setOrderInfo({
-              ...orderInfo,
-              [e.target.name]: e.target.value.trim(),
-            })
-          }
-          label="Balance Forward"
-        />
-
-        <Dropdown
-          values={user.workUnit.consumptionPoints}
-          label="Consumption Point"
-          variant="standard"
-          handleChange={(val) =>
-            setOrderInfo({ ...orderInfo, [orderInfo.consumptionPoint]: val })
-          }
-        />
-
-        <Button
-          variant="contained"
-          type="submit"
-          style={{ marginTop: "10px", marginBottom: "25px" }}
-        >
-          {t("pages.waiter.orders.form_add_order.add_btn")}
-        </Button>
-      </form>
-    </div>
+        {t("pages.waiter.orders.form_add_order.add_btn")}
+      </Button>
+    </form>
   );
 }

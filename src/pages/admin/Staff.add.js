@@ -4,12 +4,30 @@ import { AuthContext } from "../../contexts/AuthContext";
 
 import { Button, TextField } from "@mui/material";
 import { makeStyles } from "@material-ui/core";
+import Dropdown from "../../components/subComponents/Dropdown";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   inputText: {
     color: "black",
   },
-});
+  form: {
+    display: "flex",
+    flexFlow: "column",
+    justifyContent: "center",
+    backgroundColor: "#FFFFFF",
+    margin: "130px auto",
+    padding: "20px",
+    color: "#B3B3B3",
+    maxWidth: "350px",
+    borderRadius: "3px",
+    [theme.breakpoints.down("sm")]: {
+      marginTop: "130px",
+    },
+    [theme.breakpoints.up("md")]: {
+      marginTop: "140px",
+    },
+  },
+}));
 
 export default function AddStaff() {
   const { t } = useContext(TrContext);
@@ -22,7 +40,7 @@ export default function AddStaff() {
   const [personInfo, setPersonInfo] = useState({
     firstName: "",
     lastName: "",
-    role: "",
+    role: "cashier",
     companyCode: user.company.code,
     email: "",
     tel: "",
@@ -43,19 +61,7 @@ export default function AddStaff() {
   };
 
   return (
-    <form
-      style={{
-        display: "flex",
-        flexFlow: "column",
-        justifyContent: "center",
-        backgroundColor: "#FFFFFF",
-        margin: "130px auto",
-        padding: "20px",
-        color: "#B3B3B3",
-        maxWidth: "350px",
-      }}
-      onSubmit={handleSubmit}
-    >
+    <form className={classes.form} onSubmit={handleSubmit}>
       <h2 style={{ color: "#001D42", margin: "10px auto" }}>Create User</h2>
       {error && <div className="formError">{error}</div>}
 
@@ -113,23 +119,13 @@ export default function AddStaff() {
         }
         label="Tel"
       />
-      <TextField
-        required
-        type="text"
+      <Dropdown
+        values={["cashier", "waiter"]}
+        value={personInfo.role}
+        handleChange={(val) => setPersonInfo({ ...personInfo, role: val })}
         variant="standard"
-        inputProps={{
-          className: classes.inputText,
-        }}
-        fullWidth
-        label="role"
-        name="role"
-        onChange={(e) =>
-          setPersonInfo({
-            ...personInfo,
-            [e.target.name]: e.target.value.trim(),
-          })
-        }
-        style={{ color: "#B3B3B3" }}
+        sx={{ margin: 0 }}
+        textColor={"black"}
       />
 
       <TextField

@@ -13,7 +13,7 @@ import { ItemContext } from "../../contexts/ItemContext";
 // functions
 import { filter, getList, groupData } from "../../functions/data";
 
-export default function Items({ orderId, preview = true }) {
+export default function Items({ orderId, preview = false }) {
   // const { user } = useContext(AuthContext);
   const { t } = useContext(TrContext);
   const { families, items } = useContext(ItemContext);

@@ -14,6 +14,7 @@ export default function Dropdown({
   values = [],
   variant = "outlined",
   sx = {},
+  textColor,
 }) {
   const { t } = useContext(TrContext);
 
@@ -23,6 +24,7 @@ export default function Dropdown({
         m: 1,
         minWidth: 80,
         "& svg": { color: "rgb(179, 179, 179)" },
+
         ...sx,
       }}
       variant={variant}
@@ -32,7 +34,7 @@ export default function Dropdown({
         label={label}
         labelId={labelId}
         autoWidth
-        style={{ color: "#B3B3B3" }}
+        style={{ color: textColor ?? "#B3B3B3" }}
         value={value}
         onChange={(e) => handleChange(e.target.value)}
       >

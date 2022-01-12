@@ -85,14 +85,14 @@ export default function Bills() {
           values={["Period", "Date"]}
           value={format}
           handleChange={setFormat}
-          sx={{ marginLeft: "-7px" }}
+          sx={{ marginLeft: "-13px" }}
         />
         {format === "Period" ? (
           <>
             <TextField
               variant="standard"
               type="date"
-              label="Start Date"
+              label="Du"
               autoFocus
               value={startP}
               inputProps={{
@@ -102,12 +102,12 @@ export default function Bills() {
                 if (e.target.value < stopP && e.target.value >= createdDate)
                   setStartD(e.target.value);
               }}
-              style={{ marginRight: "10px" }}
+              style={{ marginRight: "5px", marginLeft: "8px" }}
             />
-            <span style={{ marginTop: "20px" }}>AU</span>
+
             <TextField
               variant="standard"
-              label="Stop Date"
+              label="Au"
               autoFocus
               type="date"
               value={stopP}
@@ -116,7 +116,11 @@ export default function Bills() {
               }}
               style={{ marginLeft: "10px" }}
               onChange={(e) => {
-                if (e.target.value > startP) setStopD(e.target.value);
+                if (
+                  e.target.value > startP &&
+                  e.target.value <= new Date().toISOString()
+                )
+                  setStopD(e.target.value);
               }}
             />
           </>
@@ -129,8 +133,13 @@ export default function Bills() {
             inputProps={{
               className: classes.inputText,
             }}
+            style={{ marginLeft: "10px" }}
             onChange={(e) => {
-              if (e.target.value >= createdDate) setDate(e.target.value);
+              if (
+                e.target.value >= createdDate &&
+                e.target.value <= new Date().toISOString()
+              )
+                setDate(e.target.value);
             }}
           />
         )}

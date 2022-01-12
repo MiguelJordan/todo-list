@@ -58,7 +58,8 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "4px",
     borderColor: "#415672",
     "&:focus": {
-      borderColor: "#415672",
+      border: "0px",
+      borderColor: "none",
     },
   },
 }));
@@ -220,6 +221,7 @@ const Item = ({ data = {}, orderId, preview = true, role = "" }) => {
                       marginLeft: 8,
                       backgroundColor: "#415672",
                       color: "#FFFFFF",
+                      height: "18px",
                     }}
                     className={classes.inp}
                   />

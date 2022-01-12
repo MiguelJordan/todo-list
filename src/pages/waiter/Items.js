@@ -12,10 +12,12 @@ import { ItemContext } from "../../contexts/ItemContext";
 // functions
 import { filter, getList, groupData } from "../../functions/data";
 
+// hooks
+import useSearch from "../../hooks/useSearch";
+
 export default function Items({ orderId, orderItems, preview = true }) {
   const { t } = useContext(TrContext);
   const { families, items } = useContext(ItemContext);
-  const [searchVal, setSearchVal] = useState("");
 
   const [familiesToShow, setFamiliesToShow] = useState(families);
 
@@ -45,7 +47,10 @@ export default function Items({ orderId, orderItems, preview = true }) {
     )
   );
 
-  const [f_items, setFItems] = useState(_items);
+  const { filtered, setSearchVal } = useSearch({
+    data: _items,
+    criteria: "name",
+  });
 
   const updateFam = (value) => {
     if (!familiesToShow.includes(value)) value = familiesToShow[0];
@@ -56,6 +61,10 @@ export default function Items({ orderId, orderItems, preview = true }) {
     if (!categories.includes(value)) value = categories[0];
     setCat(value);
   };
+
+  useEffect(() => {
+    console.log("filtered:", filtered);
+  }, [filtered]);
 
   useEffect(() => {
     const _orderedNames = getList({ data: orderItems, criteria: "name" });
@@ -115,18 +124,6 @@ export default function Items({ orderId, orderItems, preview = true }) {
     }
   }, [category, data, family]);
 
-  useEffect(() => {
-    const filtered = _items.filter((item) => {
-      if (!searchVal) return true;
-      if (item.name.toLowerCase().includes(searchVal.toLowerCase().trim())) {
-        return true;
-      }
-      return false;
-    });
-
-    setFItems(filtered);
-  }, [_items, searchVal]);
-
   return (
     <>
       <div
@@ -157,7 +154,7 @@ export default function Items({ orderId, orderItems, preview = true }) {
         <Search onChange={setSearchVal} />
       </div>
       <ItemList
-        items={f_items}
+        items={filtered}
         role="waiter"
         orderId={orderId}
         preview={preview}

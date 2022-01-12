@@ -1,22 +1,33 @@
 import { createContext, useState } from "react";
 
+// functions
 import { get, post } from "../functions/http";
+
+// hooks
+import useStorage from "../hooks/useStorage";
 
 export const AuthContext = createContext();
 
 const loadUser = () => JSON.parse(localStorage.getItem("user"));
 
 const AuthContextProvider = ({ children }) => {
-  const [user, setUser] = useState(loadUser);
+  const storage = useStorage();
+  const [user, setUser] = useState(storage.get("user"));
+
+  const removeUser = () => {
+    storage.remove("user");
+    setUser(null);
+  };
 
   const saveUser = (data) => {
-    localStorage.setItem("user", JSON.stringify(data));
+    storage.set("user", data);
     setUser(data);
   };
 
-  const removeUser = () => {
-    localStorage.removeItem("user");
-    setUser(null);
+  const updateUser = (updates) => {
+    let newUser = { ...user, ...updates };
+    storage.set("user", newUser);
+    setUser(newUser);
   };
 
   const login = async (credentials) => {
@@ -55,7 +66,7 @@ const AuthContextProvider = ({ children }) => {
     return res;
   };
 
-  const context = { user, login, logout };
+  const context = { user, login, logout, updateUser };
   return (
     <AuthContext.Provider value={context}>{children}</AuthContext.Provider>
   );

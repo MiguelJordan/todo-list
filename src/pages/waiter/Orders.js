@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 
 // components
 import OrderList from "../../components/orders/OrderList";
@@ -8,26 +8,15 @@ import Fabs from "../../components/subComponents/Fabs";
 // contexts
 import { OrderContext } from "../../contexts/OrderContext";
 
+// hooks
+import useSearch from "../../hooks/useSearch";
+
 export default function Orders() {
   const { orders } = useContext(OrderContext);
-
-  const [searchVal, setSearchVal] = useState("");
-
-  const [_orders, setOrders] = useState([]);
-
-  useEffect(() => {
-    const filtered = orders.filter((order) => {
-      if (!searchVal?.trim()) return true;
-      if (
-        order.tableName.toLowerCase().includes(searchVal.toLowerCase().trim())
-      ) {
-        return true;
-      }
-      return false;
-    });
-
-    setOrders(filtered);
-  }, [orders, searchVal]);
+  const { filtered, setSearchVal } = useSearch({
+    data: orders,
+    criteria: "tableName",
+  });
 
   return (
     <>
@@ -44,7 +33,7 @@ export default function Orders() {
         <Search onChange={setSearchVal} />
       </div>
 
-      <OrderList orders={_orders} role="waiter" />
+      <OrderList orders={filtered} role="waiter" />
 
       <Fabs path="/waiter/orders/add" />
     </>

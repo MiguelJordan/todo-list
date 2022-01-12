@@ -128,8 +128,7 @@ export default function Items({ orderId, orderItems, preview = true }) {
           flexFlow: "row",
           alignItems: "center",
           justifyContent: "center",
-          flexWrap: "wrap",
-          margin: "15px 0",
+          marginTop: 15,
         }}
       >
         <Dropdown

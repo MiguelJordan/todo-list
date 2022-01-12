@@ -18,7 +18,7 @@ const _search = styled("div")(({ theme }) => ({
 const SearchIconWrapper = styled("div")(({ theme }) => ({
   position: "absolute",
   top: "55%",
-  left: "20px",
+  left: "10px",
   transform: "translateY(-50%)",
   pointerEvents: "none",
 }));
@@ -27,11 +27,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
   "& .MuiInputBase-input": {
     padding: "10px",
-    paddingLeft: "50px",
+    paddingLeft: "35px",
     transition: theme.transitions.create("width"),
-    width: "12ch",
+    width: "10ch",
     "&:focus": {
-      width: "20ch",
+      width: "12ch",
     },
   },
 }));

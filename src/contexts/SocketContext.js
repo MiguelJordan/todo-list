@@ -27,12 +27,13 @@ const SocketContextProvider = ({ children }) => {
     if (user && !socketConnected) socket?.emit("register", _user);
   };
 
-  // this is to attempt registration immediately user logs in
+  // this is to prevent useless socket connections
+  // attempt connection immediately user logs in successfully
   useEffect(() => {
-    if (!user) {
-      socket?.close();
-      setSocketConnected(false);
-    }
+    if (user) return socket?.connect();
+
+    socket?.close();
+    setSocketConnected(false);
   }, [socket, user]);
 
   const connectErrorE = (data) => {
@@ -68,7 +69,7 @@ const SocketContextProvider = ({ children }) => {
 
       socket.off("registered", registeredE);
     };
-  }, [socket]);
+  }, [socket, connectE]);
 
   const sendEvent = ({ name = "", props = {}, rooms = [] }) => {
     if (!socketConnected || !name || !rooms.length) return;

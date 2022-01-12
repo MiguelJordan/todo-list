@@ -17,7 +17,8 @@ export default function Fabs({ path = "" }) {
           position: "relative",
           display: "flex",
           alignItems: "flex-end",
-          marginLeft: "auto",
+          marginLeft: "20px",
+          marginBottom: "auto",
         }}
       >
         <AddIcon

@@ -40,30 +40,20 @@ export default function Drinks() {
       <div
         style={{
           display: "flex",
-          aligndts: "center",
+          flexFlow: "row",
+          alignItems: "center",
           justifyContent: "center",
           flexWrap: "wrap",
           margin: "15px 0",
-          flexFlow: "column",
-          alignItems: "center",
         }}
       >
-        {/* <span>
-          Family:{" "}
-          <Dropdown
-            values={families}
-            onchange={(value) => setFam(value)}
-            defaultVal={family}
-          />
-        </span> */}
-        <span>
-          <Dropdown
-            label="Store"
-            values={["Central", "Unit"]}
-            value={store}
-            handleChange={setStore}
-          />
-        </span>
+        <Dropdown
+          label="Store"
+          values={["Central", "Unit"]}
+          value={store}
+          handleChange={setStore}
+        />
+
         <Search onChange={setSearchVal} />
       </div>
       <ItemList items={filterArray} role="admin" />

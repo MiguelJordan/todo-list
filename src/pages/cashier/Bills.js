@@ -63,28 +63,28 @@ export default function Bills() {
       {/* <h1 className="center">{t("Cashier's Bills")}</h1> */}
 
       <div
-        style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}
+        style={{
+          display: "flex",
+          flexFlow: "row",
+          alignItems: "center",
+          justifyContent: "center",
+          flexWrap: "wrap",
+          margin: "15px 0",
+        }}
       >
-        <span>
-          <Dropdown
-            label="Waiter"
-            values={waiterList}
-            value={waiter}
-            handleChange={setWaiter}
-          />
-        </span>
-        <span>
-          <Dropdown
-            label="Paymennt"
-            value={payment}
-            values={paymentMethods}
-            handleChange={setPayment}
-          />
-        </span>
-      </div>
-      <div
-        style={{ display: "flex", justifyContent: "center", marginTop: "15px" }}
-      >
+        <Dropdown
+          label="Waiter"
+          values={waiterList}
+          value={waiter}
+          handleChange={setWaiter}
+        />
+
+        <Dropdown
+          label="Paymennt"
+          value={payment}
+          values={paymentMethods}
+          handleChange={setPayment}
+        />
         <Search onChange={setSearchVal} />
       </div>
 

@@ -58,13 +58,13 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "4px",
     borderColor: "#415672",
     "&:focus": {
-      border: "0px",
-      borderColor: "none",
+      border: "none",
+      outlineStyle: "none",
     },
   },
 }));
 
-const Item = ({ data = {}, orderId, preview = true, role = "" }) => {
+const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
   const { user } = useContext(AuthContext);
   const { showNotification } = useContext(NTContext);
   const { sendEvent } = useContext(SocketContext);

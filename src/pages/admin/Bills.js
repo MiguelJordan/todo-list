@@ -1,5 +1,10 @@
 import { useContext, useState, useEffect } from "react";
 import dayjs from "dayjs";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import TimePicker from "@mui/lab/TimePicker";
+import DateTimePicker from "@mui/lab/DateTimePicker";
+import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 
 import { TrContext } from "../../contexts/TranslationContext";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -16,6 +21,11 @@ const useStyles = makeStyles((theme) => ({
   inputText: {
     color: "#B3B3B3",
   },
+  root: {
+    "& > .MuiButtonBase-root-MuiPickersDay-root": {
+      color: "#B3B3B3",
+    },
+  },
 }));
 
 export default function Bills() {
@@ -25,14 +35,20 @@ export default function Bills() {
   const { orders } = useContext(OrderContext);
   const [_orders, setOrders] = useState([]);
 
+  //date at which the workUnit was created
   const createdDate = dayjs(new Date(user.workUnit.createdAt)).format(
     "YYYY-MM-DD"
   );
 
-  const [startP, setStartD] = useState(createdDate);
+  //get current date and and 1 day to it
+  const currentDate = new Date();
+  const newDate = currentDate.setDate(currentDate.getDate() + 1);
 
+  const [startP, setStartD] = useState(createdDate);
   const [stopP, setStopD] = useState(
-    `${new Date().toISOString().slice(0, 10)}`
+    createdDate === new Date().toISOString().slice(0, 10)
+      ? `${new Date(newDate).toISOString().slice(0, 10)}`
+      : `${new Date().toISOString().slice(0, 10)}`
   );
   const [date, setDate] = useState(createdDate);
 
@@ -89,59 +105,97 @@ export default function Bills() {
         />
         {format === "Period" ? (
           <>
-            <TextField
-              variant="standard"
-              type="date"
-              label="Du"
-              autoFocus
-              value={startP}
-              inputProps={{
-                className: classes.inputText,
-              }}
-              onChange={(e) => {
-                if (e.target.value < stopP && e.target.value >= createdDate)
-                  setStartD(e.target.value);
-              }}
-              style={{ marginRight: "5px", marginLeft: "8px" }}
-            />
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DesktopDatePicker
+                label="Du"
+                inputFormat="dd/MM/yyyy"
+                value={startP}
+                className={classes.inputText}
+                onChange={(value) => {
+                  if (value < stopP && value >= createdDate)
+                    setStartD(new Date(value).toISOString());
+                  console.log(new Date(value).toISOString().slice(0, 10));
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    sx={{
+                      input: { color: "#B3B3B3" },
+                      svg: { color: "#B3B3B3" },
+                      label: { color: "#B3B3B3" },
+                      marginTop: "7px",
+                      marginLeft: "5px",
+                    }}
+                    classes={{
+                      root: classes.root,
+                    }}
+                  />
+                )}
+              />
+            </LocalizationProvider>
 
-            <TextField
-              variant="standard"
-              label="Au"
-              autoFocus
-              type="date"
-              value={stopP}
-              inputProps={{
-                className: classes.inputText,
-              }}
-              style={{ marginLeft: "10px" }}
-              onChange={(e) => {
-                if (
-                  e.target.value > startP &&
-                  e.target.value <= new Date().toISOString()
-                )
-                  setStopD(e.target.value);
-              }}
-            />
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DesktopDatePicker
+                label="Au"
+                inputFormat="dd/MM/yyyy"
+                value={stopP}
+                className={classes.inputText}
+                onChange={(value) => {
+                  if (
+                    value > startP &&
+                    value <= new Date().toISOString().slice(0, 10)
+                  )
+                    setStopD(value);
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    sx={{
+                      input: { color: "#B3B3B3" },
+                      svg: { color: "#B3B3B3" },
+                      label: { color: "#B3B3B3" },
+                      marginTop: "7px",
+                      marginLeft: "5px",
+                    }}
+                    classes={{
+                      root: classes.root,
+                    }}
+                  />
+                )}
+              />
+            </LocalizationProvider>
           </>
         ) : (
-          <TextField
-            variant="standard"
-            label="Date"
-            type="date"
-            value={date}
-            inputProps={{
-              className: classes.inputText,
-            }}
-            style={{ marginLeft: "10px" }}
-            onChange={(e) => {
-              if (
-                e.target.value >= createdDate &&
-                e.target.value <= new Date().toISOString()
-              )
-                setDate(e.target.value);
-            }}
-          />
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DesktopDatePicker
+              label="Date"
+              inputFormat="dd/MM/yyyy"
+              value={date}
+              className={classes.inputText}
+              onChange={(value) => {
+                if (
+                  value >= createdDate &&
+                  value <= new Date().toISOString().slice(0, 10)
+                )
+                  setDate(value);
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  sx={{
+                    input: { color: "#B3B3B3" },
+                    svg: { color: "#B3B3B3" },
+                    label: { color: "#B3B3B3" },
+                    marginTop: "7px",
+                    marginLeft: "5px",
+                  }}
+                  classes={{
+                    root: classes.root,
+                  }}
+                />
+              )}
+            />
+          </LocalizationProvider>
         )}
       </div>
       <div

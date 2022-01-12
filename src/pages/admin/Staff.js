@@ -42,16 +42,14 @@ export default function Staff() {
     <div
       style={{
         display: "flex",
-        flexFlow: "column",
-        justifyContent: "center",
-        alignContent: "center",
+        flexFlow: "row",
         alignItems: "center",
+        justifyContent: "center",
+        flexWrap: "wrap",
+        margin: "15px 0",
       }}
     >
-      <h1 className="center">{t("List of Staff Members")}</h1>
-
-      <Search onChange={setSearchVal} />
-
+      <Search onChange={setSearchVal} /> <Fabs path="/admin/staff/add" />
       <div
         style={{
           maxWidth: "500px",
@@ -101,8 +99,6 @@ export default function Staff() {
           )}
         </List>
       </div>
-
-      <Fabs path="/admin/staff/add" />
     </div>
   );
 }

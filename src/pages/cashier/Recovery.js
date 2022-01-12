@@ -101,7 +101,15 @@ export default function Recovery() {
         }
         required
       />
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          flexFlow: "column",
+          maxHeight: "150px",
+          overflowY: "auto",
+        }}
+      >
         <Dropdown
           values={user.workUnit.paymentMethods}
           label="Payment Method"
@@ -129,49 +137,49 @@ export default function Recovery() {
           }
           required
         />
-      </div>
-      {addPayment.map((field, idx) => (
-        <div
-          style={{ display: "flex", justifyContent: "space-between" }}
-          key={`${field}-${idx}`}
-        >
-          <Dropdown
-            values={user.workUnit.paymentMethods}
-            label="Payment Method"
-            variant="standard"
-            value={user.workUnit.paymentMethods[0]}
-            handleChange={(val) =>
-              setRecovery({ ...recovery, paymentMethod: val })
-            }
-            sx={{ margin: 0 }}
-            textColor={"black"}
-          />
-          <TextField
-            // fullWidth
-            label="Amount"
-            type="number"
-            name="amount"
-            variant="standard"
-            inputProps={{
-              className: classes.inputText,
-            }}
-            style={{ color: "black", marginBottom: "5px" }}
-            onChange={(e) =>
-              setRecovery({
-                ...recovery,
-                [e.target.name]: e.target.value.trim(),
-              })
-            }
-            required
-          />
-          <Button
-            style={{ marginTop: "20px" }}
-            onClick={() => handleRemoveField(idx)}
+        {addPayment.map((field, idx) => (
+          <span
+            style={{ display: "flex", flexFlow: "column" }}
+            key={`${field}-${idx}`}
           >
-            <CloseIcon />
-          </Button>
-        </div>
-      ))}
+            <Dropdown
+              values={user.workUnit.paymentMethods}
+              label="Payment Method"
+              variant="standard"
+              value={user.workUnit.paymentMethods[0]}
+              handleChange={(val) =>
+                setRecovery({ ...recovery, paymentMethod: val })
+              }
+              sx={{ margin: 0 }}
+              textColor={"black"}
+            />
+            <TextField
+              // fullWidth
+              label="Amount"
+              type="number"
+              name="amount"
+              variant="standard"
+              inputProps={{
+                className: classes.inputText,
+              }}
+              style={{ color: "black", marginBottom: "5px" }}
+              onChange={(e) =>
+                setRecovery({
+                  ...recovery,
+                  [e.target.name]: e.target.value.trim(),
+                })
+              }
+              required
+            />
+            <Button
+              style={{ marginTop: "20px" }}
+              onClick={() => handleRemoveField(idx)}
+            >
+              <CloseIcon />
+            </Button>
+          </span>
+        ))}
+      </div>
       <div
         style={{
           display: "flex",
@@ -186,13 +194,18 @@ export default function Recovery() {
           style={{
             marginTop: "20px",
             marginBottom: "25px",
+            width: "150px",
           }}
         >
           {t("pages.waiter.orders.form_add_order.add_btn")}
         </Button>
         <Button
           variant="contained"
-          style={{ marginTop: "20px", marginBottom: "25px" }}
+          style={{
+            marginTop: "20px",
+            marginBottom: "25px",
+            backgroundColor: "#04A5E0",
+          }}
           onClick={handleAddField}
         >
           {"Add Payment"}

@@ -189,9 +189,6 @@ export default function Bills() {
                     marginTop: "7px",
                     marginLeft: "5px",
                   }}
-                  classes={{
-                    root: classes.root,
-                  }}
                 />
               )}
             />

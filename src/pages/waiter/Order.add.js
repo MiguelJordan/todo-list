@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
       marginTop: "160px",
     },
     [theme.breakpoints.up("md")]: {
-      marginTop: "200px",
+      marginTop: "160px",
     },
   },
 }));

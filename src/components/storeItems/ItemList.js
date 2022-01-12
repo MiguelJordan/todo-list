@@ -12,12 +12,13 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignitems: "center",
     overflowY: "auto",
-    height: "70vh",
+    height: "78vh",
     flexWrap: "wrap",
     width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      height: "75vh",
-    },
+    border: "1px solid yellow",
+    // [theme.breakpoints.up("sm")]: {
+    //   height: "78vh",
+    // },
   },
 }));
 

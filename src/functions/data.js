@@ -63,3 +63,36 @@ export const getUnique = ({ data = [], key = "id" }) => {
 
   return Object.values(obj);
 };
+
+const getDateString = (value) => new Date(value).toISOString().substring(0, 10);
+
+export const getDate = ({ date }) => {
+  date = new Date(getDateString(date));
+  date = new Date(date.getTime());
+
+  return new Date(getDateString(date));
+};
+
+export const getPeriod = ({
+  startTime = new Date(),
+  stopTime,
+  distance = 1,
+  useDistance = false,
+}) => {
+  let otherTime;
+
+  if (!startTime && useDistance) {
+    otherTime = new Date(getDateString(stopTime));
+    startTime = new Date(otherTime.getTime() - distance * 24 * 60 * 60 * 1000);
+  }
+
+  if (!stopTime && useDistance) {
+    otherTime = new Date(getDateString(startTime));
+    stopTime = new Date(otherTime.getTime() + distance * 24 * 60 * 60 * 1000);
+  }
+
+  return {
+    startTime: new Date(getDateString(startTime)),
+    stopTime: new Date(getDateString(stopTime)),
+  };
+};

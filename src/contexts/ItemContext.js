@@ -27,7 +27,9 @@ const ItemContexProvider = ({ children }) => {
 
     if (_items?.error) return console.log(_items?.error);
     // console.log("Store items", _items);
-    const _families = getList({ data: _items, criteria: "family" });
+    const _families = getList({ data: _items, criteria: "family" }).sort(
+      (a, b) => (a.toLowerCase() < b.toLowerCase() ? -1 : 1)
+    );
     // console.log("Families", _families);
     setItems(_items);
     setFams(_families);

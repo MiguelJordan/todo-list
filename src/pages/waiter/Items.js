@@ -6,23 +6,31 @@ import Search from "../../components/subComponents/Search";
 import Dropdown from "../../components/subComponents/Dropdown";
 
 // contexts
-// import { AuthContext } from "../../contexts/AuthContext";
 import { TrContext } from "../../contexts/TranslationContext";
 import { ItemContext } from "../../contexts/ItemContext";
 
 // functions
 import { filter, getList, groupData } from "../../functions/data";
 
-export default function Items({ orderId, preview = true }) {
-  // const { user } = useContext(AuthContext);
+// hooks
+import useSearch from "../../hooks/useSearch";
+
+export default function Items({ orderId, orderItems, preview = true }) {
   const { t } = useContext(TrContext);
   const { families, items } = useContext(ItemContext);
-  const [searchVal, setSearchVal] = useState("");
 
-  const [family, setFam] = useState(families[0] ?? "");
+  const [familiesToShow, setFamiliesToShow] = useState(families);
+
+  const [family, setFam] = useState(familiesToShow[0] ?? "");
+
+  const [orderedNames, setOrderedNames] = useState(
+    getList({ data: orderItems, criteria: "name" })
+  );
+
+  const [itemsToShow, setItemsToShow] = useState(items);
 
   const [data, setData] = useState(
-    groupData({ data: items, criteria: "family" })
+    groupData({ data: itemsToShow, criteria: "family" })
   );
 
   const [categories, setCats] = useState(
@@ -30,6 +38,7 @@ export default function Items({ orderId, preview = true }) {
       a.toLowerCase() < b.toLowerCase() ? -1 : 1
     ) ?? []
   );
+
   const [category, setCat] = useState(categories[0] ?? "");
 
   const [_items, setItems] = useState(
@@ -38,10 +47,13 @@ export default function Items({ orderId, preview = true }) {
     )
   );
 
-  const [f_items, setFItems] = useState(_items);
+  const { filtered, setSearchVal } = useSearch({
+    data: _items,
+    criteria: "name",
+  });
 
   const updateFam = (value) => {
-    if (!families.includes(value)) value = families[0];
+    if (!familiesToShow.includes(value)) value = familiesToShow[0];
     setFam(value);
   };
 
@@ -51,14 +63,36 @@ export default function Items({ orderId, preview = true }) {
   };
 
   useEffect(() => {
-    if (!families.includes(family)) {
-      setFam(families[0]);
-    }
-  }, [family, families]);
+    const _orderedNames = getList({ data: orderItems, criteria: "name" });
+    setOrderedNames(_orderedNames);
+  }, [orderItems]);
 
   useEffect(() => {
-    setData(groupData({ data: items, criteria: "family" }));
-  }, [family, items]);
+    let _itemsToShow = orderedNames.reduce((prev, itemName) => {
+      prev = filter({
+        data: prev,
+        criteria: "name",
+        value: itemName,
+        exclude: true,
+      });
+      return prev;
+    }, items);
+
+    setItemsToShow(_itemsToShow);
+
+    const newFams = getList({ data: _itemsToShow, criteria: "family" });
+    if (newFams.length !== familiesToShow.length) setFamiliesToShow(newFams);
+  }, [items, familiesToShow, orderedNames]);
+
+  useEffect(() => {
+    if (!familiesToShow.includes(family)) {
+      setFam(familiesToShow[0]);
+    }
+  }, [family, familiesToShow]);
+
+  useEffect(() => {
+    setData(groupData({ data: itemsToShow, criteria: "family" }));
+  }, [family, itemsToShow]);
 
   useEffect(() => {
     setCats(
@@ -86,18 +120,6 @@ export default function Items({ orderId, preview = true }) {
     }
   }, [category, data, family]);
 
-  useEffect(() => {
-    const filtered = _items.filter((item) => {
-      if (!searchVal) return true;
-      if (item.name.toLowerCase().includes(searchVal.toLowerCase().trim())) {
-        return true;
-      }
-      return false;
-    });
-
-    setFItems(filtered);
-  }, [_items, searchVal]);
-
   return (
     <>
       <div
@@ -115,7 +137,7 @@ export default function Items({ orderId, preview = true }) {
           label={t("pages.waiter.items.dropdown.families")}
           labelId="waiter-items-families"
           value={family}
-          values={families}
+          values={familiesToShow}
           handleChange={updateFam}
         />
         <Dropdown
@@ -128,7 +150,7 @@ export default function Items({ orderId, preview = true }) {
         <Search onChange={setSearchVal} />
       </div>
       <ItemList
-        items={f_items}
+        items={filtered}
         role="waiter"
         orderId={orderId}
         preview={preview}

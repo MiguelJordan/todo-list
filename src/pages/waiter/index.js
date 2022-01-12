@@ -29,12 +29,12 @@ export default function Waiter() {
         element={<Layout Main={OrderDetail} links={mainLinks} />}
       />
       <Route
-        path="/orders/add"
-        element={<Layout Main={CreateOrder} links={mainLinks} />}
+        path="/orders/:id/add-items"
+        element={<Layout Main={AddItems} links={mainLinks} />}
       />
       <Route
-        path="/orders/add-item/:id"
-        element={<Layout Main={AddItems} links={mainLinks} />}
+        path="/orders/add"
+        element={<Layout Main={CreateOrder} links={mainLinks} />}
       />
       <Route path="*" element={<NotFound />} />
     </Routes>

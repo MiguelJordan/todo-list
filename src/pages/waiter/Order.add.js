@@ -91,7 +91,7 @@ export default function CreateOrder() {
     });
 
     // navigation
-    navigate(`/waiter/orders/add-item/${res.insertedId}`);
+    navigate(`/waiter/orders/${res.insertedId}/add-items`);
   };
 
   return (

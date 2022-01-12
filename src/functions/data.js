@@ -25,11 +25,16 @@ export const filter = ({
   data = [],
   criteria = "",
   value = "",
+  exact = true,
   exclude = false,
 }) => {
-  return data.filter((dt) =>
-    exclude ? dt?.[criteria] !== value : dt?.[criteria] === value
-  );
+  return data.filter((dt) => {
+    let allowed = exact
+      ? dt?.[criteria] === value
+      : dt?.[criteria]?.includes(value);
+
+    return exclude ? !allowed : allowed;
+  });
 };
 
 export const getImage = ({ url = "", fullUrl = false }) => {

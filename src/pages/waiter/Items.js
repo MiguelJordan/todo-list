@@ -63,10 +63,6 @@ export default function Items({ orderId, orderItems, preview = true }) {
   };
 
   useEffect(() => {
-    console.log("filtered:", filtered);
-  }, [filtered]);
-
-  useEffect(() => {
     const _orderedNames = getList({ data: orderItems, criteria: "name" });
     setOrderedNames(_orderedNames);
   }, [orderItems]);

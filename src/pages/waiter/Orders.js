@@ -34,7 +34,7 @@ export default function Orders() {
         <Fabs path="/waiter/orders/add" />
       </div>
 
-      <OrderList orders={_orders} role="waiter" />
+      <OrderList orders={filtered} role="waiter" />
     </>
   );
 }

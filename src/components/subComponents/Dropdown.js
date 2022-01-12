@@ -41,7 +41,6 @@ export default function Dropdown({
         autoWidth
         style={{ color: textColor ?? "#B3B3B3" }}
         value={value}
-        style={{ color: "#B3B3B3" }}
         onChange={(e) => handleChange(e.target.value)}
       >
         {values.map((value) => (

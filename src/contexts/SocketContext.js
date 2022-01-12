@@ -27,7 +27,8 @@ const SocketContextProvider = ({ children }) => {
     if (user && !socketConnected) socket?.emit("register", _user);
   };
 
-  // this is to attempt registration immediately user logs in
+  // this is to prevent useless socket connections
+  // attempt connection immediately user logs in successfully
   useEffect(() => {
     if (user) return socket?.connect();
 

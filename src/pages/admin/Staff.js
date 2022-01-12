@@ -1,104 +1,69 @@
 import { useContext, useState } from "react";
 import { TrContext } from "../../contexts/TranslationContext";
 
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import ListItemText from "@mui/material/ListItemText";
-import Avatar from "@mui/material/Avatar";
-
-//icon
-import EditRounded from "@mui/icons-material/EditRounded";
-import Fabs from "../../components/subComponents/Fabs";
-import Search from "../../components/subComponents/Search";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 
 export default function Staff() {
   const { t } = useContext(TrContext);
 
-  const users = [
-    { id: "1", name: "john", role: "waiter" },
-    { id: "2", name: "Anne", role: "waiter" },
-    { id: "3", name: "Jack", role: "cashier" },
-    { id: "4", name: "one", role: "admin" },
-    { id: "5", name: "paul", role: "waiter" },
-    { id: "6", name: "jones", role: "waiter" },
-    { id: "7", name: "Agne", role: "waiter" },
-    { id: "8", name: "Jacky", role: "cashier" },
-    { id: "9", name: "oneMan", role: "admin" },
-    { id: "10", name: "pauline", role: "waiter" },
+  const columns = [
+    {
+      field: "firstName",
+      headerName: "First Name",
+      width: 130,
+    },
+    {
+      field: "lastName",
+      headerName: "Last Name",
+      width: 140,
+    },
+    {
+      field: "role",
+      headerName: "Role",
+      width: 100,
+    },
   ];
 
-  const [searchVal, setSearchVal] = useState("");
-
-  const filterUsers = [];
-
-  users.filter((user) => {
-    if (!searchVal || user.name.includes(searchVal.toLowerCase().trim()))
-      return filterUsers.push(user);
-    return "";
-  });
+  const users = [
+    { id: 1, lastName: "Snow", firstName: "Jon", role: "waiter" },
+    { id: 2, lastName: "Lannister", firstName: "Cersei", role: "cashier" },
+    { id: 3, lastName: "Lannister", firstName: "Jaime", role: "waiter" },
+    { id: 4, lastName: "Stark", firstName: "Arya", role: "cashier" },
+    { id: 5, lastName: "Targaryen", firstName: "Daenerys", role: "barman" },
+    { id: 6, lastName: "Melisandre", firstName: "John", role: "waiter" },
+    { id: 7, lastName: "Clifford", firstName: "Ferrara", role: "cashier" },
+    { id: 8, lastName: "Frances", firstName: "Rossini", role: "waiter" },
+    { id: 9, lastName: "Roxie", firstName: "Harvey", role: "cashier" },
+  ];
 
   return (
     <div
       style={{
+        height: 450,
+        width: "100%",
         display: "flex",
-        flexFlow: "row",
-        alignItems: "center",
         justifyContent: "center",
-        flexWrap: "wrap",
-        margin: "15px 0",
+        marginTop: "100px",
       }}
     >
-      <Search onChange={setSearchVal} /> <Fabs path="/admin/staff/add" />
-      <div
-        style={{
+      <DataGrid
+        rows={users}
+        columns={columns}
+        pageSize={8}
+        rowsPerPageOptions={[6]}
+        checkboxSelection
+        disableSelectionOnClick
+        onRowClick={(params) => console.log(params)}
+        sx={{
+          color: "#B3B3B3",
+          svg: { color: "#B3B3B3" },
           maxWidth: "500px",
-          minWidth: "300px",
-          height: "68vh",
-          overflowY: "auto",
+          "& p": { color: "#B3B3B3" },
         }}
-      >
-        <List>
-          {filterUsers.length !== 0 ? (
-            filterUsers.map((_user) => (
-              <ListItem
-                key={_user.id}
-                style={{
-                  marginBottom: "5px",
-                  backgroundColor: "#2196f3",
-                  borderRadius: "5px",
-                }}
-              >
-                <ListItemText
-                  primary={_user.name}
-                  // secondary={secondary ? "Secondary text" : null}
-                />
-                <ListItemText
-                  primary={_user.role}
-                  //secondary={secondary ? "Secondary text" : null}
-                />
-                <ListItemAvatar
-                  style={{ display: "flex", justifyContent: "center" }}
-                >
-                  <Avatar style={{ backgroundColor: "#4caf50" }}>
-                    <EditRounded />
-                  </Avatar>
-                </ListItemAvatar>
-              </ListItem>
-            ))
-          ) : (
-            <h2
-              style={{
-                marginTop: "100px",
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              No User Found
-            </h2>
-          )}
-        </List>
-      </div>
+        components={{
+          Toolbar: GridToolbar,
+        }}
+      />
     </div>
   );
 }

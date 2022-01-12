@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 
 // functions
-import { filter, getUnique } from "../functions/data";
+import { filter, getUnique, getPeriod } from "../functions/data";
 import { get } from "../functions/http";
 
 export const OrderContext = createContext();
@@ -14,26 +14,22 @@ const OrderContextProvider = ({ children }) => {
   const { user } = useContext(AuthContext);
 
   const getQuery = () => {
-    let query = {
-      companyCode: user.company.code,
-      unitCode: user.workUnit.code,
-    };
+    let req = { companyCode: user.company.code };
 
     if (user.role == "admin") {
-      return { ...query, date: true, source: "unit", startTime: new Date() };
+      return { ...req, date: true, source: "unit", startTime: new Date() };
     }
 
     if (user.role == "cashier") {
-      return { ...query, date: true, source: "unit", startTime: new Date() };
+      return { ...req, date: true, source: "unit", startTime: new Date() };
     }
 
     if (user.role == "waiter") {
+      // const { startTime, stopTime } = getPeriod({ useDistance: true });
+
       return {
-        ...query,
-        // date: true,
-        source: "waiter",
-        // startTime: new Date(),
-        waiterId: user.id,
+        ...req,
+        // query: JSON.stringify({ createdAt: { $gt: startTime, $lt: stopTime } }),
       };
     }
   };

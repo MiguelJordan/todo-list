@@ -3,9 +3,14 @@ import { MenuItem, Select } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 
+// constexts
 import { TrContext } from "../../contexts/TranslationContext";
 
+// functions
+import { capitalise } from "../../functions/data";
+
 export default function Dropdown({
+  capitalised = true,
   handleChange,
   label = "",
   labelId = "",
@@ -32,13 +37,18 @@ export default function Dropdown({
         label={label}
         labelId={labelId}
         autoWidth
-        style={{ color: "#B3B3B3" }}
         value={value}
+        style={{ color: "#B3B3B3" }}
         onChange={(e) => handleChange(e.target.value)}
       >
         {values.map((value) => (
           <MenuItem style={{ color: "#B3B3B3" }} value={value} key={value}>
-            {translated ? t(`compo.dropdown.${value}`) : value}
+            {(() => {
+              let text = translated ? t(`compo.dropdown.${value}`) : value;
+
+              text = capitalised ? capitalise(text) : text;
+              return text;
+            })()}
           </MenuItem>
         ))}
       </Select>

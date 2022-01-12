@@ -26,12 +26,16 @@ export default function Items({ orderId, preview = true }) {
   );
 
   const [categories, setCats] = useState(
-    getList({ data: data[family], criteria: "category" }) ?? []
+    getList({ data: data[family], criteria: "category" }).sort((a, b) =>
+      a.toLowerCase() < b.toLowerCase() ? -1 : 1
+    ) ?? []
   );
   const [category, setCat] = useState(categories[0] ?? "");
 
   const [_items, setItems] = useState(
-    filter({ data: data[family], criteria: "category", value: category })
+    filter({ data: data[family], criteria: "category", value: category }).sort(
+      (a, b) => (a.name < b.name ? -1 : 1)
+    )
   );
 
   const [f_items, setFItems] = useState(_items);
@@ -57,7 +61,11 @@ export default function Items({ orderId, preview = true }) {
   }, [family, items]);
 
   useEffect(() => {
-    setCats(getList({ data: data[family], criteria: "category" }));
+    setCats(
+      getList({ data: data[family], criteria: "category" }).sort((a, b) =>
+        a.toLowerCase() < b.toLowerCase() ? -1 : 1
+      )
+    );
   }, [data, family]);
 
   useEffect(() => {
@@ -69,7 +77,11 @@ export default function Items({ orderId, preview = true }) {
   useEffect(() => {
     if (category && family) {
       setItems(
-        filter({ data: data[family], criteria: "category", value: category })
+        filter({
+          data: data[family],
+          criteria: "category",
+          value: category,
+        }).sort((a, b) => (a.name < b.name ? -1 : 1))
       );
     }
   }, [category, data, family]);

@@ -1,12 +1,12 @@
 import { useContext } from "react";
 import { useParams, Navigate } from "react-router-dom";
 
+// components
+import OrderDetails from "../../components/orders/OrderDetails";
+
 // contexts
 import { AuthContext } from "../../contexts/AuthContext";
 import { OrderContext } from "../../contexts/OrderContext";
-
-// components
-import OrderDetails from "../../components/orders/OrderDetails";
 
 export default function OrderDetail() {
   const { user } = useContext(AuthContext);

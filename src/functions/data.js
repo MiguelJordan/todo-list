@@ -48,6 +48,21 @@ export const getList = ({ data = [], criteria }) => {
   return [...new Set(data.map((dt) => dt[criteria]))];
 };
 
+export const getMeasureUnit = ({
+  quantity,
+  measureUnit,
+  measureUnitPlural,
+}) => {
+  if (!quantity || quantity <= 1) {
+    return measureUnit
+      ? measureUnit
+      : measureUnitPlural
+      ? measureUnitPlural
+      : "";
+  }
+  return measureUnitPlural ? measureUnitPlural : measureUnit ? measureUnit : "";
+};
+
 export const groupData = ({ data = [], criteria = "" }) => {
   if (!data) return [];
   return data.reduce((prev, next) => {

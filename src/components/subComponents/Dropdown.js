@@ -20,6 +20,7 @@ export default function Dropdown({
   variant = "outlined",
   sx = {},
   textColor,
+  read = false,
 }) {
   const { t } = useContext(TrContext);
 
@@ -42,6 +43,9 @@ export default function Dropdown({
         style={{ color: textColor ?? "#B3B3B3" }}
         value={value}
         onChange={(e) => handleChange(e.target.value)}
+        inputProps={{
+          readOnly: read,
+        }}
       >
         {values.map((value) => (
           <MenuItem style={{ color: "#B3B3B3" }} value={value} key={value}>

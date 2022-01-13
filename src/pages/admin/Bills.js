@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import dayjs from "dayjs";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import AdapterDayjs from "@mui/lab/AdapterDayjs";
 import TimePicker from "@mui/lab/TimePicker";
 import DateTimePicker from "@mui/lab/DateTimePicker";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
@@ -36,20 +36,12 @@ export default function Bills() {
   const [_orders, setOrders] = useState([]);
 
   //date at which the workUnit was created
-  const createdDate = dayjs(new Date(user.workUnit.createdAt)).format(
-    "YYYY-MM-DD"
-  );
+  const createdDate = dayjs(new Date(user.workUnit.createdAt));
 
   //get current date and and 1 day to it
-  const currentDate = new Date();
-  const newDate = currentDate.setDate(currentDate.getDate() + 1);
 
   const [startP, setStartD] = useState(createdDate);
-  const [stopP, setStopD] = useState(
-    createdDate === new Date().toISOString().slice(0, 10)
-      ? `${new Date(newDate).toISOString().slice(0, 10)}`
-      : `${new Date().toISOString().slice(0, 10)}`
-  );
+  const [stopP, setStopD] = useState(dayjs(new Date()));
   const [date, setDate] = useState(createdDate);
 
   const [format, setFormat] = useState("Period");
@@ -105,17 +97,17 @@ export default function Bills() {
         />
         {format === "Period" ? (
           <>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DesktopDatePicker
                 label="Du"
-                inputFormat="dd/MM/yyyy"
+                inputFormat="DD-MM-YYYY"
                 value={startP}
                 className={classes.inputText}
-                onChange={(value) => {
-                  if (value < stopP && value >= createdDate)
-                    setStartD(new Date(value).toISOString());
-                  console.log(new Date(value).toISOString().slice(0, 10));
+                onChange={(newValue) => {
+                  setStartD(newValue);
                 }}
+                minDate={createdDate}
+                maxDate={dayjs(new Date(stopP)).subtract(1, "day")}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -125,6 +117,7 @@ export default function Bills() {
                       label: { color: "#B3B3B3" },
                       marginTop: "7px",
                       marginLeft: "5px",
+                      width: "140px",
                     }}
                     classes={{
                       root: classes.root,
@@ -134,19 +127,17 @@ export default function Bills() {
               />
             </LocalizationProvider>
 
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DesktopDatePicker
                 label="Au"
-                inputFormat="dd/MM/yyyy"
+                inputFormat="DD-MM-YYYY"
                 value={stopP}
                 className={classes.inputText}
-                onChange={(value) => {
-                  if (
-                    value > startP &&
-                    value <= new Date().toISOString().slice(0, 10)
-                  )
-                    setStopD(value);
+                onChange={(newValue) => {
+                  setStopD(newValue);
                 }}
+                minDate={dayjs(new Date(startP)).add(1, "day")}
+                maxDate={dayjs(new Date())}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -156,6 +147,10 @@ export default function Bills() {
                       label: { color: "#B3B3B3" },
                       marginTop: "7px",
                       marginLeft: "5px",
+                      "&:hover": {
+                        // border: "0.1px solid #B3B3B3",
+                      },
+                      width: "140px",
                     }}
                     classes={{
                       root: classes.root,
@@ -166,19 +161,19 @@ export default function Bills() {
             </LocalizationProvider>
           </>
         ) : (
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DesktopDatePicker
               label="Date"
-              inputFormat="dd/MM/yyyy"
+              inputFormat="DD/MM/YYYY"
               value={date}
               className={classes.inputText}
-              onChange={(value) => {
-                if (
-                  value >= createdDate &&
-                  value <= new Date().toISOString().slice(0, 10)
-                )
-                  setDate(value);
+              onChange={(newValue) => {
+                var date = new Date(newValue).toISOString().slice(0, 10);
+
+                setDate(date);
               }}
+              minDate={createdDate}
+              maxDate={dayjs(new Date())}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -188,6 +183,7 @@ export default function Bills() {
                     label: { color: "#B3B3B3" },
                     marginTop: "7px",
                     marginLeft: "5px",
+                    width: "140px",
                   }}
                 />
               )}

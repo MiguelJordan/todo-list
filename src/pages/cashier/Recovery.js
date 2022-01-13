@@ -38,6 +38,7 @@ export default function Recovery() {
   const { user } = useContext(AuthContext);
   //const { sendEvent } = useContext(SocketContext);
   const { t } = useContext(TrContext);
+  const classes = useStyles();
 
   const [error, setError] = useState("");
   const [addPayment, setAddPayement] = useState([]);
@@ -62,12 +63,10 @@ export default function Recovery() {
 
   //const navigate = useNavigate();
 
-  const classes = useStyles();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(payment);
+    console.log(e);
   };
 
   return (
@@ -85,7 +84,7 @@ export default function Recovery() {
       {error && <div className="formError"> {error}</div>}
       <TextField
         // fullWidth
-        label="ID"
+        label="ID*"
         type="text"
         name="id"
         variant="standard"
@@ -106,49 +105,52 @@ export default function Recovery() {
           display: "flex",
           justifyContent: "space-between",
           flexFlow: "column",
-          maxHeight: "150px",
+          maxHeight: "120px",
           overflowY: "auto",
         }}
       >
-        <Dropdown
-          values={user.workUnit.paymentMethods}
-          label="Payment Method"
-          variant="standard"
-          value={user.workUnit.paymentMethods[0]}
-          handleChange={(val) => setPayment({ ...payment, paymentMethod: val })}
-          sx={{ margin: 0 }}
-          textColor={"black"}
-        />
-        <TextField
-          // fullWidth
-          label="Amount"
-          type="number"
-          name="amount"
-          variant="standard"
-          inputProps={{
-            className: classes.inputText,
-          }}
-          style={{ color: "black", marginBottom: "5px" }}
-          onChange={(e) =>
-            setPayment({
-              ...payment,
-              amount: e.target.value.trim(),
-            })
-          }
-          required
-        />
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <Dropdown
+            values={user.workUnit.paymentMethods}
+            label="Payment Method"
+            variant="standard"
+            value={user.workUnit.paymentMethods[0]}
+            handleChange={(val) =>
+              setPayment([...payment, { paymentMethod: val }])
+            }
+            sx={{ margin: 0, width: "40%" }}
+            textColor={"black"}
+          />
+          <TextField
+            // fullWidth
+            label="Amount"
+            type="number"
+            name="amount"
+            variant="standard"
+            inputProps={{
+              className: classes.inputText,
+            }}
+            style={{ color: "black", marginBottom: "5px", width: "50%" }}
+            onChange={(e) =>
+              setPayment([...payment, { amount: e.target.value.trim() }])
+            }
+            required
+          />
+        </div>
+
         {addPayment.map((field, idx) => (
-          <span
-            style={{ display: "flex", flexFlow: "column" }}
+          <div
+            style={{ display: "flex", justifyContent: "space-between" }}
             key={`${field}-${idx}`}
           >
             <Dropdown
               values={user.workUnit.paymentMethods}
               label="Payment Method"
               variant="standard"
+              name="paymentMethod"
               value={user.workUnit.paymentMethods[0]}
               handleChange={(val) =>
-                setRecovery({ ...recovery, paymentMethod: val })
+                setPayment([{ ...payment, paymentMethod: val }])
               }
               sx={{ margin: 0 }}
               textColor={"black"}
@@ -164,26 +166,46 @@ export default function Recovery() {
               }}
               style={{ color: "black", marginBottom: "5px" }}
               onChange={(e) =>
-                setRecovery({
-                  ...recovery,
-                  [e.target.name]: e.target.value.trim(),
-                })
+                setPayment([
+                  {
+                    ...payment,
+                    [e.target.name]: e.target.value.trim(),
+                  },
+                ])
               }
               required
             />
             <Button
-              style={{ marginTop: "20px" }}
+              style={{
+                marginTop: "20px",
+                width: "5px",
+                color: "red",
+                alignSelf: "flex-end",
+              }}
               onClick={() => handleRemoveField(idx)}
             >
               <CloseIcon />
             </Button>
-          </span>
+          </div>
         ))}
+      </div>
+      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <Button
+          variant="contained"
+          style={{
+            marginTop: "10px",
+            marginBottom: "25px",
+            backgroundColor: "#04A5E0",
+          }}
+          onClick={handleAddField}
+        >
+          {"Add Payment"}
+        </Button>
       </div>
       <div
         style={{
           display: "flex",
-          justifyContent: "space-around",
+          justifyContent: "center",
           flexWrap: "wrap",
           gap: "8px",
         }}
@@ -192,23 +214,11 @@ export default function Recovery() {
           variant="contained"
           type="submit"
           style={{
-            marginTop: "20px",
-            marginBottom: "25px",
+            marginBottom: "15px",
             width: "150px",
           }}
         >
           {t("pages.waiter.orders.form_add_order.add_btn")}
-        </Button>
-        <Button
-          variant="contained"
-          style={{
-            marginTop: "20px",
-            marginBottom: "25px",
-            backgroundColor: "#04A5E0",
-          }}
-          onClick={handleAddField}
-        >
-          {"Add Payment"}
         </Button>
       </div>
     </form>

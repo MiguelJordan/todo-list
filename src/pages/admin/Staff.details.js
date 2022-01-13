@@ -3,77 +3,76 @@ import { useContext, useState } from "react";
 import { TrContext } from "../../contexts/TranslationContext";
 import { AuthContext } from "../../contexts/AuthContext";
 
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/core";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import Dropdown from "../../components/subComponents/Dropdown";
 
 const useStyles = makeStyles((theme) => ({
   input: {
-    color: "#FFFFFF",
+    color: "black",
+  },
+  form: {
+    display: "flex",
+    flexFlow: "column",
+    justifyContent: "center",
+    backgroundColor: "#FFFFFF",
+    margin: "auto",
+    maxWidth: "350px",
+    padding: "20px",
+    color: "#B3B3B3",
+    borderRadius: "3px",
+    [theme.breakpoints.down("sm")]: {
+      marginTop: "110px",
+    },
+    [theme.breakpoints.up("md")]: {
+      marginTop: "200px",
+    },
   },
 }));
 
-export default function StaffDetail({
-  list = {
-    firstName: "john",
-    lastName: "mark",
-    role: "waiter",
-    workUnit: "Wu1",
-    email: "abc@gmail.com",
-    tel: "68555255",
-  },
-}) {
+export default function StaffDetail() {
   //const { t } = useContext(TrContext);
-  //const { user } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const classes = useStyles();
+
+  const { id } = useParams();
 
   const [read, setRead] = useState(true);
   const [error, setError] = useState("");
+  const [_user, setUser] = useState({
+    firstName: "john",
+    lastName: "mark",
+    role: "waiter",
+    workUnit: user.workUnits[0],
+    email: "abc@gmail.com",
+    tel: "68555255",
+  });
 
-  const [userInfo, setUserInfo] = useState(list);
+  const [userInfo, setUserInfo] = useState(_user);
+
+  const [userCpy, setUserCpy] = useState(_user);
 
   const handleModify = (e) => {
     e.preventDefault();
 
-    if (
-      !userInfo.email ||
-      !userInfo.firstName ||
-      !userInfo.lastName ||
-      !userInfo.role ||
-      !userInfo.workUnit ||
-      !userInfo.tel ||
-      userInfo.tel < 0
-    )
-      return setError("Invalid value(s)");
+    if (!userInfo.firstName) return setError("Invalid firstName");
+    if (!userInfo.lastName) return setError("Invalid lastName");
+    if (!userInfo.tel || userInfo.tel < 0) return setError("Invalid tel");
+    if (!userInfo.email) return setError("Invalid email");
+
     console.log(userInfo);
     setRead(true);
     setError("");
   };
 
+  const cancelChanges = (e) => {
+    setUserInfo({ ...userCpy });
+  };
+
   return (
-    <form
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        flexFlow: "column",
-        width: "330px",
-        alignItems: "center",
-        position: "absolute",
-        transform: "translate(-50%,-5%)",
-        marginTop: "40px",
-        left: "50%",
-      }}
-      onSubmit={handleModify}
-    >
-      {error !== "" && (
-        <div
-          style={{
-            margin: "5px",
-            border: "2px solid red",
-            maxWidth: "290px",
-          }}
-        >
-          {error}
-        </div>
-      )}
+    <form className={classes.form} onSubmit={handleModify}>
+      {error !== "" && <div className="formError">{error}</div>}
       <TextField
         type="text"
         variant="standard"
@@ -102,34 +101,27 @@ export default function StaffDetail({
           setUserInfo({ ...userInfo, [e.target.name]: e.target.value.trim() });
         }}
       />
-      <TextField
-        type="text"
+      <Dropdown
+        label="Work Unit"
+        values={user.workUnits}
+        value={userInfo.workUnit}
+        handleChange={(val) => setUserInfo({ ...userInfo, workUnit: val })}
+        sx={{ margin: 0 }}
+        variant="standard"
+        textColor={"black"}
+        read={read}
+      />
+      <Dropdown
         label="Role"
-        name="role"
+        values={["waiter", "cashier"]}
+        value={userInfo.role}
+        handleChange={(val) => setUserInfo({ ...userInfo, role: val })}
+        sx={{ margin: 0 }}
         variant="standard"
-        defaultValue={userInfo.role}
-        inputProps={{
-          className: classes.input,
-          readOnly: read,
-        }}
-        onChange={(e) => {
-          setUserInfo({ ...userInfo, [e.target.name]: e.target.value.trim() });
-        }}
+        textColor={"black"}
+        read={read}
       />
-      <TextField
-        type="text"
-        label="Post de Travail"
-        name="workUnit"
-        variant="standard"
-        defaultValue={userInfo.workUnit}
-        inputProps={{
-          className: classes.input,
-          readOnly: read,
-        }}
-        onChange={(e) => {
-          setUserInfo({ ...userInfo, [e.target.name]: e.target.value.trim() });
-        }}
-      />
+
       <TextField
         type="email"
         variant="standard"
@@ -158,40 +150,56 @@ export default function StaffDetail({
           setUserInfo({ ...userInfo, [e.target.name]: e.target.value.trim() });
         }}
       />
-
-      <Button
-        disabled={!read}
-        variant="contained"
-        style={{ marginTop: "15px", backgroundColor: "#FF0000" }}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          flexWrap: "wrap",
+          gap: "10px",
+        }}
       >
-        Supprimer
-      </Button>
+        {read && (
+          <Button
+            variant="contained"
+            style={{ marginTop: "15px", backgroundColor: "#FF0000" }}
+          >
+            Supprimer
+          </Button>
+        )}
+        {!read && (
+          <Button
+            variant="contained"
+            style={{ marginTop: "15px", backgroundColor: "#FF0000" }}
+            onClick={cancelChanges}
+          >
+            Annuler
+          </Button>
+        )}
 
-      {!read && (
-        <Button
-          type="submit"
-          variant="contained"
-          style={{ backgroundColor: "#04A5E0", marginTop: "15px" }}
-        >
-          Valider
-        </Button>
-      )}
-      {read && (
-        <Button
-          variant="contained"
-          onClick={() => setRead(false)}
-          style={{ backgroundColor: "#04A5E0", marginTop: "15px" }}
-        >
-          Modifier
-        </Button>
-      )}
-      <Button
-        disabled={!read}
-        variant="contained"
-        style={{ marginTop: "15px" }}
-      >
-        Reset Password
-      </Button>
+        {!read && (
+          <Button
+            type="submit"
+            variant="contained"
+            style={{ backgroundColor: "#04A5E0", marginTop: "15px" }}
+          >
+            Valider
+          </Button>
+        )}
+        {read && (
+          <Button
+            variant="contained"
+            onClick={() => setRead(false)}
+            style={{ backgroundColor: "#04A5E0", marginTop: "15px" }}
+          >
+            Modifier
+          </Button>
+        )}
+        {read && (
+          <Button variant="contained" style={{ marginTop: "15px" }}>
+            Reset Password
+          </Button>
+        )}
+      </div>
     </form>
   );
 }

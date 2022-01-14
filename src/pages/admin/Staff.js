@@ -10,16 +10,12 @@ import { EditRounded } from "@mui/icons-material";
 import { NTContext } from "../../contexts/NTContext";
 import Dropdown from "../../components/subComponents/Dropdown";
 import Dialog from "../../components/subComponents/Dialog";
-import Search from "../../components/subComponents/Search";
+import DisplayField from "../../components/subComponents/DisplayField";
 import PopOver from "../../components/subComponents/PopOver";
 import useSearch from "../../hooks/useSearch";
-import {
-  List,
-  ListItem,
-  ListItemText,
-  Button,
-  ListItemButton,
-} from "@mui/material";
+import Search from "../../components/subComponents/Search";
+
+import { List, ListItem, ListItemText } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -49,21 +45,21 @@ export default function Staff() {
   var users = [
     {
       id: 1,
-      lastName: "Snowdsbgbgdsesvsvbbgbrbgr",
-      firstName: "Jon",
+      name: "Snowdsbgbgdsesvsvbbgbrbgr",
+
       role: "waiter",
     },
-    { id: 2, lastName: "Lannister", firstName: "Cersei", role: "cashier" },
-    { id: 3, lastName: "Lannister", firstName: "Jaime", role: "waiter" },
-    { id: 4, lastName: "Stark", firstName: "Arya", role: "cashier" },
-    { id: 5, lastName: "Targaryen", firstName: "Daenerys", role: "barman" },
-    { id: 6, lastName: "Melisandre", firstName: "John", role: "waiter" },
-    { id: 7, lastName: "Clifford", firstName: "Ferrara", role: "cashier" },
-    { id: 8, lastName: "Frances", firstName: "Rossini", role: "waiter" },
-    { id: 9, lastName: "Roxie", firstName: "Harvey", role: "cashier" },
-    { id: 10, lastName: "Roxie", firstName: "Harvey", role: "cashier" },
-    { id: 11, lastName: "Roxie", firstName: "Harvey", role: "cashier" },
-    { id: 12, lastName: "Roxie", firstName: "Harvey", role: "cashier" },
+    { id: 2, name: "Lannister", role: "cashier" },
+    { id: 3, name: "Lannister", role: "waiter" },
+    { id: 4, name: "Stark", role: "cashier" },
+    { id: 5, name: "Targaryen", role: "barman" },
+    { id: 6, name: "Melisandre", role: "waiter" },
+    { id: 7, name: "Clifford", role: "cashier" },
+    { id: 8, name: "Frances", role: "waiter" },
+    { id: 9, name: "Roxie", role: "cashier" },
+    { id: 10, name: "Roxie", role: "cashier" },
+    { id: 11, name: "Roxie", role: "cashier" },
+    { id: 12, name: "Roxie", role: "cashier" },
   ];
 
   const [criteria, setCriteria] = useState("role");
@@ -114,7 +110,7 @@ export default function Staff() {
       >
         <Dropdown
           label="Criteria"
-          values={["role", "firstName"]}
+          values={["role", "name"]}
           value={criteria}
           handleChange={setCriteria}
         />
@@ -142,16 +138,19 @@ export default function Staff() {
                   borderBottom: "2px solid #B3B3B3",
                 }}
               >
-                <ListItemText style={{ maxWidth: "90px", overflowX: "auto" }}>
-                  {user.firstName}
-                </ListItemText>
-                <ListItemText style={{ maxWidth: "90px", overflowX: "auto" }}>
-                  {user.lastName}
-                </ListItemText>
-                <ListItemText style={{ maxWidth: "90px", overflowX: "auto" }}>
-                  {user.role}
+                <ListItemText style={{ maxWidth: "50px", marginLeft: "1px" }}>
+                  <DisplayField
+                    value={user.name}
+                    sx={{ maxWidth: "75px", marginLeft: "1px" }}
+                  />
                 </ListItemText>
 
+                <ListItemText style={{ maxWidth: "50px", marginLeft: "1px" }}>
+                  <DisplayField
+                    value={user.role}
+                    sx={{ maxWidth: "75px", marginLeft: "1px" }}
+                  />
+                </ListItemText>
                 <PopOver
                   items={AdminPopMenu}
                   Icon={<MoreVertIcon />}

@@ -53,13 +53,19 @@ const useStyles = makeStyles((theme) => ({
     flexBasis: "33.33333%",
   },
   inp: {
+    width: "30px",
+    marginLeft: 8,
+    backgroundColor: "#415672",
+    color: "#FFFFFF",
+    height: "18px",
     borderStyle: "solid",
     backgroundColor: "#415672",
     borderRadius: "4px",
     borderColor: "#415672",
     "&:focus": {
-      border: "none",
-      outlineStyle: "none",
+      outline: "none",
+      width: "30px",
+      height: "18px",
     },
   },
 }));
@@ -216,13 +222,6 @@ const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
                     name="quantity"
                     min={1}
                     max={data.quantity}
-                    style={{
-                      width: "30px",
-                      marginLeft: 8,
-                      backgroundColor: "#415672",
-                      color: "#FFFFFF",
-                      height: "18px",
-                    }}
                     className={classes.inp}
                   />
                 </div>

@@ -14,7 +14,7 @@ const useSearch = ({ data = [], criteria = "id" }) => {
     const _filtered = filter({ data, criteria, value, exact: false });
 
     setFiltered(_filtered);
-  }, [data, searchVal]);
+  }, [criteria, data, searchVal]);
 
   return { filtered, setSearchVal };
 };

@@ -31,7 +31,7 @@ export const filter = ({
   return data.filter((dt) => {
     let allowed = exact
       ? dt?.[criteria] === value
-      : dt?.[criteria]?.includes(value);
+      : dt?.[criteria]?.toLowerCase().includes(value?.toLowerCase());
 
     return exclude ? !allowed : allowed;
   });

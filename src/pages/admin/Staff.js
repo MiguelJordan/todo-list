@@ -7,8 +7,9 @@ import { filter } from "../../functions/data";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { EditRounded } from "@mui/icons-material";
 
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { NTContext } from "../../contexts/NTContext";
 import Dropdown from "../../components/subComponents/Dropdown";
+import Dialog from "../../components/subComponents/Dialog";
 import Search from "../../components/subComponents/Search";
 import PopOver from "../../components/subComponents/PopOver";
 import useSearch from "../../hooks/useSearch";
@@ -39,8 +40,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Staff() {
   // const { t } = useContext(TrContext);
+  const { showNotification } = useContext(NTContext);
   const classes = useStyles();
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const [msg, setMsg] = useState("");
 
   var users = [
     {
@@ -64,13 +68,15 @@ export default function Staff() {
 
   const [criteria, setCriteria] = useState("role");
 
-  const { filtered, setSearchVal } = useSearch({
-    data: users,
-    criteria: criteria,
-  });
+  // const { filtered, setSearchVal } = useSearch({
+  //   data: users,
+  //   criteria: criteria,
+  // });
 
   const DeleteUser = (e) => {
     console.log("delete", e);
+    setMsg("Are you sure you want to delete this user ?");
+    setOpen(true);
   };
 
   const userDetails = (user) => {
@@ -95,6 +101,7 @@ export default function Staff() {
 
   return (
     <>
+      <Dialog openDialog={open} closeDialog={setOpen} content={msg} />
       <div
         style={{
           display: "flex",
@@ -110,10 +117,10 @@ export default function Staff() {
           value={criteria}
           handleChange={setCriteria}
         />
-        <Search onChange={setSearchVal} />
+        {/* <Search onChange={setSearchVal} /> */}
       </div>
       <div className={classes.container}>
-        {filtered.length !== 0 ? (
+        {users.length !== 0 ? (
           <List
             style={{
               display: "flex",
@@ -124,7 +131,7 @@ export default function Staff() {
               backgroundColor: "#001e3c",
             }}
           >
-            {filtered.map((user, id) => (
+            {users.map((user, id) => (
               <ListItem
                 key={user.id}
                 style={{

@@ -33,8 +33,16 @@ export default function _Dialog({
           <DialogContentText>{content}</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={PositiveRes}>Oui</Button>
-          <Button onClick={CloseDialog}>Non</Button>
+          <Button
+            variant="contained"
+            style={{ backgroundColor: "red" }}
+            onClick={PositiveRes}
+          >
+            Yes
+          </Button>
+          <Button variant="contained" onClick={CloseDialog}>
+            No
+          </Button>
         </DialogActions>
       </Dialog>
     </div>

@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
       marginTop: "110px",
     },
     [theme.breakpoints.up("md")]: {
-      marginTop: "200px",
+      marginTop: "105px",
     },
   },
 }));
@@ -68,6 +68,7 @@ export default function StaffDetail() {
 
   const cancelChanges = (e) => {
     setUserInfo({ ...userCpy });
+    setRead(!read);
   };
 
   return (

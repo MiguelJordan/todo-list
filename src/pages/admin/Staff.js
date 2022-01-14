@@ -67,11 +67,12 @@ export default function Staff() {
   ];
 
   const [criteria, setCriteria] = useState("role");
+  const [user, setUser] = useState(users);
 
-  // const { filtered, setSearchVal } = useSearch({
-  //   data: users,
-  //   criteria: criteria,
-  // });
+  const { filtered, setSearchVal } = useSearch({
+    data: user,
+    criteria: criteria,
+  });
 
   const DeleteUser = (e) => {
     console.log("delete", e);
@@ -117,21 +118,21 @@ export default function Staff() {
           value={criteria}
           handleChange={setCriteria}
         />
-        {/* <Search onChange={setSearchVal} /> */}
+        <Search onChange={setSearchVal} />
       </div>
       <div className={classes.container}>
-        {users.length !== 0 ? (
+        {filtered.length !== 0 ? (
           <List
             style={{
               display: "flex",
               flexFlow: "column",
-              justifyContent: "space-between",
+              //justifyContent: "space-between",
               width: "700px",
               minWidth: "400px",
               backgroundColor: "#001e3c",
             }}
           >
-            {users.map((user, id) => (
+            {filtered.map((user) => (
               <ListItem
                 key={user.id}
                 style={{

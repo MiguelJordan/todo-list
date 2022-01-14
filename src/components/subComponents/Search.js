@@ -3,7 +3,7 @@ import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 
-import { TrContext } from "../../contexts/TranslationContext";
+import { TranslationContext } from "../../contexts/TranslationContext";
 
 const _search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -41,7 +41,7 @@ export default function Search({
   list = [],
   searchProps = [{ name: "", method: () => {} }],
 }) {
-  const { t } = useContext(TrContext);
+  const { t } = useContext(TranslationContext);
   return (
     <_search>
       <SearchIconWrapper>

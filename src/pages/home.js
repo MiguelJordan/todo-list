@@ -1,10 +1,13 @@
 import { useContext } from "react";
-import { TrContext } from "../contexts/TranslationContext";
 
+// components
 import Layout from "../components/_layout/Layout";
 
+// contexts
+import { TranslationContext } from "../contexts/TranslationContext";
+
 const Page = () => {
-  const { t } = useContext(TrContext);
+  const { t } = useContext(TranslationContext);
 
   return (
     <>

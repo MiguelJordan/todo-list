@@ -7,11 +7,9 @@ import { get } from "../functions/http";
 // functions
 import { getList, getUnique } from "../functions/data";
 
-const apiUrl = process.env.REACT_APP_API_URL;
-
 export const ItemContext = createContext();
 
-const ItemContexProvider = ({ children }) => {
+const ItemProvider = ({ children }) => {
   const [families, setFams] = useState([]);
   const [items, setItems] = useState([]);
   const { user } = useContext(AuthContext);
@@ -50,4 +48,4 @@ const ItemContexProvider = ({ children }) => {
   );
 };
 
-export default ItemContexProvider;
+export default ItemProvider;

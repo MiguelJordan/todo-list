@@ -1,12 +1,15 @@
 import { useContext, useState } from "react";
-import { TrContext } from "../../contexts/TranslationContext";
 
 import { TextField } from "@mui/material";
 import { makeStyles } from "@material-ui/core";
 
+// components
 import OrderList from "../../components/orders/OrderList";
 import Search from "../../components/subComponents/Search";
 import Dropdown from "../../components/subComponents/Dropdown";
+
+// contexts
+import { TranslationContext } from "../../contexts/TranslationContext";
 
 const useStyles = makeStyles((theme) => ({
   inputText: {
@@ -15,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Bills() {
-  const { t } = useContext(TrContext);
+  const { t } = useContext(TranslationContext);
   const classes = useStyles();
 
   const list = [

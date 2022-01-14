@@ -2,12 +2,14 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 
-import { TrContext } from "../contexts/TranslationContext";
-
+// components
 import Layout from "../components/_layout/Layout";
 
+// contexts
+import { TranslationContext } from "../contexts/TranslationContext";
+
 const Page = () => {
-  const { t } = useContext(TrContext);
+  const { t } = useContext(TranslationContext);
   const Navigate = useNavigate();
 
   return (

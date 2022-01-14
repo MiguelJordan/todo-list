@@ -1,13 +1,16 @@
 import { useContext, useState } from "react";
-import { TrContext } from "../../contexts/TranslationContext";
-import { ItemContext } from "../../contexts/ItemContext";
 
+// components
 import Dropdown from "../../components/subComponents/Dropdown";
 import Search from "../../components/subComponents/Search";
 import ItemList from "../../components/storeItems/ItemList";
 
+// contexts
+import { ItemContext } from "../../contexts/ItemContext";
+import { TranslationContext } from "../../contexts/TranslationContext";
+
 export default function Drinks() {
-  const { t } = useContext(TrContext);
+  const { t } = useContext(TranslationContext);
   const { items } = useContext(ItemContext);
 
   const list = [

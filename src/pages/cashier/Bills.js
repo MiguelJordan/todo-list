@@ -1,12 +1,15 @@
 import { useContext, useState } from "react";
-import Dropdown from "../../components/subComponents/Dropdown";
 
-import { TrContext } from "../../contexts/TranslationContext";
+// components
+import Dropdown from "../../components/subComponents/Dropdown";
 import OrderList from "../../components/orders/OrderList";
 import Search from "../../components/subComponents/Search";
 
+// contexts
+import { TranslationContext } from "../../contexts/TranslationContext";
+
 export default function Bills() {
-  const { t } = useContext(TrContext);
+  const { t } = useContext(TranslationContext);
 
   const list = {
     Anne: [

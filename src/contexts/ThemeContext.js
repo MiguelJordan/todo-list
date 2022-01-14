@@ -1,25 +1,25 @@
 import { createContext, useState } from "react";
 import { ThemeProvider } from "@mui/material/styles";
 
-import dark from "../_uiThemes/dark";
-
-const themes = { dark };
+import themes from "../_uiThemes";
 
 const getTheme = (name = "") => themes[name];
 
 export const ThemeContext = createContext();
 
 const ThemeContextProvider = ({ children }) => {
-  const [name, setName] = useState("dark");
-  const [theme, setTheme] = useState(getTheme(name));
+  const [themeName, setName] = useState("dark");
+  const [theme, setTheme] = useState(getTheme(themeName));
 
   const changeTheme = (name = "") => {
-    if (getTheme(name)) {
+    const _theme = getTheme(name);
+    if (_theme) {
       setName(name);
+      setTheme(_theme);
     }
   };
 
-  const context = { name, changeTheme };
+  const context = { themeName, changeTheme };
   return (
     <ThemeContext.Provider value={context}>
       <ThemeProvider theme={theme}>{children}</ThemeProvider>

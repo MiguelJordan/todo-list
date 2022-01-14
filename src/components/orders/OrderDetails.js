@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useContext, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import {
   Typography,
@@ -11,14 +12,15 @@ import {
   TextField,
 } from "@mui/material";
 
-import { useNavigate, useParams } from "react-router-dom";
+// components
+import Dialog from "../subComponents/Dialog";
+import Dropdown from "../subComponents/Dropdown";
+
+// contexts
+import { BackdropContext } from "../../contexts/feedback/BackdropContext";
 
 // icons
 import { DeleteRounded, EditRounded } from "@mui/icons-material";
-
-import Dropdown from "../subComponents/Dropdown";
-// import PopOver from "../subComponents/PopOver";
-import Dialog from "../subComponents/Dialog";
 
 const useStyles = makeStyles((theme) => ({
   accordion: {
@@ -109,6 +111,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function OrderDetails({ items = [], role = "", methods = [] }) {
+  const { toggleBackdrop } = useContext(BackdropContext);
   const classes = useStyles();
   const navigate = useNavigate();
   let { id } = useParams();
@@ -122,7 +125,7 @@ export default function OrderDetails({ items = [], role = "", methods = [] }) {
 
   //add another payment for an order
   const [addPayment, setAddPayement] = useState([]);
-  const [payment, setPayment] = React.useState([]);
+  const [payment, setPayment] = useState([]);
   const [orderInfo, setOrderInfo] = useState({
     paymentMethod: payment,
   });
@@ -204,7 +207,11 @@ export default function OrderDetails({ items = [], role = "", methods = [] }) {
       >
         {role === "waiter" && (
           <div className={classes.buttonGroup}>
-            <Button variant="contained" style={{ backgroundColor: "#04A5E0" }}>
+            <Button
+              variant="contained"
+              style={{ backgroundColor: "#04A5E0" }}
+              onClick={toggleBackdrop}
+            >
               {"Enregistrer"}
             </Button>
             <Button variant="contained" style={{ backgroundColor: "#65C466" }}>

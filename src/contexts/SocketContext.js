@@ -6,7 +6,7 @@ import { AuthContext } from "./AuthContext";
 export const SocketContext = createContext();
 const apiUrl = process.env.REACT_APP_API_URL;
 
-const SocketContextProvider = ({ children }) => {
+const SocketProvider = ({ children }) => {
   const { user } = useContext(AuthContext);
   const _user = user
     ? {
@@ -84,4 +84,4 @@ const SocketContextProvider = ({ children }) => {
   );
 };
 
-export default SocketContextProvider;
+export default SocketProvider;

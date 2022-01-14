@@ -3,8 +3,8 @@ import { MenuItem, Select } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 
-// constexts
-import { TrContext } from "../../contexts/TranslationContext";
+// contexts
+import { TranslationContext } from "../../contexts/TranslationContext";
 
 // functions
 import { capitalise } from "../../functions/data";
@@ -20,7 +20,7 @@ export default function Dropdown({
   variant = "outlined",
   sx = {},
 }) {
-  const { t } = useContext(TrContext);
+  const { t } = useContext(TranslationContext);
 
   return (
     <FormControl

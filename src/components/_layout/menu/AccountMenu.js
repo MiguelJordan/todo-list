@@ -16,7 +16,7 @@ import useOptions from "./menuOptions";
 
 // context
 import { SocketContext } from "../../../contexts/SocketContext";
-import { TrContext } from "../../../contexts/TranslationContext";
+import { TranslationContext } from "../../../contexts/TranslationContext";
 
 const useStyles = makeStyles((theme) => ({
   presence_parent: {
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 export default function AccountMenu({ user }) {
   const { socketConnected } = useContext(SocketContext);
   const classes = useStyles();
-  const { t } = useContext(TrContext);
+  const { t } = useContext(TranslationContext);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -64,8 +64,8 @@ export default function AccountMenu({ user }) {
                   socketConnected && classes.presence_online
                 }`}
               />
-              <Avatar alt={user?.firstName} src={user?.profilePic}>
-                {user?.firstName[0]}
+              <Avatar alt={user?.firstName}>
+                {user?.firstName[0] ?? user?.name[0]}
               </Avatar>
             </div>
           </IconButton>

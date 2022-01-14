@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -15,20 +15,20 @@ import ListItemText from "@mui/material/ListItemText";
 
 import { useNavigate } from "react-router-dom";
 
-// contexts
-import { AuthContext } from "../../contexts/AuthContext";
-import { TrContext } from "../../contexts/TranslationContext";
-
-// icons
-import MenuIcon from "@mui/icons-material/Menu";
-
 // components
 import AccountMenu from "./menu/AccountMenu";
 import IOSwitch from "./switch";
 
+// contexts
+import { AuthContext } from "../../contexts/AuthContext";
+import { TranslationContext } from "../../contexts/TranslationContext";
+
+// icons
+import MenuIcon from "@mui/icons-material/Menu";
+
 const Nav = ({ links = [], showLoginBtn = true }) => {
   const { user } = useContext(AuthContext);
-  const { t } = useContext(TrContext);
+  const { t } = useContext(TranslationContext);
   const Navigate = useNavigate();
 
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -50,7 +50,7 @@ const Nav = ({ links = [], showLoginBtn = true }) => {
   });
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "#001d42" }}>
+    <AppBar position="static" sx={{ backgroundColor: "app.background" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {links.length > 0 && (
@@ -70,7 +70,7 @@ const Nav = ({ links = [], showLoginBtn = true }) => {
                 anchor={"left"}
                 open={drawerOpen}
                 onClose={() => setDrawerOpen(false)}
-                PaperProps={{ sx: { backgroundColor: "hsl(214, 100%, 13%)" } }}
+                PaperProps={{ sx: { backgroundColor: "app.background" } }}
               >
                 <Box
                   sx={{ display: { xs: "flex", sm: "none" }, width: 205 }}
@@ -102,7 +102,7 @@ const Nav = ({ links = [], showLoginBtn = true }) => {
                               top: "50%",
                               borderRadius: "4px",
                               transform: "translateY(-50%)",
-                              backgroundColor: "hsl(184, 92%, 41%)",
+                              backgroundColor: "nav.divider.active",
                             }}
                           />
                         )}
@@ -110,8 +110,8 @@ const Nav = ({ links = [], showLoginBtn = true }) => {
                           primary={showLinkText(link)}
                           primaryTypographyProps={{
                             color: link.isActive
-                              ? "nav.active"
-                              : "nav.inActive",
+                              ? "nav.link.active"
+                              : "nav.link.inActive",
                           }}
                         />
                       </ListItem>
@@ -147,7 +147,9 @@ const Nav = ({ links = [], showLoginBtn = true }) => {
                   <ListItemText
                     primary={showLinkText(link)}
                     primaryTypographyProps={{
-                      color: link.isActive ? "nav.active" : "nav.inActive",
+                      color: link.isActive
+                        ? "nav.link.active"
+                        : "nav.link.inActive",
                       style: { whiteSpace: "nowrap" },
                     }}
                   />
@@ -162,7 +164,7 @@ const Nav = ({ links = [], showLoginBtn = true }) => {
                         transform: "translateX(-50%)",
                         width: "95%",
                         marginTop: "-10px",
-                        backgroundColor: "hsl(184, 92%, 41%)",
+                        backgroundColor: "nav.divider.active",
                         borderRadius: "5px 5px 0 0",
                       }}
                     />

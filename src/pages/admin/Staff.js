@@ -1,21 +1,23 @@
 import { useContext, useState } from "react";
-import { TrContext } from "../../contexts/TranslationContext";
 
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
 import Avatar from "@mui/material/Avatar";
-import Grid from "@mui/material/Grid";
 
-//icon
-import EditRounded from "@mui/icons-material/EditRounded";
+// components
 import Fabs from "../../components/subComponents/Fabs";
-import AddStaff from "./Staff.add";
 import Search from "../../components/subComponents/Search";
 
+// contexts
+import { TranslationContext } from "../../contexts/TranslationContext";
+
+// icons
+import EditRounded from "@mui/icons-material/EditRounded";
+
 export default function Staff() {
-  const { t } = useContext(TrContext);
+  const { t } = useContext(TranslationContext);
 
   const users = [
     { id: "1", name: "john", role: "waiter" },

@@ -1,10 +1,13 @@
 import { useContext } from "react";
-import { TrContext } from "../../contexts/TranslationContext";
 
+// components
 import OrderDetails from "../../components/orders/OrderDetails";
 
+// contexts
+import { TranslationContext } from "../../contexts/TranslationContext";
+
 export default function BillDetails() {
-  const { t } = useContext(TrContext);
+  const { t } = useContext(TranslationContext);
 
   const lists = {
     repas: [

@@ -6,7 +6,7 @@ import Search from "../../components/subComponents/Search";
 import Dropdown from "../../components/subComponents/Dropdown";
 
 // contexts
-import { TrContext } from "../../contexts/TranslationContext";
+import { TranslationContext } from "../../contexts/TranslationContext";
 import { ItemContext } from "../../contexts/ItemContext";
 
 // functions
@@ -16,7 +16,7 @@ import { filter, getList, groupData } from "../../functions/data";
 import useSearch from "../../hooks/useSearch";
 
 export default function Items({ orderId, orderItems, preview = true }) {
-  const { t } = useContext(TrContext);
+  const { t } = useContext(TranslationContext);
   const { families, items } = useContext(ItemContext);
 
   const [familiesToShow, setFamiliesToShow] = useState(families);

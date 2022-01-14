@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import { TrContext } from "../../contexts/TranslationContext";
+import { TranslationContext } from "../../contexts/TranslationContext";
 
 export default function Drinks() {
-  const { t } = useContext(TrContext);
+  const { t } = useContext(TranslationContext);
 
   return (
     <>

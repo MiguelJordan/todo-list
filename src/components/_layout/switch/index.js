@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { styled } from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
 
-import { TrContext } from "../../../contexts/TranslationContext";
+import { TranslationContext } from "../../../contexts/TranslationContext";
 
 const IOSSwitch = styled((props) => (
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
@@ -58,7 +58,7 @@ const IOSSwitch = styled((props) => (
 }));
 
 export default () => {
-  const { language, setLanguage } = useContext(TrContext);
+  const { language, setLanguage } = useContext(TranslationContext);
 
   return (
     <>

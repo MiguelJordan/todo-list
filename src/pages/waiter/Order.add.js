@@ -3,14 +3,17 @@ import { makeStyles } from "@material-ui/core";
 import { Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-import { AuthContext } from "../../contexts/AuthContext";
-import { SocketContext } from "../../contexts/SocketContext";
-import { TrContext } from "../../contexts/TranslationContext";
-import { post } from "../../functions/http";
-
+// components
 import Dropdown from "../../components/subComponents/Dropdown";
 
-const apiUrl = process.env.REACT_APP_API_URL;
+// contexts
+import { AuthContext } from "../../contexts/AuthContext";
+import { BackdropContext } from "../../contexts/feedback/BackdropContext";
+import { SocketContext } from "../../contexts/SocketContext";
+import { TranslationContext } from "../../contexts/TranslationContext";
+
+// functions
+import { post } from "../../functions/http";
 
 const useStyles = makeStyles((theme) => ({
   inputText: {
@@ -20,8 +23,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CreateOrder() {
   const { user } = useContext(AuthContext);
+  const { toggleBackdrop } = useContext(BackdropContext);
   const { sendEvent } = useContext(SocketContext);
-  const { t } = useContext(TrContext);
+  const { t } = useContext(TranslationContext);
 
   const navigate = useNavigate();
 
@@ -46,7 +50,7 @@ export default function CreateOrder() {
 
     // console.log(order);
 
-    if (!order.tableName) return setError(t("server_err.Invalid table name"));
+    // if (!order.tableName) return setError(t("server_err.Invalid table name"));
 
     if (!order.consumptionPoint) {
       return setError(t("server_err.Invalid consumption point"));
@@ -56,11 +60,15 @@ export default function CreateOrder() {
       return setError(t("server_err.Invalid balance carried forward"));
     }
 
+    toggleBackdrop(true);
+
     // request order creation
     const res = await post({ url: "/orders", body: order });
 
+    toggleBackdrop(false);
+
     // handle order creation errors
-    if (res?.error) return setError(res.error);
+    if (res?.error) return setError(t(`server_err.${res.error}`));
 
     // sending order created event
     sendEvent({

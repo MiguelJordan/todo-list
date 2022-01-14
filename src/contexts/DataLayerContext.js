@@ -12,9 +12,9 @@ import { filter } from "../functions/data";
 // data layer context to handle
 // client state/context data to be
 // updated in realtime
-export const DLContext = createContext();
+export const DataLayerContext = createContext();
 
-const DLContextProvider = ({ children }) => {
+const DataLayerProvider = ({ children }) => {
   const { user } = useContext(AuthContext);
   const { updateItems } = useContext(ItemContext);
   const { removeOrder, updateOrders } = useContext(OrderContext);
@@ -77,7 +77,11 @@ const DLContextProvider = ({ children }) => {
   }, [removeOrder, socket, updateItems, updateOrders, user]);
 
   const context = {};
-  return <DLContext.Provider value={context}>{children}</DLContext.Provider>;
+  return (
+    <DataLayerContext.Provider value={context}>
+      {children}
+    </DataLayerContext.Provider>
+  );
 };
 
-export default DLContextProvider;
+export default DataLayerProvider;

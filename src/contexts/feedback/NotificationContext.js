@@ -1,10 +1,10 @@
 import { createContext, useState } from "react";
 
-import SnackBar from "../components/subComponents/SnackBar";
+import SnackBar from "../../components/subComponents/SnackBar";
 
-export const NTContext = createContext();
+export const NotificationContext = createContext();
 
-const NTContextProvider = ({ children }) => {
+const NotificationProvider = ({ children }) => {
   const [notification, setNotification] = useState({
     msg: "Hello,",
     color: "success",
@@ -26,7 +26,7 @@ const NTContextProvider = ({ children }) => {
 
   const context = { showNotification };
   return (
-    <NTContext.Provider value={context}>
+    <NotificationContext.Provider value={context}>
       <SnackBar
         msg={notification.msg}
         color={notification.color}
@@ -34,8 +34,8 @@ const NTContextProvider = ({ children }) => {
         close={closeNotification}
       />
       {children}
-    </NTContext.Provider>
+    </NotificationContext.Provider>
   );
 };
 
-export default NTContextProvider;
+export default NotificationProvider;

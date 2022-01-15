@@ -236,7 +236,7 @@ const OrderItem = ({ item = {}, role = "" }) => {
           <span>{t("compo.item.name")}:</span>
           <DisplayField
             value={capitalise(item.name)}
-            sx={{ ...displayField, width: 115 }}
+            sx={{ ...displayField, width: 110 }}
           />
         </div>
 

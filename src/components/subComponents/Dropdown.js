@@ -48,6 +48,7 @@ export default function Dropdown({
         label={label}
         margin="none"
         value={value}
+        variant={variant}
         sx={{
           "&:hover": {
             "&& fieldset": {

@@ -6,7 +6,7 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import { AuthContext } from "../../contexts/AuthContext";
 //import { SocketContext } from "../../contexts/SocketContext";
-import { TrContext } from "../../contexts/TranslationContext";
+import { TranslationContext } from "../../contexts/TranslationContext";
 
 import Dropdown from "../../components/subComponents/Dropdown";
 import Fabs from "../../components/subComponents/Fabs";
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Recovery() {
   const { user } = useContext(AuthContext);
   //const { sendEvent } = useContext(SocketContext);
-  const { t } = useContext(TrContext);
+  const { t } = useContext(TranslationContext);
   const classes = useStyles();
 
   const [error, setError] = useState("");

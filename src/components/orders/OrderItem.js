@@ -232,17 +232,11 @@ const OrderItem = ({ item = {}, role = "" }) => {
       </div>
 
       <div className={classes.details}>
-        <div className={classes.detailsText} style={{ position: "relative" }}>
+        <div className={classes.detailsText}>
           <span>{t("compo.item.name")}:</span>
           <DisplayField
             value={capitalise(item.name)}
-            sx={{
-              ...displayField,
-              width: 150,
-              position: "absolute",
-              right: -42,
-              //   top: 0,
-            }}
+            sx={{ ...displayField, width: 115 }}
           />
         </div>
 

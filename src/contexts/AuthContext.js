@@ -10,7 +10,7 @@ export const AuthContext = createContext();
 
 const loadUser = () => JSON.parse(localStorage.getItem("user"));
 
-const AuthContextProvider = ({ children }) => {
+const AuthProvider = ({ children }) => {
   const storage = useStorage();
   const [user, setUser] = useState(storage.get("user"));
 
@@ -72,4 +72,4 @@ const AuthContextProvider = ({ children }) => {
   );
 };
 
-export default AuthContextProvider;
+export default AuthProvider;

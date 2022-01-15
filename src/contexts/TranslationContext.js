@@ -3,10 +3,10 @@ import { createContext, useState } from "react";
 import * as translations from "../translations";
 import useStorage from "../hooks/useStorage";
 
-export const TrContext = createContext();
+export const TranslationContext = createContext();
 const fallback = "en";
 
-const TrCProvider = ({ children }) => {
+const TranslationProvider = ({ children }) => {
   const storage = useStorage();
   const [language, setLang] = useState(storage.get("language") || "fr");
 
@@ -38,7 +38,11 @@ const TrCProvider = ({ children }) => {
 
   const context = { t: translate, language, setLanguage };
 
-  return <TrContext.Provider value={context}>{children}</TrContext.Provider>;
+  return (
+    <TranslationContext.Provider value={context}>
+      {children}
+    </TranslationContext.Provider>
+  );
 };
 
-export default TrCProvider;
+export default TranslationProvider;

@@ -1,15 +1,19 @@
 import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router";
+
 import { Button, Typography, TextField } from "@mui/material";
 import { makeStyles } from "@material-ui/core";
 import { Avatar } from "@mui/material";
-import { useNavigate } from "react-router";
-
-import LockCloseOutlined from "@mui/icons-material/LockOutlined";
 
 //components
 import Layout from "../components/_layout/Layout";
+
+// contexts
 import { AuthContext } from "../contexts/AuthContext";
-import { TrContext } from "../contexts/TranslationContext";
+import { TranslationContext } from "../contexts/TranslationContext";
+
+// icons
+import LockCloseOutlined from "@mui/icons-material/LockOutlined";
 
 const useStyles = makeStyles((theme) => ({
   inputText: {
@@ -19,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Page = () => {
   const { login } = useContext(AuthContext);
-  const { t } = useContext(TrContext);
+  const { t } = useContext(TranslationContext);
   const classes = useStyles();
   const navigate = useNavigate();
 

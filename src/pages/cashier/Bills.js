@@ -10,8 +10,11 @@ import OrderList from "../../components/orders/OrderList";
 import Search from "../../components/subComponents/Search";
 import Dropdown from "../../components/subComponents/Dropdown";
 
+// contexts
+import { TranslationContext } from "../../contexts/TranslationContext";
+
 export default function Bills() {
-  // const { t } = useContext(TrContext);
+  // const { t } = useContext(TranslationContext);
   const { user } = useContext(AuthContext);
   const { orders } = useContext(OrderContext);
   const [_orders, setOrders] = useState([]);

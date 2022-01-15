@@ -2,37 +2,42 @@ import "./App.css";
 import Router from "./components/Router";
 
 // contexts
-import AuthContextProvider from "./contexts/AuthContext";
-import DLContextProvider from "./contexts/DLContext";
-import ItemContexProvider from "./contexts/ItemContext";
-import NTContextProvider from "./contexts/NTContext";
-import OrderContextProvider from "./contexts/OrderContext";
-import SocketContextProvider from "./contexts/SocketContext";
-import StoreContextProvider from "./contexts/StoreContext";
-import ThemeContextProvider from "./contexts/ThemeContext";
-import TrCProvider from "./contexts/TranslationContext";
+import AuthProvider from "./contexts/AuthContext";
+import DataLayerProvider from "./contexts/DataLayerContext";
+import ItemProvider from "./contexts/ItemContext";
+import OrderProvider from "./contexts/OrderContext";
+import SocketProvider from "./contexts/SocketContext";
+import StoreProvider from "./contexts/StoreContext";
+import ThemeProvider from "./contexts/ThemeContext";
+import TranslationProvider from "./contexts/TranslationContext";
+
+// feedbacks
+import BackdropProvider from "./contexts/feedback/BackdropContext";
+import NotificationProvider from "./contexts/feedback/NotificationContext";
 
 function App() {
   return (
-    <NTContextProvider>
-      <TrCProvider>
-        <ThemeContextProvider>
-          <AuthContextProvider>
-            <SocketContextProvider>
-              <StoreContextProvider>
-                <OrderContextProvider>
-                  <ItemContexProvider>
-                    <DLContextProvider>
-                      <Router />
-                    </DLContextProvider>
-                  </ItemContexProvider>
-                </OrderContextProvider>
-              </StoreContextProvider>
-            </SocketContextProvider>
-          </AuthContextProvider>
-        </ThemeContextProvider>
-      </TrCProvider>
-    </NTContextProvider>
+    <NotificationProvider>
+      <BackdropProvider>
+        <TranslationProvider>
+          <ThemeProvider>
+            <AuthProvider>
+              <SocketProvider>
+                <StoreProvider>
+                  <OrderProvider>
+                    <ItemProvider>
+                      <DataLayerProvider>
+                        <Router />
+                      </DataLayerProvider>
+                    </ItemProvider>
+                  </OrderProvider>
+                </StoreProvider>
+              </SocketProvider>
+            </AuthProvider>
+          </ThemeProvider>
+        </TranslationProvider>
+      </BackdropProvider>
+    </NotificationProvider>
   );
 }
 

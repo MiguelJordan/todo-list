@@ -3,7 +3,7 @@ import { createTheme } from "@mui/material/styles";
 export default createTheme({
   palette: {
     app: {
-      background: "#001d42",
+      background: "red",
     },
     background: {
       paper: "#001d42",
@@ -18,8 +18,8 @@ export default createTheme({
     },
     indicator: { active: "#4caf50" },
     nav: {
-      divider: { active: "hsl(184, 92%, 41%)" },
-      link: { active: "white", inActive: "hsl(218, 4%, 63%)" },
+      active: "red",
+      inActive: "hsl(218, 4%, 63%)",
     },
     success: {
       main: "#009688",

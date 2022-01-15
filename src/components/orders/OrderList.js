@@ -3,26 +3,26 @@ import { makeStyles } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 
-// icons
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { DeleteRounded, EditRounded } from "@mui/icons-material";
-
-import TimeAgo from "../subComponents/TimeAgo";
-import DateTime from "../subComponents/DateTime";
-
 // components
+import DateTime from "../subComponents/DateTime";
 import DisplayField from "../subComponents/DisplayField";
+import TimeAgo from "../subComponents/TimeAgo";
 import PopOver from "../subComponents/PopOver";
 
 // contexts
 import { AuthContext } from "../../contexts/AuthContext";
-import { NTContext } from "../../contexts/NTContext";
+import { BackdropContext } from "../../contexts/feedback/BackdropContext";
+import { NotificationContext } from "../../contexts/feedback/NotificationContext";
 import { SocketContext } from "../../contexts/SocketContext";
-import { TrContext } from "../../contexts/TranslationContext";
+import { TranslationContext } from "../../contexts/TranslationContext";
 
 // functions
 import { _delete } from "../../functions/http";
 import queries from "../../functions/queries";
+
+// icons
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { DeleteRounded, EditRounded } from "@mui/icons-material";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -68,9 +68,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function OrderList({ role = "", orders = [] }) {
   const { user } = useContext(AuthContext);
-  const { showNotification } = useContext(NTContext);
+  const { toggleBackdrop } = useContext(BackdropContext);
+  const { showNotification } = useContext(NotificationContext);
   const { sendEvent } = useContext(SocketContext);
-  const { t } = useContext(TrContext);
+  const { t } = useContext(TranslationContext);
   const classes = useStyles({ role });
   const navigate = useNavigate();
 
@@ -84,10 +85,14 @@ export default function OrderList({ role = "", orders = [] }) {
       });
     }
 
+    toggleBackdrop(true);
+
     const res = await _delete({
       url: "/orders",
       params: { companyCode: user.company.code, id: order.id },
     });
+
+    toggleBackdrop(false);
 
     if (res.error) {
       return showNotification({
@@ -226,21 +231,19 @@ export default function OrderList({ role = "", orders = [] }) {
                   </div>
                 </div>
 
-                <span>
-                  {["cashier", "waiter"].includes(role) ? (
-                    <PopOver
-                      items={WaiterPopMenu}
-                      Icon={<MoreVertIcon />}
-                      event={order}
-                    />
-                  ) : (
-                    <PopOver
-                      items={AdminPopMenu}
-                      Icon={<MoreVertIcon />}
-                      event={order}
-                    />
-                  )}
-                </span>
+                {["cashier", "waiter"].includes(role) ? (
+                  <PopOver
+                    items={WaiterPopMenu}
+                    Icon={<MoreVertIcon />}
+                    event={order}
+                  />
+                ) : (
+                  <PopOver
+                    items={AdminPopMenu}
+                    Icon={<MoreVertIcon />}
+                    event={order}
+                  />
+                )}
               </div>
             </div>
           );

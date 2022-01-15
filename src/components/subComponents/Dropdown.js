@@ -1,19 +1,26 @@
 import { useContext } from "react";
-import { MenuItem, Select } from "@mui/material";
-import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
+import TextField from "@mui/material/TextField";
+import { makeStyles } from "@material-ui/core";
 
-// constexts
-import { TrContext } from "../../contexts/TranslationContext";
+// contexts
+import { TranslationContext } from "../../contexts/TranslationContext";
 
 // functions
 import { capitalise } from "../../functions/data";
+
+const useStyles = makeStyles(() => ({
+  inputProps: {
+    color: "#B3B3B3",
+    padding: "10px 0 2px 5px",
+  },
+}));
 
 export default function Dropdown({
   capitalised = true,
   handleChange,
   label = "",
-  labelId = "",
   translated = false,
   value,
   values = [],
@@ -22,12 +29,13 @@ export default function Dropdown({
   textColor,
   read = false,
 }) {
-  const { t } = useContext(TrContext);
+  const classes = useStyles();
+  const { t } = useContext(TranslationContext);
 
   return (
     <FormControl
       sx={{
-        m: 1,
+        margin: "10px 2px",
         minWidth: 80,
         "& svg": { color: "rgb(179, 179, 179)" },
 
@@ -35,16 +43,23 @@ export default function Dropdown({
       }}
       variant={variant}
     >
-      <InputLabel id={labelId}>{label}</InputLabel>
-      <Select
+      <TextField
+        select
         label={label}
-        labelId={labelId}
-        autoWidth
-        style={{ color: textColor ?? "#B3B3B3" }}
+        margin="none"
         value={value}
+        sx={{
+          "&:hover": {
+            "&& fieldset": {
+              border: "1px solid darkblue",
+            },
+          },
+        }}
+        style={{ color: textColor ?? "#B3B3B3" }}
         onChange={(e) => handleChange(e.target.value)}
         inputProps={{
           readOnly: read,
+          className: classes.inputProps,
         }}
       >
         {values.map((value) => (
@@ -57,7 +72,7 @@ export default function Dropdown({
             })()}
           </MenuItem>
         ))}
-      </Select>
+      </TextField>
     </FormControl>
   );
 }

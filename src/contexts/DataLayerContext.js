@@ -12,15 +12,15 @@ import { filter } from "../functions/data";
 // data layer context to handle
 // client state/context data to be
 // updated in realtime
-export const DLContext = createContext();
+export const DataLayerContext = createContext();
 
-const DLContextProvider = ({ children }) => {
+const DataLayerProvider = ({ children }) => {
   const { user } = useContext(AuthContext);
   const { updateItems } = useContext(ItemContext);
   const { removeOrder, updateOrders } = useContext(OrderContext);
   const { socket } = useContext(SocketContext);
 
-  const createOrder = (_order) => {
+  const _updateOrders = (_order) => {
     if (!["admin", "cashier", "waiter"].includes(user?.role)) {
       return;
     }
@@ -54,22 +54,24 @@ const DLContextProvider = ({ children }) => {
 
   useEffect(() => {
     // orders
-    socket.on("cE-order-created", createOrder);
+    socket.on("cE-order-created", _updateOrders);
     socket.on("cE-order-deleted", deleteOrder);
+    socket.on("cE-order-updated", _updateOrders);
 
     // order items
-    socket.on("cE-order-item-created", createOrder);
+    socket.on("cE-order-item-created", _updateOrders);
 
     // store items
     socket.on("cE-store-items-updated", updateStoreItems);
 
     return () => {
       // orders
-      socket.off("cE-order-created", createOrder);
+      socket.off("cE-order-created", _updateOrders);
       socket.off("cE-order-deleted", deleteOrder);
+      socket.off("cE-order-updated", _updateOrders);
 
       // order items
-      socket.off("cE-order-item-created", createOrder);
+      socket.off("cE-order-item-created", _updateOrders);
 
       // store items
       socket.off("cE-store-items-updated", updateStoreItems);
@@ -77,7 +79,11 @@ const DLContextProvider = ({ children }) => {
   }, [removeOrder, socket, updateItems, updateOrders, user]);
 
   const context = {};
-  return <DLContext.Provider value={context}>{children}</DLContext.Provider>;
+  return (
+    <DataLayerContext.Provider value={context}>
+      {children}
+    </DataLayerContext.Provider>
+  );
 };
 
-export default DLContextProvider;
+export default DataLayerProvider;

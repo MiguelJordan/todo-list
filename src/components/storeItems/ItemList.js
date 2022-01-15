@@ -1,9 +1,11 @@
 import { useContext } from "react";
 import { makeStyles } from "@material-ui/core";
 
-import { TrContext } from "../../contexts/TranslationContext";
-
+// components
 import Item from "./item";
+
+// contexts
+import { TranslationContext } from "../../contexts/TranslationContext";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -27,7 +29,7 @@ export default function ItemList({
   preview = true,
   role = "",
 }) {
-  const { t } = useContext(TrContext);
+  const { t } = useContext(TranslationContext);
   const classes = useStyles();
 
   return (

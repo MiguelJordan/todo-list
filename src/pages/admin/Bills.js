@@ -17,6 +17,9 @@ import OrderList from "../../components/orders/OrderList";
 import Search from "../../components/subComponents/Search";
 import Dropdown from "../../components/subComponents/Dropdown";
 
+// contexts
+import { TranslationContext } from "../../contexts/TranslationContext";
+
 const theme = createMuiTheme({
   overrides: {
     MuiDialogContent: {
@@ -26,7 +29,6 @@ const theme = createMuiTheme({
     },
   },
 });
-
 const useStyles = makeStyles((theme) => ({
   inputText: {
     color: "#B3B3B3",
@@ -39,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Bills() {
+  const { t } = useContext(TranslationContext);
   const classes = useStyles();
   //const { t } = useContext(TrContext);
   const { user } = useContext(AuthContext);

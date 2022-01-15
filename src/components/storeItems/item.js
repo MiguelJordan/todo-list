@@ -5,15 +5,16 @@ import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 
-// contexts
-import { AuthContext } from "../../contexts/AuthContext";
-import { NTContext } from "../../contexts/NTContext";
-import { SocketContext } from "../../contexts/SocketContext";
-import { TrContext } from "../../contexts/TranslationContext";
-
 // components
 import Dropdown from "../subComponents/Dropdown";
 import DisplayField from "../subComponents/DisplayField";
+
+// contexts
+import { AuthContext } from "../../contexts/AuthContext";
+import { BackdropContext } from "../../contexts/feedback/BackdropContext";
+import { NotificationContext } from "../../contexts/feedback/NotificationContext";
+import { SocketContext } from "../../contexts/SocketContext";
+import { TranslationContext } from "../../contexts/TranslationContext";
 
 // functions
 import { capitalise, getImage } from "../../functions/data";
@@ -72,9 +73,10 @@ const useStyles = makeStyles((theme) => ({
 
 const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
   const { user } = useContext(AuthContext);
-  const { showNotification } = useContext(NTContext);
+  const { toggleBackdrop } = useContext(BackdropContext);
+  const { showNotification } = useContext(NotificationContext);
   const { sendEvent } = useContext(SocketContext);
-  const { t } = useContext(TrContext);
+  const { t } = useContext(TranslationContext);
   const classes = useStyles();
 
   const [isOffer, setIsOffer] = useState("no");
@@ -111,10 +113,13 @@ const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
       });
     }
 
+    toggleBackdrop(true);
+
     const res = await post({ url: "/orderItems", body: _item });
     // console.log(res);
 
     if (res?.error) {
+      toggleBackdrop(false);
       return showNotification({
         msg: t(`server_err.${res.error}`),
         color: "error",
@@ -147,6 +152,8 @@ const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
       rooms: [user.workUnit.code],
     });
 
+    toggleBackdrop(false);
+
     showNotification({
       msg: t("feedback.waiter.order item created success"),
       color: "success",
@@ -178,8 +185,8 @@ const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
             <div>
               <Dropdown
                 sx={{ display: getBool(isOffer) ? "none" : "" }}
-                label={t("compo.item.price")}
-                labelId={`store-item-price-${data.id}`}
+                label={t("compo.item.prices")}
+                labelId={`store-item-prices-${data.id}`}
                 value={selectedPrice}
                 values={data.prices}
                 handleChange={setPrice}
@@ -197,7 +204,7 @@ const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
             </div>
 
             <div style={{ marginBottom: "10px" }}>
-              <label htmlFor="">{t("compo.item.quantity")}: </label>
+              <label htmlFor="">{t("compo.item.stock-quantity")}: </label>
               <output
                 type="number"
                 style={{

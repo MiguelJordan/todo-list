@@ -9,7 +9,7 @@ import { get } from "../functions/http";
 
 export const OrderContext = createContext();
 
-const OrderContextProvider = ({ children }) => {
+const OrderProvider = ({ children }) => {
   const [orders, setOrders] = useState([]);
   const { user } = useContext(AuthContext);
 
@@ -71,4 +71,4 @@ const OrderContextProvider = ({ children }) => {
   );
 };
 
-export default OrderContextProvider;
+export default OrderProvider;

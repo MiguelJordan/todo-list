@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { TrContext } from "../../contexts/TranslationContext";
+import { TranslationContext } from "../../contexts/TranslationContext";
 import { makeStyles } from "@material-ui/core";
 
 import { filter } from "../../functions/data";
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Staff() {
-  // const { t } = useContext(TrContext);
+  const { t } = useContext(TranslationContext);
   const { showNotification } = useContext(NTContext);
   const classes = useStyles();
   const navigate = useNavigate();

@@ -5,7 +5,7 @@ import { AuthContext } from "./AuthContext";
 
 export const StoreContext = createContext();
 
-const StoreContextProvider = ({ children }) => {
+const StoreProvider = ({ children }) => {
   // const [stores, setStores] = useState([]);
   const { user } = useContext(AuthContext);
 
@@ -19,4 +19,4 @@ const StoreContextProvider = ({ children }) => {
   );
 };
 
-export default StoreContextProvider;
+export default StoreProvider;

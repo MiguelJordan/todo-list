@@ -1,10 +1,12 @@
 import { useContext, useState } from "react";
-import { TrContext } from "../../contexts/TranslationContext";
-import { AuthContext } from "../../contexts/AuthContext";
 
 import { Button, TextField } from "@mui/material";
 import { makeStyles } from "@material-ui/core";
 import Dropdown from "../../components/subComponents/Dropdown";
+
+// contexts
+import { AuthContext } from "../../contexts/AuthContext";
+import { TranslationContext } from "../../contexts/TranslationContext";
 
 const useStyles = makeStyles((theme) => ({
   inputText: {
@@ -30,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function AddStaff() {
-  const { t } = useContext(TrContext);
+  const { t } = useContext(TranslationContext);
   const { user } = useContext(AuthContext);
 
   const classes = useStyles();

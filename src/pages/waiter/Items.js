@@ -19,7 +19,9 @@ export default function Items({ orderId, orderItems, preview = true }) {
   const { t } = useContext(TranslationContext);
   const { families, items } = useContext(ItemContext);
 
-  const [familiesToShow, setFamiliesToShow] = useState(families);
+  const [familiesToShow, setFamiliesToShow] = useState(
+    families.sort((a, b) => (a < b ? -1 : 1))
+  );
 
   const [family, setFam] = useState(familiesToShow[0] ?? "");
 

@@ -72,6 +72,7 @@ const OrderItem = ({ item = {}, role = "" }) => {
   const { sendEvent } = useContext(SocketContext);
   const { t } = useContext(TranslationContext);
   const classes = useStyles();
+
   const displayField = {
     color: "white",
     margin: 0,
@@ -81,57 +82,59 @@ const OrderItem = ({ item = {}, role = "" }) => {
     fontSize: 16,
   };
 
+  const deleteOrderItem = async (item) => {
+    toggleBackdrop(true);
+    const res = await _delete({
+      url: "/orderItems/",
+      params: {
+        companyCode: item.companyCode,
+        orderId: item.orderId,
+        name: item.name,
+      },
+    });
+
+    if (res.error) {
+      toggleBackdrop(false);
+      return showNotification({
+        msg: t(`server_err.${res.error}`),
+        color: "error",
+      });
+    }
+
+    // send store item updated event
+    sendEvent({
+      name: "cE-store-items-updated",
+      props: {
+        companyCode: user.company.code,
+        query: queries["cE-store-items-updated"]({
+          items: [item.name],
+          storeId: item.storeId,
+        }),
+      },
+      rooms: [user.workUnit.code],
+    });
+
+    // send order updated event
+    sendEvent({
+      name: "cE-order-updated",
+      props: { id: item.orderId, companyCode: item.companyCode },
+      rooms: [user.workUnit.code],
+    });
+
+    toggleBackdrop(false);
+
+    showNotification({
+      msg: t("feedback.waiter.order item deleted success"),
+      color: "success",
+    });
+  };
+
   const WaiterPopMenu = [
     {
       name: "Supprimer",
       Icon: <DeleteRounded />,
       color: "#FF0000",
-      action: async (item) => {
-        toggleBackdrop(true);
-        const res = await _delete({
-          url: "/orderItems/",
-          params: {
-            companyCode: item.companyCode,
-            orderId: item.orderId,
-            name: item.name,
-          },
-        });
-
-        if (res.error) {
-          toggleBackdrop(false);
-          return showNotification({
-            msg: t(`server_err.${res.error}`),
-            color: "error",
-          });
-        }
-
-        // send store item updated event
-        sendEvent({
-          name: "cE-store-items-updated",
-          props: {
-            companyCode: user.company.code,
-            query: queries["cE-store-items-updated"]({
-              items: [item.name],
-              storeId: item.storeId,
-            }),
-          },
-          rooms: [user.workUnit.code],
-        });
-
-        // send order updated event
-        sendEvent({
-          name: "cE-order-updated",
-          props: { id: item.orderId, companyCode: item.companyCode },
-          rooms: [user.workUnit.code],
-        });
-
-        toggleBackdrop(false);
-
-        showNotification({
-          msg: t("feedback.waiter.order item deleted success"),
-          color: "success",
-        });
-      },
+      action: deleteOrderItem,
     },
     {
       name: "Modifier",
@@ -229,9 +232,18 @@ const OrderItem = ({ item = {}, role = "" }) => {
       </div>
 
       <div className={classes.details}>
-        <div className={classes.detailsText}>
+        <div className={classes.detailsText} style={{ position: "relative" }}>
           <span>{t("compo.item.name")}:</span>
-          <DisplayField value={capitalise(item.name)} sx={displayField} />
+          <DisplayField
+            value={capitalise(item.name)}
+            sx={{
+              ...displayField,
+              width: 150,
+              position: "absolute",
+              right: -38,
+              //   top: 0,
+            }}
+          />
         </div>
 
         <div className={classes.detailsText}>

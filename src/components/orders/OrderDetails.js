@@ -18,36 +18,12 @@ import { TranslationContext } from "../../contexts/TranslationContext";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const useStyles = makeStyles((theme) => ({
-  container: {
-    marginTop: "10%",
-    height: "calc(80vh - 10%)",
+  buttonGroup: {
+    display: "flex",
     justifyContent: "center",
-    overflowX: "hidden",
-    overflowY: "scroll",
-    display: "relative",
-    webkitScrollbar: {
-      width: 0,
-    },
-    position: "absolute",
-    top: 0,
-    bottom: 0,
-    [theme.breakpoints.up("lg")]: {
-      width: "calc(96vw - 150px)",
-      marginLeft: "10px",
-      //maxWidth: 1500,
-      height: "calc(80vh - 9%)",
-    },
-    [theme.breakpoints.up("md")]: {
-      width: "calc(100vw - 230px)",
-      marginLeft: "0px",
-      //maxWidth: 1500,
-      height: "calc(80vh - 10%)",
-      marginTop: "8%",
-    },
-    [theme.breakpoints.down("sm")]: {
-      marginTop: "20%",
-    },
+    margin: "10px",
   },
+  accordionParent: { width: 350, margin: "0 auto" },
   accordion: {
     backgroundColor: "#173153",
     color: "white",
@@ -68,11 +44,6 @@ const useStyles = makeStyles((theme) => ({
   },
   inputText: {
     color: "#FFFFFF",
-  },
-  buttonGroup: {
-    display: "flex",
-    justifyContent: "center",
-    margin: "20px",
   },
 }));
 
@@ -110,7 +81,7 @@ export default function OrderDetails({ order, role = "" }) {
         )}
       </div>
 
-      <div style={{ color: "white" }}>
+      <div className={classes.accordionParent}>
         <Accordion className={classes.accordion}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}

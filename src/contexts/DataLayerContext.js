@@ -20,7 +20,7 @@ const DataLayerProvider = ({ children }) => {
   const { removeOrder, updateOrders } = useContext(OrderContext);
   const { socket } = useContext(SocketContext);
 
-  const createOrder = (_order) => {
+  const _updateOrders = (_order) => {
     if (!["admin", "cashier", "waiter"].includes(user?.role)) {
       return;
     }
@@ -54,22 +54,25 @@ const DataLayerProvider = ({ children }) => {
 
   useEffect(() => {
     // orders
-    socket.on("cE-order-created", createOrder);
+
+    socket.on("cE-order-created", _updateOrders);
     socket.on("cE-order-deleted", deleteOrder);
+    socket.on("cE-order-updated", _updateOrders);
 
     // order items
-    socket.on("cE-order-item-created", createOrder);
+    socket.on("cE-order-item-created", _updateOrders);
 
     // store items
     socket.on("cE-store-items-updated", updateStoreItems);
 
     return () => {
       // orders
-      socket.off("cE-order-created", createOrder);
+      socket.off("cE-order-created", _updateOrders);
       socket.off("cE-order-deleted", deleteOrder);
+      socket.off("cE-order-updated", _updateOrders);
 
       // order items
-      socket.off("cE-order-item-created", createOrder);
+      socket.off("cE-order-item-created", _updateOrders);
 
       // store items
       socket.off("cE-store-items-updated", updateStoreItems);

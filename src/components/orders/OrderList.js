@@ -231,21 +231,19 @@ export default function OrderList({ role = "", orders = [] }) {
                   </div>
                 </div>
 
-                <span>
-                  {["cashier", "waiter"].includes(role) ? (
-                    <PopOver
-                      items={WaiterPopMenu}
-                      Icon={<MoreVertIcon />}
-                      event={order}
-                    />
-                  ) : (
-                    <PopOver
-                      items={AdminPopMenu}
-                      Icon={<MoreVertIcon />}
-                      event={order}
-                    />
-                  )}
-                </span>
+                {["cashier", "waiter"].includes(role) ? (
+                  <PopOver
+                    items={WaiterPopMenu}
+                    Icon={<MoreVertIcon />}
+                    event={order}
+                  />
+                ) : (
+                  <PopOver
+                    items={AdminPopMenu}
+                    Icon={<MoreVertIcon />}
+                    event={order}
+                  />
+                )}
               </div>
             </div>
           );

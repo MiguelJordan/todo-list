@@ -1,7 +1,8 @@
-import { useContext, useState } from "react";
-import { MenuItem, Select } from "@mui/material";
-import InputLabel from "@mui/material/InputLabel";
+import { useContext } from "react";
+import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
+import TextField from "@mui/material/TextField";
+import { makeStyles } from "@material-ui/core";
 
 // contexts
 import { TranslationContext } from "../../contexts/TranslationContext";
@@ -9,35 +10,49 @@ import { TranslationContext } from "../../contexts/TranslationContext";
 // functions
 import { capitalise } from "../../functions/data";
 
+const useStyles = makeStyles(() => ({
+  inputProps: {
+    color: "#B3B3B3",
+    padding: "10px 0 2px 5px",
+  },
+}));
+
 export default function Dropdown({
   capitalised = true,
   handleChange,
   label = "",
-  labelId = "",
   translated = false,
   value,
   values = [],
   variant = "outlined",
   sx = {},
 }) {
+  const classes = useStyles();
   const { t } = useContext(TranslationContext);
 
   return (
     <FormControl
       sx={{
-        m: 1,
+        margin: "10px 2px",
         minWidth: 80,
         "& svg": { color: "rgb(179, 179, 179)" },
         ...sx,
       }}
       variant={variant}
     >
-      <InputLabel id={labelId}>{label}</InputLabel>
-      <Select
+      <TextField
+        select
         label={label}
-        labelId={labelId}
-        autoWidth
+        margin="none"
         value={value}
+        inputProps={{ className: classes.inputProps }}
+        sx={{
+          "&:hover": {
+            "&& fieldset": {
+              border: "1px solid darkblue",
+            },
+          },
+        }}
         style={{ color: "#B3B3B3" }}
         onChange={(e) => handleChange(e.target.value)}
       >
@@ -51,7 +66,7 @@ export default function Dropdown({
             })()}
           </MenuItem>
         ))}
-      </Select>
+      </TextField>
     </FormControl>
   );
 }

@@ -34,8 +34,11 @@
     "item": {
       "btn-add": "Ajouter",
       "isOffer": "Offre",
+      "name": "Nom",
       "price": "Prix",
-      "quantity": "Quantité en stock",
+      "prices": "Prix",
+      "quantity": "Quantité",
+      "stock-quantity": "Quantité en stock",
       "quantity_toOrder": "Quantité à commander"
     },
     "search": {
@@ -48,7 +51,8 @@
   },
   "feedback": {
     "waiter": {
-      "order item created success": "Article de commande créé avec succès",
+      "order item created success": "Article ajouté avec succès",
+      "order item deleted success": "Article supprimé avec succès",
       "order deleted success": "Commande supprimée avec succès"
     }
   },

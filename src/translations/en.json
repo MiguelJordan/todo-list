@@ -34,8 +34,11 @@
     "item": {
       "btn-add": "Add",
       "isOffer": "Offer",
-      "price": "Prices",
+      "name": "Name",
+      "price": "Price",
+      "prices": "Prices",
       "quantity": "Quantity",
+      "stock-quantity": "Quantity",
       "quantity_toOrder": "Quantity to order"
     },
     "search": {
@@ -48,7 +51,8 @@
   },
   "feedback": {
     "waiter": {
-      "order item created success": "Order item created successfully",
+      "order item created success": "Item added successfully",
+      "order item deleted success": "Item deleted successfully",
       "order deleted success": "Order deleted successfully"
     }
   },

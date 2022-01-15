@@ -19,7 +19,7 @@ import { TranslationContext } from "../../contexts/TranslationContext";
 // functions
 import { capitalise, getImage, getMeasureUnit } from "../../functions/data";
 import { _delete } from "../../functions/http";
-// import queries from "../../functions/queries";
+import queries from "../../functions/queries";
 
 // icons
 
@@ -105,6 +105,20 @@ const OrderItem = ({ item = {}, role = "" }) => {
           });
         }
 
+        // send store item updated event
+        sendEvent({
+          name: "cE-store-items-updated",
+          props: {
+            companyCode: user.company.code,
+            query: queries["cE-store-items-updated"]({
+              items: [item.name],
+              storeId: item.storeId,
+            }),
+          },
+          rooms: [user.workUnit.code],
+        });
+
+        // send order updated event
         sendEvent({
           name: "cE-order-updated",
           props: { id: item.orderId, companyCode: item.companyCode },

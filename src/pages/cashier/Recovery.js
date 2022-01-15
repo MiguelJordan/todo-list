@@ -9,6 +9,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { TrContext } from "../../contexts/TranslationContext";
 
 import Dropdown from "../../components/subComponents/Dropdown";
+import Fabs from "../../components/subComponents/Fabs";
 
 const useStyles = makeStyles((theme) => ({
   inputText: {
@@ -190,17 +191,17 @@ export default function Recovery() {
         ))}
       </div>
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
-        <Button
-          variant="contained"
-          style={{
+        <Fabs
+          handleClick={handleAddField}
+          sx={{
             marginTop: "10px",
             marginBottom: "25px",
             backgroundColor: "#04A5E0",
+            height: "45px",
+            width: "50px",
           }}
-          onClick={handleAddField}
-        >
-          {"Add Payment"}
-        </Button>
+          ToolTipText={"Add Payment Method"}
+        />
       </div>
       <div
         style={{

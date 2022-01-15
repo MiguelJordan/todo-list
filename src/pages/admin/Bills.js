@@ -2,27 +2,37 @@ import { useContext, useState, useEffect } from "react";
 import dayjs from "dayjs";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDayjs from "@mui/lab/AdapterDayjs";
-import TimePicker from "@mui/lab/TimePicker";
-import DateTimePicker from "@mui/lab/DateTimePicker";
-import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
+import MobileDatePicker from "@mui/lab/MobileDatePicker";
+import { TextField } from "@mui/material";
+import { makeStyles } from "@material-ui/core";
+import { createMuiTheme, ThemeProvider } from "@mui/material/styles";
 
+//contexts
 import { TrContext } from "../../contexts/TranslationContext";
 import { AuthContext } from "../../contexts/AuthContext";
 import { OrderContext } from "../../contexts/OrderContext";
 
-import { TextField } from "@mui/material";
-import { makeStyles } from "@material-ui/core";
-
+//components
 import OrderList from "../../components/orders/OrderList";
 import Search from "../../components/subComponents/Search";
 import Dropdown from "../../components/subComponents/Dropdown";
+
+const theme = createMuiTheme({
+  overrides: {
+    MuiDialogContent: {
+      root: {
+        backgroundColor: "red",
+      },
+    },
+  },
+});
 
 const useStyles = makeStyles((theme) => ({
   inputText: {
     color: "#B3B3B3",
   },
-  root: {
-    "& > .MuiButtonBase-root-MuiPickersDay-root": {
+  datePicker: {
+    "& > .MuiGrid-root ": {
       color: "#B3B3B3",
     },
   },
@@ -95,48 +105,86 @@ export default function Bills() {
           handleChange={setFormat}
           sx={{ marginLeft: "-13px" }}
         />
-        {format === "Period" ? (
-          <>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DesktopDatePicker
-                label="Du"
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <ThemeProvider theme={theme}>
+            {format === "Period" ? (
+              <>
+                <MobileDatePicker
+                  label="Du"
+                  inputFormat="DD-MM-YYYY"
+                  value={startP}
+                  className={classes.inputText}
+                  onChange={(newValue) => {
+                    setStartD(newValue);
+                  }}
+                  minDate={createdDate}
+                  maxDate={dayjs(new Date(stopP)).subtract(1, "day")}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      sx={{
+                        input: { color: "#B3B3B3" },
+                        svg: { color: "#B3B3B3" },
+                        label: { color: "#B3B3B3" },
+                        marginTop: "7px",
+                        marginLeft: "5px",
+                        width: "110px",
+                      }}
+                      classes={{
+                        root: classes.root,
+                      }}
+                      DialogProps={{
+                        style: {
+                          backgroundColor: "red",
+                        },
+                      }}
+                    />
+                  )}
+                />
+
+                <MobileDatePicker
+                  label="Au"
+                  inputFormat="DD-MM-YYYY"
+                  value={stopP}
+                  className={classes.inputText}
+                  onChange={(newValue) => {
+                    setStopD(newValue);
+                  }}
+                  minDate={dayjs(new Date(startP)).add(1, "day")}
+                  maxDate={dayjs(new Date())}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      sx={{
+                        input: { color: "#B3B3B3" },
+                        svg: { color: "#B3B3B3" },
+                        label: { color: "#B3B3B3" },
+                        marginTop: "7px",
+                        marginLeft: "5px",
+                        "&:hover": {
+                          // border: "0.1px solid #B3B3B3",
+                        },
+                        width: "110px",
+                      }}
+                      classes={{
+                        root: classes.root,
+                      }}
+                    />
+                  )}
+                />
+              </>
+            ) : (
+              <MobileDatePicker
+                label="Date"
                 inputFormat="DD-MM-YYYY"
-                value={startP}
+                value={date}
                 className={classes.inputText}
                 onChange={(newValue) => {
-                  setStartD(newValue);
+                  var date = new Date(newValue).toISOString().slice(0, 10);
+
+                  setDate(date);
                 }}
                 minDate={createdDate}
-                maxDate={dayjs(new Date(stopP)).subtract(1, "day")}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    sx={{
-                      input: { color: "#B3B3B3" },
-                      svg: { color: "#B3B3B3" },
-                      label: { color: "#B3B3B3" },
-                      marginTop: "7px",
-                      marginLeft: "5px",
-                      width: "140px",
-                    }}
-                    classes={{
-                      root: classes.root,
-                    }}
-                  />
-                )}
-              />
-            </LocalizationProvider>
-
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DesktopDatePicker
-                label="Au"
-                inputFormat="DD-MM-YYYY"
-                value={stopP}
-                className={classes.inputText}
-                onChange={(newValue) => {
-                  setStopD(newValue);
-                }}
-                minDate={dayjs(new Date(startP)).add(1, "day")}
                 maxDate={dayjs(new Date())}
                 renderInput={(params) => (
                   <TextField
@@ -147,49 +195,20 @@ export default function Bills() {
                       label: { color: "#B3B3B3" },
                       marginTop: "7px",
                       marginLeft: "5px",
+                      width: "110px",
                       "&:hover": {
-                        // border: "0.1px solid #B3B3B3",
+                        borderColor: "#B3B3B3",
                       },
-                      width: "140px",
-                    }}
-                    classes={{
-                      root: classes.root,
                     }}
                   />
                 )}
+                DialogProps={{
+                  className: classes.datePicker,
+                }}
               />
-            </LocalizationProvider>
-          </>
-        ) : (
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DesktopDatePicker
-              label="Date"
-              inputFormat="DD/MM/YYYY"
-              value={date}
-              className={classes.inputText}
-              onChange={(newValue) => {
-                var date = new Date(newValue).toISOString().slice(0, 10);
-
-                setDate(date);
-              }}
-              minDate={createdDate}
-              maxDate={dayjs(new Date())}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  sx={{
-                    input: { color: "#B3B3B3" },
-                    svg: { color: "#B3B3B3" },
-                    label: { color: "#B3B3B3" },
-                    marginTop: "7px",
-                    marginLeft: "5px",
-                    width: "140px",
-                  }}
-                />
-              )}
-            />
-          </LocalizationProvider>
-        )}
+            )}
+          </ThemeProvider>
+        </LocalizationProvider>
       </div>
       <div
         style={{

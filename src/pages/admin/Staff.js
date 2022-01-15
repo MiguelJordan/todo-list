@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core";
 import { filter } from "../../functions/data";
 
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { EditRounded } from "@mui/icons-material";
+import { EditRounded, DeleteRounded } from "@mui/icons-material";
 
 import { NTContext } from "../../contexts/NTContext";
 import Dropdown from "../../components/subComponents/Dropdown";
@@ -70,6 +70,7 @@ export default function Staff() {
     criteria: criteria,
   });
 
+  // func that trigers to delete a user
   const DeleteUser = (e) => {
     console.log("delete", e);
     setMsg("Are you sure you want to delete this user ?");
@@ -85,7 +86,7 @@ export default function Staff() {
     {
       name: "Supprimer",
       color: "#FF0000",
-      Icon: <EditRounded />,
+      Icon: <DeleteRounded />,
       action: (user) => DeleteUser(user),
     },
     {

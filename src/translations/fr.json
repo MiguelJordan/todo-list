@@ -18,7 +18,7 @@
       "nav": { "bills": "Factures" }
     },
     "waiter": {
-      "nav": { "items": "Produits", "orders": "Commandes" }
+      "nav": { "items": "Articles", "orders": "Commandes" }
     }
   },
   "compo": {
@@ -30,7 +30,7 @@
       "true": "Vrai",
       "yes": "Oui"
     },
-    "order": { "items": "Produits" },
+    "order": { "items": "Articles" },
     "item": {
       "btn-add": "Ajouter",
       "isOffer": "Offre",
@@ -64,13 +64,17 @@
     },
     "home": { "greeting": "Bienvenue", "page_title": "Page D'accueil" },
     "login": { "title": "Connexion" },
+    "order-details": {
+      "items": "Articles",
+      "payment methods": "Modes de payement"
+    },
     "waiter": {
       "items": {
         "dropdown": {
           "categories": "Catégories",
           "families": "Familles"
         },
-        "not-found": "Aucun élément de ce type n'a été trouvé"
+        "not-found": "Aucun article trouvé"
       },
       "orders": {
         "form_add_order": { "title": "Nouvelle Commande", "add_btn": "Ajouter" }

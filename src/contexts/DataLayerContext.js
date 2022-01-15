@@ -54,7 +54,6 @@ const DataLayerProvider = ({ children }) => {
 
   useEffect(() => {
     // orders
-
     socket.on("cE-order-created", _updateOrders);
     socket.on("cE-order-deleted", deleteOrder);
     socket.on("cE-order-updated", _updateOrders);

@@ -64,6 +64,7 @@
     },
     "home": { "greeting": "Welcome", "page_title": "Home Page" },
     "login": { "title": "Log In" },
+    "order-details": { "items": "Items", "payment methods": "Payment Methods" },
     "waiter": {
       "items": {
         "dropdown": {

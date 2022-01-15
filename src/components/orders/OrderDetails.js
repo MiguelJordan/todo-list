@@ -1,4 +1,4 @@
-// import { useContext, useState } from "react";
+import { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import { Button, TextField } from "@mui/material";
@@ -12,6 +12,7 @@ import OrderItem from "./OrderItem";
 
 // contexts
 // import { BackdropContext } from "../../contexts/feedback/BackdropContext";
+import { TranslationContext } from "../../contexts/TranslationContext";
 
 // icons
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -77,6 +78,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function OrderDetails({ order, role = "" }) {
   // const { toggleBackdrop } = useContext(BackdropContext);
+  const { t } = useContext(TranslationContext);
   const classes = useStyles();
   const navigate = useNavigate();
   let { id } = useParams();
@@ -115,14 +117,12 @@ export default function OrderDetails({ order, role = "" }) {
             aria-controls="order-items"
             id={`order-${order.id}-items`}
           >
-            <Typography>Items</Typography>
+            <Typography>{t("pages.order-details.items")}</Typography>
           </AccordionSummary>
           <AccordionDetails className={classes.accordionDetails}>
-            {/* <div className={classes.orderItems}> */}
             {order.items.map((item) => (
               <OrderItem item={item} role={role} key={item.id} />
             ))}
-            {/* </div> */}
           </AccordionDetails>
         </Accordion>
         <Accordion className={classes.accordion}>
@@ -131,7 +131,7 @@ export default function OrderDetails({ order, role = "" }) {
             aria-controls="order-payment-methods"
             id="order-{orderId}-payment-methods"
           >
-            <Typography>Payment methods</Typography>
+            <Typography>{t("pages.order-details.payment methods")}</Typography>
           </AccordionSummary>
           <AccordionDetails className={classes.accordionDetails}>
             <Typography>Payment methods here</Typography>

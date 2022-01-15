@@ -240,7 +240,7 @@ const OrderItem = ({ item = {}, role = "" }) => {
               ...displayField,
               width: 150,
               position: "absolute",
-              right: -38,
+              right: -42,
               //   top: 0,
             }}
           />

@@ -65,6 +65,10 @@ export default function Items({ orderId, orderItems, preview = true }) {
   };
 
   useEffect(() => {
+    setFamiliesToShow(families.sort((a, b) => (a < b ? -1 : 1)));
+  }, [families]);
+
+  useEffect(() => {
     const _orderedNames = getList({ data: orderItems, criteria: "name" });
     setOrderedNames(_orderedNames);
   }, [orderItems]);

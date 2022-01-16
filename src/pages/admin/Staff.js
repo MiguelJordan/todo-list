@@ -8,7 +8,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { EditRounded, DeleteRounded } from "@mui/icons-material";
 
 //import { NTContext } from "../../contexts/NTContext";
-import Dropdown from "../../components/subComponents/Dropdown";
+//import Dropdown from "../../components/subComponents/Dropdown";
 import Dialog from "../../components/subComponents/Dialog";
 import DisplayField from "../../components/subComponents/DisplayField";
 import PopOver from "../../components/subComponents/PopOver";
@@ -39,7 +39,7 @@ export default function Staff() {
   //const { showNotification } = useContext(NTContext);
   const classes = useStyles();
   const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
   const [msg, setMsg] = useState("");
 
   var users = [
@@ -74,7 +74,7 @@ export default function Staff() {
   const DeleteUser = (e) => {
     console.log("delete", e);
     setMsg("Are you sure you want to delete this user ?");
-    setOpen(true);
+    setOpenDialog(true);
   };
 
   const userDetails = (user) => {
@@ -99,7 +99,6 @@ export default function Staff() {
 
   return (
     <>
-      <Dialog openDialog={open} closeDialog={setOpen} content={msg} />
       <div
         style={{
           display: "flex",

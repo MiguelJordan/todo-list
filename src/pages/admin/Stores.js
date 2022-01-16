@@ -25,7 +25,7 @@ export default function Drinks() {
   ];
 
   const [searchVal, setSearchVal] = useState("");
-  const [store, setStore] = useState("");
+  const [store, setStore] = useState("Unit");
 
   const filterArray = [];
 
@@ -43,30 +43,20 @@ export default function Drinks() {
       <div
         style={{
           display: "flex",
-          aligndts: "center",
+          flexFlow: "row",
+          alignItems: "center",
           justifyContent: "center",
           flexWrap: "wrap",
           margin: "15px 0",
-          flexFlow: "column",
-          alignItems: "center",
         }}
       >
-        {/* <span>
-          Family:{" "}
-          <Dropdown
-            values={families}
-            onchange={(value) => setFam(value)}
-            defaultVal={family}
-          />
-        </span> */}
-        <span>
-          Store:{" "}
-          <Dropdown
-            values={["Central", "Unit"]}
-            onchange={setStore}
-            defaultVal={""}
-          />
-        </span>
+        <Dropdown
+          label="Store"
+          values={["Central", "Unit"]}
+          value={store}
+          handleChange={setStore}
+        />
+
         <Search onChange={setSearchVal} />
       </div>
       <ItemList items={filterArray} role="admin" />

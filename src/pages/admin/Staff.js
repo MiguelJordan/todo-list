@@ -1,112 +1,168 @@
 import { useContext, useState } from "react";
+import { TranslationContext } from "../../contexts/TranslationContext";
+import { makeStyles } from "@material-ui/core";
 
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import ListItemText from "@mui/material/ListItemText";
-import Avatar from "@mui/material/Avatar";
+import { filter } from "../../functions/data";
 
-// components
-import Fabs from "../../components/subComponents/Fabs";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { EditRounded, DeleteRounded } from "@mui/icons-material";
+
+//import { NTContext } from "../../contexts/NTContext";
+//import Dropdown from "../../components/subComponents/Dropdown";
+import Dialog from "../../components/subComponents/Dialog";
+import DisplayField from "../../components/subComponents/DisplayField";
+import PopOver from "../../components/subComponents/PopOver";
+import useSearch from "../../hooks/useSearch";
 import Search from "../../components/subComponents/Search";
 
-// contexts
-import { TranslationContext } from "../../contexts/TranslationContext";
+import { List, ListItem, ListItemText } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-// icons
-import EditRounded from "@mui/icons-material/EditRounded";
+const useStyles = makeStyles((theme) => ({
+  container: {
+    display: "flex",
+    flexFlow: "row",
+    justifyContent: "center",
+    alignitems: "center",
+    overflowY: "auto",
+    height: "75vh",
+    flexWrap: "wrap",
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      height: "78vh",
+    },
+  },
+}));
 
 export default function Staff() {
   const { t } = useContext(TranslationContext);
+  //const { showNotification } = useContext(NTContext);
+  const classes = useStyles();
+  const navigate = useNavigate();
+  const [openDialog, setOpenDialog] = useState(false);
+  const [msg, setMsg] = useState("");
 
-  const users = [
-    { id: "1", name: "john", role: "waiter" },
-    { id: "2", name: "Anne", role: "waiter" },
-    { id: "3", name: "Jack", role: "cashier" },
-    { id: "4", name: "one", role: "admin" },
-    { id: "5", name: "paul", role: "waiter" },
-    { id: "6", name: "jones", role: "waiter" },
-    { id: "7", name: "Agne", role: "waiter" },
-    { id: "8", name: "Jacky", role: "cashier" },
-    { id: "9", name: "oneMan", role: "admin" },
-    { id: "10", name: "pauline", role: "waiter" },
+  var users = [
+    {
+      id: 1,
+      name: "Snowdsbgbgdsesvsvbbgbrbgr",
+
+      role: "waiter",
+    },
+    { id: 2, name: "Lannister", role: "cashier" },
+    { id: 3, name: "Lannister", role: "waiter" },
+    { id: 4, name: "Stark", role: "cashier" },
+    { id: 5, name: "Targaryen", role: "barman" },
+    { id: 6, name: "Melisandre", role: "waiter" },
+    { id: 7, name: "Clifford", role: "cashier" },
+    { id: 8, name: "Frances", role: "waiter" },
+    { id: 9, name: "Roxie", role: "cashier" },
+    { id: 10, name: "Roxie", role: "cashier" },
+    { id: 11, name: "Roxie", role: "cashier" },
+    { id: 12, name: "Roxie", role: "cashier" },
   ];
 
-  const [searchVal, setSearchVal] = useState("");
+  const [criteria, setCriteria] = useState("role");
+  const [user, setUser] = useState(users);
 
-  const filterUsers = [];
-
-  users.filter((user) => {
-    if (!searchVal || user.name.includes(searchVal.toLowerCase().trim()))
-      return filterUsers.push(user);
-    return "";
+  const { filtered, setSearchVal } = useSearch({
+    data: user,
+    criteria: criteria,
   });
 
+  // func that trigers to delete a user
+  const DeleteUser = (e) => {
+    console.log("delete", e);
+    setMsg("Are you sure you want to delete this user ?");
+    setOpenDialog(true);
+  };
+
+  const userDetails = (user) => {
+    console.log("details", user);
+    navigate(`/admin/staff/${user.id}`);
+  };
+
+  const AdminPopMenu = [
+    {
+      name: "Supprimer",
+      color: "#FF0000",
+      Icon: <DeleteRounded />,
+      action: (user) => DeleteUser(user),
+    },
+    {
+      name: "Modifier",
+      color: "#04A5E0",
+      Icon: <EditRounded />,
+      action: (user) => userDetails(user),
+    },
+  ];
+
   return (
-    <div
-      style={{
-        display: "flex",
-        flexFlow: "column",
-        justifyContent: "center",
-        alignContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <h1 className="center">{t("List of Staff Members")}</h1>
-
-      <Search onChange={setSearchVal} />
-
+    <>
       <div
         style={{
-          maxWidth: "500px",
-          minWidth: "300px",
-          height: "68vh",
-          overflowY: "auto",
+          display: "flex",
+          flexFlow: "row",
+          alignItems: "center",
+          justifyContent: "center",
+          marginTop: 15,
         }}
       >
-        <List>
-          {filterUsers.length !== 0 ? (
-            filterUsers.map((_user) => (
+        <Dropdown
+          label="Criteria"
+          values={["role", "name"]}
+          value={criteria}
+          handleChange={setCriteria}
+        />
+        <Search onChange={setSearchVal} />
+      </div>
+      <div className={classes.container}>
+        {filtered.length !== 0 ? (
+          <List
+            style={{
+              display: "flex",
+              flexFlow: "column",
+              //justifyContent: "space-between",
+              width: "700px",
+              minWidth: "400px",
+              backgroundColor: "#001e3c",
+            }}
+          >
+            {filtered.map((user) => (
               <ListItem
-                key={_user.id}
+                key={user.id}
                 style={{
-                  marginBottom: "5px",
-                  backgroundColor: "#2196f3",
-                  borderRadius: "5px",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  textAlign: "center",
+                  borderBottom: "2px solid #B3B3B3",
                 }}
               >
-                <ListItemText
-                  primary={_user.name}
-                  // secondary={secondary ? "Secondary text" : null}
-                />
-                <ListItemText
-                  primary={_user.role}
-                  //secondary={secondary ? "Secondary text" : null}
-                />
-                <ListItemAvatar
-                  style={{ display: "flex", justifyContent: "center" }}
-                >
-                  <Avatar style={{ backgroundColor: "#4caf50" }}>
-                    <EditRounded />
-                  </Avatar>
-                </ListItemAvatar>
-              </ListItem>
-            ))
-          ) : (
-            <h2
-              style={{
-                marginTop: "100px",
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              No User Found
-            </h2>
-          )}
-        </List>
-      </div>
+                <ListItemText style={{ maxWidth: "50px", marginLeft: "1px" }}>
+                  <DisplayField
+                    value={user.name}
+                    sx={{ maxWidth: "75px", marginLeft: "1px" }}
+                  />
+                </ListItemText>
 
-      <Fabs path="/admin/staff/add" />
-    </div>
+                <ListItemText style={{ maxWidth: "50px", marginLeft: "1px" }}>
+                  <DisplayField
+                    value={user.role}
+                    sx={{ maxWidth: "75px", marginLeft: "1px" }}
+                  />
+                </ListItemText>
+                <PopOver
+                  items={AdminPopMenu}
+                  Icon={<MoreVertIcon />}
+                  event={user}
+                />
+              </ListItem>
+            ))}
+          </List>
+        ) : (
+          <h2 style={{ marginTop: "100px" }}>{"No User Found"}</h2>
+        )}
+      </div>
+    </>
   );
 }

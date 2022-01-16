@@ -31,11 +31,10 @@ export default function Orders() {
         }}
       >
         <Search onChange={setSearchVal} />
+        <Fabs path="/waiter/orders/add" />
       </div>
 
       <OrderList orders={filtered} role="waiter" />
-
-      <Fabs path="/waiter/orders/add" />
     </>
   );
 }

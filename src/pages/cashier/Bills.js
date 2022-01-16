@@ -1,149 +1,97 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 
-// components
-import Dropdown from "../../components/subComponents/Dropdown";
+// contexts
+//import { TrContext } from "../../contexts/TranslationContext";
+import { AuthContext } from "../../contexts/AuthContext";
+import { OrderContext } from "../../contexts/OrderContext";
+
+//components
 import OrderList from "../../components/orders/OrderList";
 import Search from "../../components/subComponents/Search";
+import Dropdown from "../../components/subComponents/Dropdown";
 
 // contexts
 import { TranslationContext } from "../../contexts/TranslationContext";
 
 export default function Bills() {
-  const { t } = useContext(TranslationContext);
+  // const { t } = useContext(TranslationContext);
+  const { user } = useContext(AuthContext);
+  const { orders } = useContext(OrderContext);
+  const [_orders, setOrders] = useState([]);
+  const [waiterList, setWaiterList] = useState([]);
 
-  const list = {
-    Anne: [
-      {
-        id: "1",
-        tableName: "1",
-        createdDate: "2021-12-28",
-        drink: 10000,
-        waiterN: "Anne",
-        isPaid: true,
-        paymentMethod: ["MOMO"],
-      },
-      {
-        id: "7",
-        tableName: "7",
-        isPaid: true,
-        createdDate: "2021-12-20",
-        drink: 10000,
-        waiterN: "Anne",
-        paymentMethod: ["OM", "MOMO"],
-      },
-      {
-        id: "5",
-        tableName: "5",
-        isPaid: true,
-        createdDate: "2021-12-18",
-        drink: 10000,
-        waiterN: "Anne",
-        paymentMethod: ["OM"],
-      },
-      {
-        id: "6",
-        tableName: "6",
-        isPaid: true,
-        createdDate: "2021-12-19",
-        drink: 10000,
-        waiterN: "Anne",
-        paymentMethod: ["OM", "Cash"],
-      },
-    ],
-    Michelle: [
-      {
-        id: "4",
-        tableName: "4",
-        createdDate: "2021-12-31",
-        drink: 10000,
-        waiterN: "Michelle",
-        paymentMethod: ["OM"],
-        isPaid: true,
-      },
-    ],
-    Jacob: [
-      {
-        id: "2",
-        tableName: "2",
-        isPaid: true,
-        createdDate: "2021-12-29",
-        drink: 10000,
-        waiterN: "Jacob",
-        paymentMethod: ["OM"],
-      },
-      {
-        id: "8",
-        tableName: "8",
-        isPaid: true,
-        createdDate: "2021-12-29",
-        drink: 10000,
-        waiterN: "Jacob",
-        paymentMethod: ["Cash"],
-      },
-    ],
-    Jack: [
-      {
-        id: "3",
-        tableName: "3",
-        isPaid: true,
-        createdDate: "2021-12-30",
-        drink: 10000,
-        waiterN: "Jack",
-        paymentMethod: ["OM"],
-      },
-    ],
-  };
+  const paymentMethods = [...user.workUnit.paymentMethods, "NOT PAID"];
 
-  const paymentMethods = ["Cash", "OM", "MOMO", "Not Paid"];
+  useEffect(() => {
+    const waiters = [];
+    orders.map((order) => {
+      if (!waiterList.includes(order.waiterName)) waiters.push(order);
+    });
 
-  const waiterList = Object.keys(list);
+    setWaiterList(waiters);
+  }, [orders]);
 
-  const [waiter, setWaiter] = useState(waiterList[0]);
-  const [payment, setPayment] = useState(paymentMethods[0]);
+  const [waiter, setWaiter] = useState(waiterList[0] ?? "");
+  const [payment, setPayment] = useState(paymentMethods[0] ?? "");
   const [searchVal, setSearchVal] = useState("");
 
-  const filterArray = [];
-
-  list[waiter].filter((Bill) => {
-    if (payment === "Not Paid") {
+  useEffect(() => {
+    const filtered = orders.filter((order) => {
+      if (payment === "NOT PAID") {
+        if (
+          !order.isPaid &&
+          (!searchVal ||
+            order.tableName
+              .toLowerCase()
+              .includes(searchVal.toLowerCase().trim()))
+        )
+          return true;
+      }
       if (
-        !Bill.isPaid &&
+        order.paymentMethods.includes(payment) &&
         (!searchVal ||
-          Bill.tableName.toLowerCase().includes(searchVal.toLowerCase().trim()))
+          order.tableName
+            .toLowerCase()
+            .includes(searchVal.toLowerCase().trim()))
       )
-        filterArray.push(Bill);
-    }
-    if (
-      Bill.paymentMethod.includes(payment) &&
-      (!searchVal ||
-        Bill.tableName.toLowerCase().includes(searchVal.toLowerCase().trim()))
-    )
-      filterArray.push(Bill);
-  });
+        return true;
+      return false;
+    });
+
+    setOrders(filtered);
+  }, [orders, searchVal, payment, waiter]);
 
   return (
     <>
       {/* <h1 className="center">{t("Cashier's Bills")}</h1> */}
 
       <div
-        style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}
+        style={{
+          display: "flex",
+          flexFlow: "row",
+          alignItems: "center",
+          justifyContent: "center",
+          flexWrap: "wrap",
+          margin: "15px 0",
+        }}
       >
-        <span>
-          <label> Waiter: </label>
-          <Dropdown values={waiterList} onchange={setWaiter} />
-        </span>
-        <span>
-          <label>Payment: </label>
-          <Dropdown values={paymentMethods} onchange={setPayment} />
-        </span>
-      </div>
-      <div
-        style={{ display: "flex", justifyContent: "center", marginTop: "15px" }}
-      >
+        <Dropdown
+          label="Waiter"
+          values={waiterList}
+          value={waiter}
+          handleChange={setWaiter}
+        />
+
+        <Dropdown
+          label="Paymennt"
+          value={payment}
+          values={paymentMethods}
+          handleChange={setPayment}
+        />
         <Search onChange={setSearchVal} />
       </div>
 
-      <OrderList array={filterArray} role="cashier" />
+      <OrderList array={_orders} role="cashier" />
     </>
   );
 }

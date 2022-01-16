@@ -51,9 +51,25 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "transparent",
     margin: "8px",
   },
+  inp: {
+    width: "30px",
+    marginLeft: 8,
+    backgroundColor: "#415672",
+    color: "#FFFFFF",
+    height: "18px",
+    borderStyle: "solid",
+    backgroundColor: "#415672",
+    borderRadius: "4px",
+    borderColor: "#415672",
+    "&:focus": {
+      outline: "none",
+      width: "30px",
+      height: "18px",
+    },
+  },
 }));
 
-const Item = ({ data = {}, orderId, preview = true, role = "" }) => {
+const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
   const { user } = useContext(AuthContext);
   const { toggleBackdrop } = useContext(BackdropContext);
   const { showNotification } = useContext(NotificationContext);
@@ -149,7 +165,7 @@ const Item = ({ data = {}, orderId, preview = true, role = "" }) => {
 
   return (
     <>
-      <Card className={classes.card}>
+      <Card className={classes.card} sx={{ boxShadow: 0 }}>
         <CardMedia
           className={classes.media}
           image={getImage({ url: data.imageUrl })}
@@ -178,7 +194,7 @@ const Item = ({ data = {}, orderId, preview = true, role = "" }) => {
                 values={data.prices}
                 handleChange={setPrice}
               />
-              {!preview && role == "waiter" && (
+              {!preview && role === "waiter" && (
                 <Dropdown
                   translated={true}
                   label={t("compo.item.isOffer")}
@@ -252,7 +268,6 @@ const Item = ({ data = {}, orderId, preview = true, role = "" }) => {
                 </>
               )}
             </div>
-
             {role === "admin" && (
               <>
                 <Button variant="contained" style={{ marginTop: "10px" }}>

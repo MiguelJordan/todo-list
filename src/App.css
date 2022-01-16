@@ -43,6 +43,24 @@ body {
   }
 }
 
+.formError {
+  border: 2px solid red;
+  color: #001d42;
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+
 span {
   color: beige;
 }
+/* .css-1vzrijx {
+  color: #b3b3b3;
+}
+.MuiGrid-root {
+  color: #b3b3b3;
+}
+.css-1mnedko-MuiPickersDay-root {
+  color: #b3b3b3;
+} */

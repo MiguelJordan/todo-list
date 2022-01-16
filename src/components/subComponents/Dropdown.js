@@ -12,7 +12,7 @@ import { capitalise } from "../../functions/data";
 
 const useStyles = makeStyles(() => ({
   inputProps: {
-    color: "#B3B3B3",
+    color: ({ textColor }) => textColor ?? "#B3B3B3",
     padding: "10px 0 2px 5px",
   },
 }));
@@ -26,8 +26,10 @@ export default function Dropdown({
   values = [],
   variant = "outlined",
   sx = {},
+  textColor,
+  read = false,
 }) {
-  const classes = useStyles();
+  const classes = useStyles({ textColor });
   const { t } = useContext(TranslationContext);
 
   return (
@@ -36,6 +38,7 @@ export default function Dropdown({
         margin: "10px 2px",
         minWidth: 80,
         "& svg": { color: "rgb(179, 179, 179)" },
+
         ...sx,
       }}
       variant={variant}
@@ -45,7 +48,7 @@ export default function Dropdown({
         label={label}
         margin="none"
         value={value}
-        inputProps={{ className: classes.inputProps }}
+        variant={variant}
         sx={{
           "&:hover": {
             "&& fieldset": {
@@ -53,8 +56,12 @@ export default function Dropdown({
             },
           },
         }}
-        style={{ color: "#B3B3B3" }}
+        style={{ color: textColor ?? "#B3B3B3" }}
         onChange={(e) => handleChange(e.target.value)}
+        inputProps={{
+          readOnly: read,
+          className: classes.inputProps,
+        }}
       >
         {values.map((value) => (
           <MenuItem style={{ color: "#B3B3B3" }} value={value} key={value}>

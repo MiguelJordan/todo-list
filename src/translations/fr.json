@@ -18,7 +18,11 @@
       "nav": { "bills": "Factures" }
     },
     "waiter": {
-      "nav": { "items": "Articles", "orders": "Commandes" }
+      "nav": { "items": "Articles", "orders": "Commandes" },
+      "popover": {
+        "orderItem-delete": "Supprimer",
+        "orderItem-update": "Modifier"
+      }
     }
   },
   "compo": {
@@ -38,8 +42,7 @@
       "price": "Prix",
       "prices": "Prix",
       "quantity": "Quantité",
-      "stock-quantity": "Quantité en stock",
-      "quantity_toOrder": "Quantité à commander"
+      "stock-quantity": "Quantité en stock"
     },
     "search": {
       "placeholder": "Rechercher..."

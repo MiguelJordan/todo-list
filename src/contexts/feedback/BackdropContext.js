@@ -21,7 +21,9 @@ export default function BackdropProvider({ children }) {
         <div
           style={{
             backgroundColor: "black",
-            opacity: ".3",
+            opacity: ".7",
+            width: 40,
+            height: 40,
             padding: "20px",
             borderRadius: "8px",
           }}

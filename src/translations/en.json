@@ -18,7 +18,8 @@
       "nav": { "bills": "Bills" }
     },
     "waiter": {
-      "nav": { "items": "Items", "orders": "Orders" }
+      "nav": { "items": "Items", "orders": "Orders" },
+      "popover": { "orderItem-delete": "Delete", "orderItem-update": "Update" }
     }
   },
   "compo": {
@@ -38,8 +39,7 @@
       "price": "Price",
       "prices": "Prices",
       "quantity": "Quantity",
-      "stock-quantity": "Quantity",
-      "quantity_toOrder": "Quantity to order"
+      "stock-quantity": "Quantity available"
     },
     "search": {
       "placeholder": "Search..."

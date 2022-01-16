@@ -5,7 +5,7 @@ import AdapterDayjs from "@mui/lab/AdapterDayjs";
 import MobileDatePicker from "@mui/lab/MobileDatePicker";
 import { TextField } from "@mui/material";
 import { makeStyles } from "@material-ui/core";
-import { createMuiTheme, ThemeProvider } from "@mui/material/styles";
+import { createTheme, ThemeProvider } from "@mui/material";
 
 //contexts
 import { TrContext } from "../../contexts/TranslationContext";
@@ -20,10 +20,10 @@ import Dropdown from "../../components/subComponents/Dropdown";
 // contexts
 import { TranslationContext } from "../../contexts/TranslationContext";
 
-const theme = createMuiTheme({
-  overrides: {
+const theme = createTheme({
+  components: {
     MuiDialogContent: {
-      root: {
+      defaultProps: {
         backgroundColor: "red",
       },
     },
@@ -36,6 +36,13 @@ const useStyles = makeStyles((theme) => ({
   datePicker: {
     "& > .MuiGrid-root ": {
       color: "#B3B3B3",
+    },
+    inputField: {
+      "&:hover": {
+        "&& fieldset": {
+          border: "1px solid darkblue",
+        },
+      },
     },
   },
 }));
@@ -126,20 +133,21 @@ export default function Bills() {
                     <TextField
                       {...params}
                       sx={{
-                        input: { color: "#B3B3B3" },
+                        input: { color: "#B3B3B3", height: "3px" },
                         svg: { color: "#B3B3B3" },
                         label: { color: "#B3B3B3" },
-                        marginTop: "7px",
+                        marginTop: "10px",
                         marginLeft: "5px",
                         width: "110px",
+                        //height: "10px",
+                        "&:hover": {
+                          "&& fieldset": {
+                            border: "1px solid darkblue",
+                          },
+                        },
                       }}
                       classes={{
                         root: classes.root,
-                      }}
-                      DialogProps={{
-                        style: {
-                          backgroundColor: "red",
-                        },
                       }}
                     />
                   )}
@@ -159,13 +167,15 @@ export default function Bills() {
                     <TextField
                       {...params}
                       sx={{
-                        input: { color: "#B3B3B3" },
+                        input: { color: "#B3B3B3", height: "3px" },
                         svg: { color: "#B3B3B3" },
                         label: { color: "#B3B3B3" },
-                        marginTop: "7px",
+                        marginTop: "10px",
                         marginLeft: "5px",
                         "&:hover": {
-                          // border: "0.1px solid #B3B3B3",
+                          "&& fieldset": {
+                            border: "1px solid darkblue",
+                          },
                         },
                         width: "110px",
                       }}
@@ -193,21 +203,20 @@ export default function Bills() {
                   <TextField
                     {...params}
                     sx={{
-                      input: { color: "#B3B3B3" },
+                      input: { color: "#B3B3B3", height: "3px" },
                       svg: { color: "#B3B3B3" },
                       label: { color: "#B3B3B3" },
-                      marginTop: "7px",
+                      marginTop: "10px",
                       marginLeft: "5px",
                       width: "110px",
                       "&:hover": {
-                        borderColor: "#B3B3B3",
+                        "&& fieldset": {
+                          border: "1px solid darkblue",
+                        },
                       },
                     }}
                   />
                 )}
-                DialogProps={{
-                  className: classes.datePicker,
-                }}
               />
             )}
           </ThemeProvider>
@@ -242,7 +251,13 @@ export default function Bills() {
           />
         </span>
         <span style={{ marginTop: "-10px" }}>
-          <TextField variant="standard" label="Total" />
+          <TextField
+            variant="standard"
+            label="Total"
+            inputProps={{
+              className: classes.inputText,
+            }}
+          />
         </span>
       </div>
     </>

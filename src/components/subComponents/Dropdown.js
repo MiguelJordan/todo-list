@@ -12,7 +12,7 @@ import { capitalise } from "../../functions/data";
 
 const useStyles = makeStyles(() => ({
   inputProps: {
-    color: "#B3B3B3",
+    color: ({ textColor }) => textColor ?? "#B3B3B3",
     padding: "10px 0 2px 5px",
   },
 }));
@@ -29,7 +29,7 @@ export default function Dropdown({
   textColor,
   read = false,
 }) {
-  const classes = useStyles();
+  const classes = useStyles({ textColor });
   const { t } = useContext(TranslationContext);
 
   return (

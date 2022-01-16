@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import { Button, TextField } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
 //import { useNavigate } from "react-router-dom";
 
 import { AuthContext } from "../../contexts/AuthContext";
@@ -30,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
       marginTop: "160px",
     },
     [theme.breakpoints.up("md")]: {
-      marginTop: "200px",
+      marginTop: "150px",
     },
   },
 }));
@@ -42,12 +43,15 @@ export default function Recovery() {
   const classes = useStyles();
 
   const [error, setError] = useState("");
+
   const [addPayment, setAddPayement] = useState([]);
+
   const [payment, setPayment] = useState([]);
   const [recovery, setRecovery] = useState({
     id: "",
-    paymentMethod: payment,
-    amount: "",
+    paymentMethods: payment,
+    isRecovery: true,
+    customerName: "",
   });
 
   //used to add payment field
@@ -56,8 +60,10 @@ export default function Recovery() {
     values.splice(i, 1);
     setAddPayement(values);
   };
-  const handleAddField = () => {
+  const handleAddField = (e) => {
     const values = [...addPayment];
+    console.log(payment);
+    console.log(e);
     values.push({ value: null });
     setAddPayement(values);
   };
@@ -72,7 +78,6 @@ export default function Recovery() {
 
   return (
     <form className={classes.form} onSubmit={handleSubmit}>
-      {" "}
       <h2
         style={{
           color: "#001D42",
@@ -117,7 +122,7 @@ export default function Recovery() {
             variant="standard"
             value={user.workUnit.paymentMethods[0]}
             handleChange={(val) =>
-              setPayment([...payment, { paymentMethod: val }])
+              setPayment([{ ...payment, paymentMethod: val }])
             }
             sx={{ margin: 0, width: "40%" }}
             textColor={"black"}
@@ -133,7 +138,7 @@ export default function Recovery() {
             }}
             style={{ color: "black", marginBottom: "5px", width: "50%" }}
             onChange={(e) =>
-              setPayment([...payment, { amount: e.target.value.trim() }])
+              setPayment([{ ...payment, amount: e.target.value.trim() }])
             }
             required
           />
@@ -192,7 +197,7 @@ export default function Recovery() {
       </div>
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
         <Fabs
-          handleClick={handleAddField}
+          handleClick={(e) => handleAddField(e)}
           sx={{
             marginTop: "10px",
             marginBottom: "25px",

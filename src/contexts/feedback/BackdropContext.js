@@ -5,7 +5,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 export const BackdropContext = createContext();
 
 export default function BackdropProvider({ children }) {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const toggleBackdrop = (value) => setOpen(Boolean(value) ?? !open);
 

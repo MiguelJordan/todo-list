@@ -1,43 +1,73 @@
-import React, { useState } from "react";
-import {
-  Dialog,
-  DialogActions,
-  DialogContentText,
-  DialogContent,
-  DialogTitle,
-  Slide,
-  Button,
-} from "@mui/material";
+import { forwardRef, useEffect, useState } from "react";
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Slide from "@mui/material/Slide";
 
-export default function _Dialog({
-  openDialog,
-  closeDialog,
+const Transition = forwardRef((props, ref) => (
+  <Slide direction="up" ref={ref} {...props} />
+));
+
+export default function AlertDialogSlide({
+  _open = false,
+  title,
   content,
-  PositiveRes,
+  contentText,
+  agree = {
+    bgcolor: "red",
+    color: "white",
+    text: "Agree",
+    handler: () => {},
+  },
+  disagree = {
+    bgcolor: "black",
+    color: "white",
+    text: "Disagree",
+    handler: () => {},
+  },
 }) {
-  const CloseDialog = () => {
-    closeDialog(false);
-  };
+  const [open, setOpen] = useState(_open);
+  const handleClose = () => setOpen(false);
+
+  useEffect(() => setOpen(_open), [_open]);
+
   return (
-    <div>
-      <Dialog
-        open={openDialog}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={CloseDialog}
-      >
-        <DialogContent>
-          <DialogContentText>{content}</DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={PositiveRes}>Oui</Button>
-          <Button onClick={CloseDialog}>Non</Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+    <Dialog
+      open={open}
+      TransitionComponent={Transition}
+      keepMounted
+      onClose={handleClose}
+      aria-describedby="alert-dialog-slide-description"
+    >
+      {title && <DialogTitle>{title}</DialogTitle>}
+      <DialogContent>
+        {contentText && <DialogContentText>{contentText}</DialogContentText>}
+        {content}
+      </DialogContent>
+      <DialogActions>
+        <Button
+          onClick={() => {
+            handleClose();
+            disagree.handler();
+          }}
+          style={{ backgroundColor: disagree.bgcolor }}
+        >
+          {disagree.text}
+        </Button>
+        <Button
+          onClick={() => {
+            handleClose();
+            agree.handler();
+          }}
+          style={{ backgroundColor: agree.bgcolor }}
+        >
+          {agree.text}
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 }

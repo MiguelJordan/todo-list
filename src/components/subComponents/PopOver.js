@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Menu,
   MenuItem,
@@ -8,7 +8,11 @@ import {
   IconButton,
 } from "@mui/material";
 
-export default function PopOver({ items = [], Icon, event }) {
+// contexts
+import { TranslationContext } from "../../contexts/TranslationContext";
+
+export default function PopOver({ items = [], Icon, event, sx = {} }) {
+  const { t } = useContext(TranslationContext);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
   const handleOpenUser = (e) => {
@@ -21,7 +25,10 @@ export default function PopOver({ items = [], Icon, event }) {
   return (
     <>
       <Tooltip title="Action">
-        <IconButton onClick={handleOpenUser} style={{ color: "#04A5E0" }}>
+        <IconButton
+          onClick={handleOpenUser}
+          style={{ color: "#04A5E0", ...sx }}
+        >
           {Icon}
         </IconButton>
       </Tooltip>
@@ -60,7 +67,9 @@ export default function PopOver({ items = [], Icon, event }) {
                 color: "white",
               }}
             >
-              {item.name}
+              {item?.role
+                ? t(`_var.${item.role}.popover.${item.name}`)
+                : item.name}
             </Typography>
           </MenuItem>
         ))}

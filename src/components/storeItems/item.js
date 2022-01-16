@@ -23,9 +23,9 @@ import queries from "../../functions/queries";
 
 const useStyles = makeStyles((theme) => ({
   media: {
+    width: 250,
     height: 200,
     // paddingTop: "70.25%", // 16:9
-    minWidth: "60px",
     borderRadius: "13px 13px 0 0",
   },
   content: {
@@ -47,11 +47,9 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
   },
   card: {
+    width: 250,
     backgroundColor: "transparent",
     margin: "8px",
-    minWidth: "250px",
-    maxWidth: "280px",
-    flexBasis: "33.33333%",
   },
 }));
 
@@ -144,6 +142,11 @@ const Item = ({ data = {}, orderId, preview = true, role = "" }) => {
     });
   };
 
+  const getInputWith = (quantity) => {
+    let length = String(quantity ?? 0).length * 10;
+    return length > 40 ? 40 : length > 1 ? length : 1;
+  };
+
   return (
     <>
       <Card className={classes.card}>
@@ -187,50 +190,69 @@ const Item = ({ data = {}, orderId, preview = true, role = "" }) => {
               )}
             </div>
 
-            <div style={{ marginBottom: "10px" }}>
-              <label htmlFor="">{t("compo.item.stock-quantity")}: </label>
-              <output
-                type="number"
+            <div
+              style={{
+                display: "flex",
+                flexFlow: "column",
+                justifyContent: "flex-start",
+              }}
+            >
+              <div
                 style={{
-                  backgroundColor: "#415672",
-                  color: "#FFFFFF",
-                  strokewidth: 40,
-                  marginLeft: 4,
-                  padding: 8,
-                  borderRadius: "5px",
+                  display: "flex",
+                  flexFlow: "row",
+                  alignItems: "center",
                 }}
               >
-                {data.quantity}
-              </output>
+                <label>{t("compo.item.stock-quantity")}: </label>
+                <input
+                  readOnly
+                  value={data.quantity}
+                  // type="number"
+                  style={{
+                    backgroundColor: "#415672",
+                    color: "#FFFFFF",
+                    width: getInputWith(data.quantity),
+                    border: "none",
+                    outline: "none",
+                    fontSize: 17,
+                    textAlign: "center",
+                    marginLeft: 4,
+                    padding: 4,
+                    borderRadius: "5px",
+                  }}
+                />
+              </div>
+              {!preview && role == "waiter" && (
+                <>
+                  <div style={{ display: "flex", flexFlow: "row" }}>
+                    <label htmlFor="">{t("compo.item.quantity")} :</label>
+                    <input
+                      width={2}
+                      type="number"
+                      name="quantity"
+                      min={1}
+                      max={data.quantity}
+                      style={{
+                        width: "30px",
+                        marginLeft: 8,
+                        backgroundColor: "#415672",
+                        color: "#FFFFFF",
+                      }}
+                      className={classes.inp}
+                    />
+                  </div>
+                  <Button
+                    type="submit"
+                    variant="outlined"
+                    style={{ border: "4px solid #2B4362", margin: "5px auto" }}
+                  >
+                    {t("compo.item.btn-add")}
+                  </Button>
+                </>
+              )}
             </div>
-            {!preview && role == "waiter" && (
-              <>
-                <div style={{ margin: "10px auto" }}>
-                  <label htmlFor="">{t("compo.item.quantity_toOrder")} :</label>
-                  <input
-                    width={2}
-                    type="number"
-                    name="quantity"
-                    min={1}
-                    max={data.quantity}
-                    style={{
-                      width: "30px",
-                      marginLeft: 8,
-                      backgroundColor: "#415672",
-                      color: "#FFFFFF",
-                    }}
-                    className={classes.inp}
-                  />
-                </div>
-                <Button
-                  type="submit"
-                  variant="outlined"
-                  style={{ border: "4px solid #2B4362" }}
-                >
-                  {t("compo.item.btn-add")}
-                </Button>
-              </>
-            )}
+
             {role === "admin" && (
               <>
                 <Button variant="contained" style={{ marginTop: "10px" }}>

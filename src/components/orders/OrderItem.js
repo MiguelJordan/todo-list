@@ -1,9 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Button } from "@mui/material";
 import { makeStyles } from "@material-ui/core";
-import Card from "@mui/material/Card";
-import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
 
 // components
 import DisplayField from "../subComponents/DisplayField";
@@ -22,7 +18,6 @@ import { _delete } from "../../functions/http";
 import queries from "../../functions/queries";
 
 // icons
-
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { DeleteRounded, EditRounded } from "@mui/icons-material";
 
@@ -31,30 +26,24 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexFlow: "row",
     alignItems: "center",
-    justifyContent: "space-evenly",
+    justifyContent: "space-between",
     margin: "5px 0",
     padding: "5px 0",
     border: "2px solid #173153",
     borderRadius: 8,
     width: 320,
   },
-  imgContainer: {
+  img: {
     width: "95px",
     height: "95px",
-    // border: "4px solid #173153",
-    borderRadius: 8,
-    overflow: "hidden",
-  },
-  img: {
-    width: "100%",
-    height: "100%",
+    margin: "0 5px",
     objectFit: "cover",
+    borderRadius: 8,
   },
   details: {
     display: "flex",
     flexFlow: "column",
     justifyContent: "center",
-    marginLeft: 8,
   },
   detailsText: {
     display: "flex",
@@ -131,16 +120,18 @@ const OrderItem = ({ item = {}, role = "" }) => {
 
   const WaiterPopMenu = [
     {
-      name: "Supprimer",
-      Icon: <DeleteRounded />,
-      color: "#FF0000",
       action: deleteOrderItem,
+      color: "#FF0000",
+      Icon: <DeleteRounded />,
+      name: "orderItem-delete",
+      role: "waiter",
     },
     {
-      name: "Modifier",
+      action: (item) => console.log("updating", item),
       color: "#04A5E0",
       Icon: <EditRounded />,
-      action: (item) => console.log("modifying", item),
+      name: "orderItem-update",
+      role: "waiter",
     },
   ];
 
@@ -153,90 +144,16 @@ const OrderItem = ({ item = {}, role = "" }) => {
     },
   ];
 
-  //   const handleSubmit = async (item, e) => {
-  //     e.preventDefault();
-
-  //     const _isOffer = getBool(isOffer);
-
-  //     // regroup data
-  //     let _item = {
-  //       companyCode: item.companyCode,
-  //       isOffer: _isOffer,
-  //       name: item.name,
-  //       orderId,
-  //       qty: parseFloat(e.target[5].value),
-  //       selectedPrice: _isOffer ? 0 : selectedPrice,
-  //       storeId: item.storeId,
-  //     };
-  //     // console.log(_item);
-
-  //     if (
-  //       !_isOffer &&
-  //       (!_item.qty || _item.qty <= 0 || _item.qty > item.quantity)
-  //     ) {
-  //       return showNotification({
-  //         msg: t("server_err.Invalid quantity"),
-  //         color: "error",
-  //       });
-  //     }
-  //     toggleBackdrop(true);
-
-  //     const res = await post({ url: "/orderItems", body: _item });
-  //     // console.log(res);
-
-  //     toggleBackdrop(false);
-
-  //     if (res?.error) {
-  //       return showNotification({
-  //         msg: t(`server_err.${res.error}`),
-  //         color: "error",
-  //       });
-  //     }
-
-  //     // reset form is all is good
-  //     e.target.reset();
-
-  //     // send store item updated event
-  //     sendEvent({
-  //       name: "cE-store-items-updated",
-  //       props: {
-  //         companyCode: user.company.code,
-  //         query: queries["cE-store-items-updated"]({
-  //           items: [item.name],
-  //           storeId: item.storeId,
-  //         }),
-  //       },
-  //       rooms: [user.workUnit.code],
-  //     });
-
-  //     // send order item created event
-  //     sendEvent({
-  //       name: "cE-order-item-created",
-  //       props: {
-  //         companyCode: user.company.code,
-  //         id: orderId,
-  //       },
-  //       rooms: [user.workUnit.code],
-  //     });
-
-  //     showNotification({
-  //       msg: t("feedback.waiter.order item created success"),
-  //       color: "success",
-  //     });
-  //   };
-
   return (
     <div className={classes.orderItem}>
-      <div className={classes.imgContainer}>
-        <img className={classes.img} src={getImage({ url: item.imageUrl })} />
-      </div>
+      <img className={classes.img} src={getImage({ url: item.imageUrl })} />
 
       <div className={classes.details}>
         <div className={classes.detailsText}>
           <span>{t("compo.item.name")}:</span>
           <DisplayField
             value={capitalise(item.name)}
-            sx={{ ...displayField, width: 110 }}
+            sx={{ ...displayField, width: 125 }}
           />
         </div>
 
@@ -263,7 +180,12 @@ const OrderItem = ({ item = {}, role = "" }) => {
       </div>
 
       {["cashier", "waiter"].includes(role) ? (
-        <PopOver items={WaiterPopMenu} Icon={<MoreVertIcon />} event={item} />
+        <PopOver
+          items={WaiterPopMenu}
+          Icon={<MoreVertIcon />}
+          event={item}
+          sx={{ paddingLeft: 0 }}
+        />
       ) : (
         <PopOver items={AdminPopMenu} Icon={<MoreVertIcon />} event={item} />
       )}

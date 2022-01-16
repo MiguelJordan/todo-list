@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { makeStyles } from "@material-ui/core";
 
 // components
-import Item from "./item";
+import Item from "./Item";
 
 // contexts
 import { TranslationContext } from "../../contexts/TranslationContext";

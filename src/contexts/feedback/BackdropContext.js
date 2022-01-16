@@ -5,7 +5,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 export const BackdropContext = createContext();
 
 export default function BackdropProvider({ children }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   const toggleBackdrop = (value) => setOpen(Boolean(value) ?? !open);
 
@@ -21,7 +21,9 @@ export default function BackdropProvider({ children }) {
         <div
           style={{
             backgroundColor: "black",
-            opacity: ".3",
+            opacity: ".7",
+            width: 40,
+            height: 40,
             padding: "20px",
             borderRadius: "8px",
           }}

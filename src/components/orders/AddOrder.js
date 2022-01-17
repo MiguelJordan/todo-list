@@ -1,49 +1,27 @@
 import { useContext, useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import { Button, TextField } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 
-// components
-import Dropdown from "../../components/subComponents/Dropdown";
-
-// contexts
 import { AuthContext } from "../../contexts/AuthContext";
-import { BackdropContext } from "../../contexts/feedback/BackdropContext";
 import { SocketContext } from "../../contexts/SocketContext";
-import { TranslationContext } from "../../contexts/TranslationContext";
-
-// functions
+import { TrContext } from "../../contexts/TranslationContext";
 import { post } from "../../functions/http";
+
+import { useNavigate } from "react-router-dom";
+import Dropdown from "../subComponents/Dropdown";
+
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const useStyles = makeStyles((theme) => ({
   inputText: {
     color: "black",
   },
-  form: {
-    display: "flex",
-    flexFlow: "column",
-    justifyContent: "center",
-    backgroundColor: "#FFFFFF",
-    margin: "auto",
-    maxWidth: "350px",
-
-    padding: "20px",
-    color: "#B3B3B3",
-    borderRadius: "3px",
-    [theme.breakpoints.down("sm")]: {
-      marginTop: "160px",
-    },
-    [theme.breakpoints.up("md")]: {
-      marginTop: "160px",
-    },
-  },
 }));
 
 export default function CreateOrder() {
   const { user } = useContext(AuthContext);
-  const { toggleBackdrop } = useContext(BackdropContext);
   const { sendEvent } = useContext(SocketContext);
-  const { t } = useContext(TranslationContext);
+  const { t } = useContext(TrContext);
 
   const navigate = useNavigate();
 
@@ -57,8 +35,8 @@ export default function CreateOrder() {
     waiterId: user.id,
     consumptionPoint: user.workUnit.consumptionPoints[0],
   });
-
   const [error, setError] = useState("");
+  console.log(orderInfo.consumptionPoint);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -68,7 +46,7 @@ export default function CreateOrder() {
 
     console.log(order);
 
-    // if (!order.tableName) return setError(t("server_err.Invalid table name"));
+    if (!order.tableName) return setError(t("server_err.Invalid table name"));
 
     if (!order.consumptionPoint) {
       return setError(t("server_err.Invalid consumption point"));
@@ -78,42 +56,50 @@ export default function CreateOrder() {
       return setError(t("server_err.Invalid balance carried forward"));
     }
 
-    //toggleBackdrop(true);
-
     // request order creation
-    const res = await post({ url: "/orders", body: order });
-
-    toggleBackdrop(false);
+    const res = await post({ url: `${apiUrl}/orders`, body: order });
 
     // handle order creation errors
-    if (res?.error) return setError(t(`server_err.${res.error}`));
+    if (res?.error) return setError(res.error);
+
+    navigate(`/waiter/orders/add/${res.insertedId}`);
+
+    console.log(res);
 
     // sending order created event
     sendEvent({
       name: "cE-order-created",
       props: {
+        date: true,
         companyCode: user.company.code,
-        id: res.insertedId,
+        source: "waiter",
+        startTime: new Date(),
+        unitCode: user.workUnit.code,
+        waiterId: user.id,
       },
       rooms: [user.workUnit.code],
     });
-
-    // navigation
-    navigate(`/waiter/orders/${res.insertedId}/add-items`);
   };
 
   return (
-    <form className={classes.form} onSubmit={handleSubmit}>
-      <h2
-        style={{
-          color: "#001D42",
-          marginTop: "15px",
-          alignSelf: "center",
-        }}
-      >
-        {t("pages.waiter.orders.form_add_order.title")}
+    <form
+      style={{
+        display: "flex",
+        flexFlow: "column",
+        justifyContent: "center",
+        backgroundColor: "#FFFFFF",
+        margin: "160px auto",
+        maxWidth: "350px",
+        minWidth: "250px",
+        padding: "20px",
+        color: "#B3B3B3",
+      }}
+      onSubmit={handleSubmit}
+    >
+      <h2 style={{ color: "#001D42", margin: "10px auto" }}>
+        Ajouter Une Commande
       </h2>
-      {error && <div className="formError"> {t(`server_err.${error}`)}</div>}
+      {error && <div className="formError">{error}</div>}
       <TextField
         required
         type="text"
@@ -124,7 +110,7 @@ export default function CreateOrder() {
           className: classes.inputText,
         }}
         label="Table Name"
-        style={{ color: "black", marginBottom: "5px", marginTop: "0px" }}
+        style={{ color: "black" }}
         onChange={(e) =>
           setOrderInfo({
             ...orderInfo,
@@ -133,14 +119,14 @@ export default function CreateOrder() {
         }
       />
       <TextField
-        // fullWidth
+        fullWidth
         type="number"
         name="balanceForward"
         variant="standard"
         inputProps={{
           className: classes.inputText,
         }}
-        style={{ color: "black", marginBottom: "5px" }}
+        style={{ color: "black" }}
         onChange={(e) =>
           setOrderInfo({
             ...orderInfo,
@@ -153,21 +139,15 @@ export default function CreateOrder() {
       <Dropdown
         values={user.workUnit.consumptionPoints}
         label="Consumption Point"
-        variant="standard"
         value={orderInfo.consumptionPoint}
         handleChange={(val) =>
           setOrderInfo({ ...orderInfo, consumptionPoint: val })
         }
-        sx={{ margin: 0 }}
-        textColor={"black"}
+        sx={{ margin: "8px" }}
       />
 
-      <Button
-        variant="contained"
-        type="submit"
-        style={{ marginTop: "20px", marginBottom: "25px" }}
-      >
-        {t("pages.waiter.orders.form_add_order.add_btn")}
+      <Button variant="contained" type="submit" style={{ margin: "15px auto" }}>
+        Ajouter
       </Button>
     </form>
   );

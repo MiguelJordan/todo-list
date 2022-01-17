@@ -1,44 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import Fab from "@mui/material/Fab";
-// import { styled } from "@mui/material/styles";
-import Backdrop from "@mui/material/Backdrop";
-import Fade from "@mui/material/Fade";
-import Modal from "@mui/material/Modal";
-import Box from "@mui/material/Box";
 
 import AddIcon from "@mui/icons-material/Add";
+import { Tooltip, Zoom } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
 
-// const StyledFab = styled(Fab)(({ theme }) => ({
-//   // position: "relative",
-//   // zIndex: 1,
-//   // bottom: 45,
-//   // left: 230,
-//   // right: -10,
-//   // margin: "auto",
-//   // float: "right",
-//   // [theme.breakpoints.between("sm", "md")]: {
-//   //   left: 500,
-//   // },
-//   // [theme.breakpoints.up("md")]: {
-//   //   left: 650,
-//   // },
-//   // [theme.breakpoints.up("lg")]: {
-//   //   left: 850,
-//   // },
-//   display: "flex",
-//   flexDirection: "column",
-//   //alignItems: "center",
-//   marginTop: "auto",
-//   // alignSelf: "flex-end",
-// }));
-
-export default function Fabs({ path = "" }) {
+export default function Fabs({ path = "", handleClick, sx = {}, ToolTipText }) {
   const navigate = useNavigate();
 
   return (
-    <>
+    <Tooltip TransitionComponent={Zoom} title={ToolTipText}>
       <Fab
         color="primary"
         aria-label="add"
@@ -46,16 +18,21 @@ export default function Fabs({ path = "" }) {
           position: "relative",
           display: "flex",
           alignItems: "flex-end",
-          marginLeft: "auto",
+          marginLeft: "20px",
+          marginBottom: "auto",
+          ...sx,
         }}
       >
         <AddIcon
-          onClick={() => navigate(path)}
+          onClick={() => {
+            if (path) navigate(path);
+            handleClick();
+          }}
           style={{
             alignSelf: "center",
           }}
         />
       </Fab>
-    </>
+    </Tooltip>
   );
 }

@@ -4,6 +4,7 @@ import { useContext, useState } from "react";
 import Dropdown from "../../components/subComponents/Dropdown";
 import Search from "../../components/subComponents/Search";
 import ItemList from "../../components/storeItems/ItemList";
+import Fabs from "../../components/subComponents/Fabs";
 
 // contexts
 import { ItemContext } from "../../contexts/ItemContext";
@@ -55,9 +56,14 @@ export default function Drinks() {
           values={["Central", "Unit"]}
           value={store}
           handleChange={setStore}
+          sx={{ marginRight: "15px" }}
         />
 
         <Search onChange={setSearchVal} />
+        <Fabs
+          path="/admin/stores/item-add"
+          sx={{ width: "45px", height: "45px", marginTop: "5px" }}
+        />
       </div>
       <ItemList items={filterArray} role="admin" />
     </>

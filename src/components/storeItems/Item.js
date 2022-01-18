@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
+import { LoadingButton } from "@mui/lab";
 
 // components
 import Dropdown from "../subComponents/Dropdown";
@@ -77,6 +78,8 @@ const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
   const { t } = useContext(TranslationContext);
   const classes = useStyles();
 
+  const [loading, setLoading] = useState(false);
+
   const [isOffer, setIsOffer] = useState("no");
   const [selectedPrice, setPrice] = useState(data.prices[0]);
 
@@ -86,6 +89,7 @@ const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
 
   const handleSubmit = async (item, e) => {
     e.preventDefault();
+    setLoading(true);
 
     const _isOffer = getBool(isOffer);
 
@@ -105,19 +109,21 @@ const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
       !_isOffer &&
       (!_item.qty || _item.qty <= 0 || _item.qty > item.quantity)
     ) {
+      setLoading(false);
       return showNotification({
         msg: t("server_err.Invalid quantity"),
         color: "error",
       });
     }
 
-    toggleBackdrop(true);
+    //toggleBackdrop(true);
 
     const res = await post({ url: "/orderItems", body: _item });
     // console.log(res);
 
     if (res?.error) {
-      toggleBackdrop(false);
+      //toggleBackdrop(false);
+      setLoading(false);
       return showNotification({
         msg: t(`server_err.${res.error}`),
         color: "error",
@@ -150,7 +156,8 @@ const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
       rooms: [user.workUnit.code],
     });
 
-    toggleBackdrop(false);
+    //toggleBackdrop(false);
+    setLoading(false);
 
     showNotification({
       msg: t("feedback.waiter.order item created success"),
@@ -258,13 +265,14 @@ const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
                       className={classes.inp}
                     />
                   </div>
-                  <Button
+                  <LoadingButton
+                    loading={loading}
                     type="submit"
                     variant="outlined"
                     style={{ border: "4px solid #2B4362", margin: "5px auto" }}
                   >
                     {t("compo.item.btn-add")}
-                  </Button>
+                  </LoadingButton>
                 </>
               )}
             </div>

@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { TranslationContext } from "../../contexts/TranslationContext";
 import { makeStyles } from "@material-ui/core";
+import Divider from "@mui/material/Divider";
 
 import { filter } from "../../functions/data";
 
@@ -125,17 +126,18 @@ export default function Staff() {
               //justifyContent: "space-between",
               width: "700px",
               minWidth: "400px",
-              backgroundColor: "#001e3c",
+              backgroundColor: "transparent",
             }}
           >
-            {filtered.map((user) => (
+            {filtered.map((user, index, arr) => (
               <ListItem
                 key={user.id}
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
                   textAlign: "center",
-                  borderBottom: "2px solid #B3B3B3",
+                  //borderBottom: "2px solid #B3B3B3",
+                  borderWidth: "80%",
                 }}
               >
                 <ListItemText style={{ maxWidth: "50px", marginLeft: "1px" }}>
@@ -156,6 +158,17 @@ export default function Staff() {
                   Icon={<MoreVertIcon />}
                   event={user}
                 />
+                {arr.length !== index + 1 && (
+                  <Divider
+                    sx={{
+                      width: "90%",
+                      backgroundColor: "#B3B3B3",
+                      position: "absolute",
+                      marginTop: "80px",
+                      marginLeft: "10px",
+                    }}
+                  />
+                )}
               </ListItem>
             ))}
           </List>

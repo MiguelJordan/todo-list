@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import { Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { LoadingButton } from "@mui/lab";
 
 // components
 import Dropdown from "../../components/subComponents/Dropdown";
@@ -48,6 +49,7 @@ export default function CreateOrder() {
   const navigate = useNavigate();
 
   const classes = useStyles();
+  const [loading, setLoading] = useState(false);
 
   const [orderInfo, setOrderInfo] = useState({
     tableName: "",
@@ -63,6 +65,7 @@ export default function CreateOrder() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
     let order = { ...orderInfo };
 
@@ -71,10 +74,12 @@ export default function CreateOrder() {
     // if (!order.tableName) return setError(t("server_err.Invalid table name"));
 
     if (!order.consumptionPoint) {
+      setLoading(false);
       return setError(t("server_err.Invalid consumption point"));
     }
 
     if (order.balanceForward < 0) {
+      setLoading(false);
       return setError(t("server_err.Invalid balance carried forward"));
     }
 
@@ -83,10 +88,13 @@ export default function CreateOrder() {
     // request order creation
     const res = await post({ url: "/orders", body: order });
 
-    toggleBackdrop(false);
+    //toggleBackdrop(false);
 
     // handle order creation errors
-    if (res?.error) return setError(t(`server_err.${res.error}`));
+    if (res?.error) {
+      setLoading(false);
+      return setError(t(`server_err.${res.error}`));
+    }
 
     // sending order created event
     sendEvent({
@@ -97,6 +105,7 @@ export default function CreateOrder() {
       },
       rooms: [user.workUnit.code],
     });
+    setLoading(false);
 
     // navigation
     navigate(`/waiter/orders/${res.insertedId}/add-items`);
@@ -162,13 +171,14 @@ export default function CreateOrder() {
         textColor={"black"}
       />
 
-      <Button
+      <LoadingButton
+        loading={loading}
         variant="contained"
         type="submit"
         style={{ marginTop: "20px", marginBottom: "25px" }}
       >
         {t("pages.waiter.orders.form_add_order.add_btn")}
-      </Button>
+      </LoadingButton>
     </form>
   );
 }

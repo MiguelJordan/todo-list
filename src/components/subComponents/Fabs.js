@@ -6,7 +6,12 @@ import { Tooltip, Zoom } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
 
-export default function Fabs({ path = "", handleClick, sx = {}, ToolTipText }) {
+export default function Fabs({
+  path = "",
+  handleClick,
+  sx = {},
+  ToolTipText = "",
+}) {
   const navigate = useNavigate();
 
   return (
@@ -25,7 +30,7 @@ export default function Fabs({ path = "", handleClick, sx = {}, ToolTipText }) {
       >
         <AddIcon
           onClick={() => {
-            if (path) navigate(path);
+            if (path) return navigate(path);
             handleClick();
           }}
           style={{

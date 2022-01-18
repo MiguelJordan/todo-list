@@ -3,8 +3,10 @@ import { makeStyles } from "@material-ui/core";
 import TextField from "@mui/material/TextField";
 import { LoadingButton } from "@mui/lab";
 
-import Dropdown from "../subComponents/Dropdown";
+//component
+import Dropdown from "../../components/subComponents/Dropdown";
 
+//context
 import { TranslationContext } from "../../contexts/TranslationContext";
 import { AuthContext } from "../../contexts/AuthContext";
 
@@ -32,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AddItem() {
+export default function StoreAdd() {
   const { t } = useContext(TranslationContext);
   const { user } = useContext(AuthContext);
 

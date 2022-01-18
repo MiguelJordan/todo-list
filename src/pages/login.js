@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { Button, Typography, TextField } from "@mui/material";
 import { makeStyles } from "@material-ui/core";
 import { Avatar } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 
 //components
 import Layout from "../components/_layout/Layout";
@@ -30,6 +31,7 @@ const Page = () => {
   const [user, setUser] = useState({ id: "", password: "" });
   const [disabled] = useState(false);
   const [error, setError] = useState();
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setUser({
@@ -41,17 +43,28 @@ const Page = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError();
+    setLoading(true);
 
     // validate data
-    if (!user.id) return setError(t("Invalid user id"));
-    if (!user.password) return setError(t("Invalid password"));
+    if (!user.id) {
+      setLoading(false);
+      return setError(t("Invalid user id"));
+    }
+    if (!user.password) {
+      setLoading(false);
+      return setError(t("Invalid password"));
+    }
 
     // submit data
     const res = await login(user);
 
     // verify response
-    if (res.error) return setError(res.error);
+    if (res.error) {
+      setLoading(false);
+      return setError(res.error);
+    }
 
+    setLoading(false);
     // redirect to dashboard
     return navigate(`/${res.role}`);
   };
@@ -135,15 +148,16 @@ const Page = () => {
           style={{ marginTop: "10px" }}
         />
 
-        <Button
+        <LoadingButton
           variant="contained"
           color="primary"
           type="submit"
+          loading={loading}
           style={{ marginTop: "15px" }}
           disabled={disabled}
         >
           {t("pages.login.title")}
-        </Button>
+        </LoadingButton>
       </form>
     </div>
   );

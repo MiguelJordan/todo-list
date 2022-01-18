@@ -9,6 +9,7 @@ import AddStaff from "./Staff.add";
 import StaffDetails from "./Staff.details";
 import Stores from "./Stores";
 import StoreDetails from "./Store.details";
+import StoreAdd from "./Store.item-add";
 
 const NotFound = React.lazy(() => import("../404"));
 
@@ -40,6 +41,10 @@ export default function Admin() {
       <Route
         path="/stores"
         element={<Layout Main={Stores} links={mainLinks} />}
+      />
+      <Route
+        path="/stores/item-add"
+        element={<Layout Main={StoreAdd} links={mainLinks} />}
       />
       <Route
         path="/store/:id"

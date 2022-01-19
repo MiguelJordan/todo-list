@@ -124,7 +124,7 @@ export default function Staff() {
               display: "flex",
               flexFlow: "column",
               //justifyContent: "space-between",
-              width: "700px",
+              maxWidth: "500px",
               minWidth: "400px",
               backgroundColor: "transparent",
             }}
@@ -141,10 +141,7 @@ export default function Staff() {
                 }}
               >
                 <ListItemText style={{ maxWidth: "50px", marginLeft: "1px" }}>
-                  <DisplayField
-                    value={user.name}
-                    sx={{ maxWidth: "75px", marginLeft: "1px" }}
-                  />
+                  <DisplayField value={user.name} sx={{ maxWidth: "95px" }} />
                 </ListItemText>
 
                 <ListItemText style={{ maxWidth: "50px", marginLeft: "1px" }}>
@@ -159,15 +156,16 @@ export default function Staff() {
                   event={user}
                 />
                 {arr.length !== index + 1 && (
-                  <Divider
-                    sx={{
+                  <div
+                    style={{
                       width: "90%",
                       backgroundColor: "#B3B3B3",
                       position: "absolute",
                       marginTop: "80px",
                       marginLeft: "10px",
+                      height: "1px",
                     }}
-                  />
+                  ></div>
                 )}
               </ListItem>
             ))}

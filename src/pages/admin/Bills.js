@@ -104,7 +104,7 @@ export default function Bills() {
       {/* <h1 className="center">{t("Admin's Bills")}</h1> */}
 
       <PopUp open={open} close={setOpen}>
-        <div style={{ display: "flex", justifyContent: "center" }}>
+        <div style={{ display: "flex", marginLeft: "-10px" }}>
           <Dropdown
             label="Format"
             values={["Period", "Date"]}
@@ -213,7 +213,7 @@ export default function Bills() {
             </ThemeProvider>
           </LocalizationProvider>
         </div>
-        <div style={{ display: "flex", justifyContent: "center" }}>
+        <div style={{ display: "flex", marginLeft: "-35px" }}>
           <Dropdown
             label="PaymentMethod"
             values={user.workUnit.paymentMethods}
@@ -236,7 +236,7 @@ export default function Bills() {
           onClick={() => setOpen(true)}
           style={{ marginLeft: "10px" }}
         >
-          <FilterAlt style={{ color: "blue" }} />
+          <FilterAlt style={{ color: "#9e9e9e" }} />
         </IconButton>
       </div>
       <OrderList array={_orders} role="admin" />

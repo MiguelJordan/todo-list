@@ -2,6 +2,8 @@ import React, { useState, useContext } from "react";
 import { makeStyles } from "@material-ui/core";
 import TextField from "@mui/material/TextField";
 import { LoadingButton } from "@mui/lab";
+import ImageIcon from "@mui/icons-material/Image";
+import { CameraAlt, PhotoCamera, DeleteRounded } from "@mui/icons-material";
 
 //component
 import Dropdown from "../../components/subComponents/Dropdown";
@@ -9,10 +11,13 @@ import Dropdown from "../../components/subComponents/Dropdown";
 //context
 import { TranslationContext } from "../../contexts/TranslationContext";
 import { AuthContext } from "../../contexts/AuthContext";
+import ImagePreview from "../../components/subComponents/ImagePreview";
+import PopOver from "../../components/subComponents/PopOver";
 
 const useStyles = makeStyles((theme) => ({
   inputText: {
     color: "black",
+    width: "100px",
   },
   form: {
     display: "flex",
@@ -26,10 +31,10 @@ const useStyles = makeStyles((theme) => ({
     color: "#B3B3B3",
     borderRadius: "3px",
     [theme.breakpoints.down("sm")]: {
-      marginTop: "135px",
+      marginTop: "105px",
     },
     [theme.breakpoints.up("md")]: {
-      marginTop: "120px",
+      marginTop: "105px",
     },
   },
 }));
@@ -42,6 +47,7 @@ export default function StoreAdd() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [image, setImage] = useState();
 
   const [item, setItem] = React.useState({
     name: "",
@@ -51,9 +57,12 @@ export default function StoreAdd() {
     prices: [],
     imageUrl: "",
     commissionAmount: "",
+    commissionRatio: "",
     companyCode: user.company.code,
     storeId: user.workUnit.storeId,
     quantity: "",
+    MeasureUnitPlural: "",
+    MeasureUnit: "",
   });
 
   const handleSubmit = (e) => {
@@ -81,6 +90,18 @@ export default function StoreAdd() {
       setLoading(false);
       return setError("Invalid commission Amount");
     }
+    if (!item.commissionRatio) {
+      setLoading(false);
+      return setError("Invalid commission Ratio");
+    }
+    if (!item.MeasureUnitPlural) {
+      setLoading(false);
+      return setError("Invalid Measure Unit Plural");
+    }
+    if (!item.MeasureUnit) {
+      setLoading(false);
+      return setError("Invalid Measure Unit ");
+    }
     if (!item.quantity || item.quantity < 0) {
       setLoading(false);
       return setError("Invalid Quantity");
@@ -89,6 +110,51 @@ export default function StoreAdd() {
     setLoading(false);
     console.log(item);
   };
+
+  const toBase64 = async (file) => {
+    return new Promise((reslove, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => reslove(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
+  const Photo = async (e) => {
+    if (!e) return "";
+
+    setError("");
+
+    const extension = e.target.files[0].type.split("/");
+
+    if (!["jpg", "png", "jpeg"].includes(extension[1]))
+      return setError("Invalid Image Format");
+    let base64 = await toBase64(e.target.files[0]);
+
+    console.log(e);
+    setImage(base64);
+  };
+
+  const RemoveImage = () => {
+    setImage("");
+  };
+
+  const popMenu = [
+    {
+      name: "Image",
+      color: "#04A5E0",
+      Icon: <PhotoCamera />,
+      action: (e) => Photo(e),
+      type: "image",
+    },
+
+    {
+      name: "Remove",
+      color: "#FF0000",
+      Icon: <DeleteRounded />,
+      action: (user) => RemoveImage(user),
+    },
+  ];
 
   return (
     <form className={classes.form} onSubmit={handleSubmit}>
@@ -101,13 +167,19 @@ export default function StoreAdd() {
       >
         {"Add Item"}
       </h2>
+      <ImagePreview
+        button={<PopOver items={popMenu} Icon={<CameraAlt />} event={user} />}
+        imageSrc={image}
+      />
+
       {error && <div className="formError"> {error}</div>}
       <div
         style={{
           display: "flex",
           flexWrap: "wrap",
-          justifyContent: "center",
-          gap: "3px",
+          justifyContent: "space-between",
+          maxHeight: "160px",
+          overflowY: "auto",
         }}
       >
         <TextField
@@ -178,7 +250,6 @@ export default function StoreAdd() {
           }
           label="Cost"
         />
-
         <TextField
           // fullWidth
           type="number"
@@ -217,8 +288,8 @@ export default function StoreAdd() {
         />
         <TextField
           // fullWidth
-          type="file"
-          name="imageUrl"
+          type="number"
+          name="commissionRatio"
           variant="standard"
           inputProps={{
             className: classes.inputText,
@@ -230,7 +301,41 @@ export default function StoreAdd() {
               [e.target.name]: e.target.value.trim(),
             })
           }
-          label="Image"
+          label="Commission Ratio"
+          required
+        />
+        <TextField
+          name="MeasureUnitPlural"
+          variant="standard"
+          inputProps={{
+            className: classes.inputText,
+          }}
+          style={{ color: "black", marginBottom: "5px" }}
+          onChange={(e) =>
+            setItem({
+              ...item,
+              [e.target.name]: e.target.value.trim(),
+            })
+          }
+          label=" Measure Unit Plural"
+          required
+        />{" "}
+        <TextField
+          // fullWidth
+
+          name="MeasureUnit"
+          variant="standard"
+          inputProps={{
+            className: classes.inputText,
+          }}
+          style={{ color: "black", marginBottom: "5px" }}
+          onChange={(e) =>
+            setItem({
+              ...item,
+              [e.target.name]: e.target.value.trim(),
+            })
+          }
+          label=" Measure Unit"
           required
         />
       </div>

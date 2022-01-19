@@ -5,6 +5,7 @@ import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import { LoadingButton } from "@mui/lab";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
 // components
 import Dropdown from "../subComponents/Dropdown";
@@ -267,6 +268,10 @@ const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
                   </div>
                   <LoadingButton
                     loading={loading}
+                    loadingPosition="start"
+                    startIcon={
+                      <AddShoppingCartIcon style={{ color: "#2196f3" }} />
+                    }
                     type="submit"
                     variant="outlined"
                     style={{ border: "4px solid #2B4362", margin: "5px auto" }}

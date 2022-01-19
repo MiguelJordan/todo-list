@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core";
 import { Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { LoadingButton } from "@mui/lab";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
 // components
 import Dropdown from "../../components/subComponents/Dropdown";
@@ -35,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
       marginTop: "160px",
     },
     [theme.breakpoints.up("md")]: {
-      marginTop: "160px",
+      marginTop: "130px",
     },
   },
 }));
@@ -173,7 +174,9 @@ export default function CreateOrder() {
 
       <LoadingButton
         loading={loading}
+        loadingPosition="start"
         variant="contained"
+        startIcon={<AddShoppingCartIcon style={{ color: "#2196f3" }} />}
         type="submit"
         style={{ marginTop: "20px", marginBottom: "25px" }}
       >

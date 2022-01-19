@@ -75,11 +75,7 @@ const OrderItem = ({ item = {}, role = "" }) => {
     toggleBackdrop(true);
     const res = await _delete({
       url: "/orderItems/",
-      params: {
-        companyCode: item.companyCode,
-        orderId: item.orderId,
-        name: item.name,
-      },
+      params: { companyCode: item.companyCode, id: item.id },
     });
 
     if (res.error) {

@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { useNavigate } from "react-router";
 
 // components
 import OrderList from "../../components/orders/OrderList";
@@ -13,6 +14,8 @@ import useSearch from "../../hooks/useSearch";
 
 export default function Orders() {
   const { orders } = useContext(OrderContext);
+  const navigate = useNavigate();
+
   const { filtered, setSearchVal } = useSearch({
     data: orders,
     criteria: "tableName",
@@ -31,7 +34,7 @@ export default function Orders() {
         }}
       >
         <Search onChange={setSearchVal} />
-        <Fabs path="/waiter/orders/add" />
+        <Fabs handleClick={() => navigate("/waiter/orders/add")} />
       </div>
 
       <OrderList orders={filtered} role="waiter" />

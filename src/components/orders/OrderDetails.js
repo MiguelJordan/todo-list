@@ -56,18 +56,11 @@ export default function OrderDetails({ order, role = "" }) {
 
   let total = order.items.reduce((prev, next) => {
     if (next.isOffer) return prev;
-    return (prev += next.quantity * next.selectedPrice);
+    return (prev += next.quantity * next.price);
   }, 0);
 
   return (
     <>
-      {/* <Dialog
-        content={msgDialog}
-        openDialog={openDialog}
-        closeDialog={CloseDialog}
-        PositiveRes={handleDelete}
-      /> */}
-
       <div style={{ display: "flex" }}>
         {role === "waiter" && (
           <div className={classes.buttonGroup}>

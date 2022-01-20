@@ -82,15 +82,15 @@ export default function StoreAdd() {
       setLoading(false);
       return setError("Invalid Category");
     }
-    if (!item.cost) {
+    if (!item.cost || item.cost < 0) {
       setLoading(false);
       return setError("Invalid Cost Price");
     }
-    if (!item.commissionAmount) {
+    if (!item.commissionAmount || item.commissionAmount < 0) {
       setLoading(false);
       return setError("Invalid commission Amount");
     }
-    if (!item.commissionRatio) {
+    if (!item.commissionRatio || item.commissionRatio < 0) {
       setLoading(false);
       return setError("Invalid commission Ratio");
     }
@@ -136,7 +136,7 @@ export default function StoreAdd() {
   };
 
   const RemoveImage = () => {
-    setImage("");
+    setImage(null);
   };
 
   const popMenu = [
@@ -196,6 +196,8 @@ export default function StoreAdd() {
             handleChange={(val) => setItem({ ...item, family: val })}
             textColor={"black"}
             label="Family"
+            variant="standard"
+            sx={{ marginTop: "-1px" }}
           />
           <TextField
             // fullWidth

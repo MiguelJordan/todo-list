@@ -1,7 +1,14 @@
 import { useContext, useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
-import { Button, IconButton, TextField } from "@mui/material";
+import {
+  Button,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  IconButton,
+  TextField,
+} from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -58,12 +65,11 @@ export default function OrderDetails({ order, role = "" }) {
   let { id } = useParams();
 
   const [open, setOpen] = useState(false);
+  const [checked, setChecked] = useState(true);
 
   let FamCat = order.items.reduce((acc, next) => {
     const family = next.family;
     const cat = next.category;
-
-    console.log(family, cat);
 
     if (!acc[family]) {
       acc[family] = [cat];
@@ -71,8 +77,6 @@ export default function OrderDetails({ order, role = "" }) {
       acc[family].push(cat);
     }
 
-    //if (!acc.includes(family)) acc.push(family);
-    console.log(acc["drinks"]);
     return acc;
   }, {});
 
@@ -103,10 +107,16 @@ export default function OrderDetails({ order, role = "" }) {
     return (prev += next.quantity * next.price);
   }, 0);
 
-  console.log(order);
+  console.log(t("pages.waiter.items.not-found"));
 
   const filterItems = order.items.filter((item) => {
     if (
+      checked &&
+      (!searchVal ||
+        item.name.toLowerCase().includes(searchVal.toLowerCase().trim()))
+    ) {
+      return true;
+    } else if (
       item.family === family &&
       item.category === cat &&
       item.isOffer === _isOffer &&
@@ -132,18 +142,29 @@ export default function OrderDetails({ order, role = "" }) {
           value={family}
           handleChange={setFamily}
           label="Families"
+          read={checked}
         />
         <Dropdown
           values={categories}
           value={cat}
           handleChange={setCat}
           label="Categories"
+          read={checked}
         />
         <Dropdown
           values={["no", "yes"]}
           value={offer}
           handleChange={setOffer}
           label="Status"
+          read={checked}
+        />
+        <FormControlLabel
+          value={"start"}
+          label="All Items"
+          labelPlacement="start"
+          control={
+            <Checkbox checked={checked} onChange={() => setChecked(!checked)} />
+          }
         />
       </PopUp>
 
@@ -190,9 +211,15 @@ export default function OrderDetails({ order, role = "" }) {
                 padding: 0,
               }}
             >
-              {filterItems.map((item) => (
-                <OrderItem item={item} role={role} key={item.id} />
-              ))}
+              {filterItems.lenght !== 0 ? (
+                filterItems.map((item) => (
+                  <OrderItem item={item} role={role} key={item.id} />
+                ))
+              ) : (
+                <h2 style={{ marginTop: "100px", color: "white" }}>
+                  {t("pages.waiter.items.not-found")}
+                </h2>
+              )}
             </div>
           </AccordionDetails>
         </Accordion>

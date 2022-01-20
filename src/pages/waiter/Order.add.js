@@ -70,7 +70,7 @@ export default function CreateOrder() {
 
     let order = { ...orderInfo };
 
-    console.log(order);
+    // console.log(order);
 
     // if (!order.tableName) return setError(t("server_err.Invalid table name"));
 

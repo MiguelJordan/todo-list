@@ -26,6 +26,7 @@ const DataLayerProvider = ({ children }) => {
     }
 
     if (user.role == "waiter") {
+      // console.log(_order);
       if (_order.waiterId != user.id) return;
     }
 

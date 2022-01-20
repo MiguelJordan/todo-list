@@ -250,7 +250,7 @@ export default function OrderDetails({ order, role = "" }) {
             className: classes.inputText,
             readOnly: true,
           }}
-          value={total}
+          value={order.totalCost}
         />
       </div>
     </>

@@ -1,7 +1,7 @@
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
-import { Button, TextField } from "@mui/material";
+import { Button, IconButton, TextField } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -9,6 +9,8 @@ import Typography from "@mui/material/Typography";
 
 // components
 import OrderItem from "./OrderItem";
+import Fabs from "../../components/subComponents/Fabs";
+import Search from "../subComponents/Search";
 
 // contexts
 // import { BackdropContext } from "../../contexts/feedback/BackdropContext";
@@ -16,6 +18,9 @@ import { TranslationContext } from "../../contexts/TranslationContext";
 
 // icons
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { FilterAlt } from "@mui/icons-material";
+import PopUp from "../subComponents/PopUp";
+import Dropdown from "../subComponents/Dropdown";
 
 const useStyles = makeStyles((theme) => ({
   buttonGroup: {
@@ -31,12 +36,10 @@ const useStyles = makeStyles((theme) => ({
   accordionDetails: {
     backgroundColor: "#001d42",
     height: "fit-content",
-    maxHeight: 300,
     display: "flex",
     flexFlow: "column",
     alignItems: "center",
     justifyContent: "space-between",
-    overflowY: "auto",
     padding: 0,
   },
   text: {
@@ -54,10 +57,65 @@ export default function OrderDetails({ order, role = "" }) {
   const navigate = useNavigate();
   let { id } = useParams();
 
+  const [open, setOpen] = useState(false);
+
+  let FamCat = order.items.reduce((acc, next) => {
+    const family = next.family;
+    const cat = next.category;
+
+    console.log(family, cat);
+
+    if (!acc[family]) {
+      acc[family] = [cat];
+    } else if (acc[family] && !acc[family].includes(cat)) {
+      acc[family].push(cat);
+    }
+
+    //if (!acc.includes(family)) acc.push(family);
+    console.log(acc["drinks"]);
+    return acc;
+  }, {});
+
+  const [famCat, setFamCat] = useState(FamCat);
+  const [families, setFamilies] = useState(Object.keys(famCat));
+  const [family, setFamily] = useState(families[0]);
+  const [categories, setCategories] = useState(famCat[family] ?? []);
+  const [cat, setCat] = useState(categories[0] ?? "");
+  const [offer, setOffer] = useState("no");
+  const [searchVal, setSearchVal] = useState("");
+
+  const getBool = (value) => {
+    return ["true", "yes"].includes(value.toLowerCase()) ? true : false;
+  };
+
+  const _isOffer = getBool(offer);
+
+  useEffect(() => {
+    setCategories(famCat[family] ?? []);
+  }, [family]);
+
+  useEffect(() => {
+    setCat(categories[0] ?? "");
+  }, [categories]);
+
   let total = order.items.reduce((prev, next) => {
     if (next.isOffer) return prev;
     return (prev += next.quantity * next.selectedPrice);
   }, 0);
+
+  console.log(order);
+
+  const filterItems = order.items.filter((item) => {
+    if (
+      item.family === family &&
+      item.category === cat &&
+      item.isOffer === _isOffer &&
+      (!searchVal ||
+        item.name.toLowerCase().includes(searchVal.toLowerCase().trim()))
+    )
+      return true;
+    return false;
+  });
 
   return (
     <>
@@ -68,18 +126,26 @@ export default function OrderDetails({ order, role = "" }) {
         PositiveRes={handleDelete}
       /> */}
 
-      <div style={{ display: "flex" }}>
-        {role === "waiter" && (
-          <div className={classes.buttonGroup}>
-            <Button
-              variant="contained"
-              onClick={() => navigate(`/waiter/orders/${id}/add-items`)}
-            >
-              {"Ajouter Produits"}
-            </Button>
-          </div>
-        )}
-      </div>
+      <PopUp open={open} close={setOpen}>
+        <Dropdown
+          values={families}
+          value={family}
+          handleChange={setFamily}
+          label="Families"
+        />
+        <Dropdown
+          values={categories}
+          value={cat}
+          handleChange={setCat}
+          label="Categories"
+        />
+        <Dropdown
+          values={["no", "yes"]}
+          value={offer}
+          handleChange={setOffer}
+          label="Status"
+        />
+      </PopUp>
 
       <div className={classes.accordionParent}>
         <Accordion className={classes.accordion}>
@@ -90,10 +156,44 @@ export default function OrderDetails({ order, role = "" }) {
           >
             <Typography>{t("pages.order-details.items")}</Typography>
           </AccordionSummary>
+
           <AccordionDetails className={classes.accordionDetails}>
-            {order.items.map((item) => (
-              <OrderItem item={item} role={role} key={item.id} />
-            ))}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                marginTop: "10px",
+                marginBottom: "10px",
+                backgroundColor: "#001d42",
+                width: "90%",
+              }}
+            >
+              <IconButton onClick={() => setOpen(true)}>
+                <FilterAlt style={{ color: "#9e9e9e" }} />
+              </IconButton>
+              {role === "waiter" && (
+                <Fabs
+                  sx={{ width: "40px", height: "40px" }}
+                  ToolTipText="Ajouter Produits"
+                  path={`/waiter/orders/${id}/add-items`}
+                />
+              )}
+
+              <Search onChange={setSearchVal} />
+            </div>
+
+            <div
+              style={{
+                maxHeight: 300,
+                height: "fit-content",
+                overflowY: "auto",
+                padding: 0,
+              }}
+            >
+              {filterItems.map((item) => (
+                <OrderItem item={item} role={role} key={item.id} />
+              ))}
+            </div>
           </AccordionDetails>
         </Accordion>
         <Accordion className={classes.accordion}>

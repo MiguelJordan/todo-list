@@ -15,6 +15,7 @@ export default function PopUp({ children, open, close, sx = {} }) {
           boxShadow: 24,
           p: 4,
           width: 300,
+          borderRadius: "8px",
           ...sx,
         }}
       >

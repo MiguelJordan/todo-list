@@ -51,7 +51,7 @@ export default function StoreAdd() {
 
   const [item, setItem] = React.useState({
     name: "",
-    family: "",
+    family: "Drinks",
     category: "",
     cost: "",
     prices: [],
@@ -120,7 +120,7 @@ export default function StoreAdd() {
     });
   };
 
-  const Photo = async (e) => {
+  const AddImage = async (e) => {
     if (!e) return "";
 
     setError("");
@@ -144,7 +144,7 @@ export default function StoreAdd() {
       name: "Image",
       color: "#04A5E0",
       Icon: <PhotoCamera />,
-      action: (e) => Photo(e),
+      action: (e) => AddImage(e),
       type: "image",
     },
 
@@ -176,97 +176,148 @@ export default function StoreAdd() {
       <div
         style={{
           display: "flex",
-          flexWrap: "wrap",
+          flexFlow: "column",
           justifyContent: "space-between",
           maxHeight: "160px",
           overflowY: "auto",
         }}
       >
-        <TextField
-          // fullWidth
-          type="text"
-          name="family"
-          variant="standard"
-          inputProps={{
-            className: classes.inputText,
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "space-between",
+            flexFlow: "row",
           }}
-          style={{ color: "black", marginBottom: "5px" }}
-          onChange={(e) =>
-            setItem({
-              ...item,
-              [e.target.name]: e.target.value.trim(),
-            })
-          }
-          label="Family"
-        />
-        <TextField
-          // fullWidth
-          type="text"
-          name="category"
-          variant="standard"
-          inputProps={{
-            className: classes.inputText,
+        >
+          <Dropdown
+            values={["Drinks", "Meal"]}
+            value={item.family}
+            handleChange={(val) => setItem({ ...item, family: val })}
+            textColor={"black"}
+            label="Family"
+          />
+          <TextField
+            // fullWidth
+            type="text"
+            name="category"
+            variant="standard"
+            inputProps={{
+              className: classes.inputText,
+            }}
+            style={{ color: "black", marginBottom: "5px" }}
+            onChange={(e) =>
+              setItem({
+                ...item,
+                [e.target.name]: e.target.value.trim(),
+              })
+            }
+            label="Category"
+          />
+          <TextField
+            required
+            type="text"
+            variant="standard"
+            name="name"
+            inputProps={{
+              className: classes.inputText,
+            }}
+            label="Name"
+            style={{ color: "black", marginBottom: "5px", marginTop: "0px" }}
+            onChange={(e) =>
+              setItem({
+                ...item,
+                [e.target.name]: e.target.value.trim(),
+              })
+            }
+          />
+        </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            gap: "10px",
           }}
-          style={{ color: "black", marginBottom: "5px" }}
-          onChange={(e) =>
-            setItem({
-              ...item,
-              [e.target.name]: e.target.value.trim(),
-            })
-          }
-          label="Category"
-        />
-        <TextField
-          required
-          type="text"
-          variant="standard"
-          name="name"
-          inputProps={{
-            className: classes.inputText,
+        >
+          <TextField
+            fullWidth
+            type="number"
+            name="commissionAmount"
+            variant="standard"
+            inputProps={{
+              className: classes.inputText,
+            }}
+            style={{ color: "black", marginBottom: "5px" }}
+            onChange={(e) =>
+              setItem({
+                ...item,
+                [e.target.name]: e.target.value.trim(),
+              })
+            }
+            label="Commission Amount"
+          />
+          <TextField
+            fullWidth
+            type="number"
+            name="commissionRatio"
+            variant="standard"
+            inputProps={{
+              className: classes.inputText,
+            }}
+            style={{ color: "black", marginBottom: "5px" }}
+            onChange={(e) =>
+              setItem({
+                ...item,
+                [e.target.name]: e.target.value.trim(),
+              })
+            }
+            label="Commission Ratio"
+            required
+          />
+        </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            gap: "10px",
           }}
-          label="Name"
-          style={{ color: "black", marginBottom: "5px", marginTop: "0px" }}
-          onChange={(e) =>
-            setItem({
-              ...item,
-              [e.target.name]: e.target.value.trim(),
-            })
-          }
-        />
-        <TextField
-          // fullWidth
-          type="number"
-          name="cost"
-          variant="standard"
-          inputProps={{
-            className: classes.inputText,
-          }}
-          style={{ color: "black", marginBottom: "5px" }}
-          onChange={(e) =>
-            setItem({
-              ...item,
-              [e.target.name]: e.target.value.trim(),
-            })
-          }
-          label="Cost"
-        />
-        <TextField
-          // fullWidth
-          type="number"
-          name="commissionAmount"
-          variant="standard"
-          inputProps={{
-            className: classes.inputText,
-          }}
-          style={{ color: "black", marginBottom: "5px" }}
-          onChange={(e) =>
-            setItem({
-              ...item,
-              [e.target.name]: e.target.value.trim(),
-            })
-          }
-          label="Commission Amount"
-        />
+        >
+          <TextField
+            fullWidth
+            name="MeasureUnit"
+            variant="standard"
+            inputProps={{
+              className: classes.inputText,
+            }}
+            style={{ color: "black", marginBottom: "5px" }}
+            onChange={(e) =>
+              setItem({
+                ...item,
+                [e.target.name]: e.target.value.trim(),
+              })
+            }
+            label=" Measure Unit"
+            required
+          />
+          <TextField
+            fullWidth
+            name="MeasureUnitPlural"
+            variant="standard"
+            inputProps={{
+              className: classes.inputText,
+            }}
+            style={{ color: "black", marginBottom: "5px" }}
+            onChange={(e) =>
+              setItem({
+                ...item,
+                [e.target.name]: e.target.value.trim(),
+              })
+            }
+            label=" Measure Unit Plural"
+            required
+          />
+        </div>
+
         <TextField
           // fullWidth
           type="number"
@@ -286,10 +337,11 @@ export default function StoreAdd() {
           }
           label="Quantity"
         />
+
         <TextField
           // fullWidth
           type="number"
-          name="commissionRatio"
+          name="cost"
           variant="standard"
           inputProps={{
             className: classes.inputText,
@@ -301,42 +353,7 @@ export default function StoreAdd() {
               [e.target.name]: e.target.value.trim(),
             })
           }
-          label="Commission Ratio"
-          required
-        />
-        <TextField
-          name="MeasureUnitPlural"
-          variant="standard"
-          inputProps={{
-            className: classes.inputText,
-          }}
-          style={{ color: "black", marginBottom: "5px" }}
-          onChange={(e) =>
-            setItem({
-              ...item,
-              [e.target.name]: e.target.value.trim(),
-            })
-          }
-          label=" Measure Unit Plural"
-          required
-        />{" "}
-        <TextField
-          // fullWidth
-
-          name="MeasureUnit"
-          variant="standard"
-          inputProps={{
-            className: classes.inputText,
-          }}
-          style={{ color: "black", marginBottom: "5px" }}
-          onChange={(e) =>
-            setItem({
-              ...item,
-              [e.target.name]: e.target.value.trim(),
-            })
-          }
-          label=" Measure Unit"
-          required
+          label="Cost"
         />
       </div>
 

@@ -1,215 +1,256 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import { makeStyles } from "@material-ui/core";
 import TextField from "@mui/material/TextField";
-import Paper from "@mui/material/Paper";
-import { Button, Grid, Typography } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+
+import Dropdown from "../subComponents/Dropdown";
+
+import { TranslationContext } from "../../contexts/TranslationContext";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    //minWidth: "80vw",
-    display: "flex",
-    justifyContent: "center",
-    [theme.breakpoints.down("sm")]: {
-      //minWidth: "95vw",
-    },
+  inputText: {
+    color: "black",
   },
-  loginBackground: {
+  form: {
+    display: "flex",
+    flexFlow: "column",
     justifyContent: "center",
-    minHeight: "30vh",
-    padding: "50px",
-    minWidth: "37vw",
     backgroundColor: "#FFFFFF",
+    margin: "auto",
+    maxWidth: "350px",
 
+    padding: "20px",
+    color: "#B3B3B3",
+    borderRadius: "3px",
     [theme.breakpoints.down("sm")]: {
-      padding: "10px",
-      margin: "auto",
-      minWidth: "87vw",
-    },
-    [theme.breakpoints.between("sm", "md")]: {
-      padding: "70px",
-      minWidth: "33vw",
+      marginTop: "135px",
     },
     [theme.breakpoints.up("md")]: {
-      padding: "70px",
-      minWidth: "30vw",
+      marginTop: "120px",
     },
-    [theme.breakpoints.up("lg")]: {
-      padding: "60px",
-      minWidth: "20vw",
-    },
-  },
-  inputText: {
-    color: "#B3B3B3",
   },
 }));
 
 export default function AddItem() {
+  const { t } = useContext(TranslationContext);
+  const { user } = useContext(AuthContext);
+
   const classes = useStyles();
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
   const [item, setItem] = React.useState({
     name: "",
-    familly: "",
+    family: "",
     category: "",
     cost: "",
-    price: [],
-    image: "",
+    prices: [],
+    imageUrl: "",
+    commissionAmount: "",
+    companyCode: user.company.code,
+    storeId: user.workUnit.storeId,
+    quantity: "",
   });
-  const [serverError, setServerError] = React.useState("");
 
-  const handleAdd = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    if (!item.name) {
+      setLoading(false);
+      return setError("Invalid Name");
+    }
+    if (!item.family) {
+      setLoading(false);
+      return setError("Invalid Family");
+    }
+    if (!item.category) {
+      setLoading(false);
+      return setError("Invalid Category");
+    }
+    if (!item.cost) {
+      setLoading(false);
+      return setError("Invalid Cost Price");
+    }
+    if (!item.commissionAmount) {
+      setLoading(false);
+      return setError("Invalid commission Amount");
+    }
+    if (!item.quantity || item.quantity < 0) {
+      setLoading(false);
+      return setError("Invalid Quantity");
+    }
+
+    setLoading(false);
     console.log(item);
   };
 
   return (
-    <Grid container align="center" className={classes.root}>
-      <Paper
-        variant="elevation"
-        elevation={2}
-        className={classes.loginBackground}
+    <form className={classes.form} onSubmit={handleSubmit}>
+      <h2
+        style={{
+          color: "#001D42",
+          marginTop: "15px",
+          alignSelf: "center",
+        }}
       >
-        <Grid align="center" style={{ marginBottom: "5%" }}>
-          <Typography component="h1" variant="h5">
-            ADD Item
-          </Typography>
-        </Grid>
-        {serverError !== "" ? (
-          <Grid
-            item
-            align="center"
-            style={{
-              marginBottom: "5%",
-            }}
-          >
-            <div
-              style={{
-                border: "2px solid red",
-                borderRadius: 5,
-                marginBottom: "2%",
-              }}
-            >
-              <Typography variant="subtitle2" style={{ color: "black" }}>
-                {serverError}
-              </Typography>
-            </div>
-          </Grid>
-        ) : (
-          ""
-        )}
-        <Grid item xs={8}>
-          <form onSubmit={handleAdd}>
-            <Grid container spacing={1} direction={"column"}>
-              <Grid item>
-                <TextField
-                  type="text"
-                  label="Familly*"
-                  fullWidth
-                  name="familly"
-                  inputProps={{
-                    className: classes.inputText,
-                  }}
-                  variant="standard"
-                  required
-                  onChange={(e) => {
-                    setItem({ ...item, [e.target.name]: e.target.value });
-                  }}
-                  autoComplete="off"
-                />
-              </Grid>
-              <Grid item>
-                <TextField
-                  type="text"
-                  label="Category*"
-                  fullWidth
-                  name="category"
-                  variant="standard"
-                  required
-                  onChange={(e) => {
-                    setItem({ ...item, [e.target.name]: e.target.value });
-                  }}
-                  autoComplete="off"
-                />
-              </Grid>
-              <Grid item>
-                <TextField
-                  type="text"
-                  label="Name*"
-                  fullWidth
-                  name="name"
-                  variant="standard"
-                  required
-                  inputProps={{
-                    className: classes.inputText,
-                  }}
-                  onChange={(e) => {
-                    setItem({ ...item, [e.target.name]: e.target.value });
-                  }}
-                  autoComplete="off"
-                />
-              </Grid>
-              <Grid item>
-                <TextField
-                  type="number"
-                  label="Cost*"
-                  fullWidth
-                  name="cost"
-                  variant="standard"
-                  required
-                  inputProps={{
-                    className: classes.inputText,
-                  }}
-                  onChange={(e) => {
-                    setItem({ ...item, [e.target.name]: e.target.value });
-                  }}
-                  autoComplete="off"
-                />
-              </Grid>
-              <Grid item>
-                <TextField
-                  type="number"
-                  label="Price(s)*"
-                  fullWidth
-                  name="price"
-                  variant="standard"
-                  inputProps={{
-                    className: classes.inputText,
-                  }}
-                  multiline
-                  required
-                  onClick={(e) => {
-                    setItem({
-                      ...item,
-                      [e.target.name]: [...item.price, e.target.value],
-                    });
-                  }}
-                  autoComplete="off"
-                />
-              </Grid>
-              <Grid item>
-                <TextField
-                  type="file"
-                  label="Image*"
-                  fullWidth
-                  name="image"
-                  variant="standard"
-                  required
-                  inputProps={{
-                    className: classes.inputText,
-                  }}
-                  onChange={(e) => {
-                    setItem({ ...item, [e.target.name]: e.target.value });
-                  }}
-                  autoComplete="off"
-                />
-              </Grid>
-              <Grid item align="center">
-                <Button type="submit" variant="contained">
-                  Add
-                </Button>
-              </Grid>
-            </Grid>
-          </form>
-        </Grid>
-      </Paper>
-    </Grid>
+        {"Add Item"}
+      </h2>
+      {error && <div className="formError"> {error}</div>}
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          gap: "3px",
+        }}
+      >
+        <TextField
+          // fullWidth
+          type="text"
+          name="family"
+          variant="standard"
+          inputProps={{
+            className: classes.inputText,
+          }}
+          style={{ color: "black", marginBottom: "5px" }}
+          onChange={(e) =>
+            setItem({
+              ...item,
+              [e.target.name]: e.target.value.trim(),
+            })
+          }
+          label="Family"
+        />
+        <TextField
+          // fullWidth
+          type="text"
+          name="category"
+          variant="standard"
+          inputProps={{
+            className: classes.inputText,
+          }}
+          style={{ color: "black", marginBottom: "5px" }}
+          onChange={(e) =>
+            setItem({
+              ...item,
+              [e.target.name]: e.target.value.trim(),
+            })
+          }
+          label="Category"
+        />
+        <TextField
+          required
+          type="text"
+          variant="standard"
+          name="name"
+          inputProps={{
+            className: classes.inputText,
+          }}
+          label="Name"
+          style={{ color: "black", marginBottom: "5px", marginTop: "0px" }}
+          onChange={(e) =>
+            setItem({
+              ...item,
+              [e.target.name]: e.target.value.trim(),
+            })
+          }
+        />
+        <TextField
+          // fullWidth
+          type="number"
+          name="cost"
+          variant="standard"
+          inputProps={{
+            className: classes.inputText,
+          }}
+          style={{ color: "black", marginBottom: "5px" }}
+          onChange={(e) =>
+            setItem({
+              ...item,
+              [e.target.name]: e.target.value.trim(),
+            })
+          }
+          label="Cost"
+        />
+
+        <TextField
+          // fullWidth
+          type="number"
+          name="commissionAmount"
+          variant="standard"
+          inputProps={{
+            className: classes.inputText,
+          }}
+          style={{ color: "black", marginBottom: "5px" }}
+          onChange={(e) =>
+            setItem({
+              ...item,
+              [e.target.name]: e.target.value.trim(),
+            })
+          }
+          label="Commission Amount"
+        />
+        <TextField
+          // fullWidth
+          type="number"
+          name="quantity"
+          variant="standard"
+          inputProps={{
+            className: classes.inputText,
+            inputMode: "numeric",
+            pattern: "[0-9]*",
+          }}
+          style={{ color: "black", marginBottom: "5px" }}
+          onChange={(e) =>
+            setItem({
+              ...item,
+              [e.target.name]: e.target.value.trim(),
+            })
+          }
+          label="Quantity"
+        />
+        <TextField
+          // fullWidth
+          type="file"
+          name="imageUrl"
+          variant="standard"
+          inputProps={{
+            className: classes.inputText,
+          }}
+          style={{ color: "black", marginBottom: "5px" }}
+          onChange={(e) =>
+            setItem({
+              ...item,
+              [e.target.name]: e.target.value.trim(),
+            })
+          }
+          label="Image"
+          required
+        />
+      </div>
+
+      {/* <Dropdown
+        values={item.prices}
+        label="Consumption Point"
+        variant="standard"
+        value={orderInfo.consumptionPoint}
+        handleChange={(val) => setItem({ ...item, consumptionPoint: val })}
+        sx={{ margin: 0 }}
+        textColor={"black"}
+      /> */}
+
+      <LoadingButton
+        loading={loading}
+        variant="contained"
+        type="submit"
+        style={{ marginTop: "20px", marginBottom: "25px" }}
+      >
+        {"Add"}
+      </LoadingButton>
+    </form>
   );
 }

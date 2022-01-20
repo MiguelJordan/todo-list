@@ -34,7 +34,10 @@ export default function Orders() {
         }}
       >
         <Search onChange={setSearchVal} />
-        <Fabs handleClick={() => navigate("/waiter/orders/add")} />
+        <Fabs
+          path="/waiter/orders/add"
+          sx={{ width: "40px", height: "40px" }}
+        />
       </div>
 
       <OrderList orders={filtered} role="waiter" />

@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { TranslationContext } from "../../contexts/TranslationContext";
 import { makeStyles } from "@material-ui/core";
+import Divider from "@mui/material/Divider";
 
 import { filter } from "../../functions/data";
 
@@ -123,26 +124,24 @@ export default function Staff() {
               display: "flex",
               flexFlow: "column",
               //justifyContent: "space-between",
-              width: "700px",
+              maxWidth: "500px",
               minWidth: "400px",
-              backgroundColor: "#001e3c",
+              backgroundColor: "transparent",
             }}
           >
-            {filtered.map((user) => (
+            {filtered.map((user, index, arr) => (
               <ListItem
                 key={user.id}
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
                   textAlign: "center",
-                  borderBottom: "2px solid #B3B3B3",
+                  //borderBottom: "2px solid #B3B3B3",
+                  borderWidth: "80%",
                 }}
               >
                 <ListItemText style={{ maxWidth: "50px", marginLeft: "1px" }}>
-                  <DisplayField
-                    value={user.name}
-                    sx={{ maxWidth: "75px", marginLeft: "1px" }}
-                  />
+                  <DisplayField value={user.name} sx={{ maxWidth: "95px" }} />
                 </ListItemText>
 
                 <ListItemText style={{ maxWidth: "50px", marginLeft: "1px" }}>
@@ -156,6 +155,18 @@ export default function Staff() {
                   Icon={<MoreVertIcon />}
                   event={user}
                 />
+                {arr.length !== index + 1 && (
+                  <div
+                    style={{
+                      width: "90%",
+                      backgroundColor: "#B3B3B3",
+                      position: "absolute",
+                      marginTop: "80px",
+                      marginLeft: "10px",
+                      height: "1px",
+                    }}
+                  ></div>
+                )}
               </ListItem>
             ))}
           </List>

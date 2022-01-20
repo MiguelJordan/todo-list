@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     margin: "10px",
   },
-  accordionParent: { width: 350, margin: "0 auto" },
+  accordionParent: { width: 350, margin: "0 auto", paddingTop: "50px" },
   accordion: {
     backgroundColor: "#173153",
     color: "white",
@@ -107,8 +107,6 @@ export default function OrderDetails({ order, role = "" }) {
     return (prev += next.quantity * next.price);
   }, 0);
 
-  console.log(t("pages.waiter.items.not-found"));
-
   const filterItems = order.items.filter((item) => {
     if (
       checked &&
@@ -155,7 +153,7 @@ export default function OrderDetails({ order, role = "" }) {
           values={["no", "yes"]}
           value={offer}
           handleChange={setOffer}
-          label="Status"
+          label="Offer"
           read={checked}
         />
         <FormControlLabel

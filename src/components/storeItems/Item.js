@@ -96,7 +96,7 @@ const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
       name: item.name,
       orderId,
       quantity: parseFloat(e.target[5].value),
-      price: _isOffer ? 0 : price,
+      price,
       storeId: item.storeId,
     };
     // console.log(_item);

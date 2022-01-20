@@ -47,6 +47,7 @@ const DataLayerProvider = ({ children }) => {
     }
 
     if (user.role == "waiter") {
+      // console.log(_items);
       _items = filter({ data: _items, criteria: "isBlocked", value: false });
       updateItems(_items);
     }

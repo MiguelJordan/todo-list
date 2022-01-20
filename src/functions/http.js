@@ -2,6 +2,17 @@ import axios from "axios";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
+const getHeaders = () => {
+  let user = {};
+
+  try {
+    user = JSON.parse(localStorage.getItem("user"));
+  } catch (err) {}
+
+  let token = user?.access_token ?? "";
+  return { Authorization: `Bearer ${token}` };
+};
+
 const getError = (err) => {
   return { error: err?.response?.data?.error ?? err?.message };
 };
@@ -14,9 +25,10 @@ const getUrl = (url, params) => {
 
 export const _delete = async ({ url = "", params = {}, fullUrl = false }) => {
   try {
+    let headers = getHeaders();
     if (!fullUrl) url = apiUrl + url;
     const reqUrl = getUrl(url, params);
-    return (await axios.delete(reqUrl)).data;
+    return (await axios.delete(reqUrl, { headers })).data;
   } catch (err) {
     return getError(err);
   }
@@ -24,9 +36,10 @@ export const _delete = async ({ url = "", params = {}, fullUrl = false }) => {
 
 export const get = async ({ url = "", params = {}, fullUrl = false }) => {
   try {
+    let headers = getHeaders();
     if (!fullUrl) url = apiUrl + url;
     const reqUrl = getUrl(url, params);
-    return (await axios.get(reqUrl)).data;
+    return (await axios.get(reqUrl, { headers })).data;
   } catch (err) {
     return getError(err);
   }
@@ -34,9 +47,10 @@ export const get = async ({ url = "", params = {}, fullUrl = false }) => {
 
 export const post = async ({ url = "", body = {}, fullUrl = false }) => {
   try {
+    let headers = getHeaders();
     if (!fullUrl) url = apiUrl + url;
     return await (
-      await axios.post(url, body)
+      await axios.post(url, body, { headers })
     ).data;
   } catch (err) {
     return getError(err);
@@ -44,6 +58,8 @@ export const post = async ({ url = "", body = {}, fullUrl = false }) => {
 };
 
 export const postFormData = async (url = "", values = {}, fullUrl = false) => {
+  // let headers = getHeaders();
+
   const formData = new FormData();
 
   for (let prop in values) {

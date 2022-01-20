@@ -235,7 +235,7 @@ export default function OrderList({ role = "", orders = [] }) {
                     Total:{" "}
                     {order.items.reduce((prev, next) => {
                       if (next.isOffer) return prev;
-                      return (prev += next.quantity * next.selectedPrice);
+                      return (prev += next.quantity * next.price);
                     }, 0)}
                   </div>
                 </div>

@@ -17,6 +17,7 @@ export default function Fabs({
   return (
     <Tooltip TransitionComponent={Zoom} title={ToolTipText}>
       <Fab
+        onClick={handleClick}
         color="primary"
         aria-label="add"
         style={{

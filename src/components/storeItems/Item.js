@@ -82,7 +82,7 @@ const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
   const [loading, setLoading] = useState(false);
 
   const [isOffer, setIsOffer] = useState("no");
-  const [selectedPrice, setPrice] = useState(data.prices[0]);
+  const [price, setPrice] = useState(data.prices[0]);
 
   const getBool = (value) => {
     return ["true", "yes"].includes(value.toLowerCase()) ? true : false;
@@ -100,15 +100,15 @@ const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
       isOffer: _isOffer,
       name: item.name,
       orderId,
-      qty: parseFloat(e.target[5].value),
-      selectedPrice: _isOffer ? 0 : selectedPrice,
+      quantity: parseFloat(e.target[5].value),
+      price: _isOffer ? 0 : price,
       storeId: item.storeId,
     };
     // console.log(_item);
 
     if (
       !_isOffer &&
-      (!_item.qty || _item.qty <= 0 || _item.qty > item.quantity)
+      (!_item.quantity || _item.quantity <= 0 || _item.quantity > item.quantity)
     ) {
       setLoading(false);
       return showNotification({
@@ -198,7 +198,7 @@ const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
                 sx={{ display: getBool(isOffer) ? "none" : "" }}
                 label={t("compo.item.prices")}
                 labelId={`store-item-prices-${data.id}`}
-                value={selectedPrice}
+                value={price}
                 values={data.prices}
                 handleChange={setPrice}
               />

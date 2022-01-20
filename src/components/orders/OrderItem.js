@@ -75,11 +75,7 @@ const OrderItem = ({ item = {}, role = "" }) => {
     toggleBackdrop(true);
     const res = await _delete({
       url: "/orderItems/",
-      params: {
-        companyCode: item.companyCode,
-        orderId: item.orderId,
-        name: item.name,
-      },
+      params: { companyCode: item.companyCode, id: item.id },
     });
 
     if (res.error) {
@@ -146,7 +142,11 @@ const OrderItem = ({ item = {}, role = "" }) => {
 
   return (
     <div className={classes.orderItem}>
-      <img className={classes.img} src={getImage({ url: item.imageUrl })} />
+      <img
+        className={classes.img}
+        src={getImage({ url: item.imageUrl })}
+        loading="lazy"
+      />
 
       <div className={classes.details}>
         <div className={classes.detailsText}>
@@ -159,7 +159,7 @@ const OrderItem = ({ item = {}, role = "" }) => {
 
         <div className={classes.detailsText}>
           <span>{t("compo.item.price")}:</span>
-          <DisplayField value={item.selectedPrice} sx={displayField} />
+          <DisplayField value={item.price} sx={displayField} />
         </div>
 
         <div className={classes.detailsText}>
@@ -173,7 +173,7 @@ const OrderItem = ({ item = {}, role = "" }) => {
         <div className={classes.detailsText}>
           <span>Total:</span>
           <DisplayField
-            value={item.isOffer ? 0 : item.quantity * item.selectedPrice}
+            value={item.isOffer ? 0 : item.quantity * item.price}
             sx={displayField}
           />
         </div>

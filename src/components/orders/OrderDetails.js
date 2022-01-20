@@ -54,11 +54,6 @@ export default function OrderDetails({ order, role = "" }) {
   const navigate = useNavigate();
   let { id } = useParams();
 
-  let total = order.items.reduce((prev, next) => {
-    if (next.isOffer) return prev;
-    return (prev += next.quantity * next.price);
-  }, 0);
-
   return (
     <>
       <div style={{ display: "flex" }}>
@@ -118,7 +113,7 @@ export default function OrderDetails({ order, role = "" }) {
             className: classes.inputText,
             readOnly: true,
           }}
-          value={total}
+          value={order.totalCost}
         />
       </div>
     </>

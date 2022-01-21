@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     overflowY: "auto",
     flexWrap: "wrap",
+
     height: ({ role }) => {
       if (role === "admin") return "63vh";
       return "68vh";
@@ -142,7 +143,7 @@ export default function OrderList({ role = "", orders = [] }) {
       action: (order) => deleteOrder(order),
     },
     {
-      name: "Detail",
+      name: "Details",
       color: "#04A5E0",
       Icon: <InfoIcon />,
       action: (order) => viewOrderDetails(order),
@@ -150,7 +151,7 @@ export default function OrderList({ role = "", orders = [] }) {
   ];
   const cashierPopMenu = [
     {
-      name: "Detail",
+      name: "Details",
       color: "#04A5E0",
       Icon: <InfoIcon />,
       action: (order) => viewOrderDetails(order),
@@ -159,7 +160,7 @@ export default function OrderList({ role = "", orders = [] }) {
 
   const AdminPopMenu = [
     {
-      name: "Detail",
+      name: "Details",
       color: "#04A5E0",
       Icon: <InfoIcon />,
       action: (e) => viewOrderDetails(e),

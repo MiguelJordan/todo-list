@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
   inputText: {
     color: "black",
     width: "100px",
+    marginLeft: "9px",
   },
   form: {
     display: "flex",
@@ -61,10 +62,8 @@ export default function AmForm({
   modify = false,
   items,
   handleSubmit,
-  personnel,
   target = "storeItems",
   image,
-  header,
   AddImage,
   RemoveImage,
   loading,
@@ -74,7 +73,9 @@ export default function AmForm({
 
   const [item, setItem] = useState(items ?? {});
   const [itemCpy, setItemCpy] = useState(item ?? {});
+
   const [open, setOpen] = useState(false);
+
   const [DialogContent, setContent] = useState({
     name: "",
     label: "",
@@ -147,15 +148,6 @@ export default function AmForm({
         disagree={disAgree}
       />
       <form className={classes.form} onSubmit={(e) => handleSubmit(e, item)}>
-        <h2
-          style={{
-            color: "#001D42",
-            marginTop: "15px",
-            alignSelf: "center",
-          }}
-        >
-          {header}
-        </h2>
         {target === "storeItems" && (
           <ImagePreview
             button={
@@ -175,7 +167,7 @@ export default function AmForm({
               display: "flex",
               flexFlow: "column",
               justifyContent: "space-between",
-              maxHeight: "160px",
+              maxHeight: "190px",
               overflowY: "auto",
             }}
           >
@@ -199,7 +191,9 @@ export default function AmForm({
                 read={modify}
               />
               <FormControl fullWidth>
-                <InputLabel>{"Category*"}</InputLabel>
+                <InputLabel style={{ marginTop: "2px", marginLeft: "-10px" }}>
+                  {"Category*"}
+                </InputLabel>
                 <Input
                   fullWidth
                   label="Category*"
@@ -215,6 +209,7 @@ export default function AmForm({
                     modify ? (
                       <InputAdornment position="end">
                         <IconButton
+                          style={{ margin: 0 }}
                           onClick={() => {
                             setContent({
                               name: "category",
@@ -249,7 +244,9 @@ export default function AmForm({
               }}
             >
               <FormControl fullWidth>
-                <InputLabel>{"Name*"}</InputLabel>
+                <InputLabel style={{ marginTop: "2px", marginLeft: "-10px" }}>
+                  {"Name*"}
+                </InputLabel>
                 <Input
                   fullWidth
                   required
@@ -301,7 +298,9 @@ export default function AmForm({
               }}
             >
               <FormControl fullWidth>
-                <InputLabel>{"Measure Unit*"}</InputLabel>
+                <InputLabel style={{ marginTop: "2px", marginLeft: "-10px" }}>
+                  {"Measure Unit*"}
+                </InputLabel>
                 <Input
                   fullWidth
                   required
@@ -345,7 +344,9 @@ export default function AmForm({
               </FormControl>
 
               <FormControl fullWidth>
-                <InputLabel>{"Measure Unit Plural*"}</InputLabel>
+                <InputLabel style={{ marginTop: "2px", marginLeft: "-10px" }}>
+                  {"Measure Unit Plural*"}
+                </InputLabel>
                 <Input
                   fullWidth
                   required
@@ -396,7 +397,9 @@ export default function AmForm({
               }}
             >
               <FormControl fullWidth>
-                <InputLabel>{"Quantity"}</InputLabel>
+                <InputLabel style={{ marginTop: "2px", marginLeft: "-10px" }}>
+                  {"Quantity"}
+                </InputLabel>
                 <Input
                   fullWidth
                   type="number"
@@ -439,7 +442,9 @@ export default function AmForm({
               </FormControl>
 
               <FormControl fullWidth>
-                <InputLabel>{"Cost"}</InputLabel>
+                <InputLabel style={{ marginTop: "2px", marginLeft: "-10px" }}>
+                  {"Cost"}
+                </InputLabel>
                 <Input
                   fullWidth
                   type="number"
@@ -489,7 +494,9 @@ export default function AmForm({
               }}
             >
               <FormControl fullWidth>
-                <InputLabel>{"Commission Amount"}</InputLabel>
+                <InputLabel style={{ marginTop: "2px", marginLeft: "-10px" }}>
+                  {"Commission Amount"}
+                </InputLabel>
                 <Input
                   fullWidth
                   type="number"
@@ -532,7 +539,9 @@ export default function AmForm({
               </FormControl>
 
               <FormControl fullWidth>
-                <InputLabel>{"Commission Ratio"}</InputLabel>
+                <InputLabel style={{ marginTop: "2px", marginLeft: "-10px" }}>
+                  {"Commission Ratio"}
+                </InputLabel>
                 <Input
                   fullWidth
                   type="number"
@@ -576,12 +585,6 @@ export default function AmForm({
             </div>
 
             <div style={{ display: "flex" }}>
-              <label
-                htmlFor="isBlocked"
-                style={{ color: "black", marginTop: "15px" }}
-              >
-                Blocked
-              </label>
               <Checkbox
                 checked={item.isBlocked}
                 onChange={() =>
@@ -589,6 +592,12 @@ export default function AmForm({
                 }
                 id="isBlocked"
               />
+              <label
+                htmlFor="isBlocked"
+                style={{ color: "black", marginTop: "15px" }}
+              >
+                Blocked
+              </label>
             </div>
           </div>
         )}

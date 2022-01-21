@@ -26,7 +26,7 @@ import { TranslationContext } from "../../contexts/TranslationContext";
 
 // icons
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { FilterAlt, AddShoppingCart } from "@mui/icons-material";
+import { FilterAlt, AddShoppingCart, AddCircle } from "@mui/icons-material";
 import PopUp from "../subComponents/PopUp";
 import Dropdown from "../subComponents/Dropdown";
 
@@ -198,7 +198,7 @@ export default function OrderDetails({ order, role = "" }) {
                   <IconButton
                     onClick={() => navigate(`/waiter/orders/${id}/add-items`)}
                   >
-                    <AddShoppingCart style={{ color: "#2196f3" }} />
+                    <AddCircle style={{ color: "#2196f3" }} />
                   </IconButton>
                 </Tooltip>
               )}

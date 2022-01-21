@@ -9,14 +9,15 @@ export default function ImagePreview({ button, handleClick, imageSrc }) {
         display: "flex",
         position: "relative",
         justifyContent: "center",
-        marginBottom: "10px",
+        marginBottom: "20px",
+        marginTop: "-10px",
       }}
     >
       <img
         src={imageSrc ?? defaultImage}
         style={{
-          width: "125px",
-          height: "125px",
+          width: "140px",
+          height: "140px",
           borderRadius: "300px",
           //backgroundColor: "#B3B3B3",
           border: 0,

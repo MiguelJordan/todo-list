@@ -58,7 +58,9 @@ export default function PopOver({
             <MenuItem
               onClick={() => {
                 if (item.type === "image") return handleCloseUser();
-                return item.action(event);
+
+                item.action(event);
+                handleCloseUser();
               }}
             >
               <input

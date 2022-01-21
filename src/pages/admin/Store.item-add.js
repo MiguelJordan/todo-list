@@ -21,13 +21,12 @@ export default function StoreAdd() {
     category: "Castel",
     cost: "1000",
     prices: [],
-    imageUrl: "",
     commissionAmount: "50",
     commissionRatio: "1",
     companyCode: user.company.code,
     storeId: user.workUnit.storeId,
     quantity: "50",
-    measureUnitPlural: "bucket",
+    measureUnitPlural: "",
     measureUnit: "Bottle",
     isBlocked: false,
   });
@@ -67,11 +66,11 @@ export default function StoreAdd() {
     }
     if (item.commissionAmount < 0) {
       setLoading(false);
-      return setError("Invalid commission Amount");
+      return setError("Invalid Commission Amount");
     }
     if (item.commissionRatio < 0) {
       setLoading(false);
-      return setError("Invalid commission Ratio");
+      return setError("Invalid Commission Ratio");
     }
 
     setLoading(false);
@@ -98,15 +97,8 @@ export default function StoreAdd() {
       return setError("Invalid Image Format");
     let base64 = await toBase64(e.target.files[0]);
 
-    console.log("base64");
-
     setImage(base64);
   };
-
-  useEffect(() => {
-    setItem({ ...item, imageUrl: image });
-    console.log(typeof image);
-  }, [image]);
 
   const RemoveImage = () => {
     setImage(null);
@@ -120,13 +112,11 @@ export default function StoreAdd() {
         target="storeItems"
         handleSubmit={handleSubmit}
         image={image}
-        header="Add Item"
         items={item}
         AddImage={AddImage}
         RemoveImage={RemoveImage}
         loading={loading}
         error={error}
-        modify={true}
       />
     </>
   );

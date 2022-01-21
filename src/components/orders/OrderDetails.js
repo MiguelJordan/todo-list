@@ -8,6 +8,7 @@ import {
   FormControlLabel,
   IconButton,
   TextField,
+  Tooltip,
 } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -25,7 +26,7 @@ import { TranslationContext } from "../../contexts/TranslationContext";
 
 // icons
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { FilterAlt } from "@mui/icons-material";
+import { FilterAlt, AddShoppingCart } from "@mui/icons-material";
 import PopUp from "../subComponents/PopUp";
 import Dropdown from "../subComponents/Dropdown";
 
@@ -190,15 +191,17 @@ export default function OrderDetails({ order, role = "" }) {
               <IconButton onClick={() => setOpen(true)}>
                 <FilterAlt style={{ color: "#9e9e9e" }} />
               </IconButton>
-              {role === "waiter" && (
-                <Fabs
-                  sx={{ width: "40px", height: "40px" }}
-                  ToolTipText="Ajouter Produits"
-                  path={`/waiter/orders/${id}/add-items`}
-                />
-              )}
 
               <Search onChange={setSearchVal} />
+              {role === "waiter" && (
+                <Tooltip title="Ajouter Produits">
+                  <IconButton
+                    onClick={() => navigate(`/waiter/orders/${id}/add-items`)}
+                  >
+                    <AddShoppingCart style={{ color: "#2196f3" }} />
+                  </IconButton>
+                </Tooltip>
+              )}
             </div>
 
             <div

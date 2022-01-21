@@ -1,6 +1,6 @@
 import { IconButton } from "@mui/material";
 import React from "react";
-import image from "../../default.png";
+import defaultImage from "../../default.png";
 
 export default function ImagePreview({ button, handleClick, imageSrc }) {
   return (
@@ -13,12 +13,12 @@ export default function ImagePreview({ button, handleClick, imageSrc }) {
       }}
     >
       <img
-        src={imageSrc ?? image}
+        src={imageSrc ?? defaultImage}
         style={{
-          width: "105px",
-          height: "105px",
+          width: "125px",
+          height: "125px",
           borderRadius: "300px",
-          backgroundColor: "#B3B3B3",
+          //backgroundColor: "#B3B3B3",
           border: 0,
           borderImage: "none",
         }}
@@ -31,7 +31,7 @@ export default function ImagePreview({ button, handleClick, imageSrc }) {
           width: "40px",
           height: "40px",
           borderRadius: "30px",
-          backgroundColor: "black",
+          backgroundColor: "#001d42",
           marginTop: "5px",
         }}
         onClick={handleClick}

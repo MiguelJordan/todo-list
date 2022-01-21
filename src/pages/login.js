@@ -92,7 +92,7 @@ const Page = () => {
         maxWidth: "350px",
         backgroundColor: "#FFFFFF",
         borderRadius: "3px",
-        margin: "170px auto",
+        margin: "100px auto",
         padding: "20px",
       }}
     >

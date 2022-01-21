@@ -23,7 +23,7 @@ import queries from "../../functions/queries";
 // icons
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { DeleteRounded } from "@mui/icons-material";
-import PreviewIcon from "@mui/icons-material/Preview";
+import InfoIcon from "@mui/icons-material/Info";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -144,7 +144,7 @@ export default function OrderList({ role = "", orders = [] }) {
     {
       name: "Detail",
       color: "#04A5E0",
-      Icon: <PreviewIcon />,
+      Icon: <InfoIcon />,
       action: (order) => viewOrderDetails(order),
     },
   ];
@@ -152,7 +152,7 @@ export default function OrderList({ role = "", orders = [] }) {
     {
       name: "Detail",
       color: "#04A5E0",
-      Icon: <PreviewIcon />,
+      Icon: <InfoIcon />,
       action: (order) => viewOrderDetails(order),
     },
   ];
@@ -161,7 +161,7 @@ export default function OrderList({ role = "", orders = [] }) {
     {
       name: "Detail",
       color: "#04A5E0",
-      Icon: <PreviewIcon />,
+      Icon: <InfoIcon />,
       action: (e) => viewOrderDetails(e),
     },
   ];

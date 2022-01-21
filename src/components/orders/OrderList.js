@@ -22,7 +22,8 @@ import queries from "../../functions/queries";
 
 // icons
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { DeleteRounded, EditRounded } from "@mui/icons-material";
+import { DeleteRounded } from "@mui/icons-material";
+import PreviewIcon from "@mui/icons-material/Preview";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -141,18 +142,26 @@ export default function OrderList({ role = "", orders = [] }) {
       action: (order) => deleteOrder(order),
     },
     {
-      name: "Modifier",
+      name: "Detail",
       color: "#04A5E0",
-      Icon: <EditRounded />,
+      Icon: <PreviewIcon />,
+      action: (order) => viewOrderDetails(order),
+    },
+  ];
+  const cashierPopMenu = [
+    {
+      name: "Detail",
+      color: "#04A5E0",
+      Icon: <PreviewIcon />,
       action: (order) => viewOrderDetails(order),
     },
   ];
 
   const AdminPopMenu = [
     {
-      name: "Modifier",
+      name: "Detail",
       color: "#04A5E0",
-      Icon: <EditRounded />,
+      Icon: <PreviewIcon />,
       action: (e) => viewOrderDetails(e),
     },
   ];
@@ -231,9 +240,15 @@ export default function OrderList({ role = "", orders = [] }) {
                   </div>
                 </div>
 
-                {["cashier", "waiter"].includes(role) ? (
+                {role === "waiter" ? (
                   <PopOver
                     items={WaiterPopMenu}
+                    Icon={<MoreVertIcon />}
+                    event={order}
+                  />
+                ) : role === "cashier" ? (
+                  <PopOver
+                    items={cashierPopMenu}
                     Icon={<MoreVertIcon />}
                     event={order}
                   />

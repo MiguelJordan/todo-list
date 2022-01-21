@@ -3,9 +3,10 @@ import dayjs from "dayjs";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDayjs from "@mui/lab/AdapterDayjs";
 import MobileDatePicker from "@mui/lab/MobileDatePicker";
-import { TextField } from "@mui/material";
+import { Button, Modal, TextField, Box, IconButton } from "@mui/material";
 import { makeStyles } from "@material-ui/core";
 import { createTheme, ThemeProvider } from "@mui/material";
+import { FilterAlt } from "@mui/icons-material";
 
 //contexts
 import { TrContext } from "../../contexts/TranslationContext";
@@ -16,6 +17,7 @@ import { OrderContext } from "../../contexts/OrderContext";
 import OrderList from "../../components/orders/OrderList";
 import Search from "../../components/subComponents/Search";
 import Dropdown from "../../components/subComponents/Dropdown";
+import PopUp from "../../components/subComponents/PopUp";
 
 // contexts
 import { TranslationContext } from "../../contexts/TranslationContext";
@@ -24,7 +26,7 @@ const theme = createTheme({
   components: {
     MuiDialogContent: {
       defaultProps: {
-        backgroundColor: "red",
+        root: "red",
       },
     },
   },
@@ -59,12 +61,13 @@ export default function Bills() {
   const createdDate = dayjs(new Date(user.workUnit.createdAt));
 
   //get current date and and 1 day to it
-
+  const [open, setOpen] = useState(false);
   const [startP, setStartD] = useState(createdDate);
   const [stopP, setStopD] = useState(dayjs(new Date()));
   const [date, setDate] = useState(createdDate);
 
   const [format, setFormat] = useState("Period");
+  const [payment, setPayment] = useState(user.workUnit.paymentMethods[0]);
 
   const [searchVal, setSearchVal] = useState("");
 
@@ -100,68 +103,92 @@ export default function Bills() {
     <>
       {/* <h1 className="center">{t("Admin's Bills")}</h1> */}
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          margin: "5px",
-          color: "white",
-        }}
-      >
-        <Dropdown
-          label="Format"
-          values={["Period", "Date"]}
-          value={format}
-          handleChange={setFormat}
-          sx={{ marginLeft: "-13px" }}
-        />
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <ThemeProvider theme={theme}>
-            {format === "Period" ? (
-              <>
+      <PopUp open={open} close={setOpen}>
+        <div style={{ display: "flex", marginLeft: "-10px" }}>
+          <Dropdown
+            label="Format"
+            values={["Period", "Date"]}
+            value={format}
+            handleChange={setFormat}
+            sx={{ marginLeft: "-13px" }}
+          />
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <ThemeProvider theme={theme}>
+              {format === "Period" ? (
+                <>
+                  <MobileDatePicker
+                    label="Du"
+                    inputFormat="DD-MM-YYYY"
+                    value={startP}
+                    className={classes.inputText}
+                    onChange={(newValue) => {
+                      setStartD(newValue);
+                    }}
+                    minDate={createdDate}
+                    maxDate={dayjs(new Date(stopP)).subtract(1, "day")}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        sx={{
+                          input: { color: "#B3B3B3", height: "3px" },
+                          svg: { color: "#B3B3B3" },
+                          label: { color: "#B3B3B3" },
+                          marginTop: "10px",
+                          marginLeft: "5px",
+                          width: "110px",
+                          //height: "10px",
+                          "&:hover": {
+                            "&& fieldset": {
+                              border: "1px solid darkblue",
+                            },
+                          },
+                        }}
+                      />
+                    )}
+                  />
+
+                  <MobileDatePicker
+                    label="Au"
+                    inputFormat="DD-MM-YYYY"
+                    value={stopP}
+                    className={classes.inputText}
+                    onChange={(newValue) => {
+                      setStopD(newValue);
+                    }}
+                    minDate={dayjs(new Date(startP)).add(1, "day")}
+                    maxDate={dayjs(new Date())}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        sx={{
+                          input: { color: "#B3B3B3", height: "3px" },
+                          svg: { color: "#B3B3B3" },
+                          label: { color: "#B3B3B3" },
+                          marginTop: "10px",
+                          marginLeft: "5px",
+                          "&:hover": {
+                            "&& fieldset": {
+                              border: "1px solid darkblue",
+                            },
+                          },
+                          width: "110px",
+                        }}
+                      />
+                    )}
+                  />
+                </>
+              ) : (
                 <MobileDatePicker
-                  label="Du"
+                  label="Date"
                   inputFormat="DD-MM-YYYY"
-                  value={startP}
+                  value={date}
                   className={classes.inputText}
                   onChange={(newValue) => {
-                    setStartD(newValue);
+                    var date = new Date(newValue).toISOString().slice(0, 10);
+
+                    setDate(date);
                   }}
                   minDate={createdDate}
-                  maxDate={dayjs(new Date(stopP)).subtract(1, "day")}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      sx={{
-                        input: { color: "#B3B3B3", height: "3px" },
-                        svg: { color: "#B3B3B3" },
-                        label: { color: "#B3B3B3" },
-                        marginTop: "10px",
-                        marginLeft: "5px",
-                        width: "110px",
-                        //height: "10px",
-                        "&:hover": {
-                          "&& fieldset": {
-                            border: "1px solid darkblue",
-                          },
-                        },
-                      }}
-                      classes={{
-                        root: classes.root,
-                      }}
-                    />
-                  )}
-                />
-
-                <MobileDatePicker
-                  label="Au"
-                  inputFormat="DD-MM-YYYY"
-                  value={stopP}
-                  className={classes.inputText}
-                  onChange={(newValue) => {
-                    setStopD(newValue);
-                  }}
-                  minDate={dayjs(new Date(startP)).add(1, "day")}
                   maxDate={dayjs(new Date())}
                   renderInput={(params) => (
                     <TextField
@@ -172,56 +199,31 @@ export default function Bills() {
                         label: { color: "#B3B3B3" },
                         marginTop: "10px",
                         marginLeft: "5px",
+                        width: "110px",
                         "&:hover": {
                           "&& fieldset": {
                             border: "1px solid darkblue",
                           },
                         },
-                        width: "110px",
-                      }}
-                      classes={{
-                        root: classes.root,
                       }}
                     />
                   )}
                 />
-              </>
-            ) : (
-              <MobileDatePicker
-                label="Date"
-                inputFormat="DD-MM-YYYY"
-                value={date}
-                className={classes.inputText}
-                onChange={(newValue) => {
-                  var date = new Date(newValue).toISOString().slice(0, 10);
+              )}
+            </ThemeProvider>
+          </LocalizationProvider>
+        </div>
+        <div style={{ display: "flex", marginLeft: "-35px" }}>
+          <Dropdown
+            label="PaymentMethod"
+            values={user.workUnit.paymentMethods}
+            value={payment}
+            handleChange={setPayment}
+            sx={{ marginLeft: "13px" }}
+          />
+        </div>
+      </PopUp>
 
-                  setDate(date);
-                }}
-                minDate={createdDate}
-                maxDate={dayjs(new Date())}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    sx={{
-                      input: { color: "#B3B3B3", height: "3px" },
-                      svg: { color: "#B3B3B3" },
-                      label: { color: "#B3B3B3" },
-                      marginTop: "10px",
-                      marginLeft: "5px",
-                      width: "110px",
-                      "&:hover": {
-                        "&& fieldset": {
-                          border: "1px solid darkblue",
-                        },
-                      },
-                    }}
-                  />
-                )}
-              />
-            )}
-          </ThemeProvider>
-        </LocalizationProvider>
-      </div>
       <div
         style={{
           display: "flex",
@@ -230,6 +232,12 @@ export default function Bills() {
         }}
       >
         <Search onChange={setSearchVal} />
+        <IconButton
+          onClick={() => setOpen(true)}
+          style={{ marginLeft: "10px" }}
+        >
+          <FilterAlt style={{ color: "#9e9e9e" }} />
+        </IconButton>
       </div>
       <OrderList array={_orders} role="admin" />
 

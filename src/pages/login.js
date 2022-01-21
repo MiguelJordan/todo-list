@@ -1,9 +1,21 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 
-import { Button, Typography, TextField } from "@mui/material";
+import {
+  Button,
+  Typography,
+  TextField,
+  FormControl,
+  InputLabel,
+  Input,
+  InputAdornment,
+  IconButton,
+  OutlinedInput,
+} from "@mui/material";
 import { makeStyles } from "@material-ui/core";
 import { Avatar } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import LoginIcon from "@mui/icons-material/Login";
 
 //components
 import Layout from "../components/_layout/Layout";
@@ -14,6 +26,7 @@ import { TranslationContext } from "../contexts/TranslationContext";
 
 // icons
 import LockCloseOutlined from "@mui/icons-material/LockOutlined";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const useStyles = makeStyles((theme) => ({
   inputText: {
@@ -30,6 +43,8 @@ const Page = () => {
   const [user, setUser] = useState({ id: "", password: "" });
   const [disabled] = useState(false);
   const [error, setError] = useState();
+  const [loading, setLoading] = useState(false);
+  const [showpassword, setShowPass] = useState(false);
 
   const handleChange = (e) => {
     setUser({
@@ -41,17 +56,28 @@ const Page = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError();
+    setLoading(true);
 
     // validate data
-    if (!user.id) return setError(t("Invalid user id"));
-    if (!user.password) return setError(t("Invalid password"));
+    if (!user.id) {
+      setLoading(false);
+      return setError(t("Invalid user id"));
+    }
+    if (!user.password) {
+      setLoading(false);
+      return setError(t("Invalid password"));
+    }
 
     // submit data
     const res = await login(user);
 
     // verify response
-    if (res.error) return setError(res.error);
+    if (res.error) {
+      setLoading(false);
+      return setError(res.error);
+    }
 
+    setLoading(false);
     // redirect to dashboard
     return navigate(`/${res.role}`);
   };
@@ -120,8 +146,30 @@ const Page = () => {
           style={{ color: "#001D42" }}
           autoComplete="off"
         />
-
-        <TextField
+        <FormControl style={{ marginTop: "20px" }} variant="outlined">
+          <InputLabel>{t("pages.auth.passwordField") + "*"}</InputLabel>
+          <OutlinedInput
+            label={t("pages.auth.passwordField") + "*"}
+            name="password"
+            type={showpassword ? "text" : "password"}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={() => setShowPass(!showpassword)}
+                  edge="end"
+                >
+                  {showpassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+            onChange={handleChange}
+            inputProps={{
+              className: classes.inputText,
+            }}
+            required
+          />
+        </FormControl>
+        {/* <TextField
           onChange={handleChange}
           type="password"
           label={t("pages.auth.passwordField") + "*"}
@@ -133,17 +181,20 @@ const Page = () => {
           }}
           required
           style={{ marginTop: "10px" }}
-        />
+        /> */}
 
-        <Button
+        <LoadingButton
           variant="contained"
           color="primary"
+          loadingPosition="start"
+          startIcon={<LoginIcon />}
           type="submit"
+          loading={loading}
           style={{ marginTop: "15px" }}
           disabled={disabled}
         >
           {t("pages.login.title")}
-        </Button>
+        </LoadingButton>
       </form>
     </div>
   );

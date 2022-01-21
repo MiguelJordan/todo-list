@@ -1,4 +1,5 @@
 import { useContext, useState, useEffect } from "react";
+import { IconButton } from "@mui/material";
 
 // contexts
 //import { TrContext } from "../../contexts/TranslationContext";
@@ -12,6 +13,10 @@ import Dropdown from "../../components/subComponents/Dropdown";
 
 // contexts
 import { TranslationContext } from "../../contexts/TranslationContext";
+import PopUp from "../../components/subComponents/PopUp";
+
+//icon
+import { FilterAlt } from "@mui/icons-material";
 
 export default function Bills() {
   // const { t } = useContext(TranslationContext);
@@ -34,6 +39,7 @@ export default function Bills() {
   const [waiter, setWaiter] = useState(waiterList[0] ?? "");
   const [payment, setPayment] = useState(paymentMethods[0] ?? "");
   const [searchVal, setSearchVal] = useState("");
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const filtered = orders.filter((order) => {
@@ -65,30 +71,38 @@ export default function Bills() {
     <>
       {/* <h1 className="center">{t("Cashier's Bills")}</h1> */}
 
+      <PopUp open={open} close={setOpen}>
+        <div style={{ display: "flex", marginLeft: "-20px" }}>
+          <Dropdown
+            label="Waiter"
+            values={waiterList}
+            value={waiter}
+            handleChange={setWaiter}
+          />
+
+          <Dropdown
+            label="Payment"
+            value={payment}
+            values={paymentMethods}
+            handleChange={setPayment}
+          />
+        </div>
+      </PopUp>
+
       <div
         style={{
           display: "flex",
-          flexFlow: "row",
-          alignItems: "center",
           justifyContent: "center",
-          flexWrap: "wrap",
-          margin: "15px 0",
+          marginTop: "10px",
         }}
       >
-        <Dropdown
-          label="Waiter"
-          values={waiterList}
-          value={waiter}
-          handleChange={setWaiter}
-        />
-
-        <Dropdown
-          label="Paymennt"
-          value={payment}
-          values={paymentMethods}
-          handleChange={setPayment}
-        />
         <Search onChange={setSearchVal} />
+        <IconButton
+          onClick={() => setOpen(true)}
+          style={{ marginLeft: "10px" }}
+        >
+          <FilterAlt style={{ color: "#9e9e9e" }} />
+        </IconButton>
       </div>
 
       <OrderList array={_orders} role="cashier" />

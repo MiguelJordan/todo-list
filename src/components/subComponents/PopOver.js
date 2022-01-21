@@ -6,6 +6,7 @@ import {
   Typography,
   ListItemIcon,
   IconButton,
+  Input,
 } from "@mui/material";
 
 // contexts
@@ -47,31 +48,41 @@ export default function PopOver({ items = [], Icon, event, sx = {} }) {
         onClose={handleCloseUser}
       >
         {items.map((item) => (
-          <MenuItem
-            key={item.name}
-            onClick={() => {
-              item.action(event);
-              handleCloseUser();
-            }}
-          >
-            <ListItemIcon
-              style={{
-                color: `${item.color}`,
+          <label key={item.name} htmlFor={item.type ?? ""}>
+            <MenuItem
+              onClick={() => {
+                if (item.type === "image") return handleCloseUser();
+                return item.action(event);
               }}
             >
-              {item.Icon}
-            </ListItemIcon>
-            <Typography
-              textAlign={"center"}
-              style={{
-                color: "white",
-              }}
-            >
-              {item?.role
-                ? t(`_var.${item.role}.popover.${item.name}`)
-                : item.name}
-            </Typography>
-          </MenuItem>
+              <input
+                accept="image/*"
+                id="image"
+                type="file"
+                style={{ display: "none" }}
+                onChange={(e) => {
+                  if (item.type === "image") return item.action(e);
+                }}
+              />
+              <ListItemIcon
+                style={{
+                  color: `${item.color}`,
+                }}
+              >
+                {item.Icon}
+              </ListItemIcon>
+              <Typography
+                textAlign={"center"}
+                style={{
+                  color: "white",
+                }}
+              >
+                {item?.role
+                  ? t(`_var.${item.role}.popover.${item.name}`)
+                  : item.name}
+              </Typography>
+            </MenuItem>
+          </label>
         ))}
       </Menu>
     </>

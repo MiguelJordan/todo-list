@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 
 import { Button, TextField } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 import { makeStyles } from "@material-ui/core";
 import Dropdown from "../../components/subComponents/Dropdown";
 
@@ -38,6 +39,7 @@ export default function AddStaff() {
   const classes = useStyles();
 
   const [error, setError] = useState();
+  const [loading, setLoading] = useState(false);
 
   const [personInfo, setPersonInfo] = useState({
     firstName: "",
@@ -52,13 +54,29 @@ export default function AddStaff() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setError();
+    setLoading(true);
 
-    if (!personInfo.email) return setError(t("Invalid email"));
-    if (!personInfo.firstName) return setError(t("Invalid first name"));
-    if (!personInfo.lastName) return setError(t("Invalid last name"));
-    if (!personInfo.role) return setError(t("Invalid role"));
-    if (!personInfo.tel) return setError(t("Invalid email"));
-
+    if (!personInfo.email) {
+      setLoading(false);
+      return setError(t("Invalid email"));
+    }
+    if (!personInfo.firstName) {
+      setLoading(false);
+      return setError(t("Invalid first name"));
+    }
+    if (!personInfo.lastName) {
+      setLoading(false);
+      return setError(t("Invalid last name"));
+    }
+    if (!personInfo.role) {
+      setLoading(false);
+      return setError(t("Invalid role"));
+    }
+    if (!personInfo.tel) {
+      setLoading(false);
+      return setError(t("Invalid email"));
+    }
+    setLoading(false);
     console.log(personInfo);
   };
 
@@ -148,9 +166,16 @@ export default function AddStaff() {
         }
       />
 
-      <Button variant="contained" type="submit" style={{ margin: "15px auto" }}>
+      <LoadingButton
+        loading={loading}
+        //loadingPosition="end"
+        variant="contained"
+        //loadingIndicator="Loading..."
+        type="submit"
+        style={{ margin: "15px auto" }}
+      >
         Ajouter
-      </Button>
+      </LoadingButton>
     </form>
   );
 }

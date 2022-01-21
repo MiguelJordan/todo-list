@@ -4,7 +4,16 @@ import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import { Tooltip, Zoom } from "@mui/material";
 
-export default function Fabs({ handleClick, sx = {}, ToolTipText }) {
+import { useNavigate } from "react-router-dom";
+
+export default function Fabs({
+  path = "",
+  handleClick,
+  sx = {},
+  ToolTipText = "",
+}) {
+  const navigate = useNavigate();
+
   return (
     <Tooltip TransitionComponent={Zoom} title={ToolTipText}>
       <Fab
@@ -20,7 +29,15 @@ export default function Fabs({ handleClick, sx = {}, ToolTipText }) {
           ...sx,
         }}
       >
-        <AddIcon style={{ alignSelf: "center" }} />
+        <AddIcon
+          onClick={() => {
+            if (path) return navigate(path);
+            handleClick();
+          }}
+          style={{
+            alignSelf: "center",
+          }}
+        />
       </Fab>
     </Tooltip>
   );

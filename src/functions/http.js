@@ -14,7 +14,12 @@ const getHeaders = () => {
 };
 
 const getError = (err) => {
-  return { error: err?.response?.data?.error ?? err?.message };
+  let errRes = { error: err?.response?.data?.message ?? err?.message };
+  if (["jwt expired", "jwt must be provided"].includes(errRes.error)) {
+    localStorage.removeItem("user");
+    return window.location.reload();
+  }
+  return errRes;
 };
 
 const getUrl = (url, params) => {

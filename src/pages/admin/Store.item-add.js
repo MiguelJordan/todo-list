@@ -137,8 +137,6 @@ export default function StoreAdd() {
     setImageUrl(null);
   };
 
-  //console.log(image);
-
   return (
     <AmForm
       target="storeItems"

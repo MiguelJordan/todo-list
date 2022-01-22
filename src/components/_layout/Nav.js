@@ -183,7 +183,7 @@ const Nav = ({ links = [], showLoginBtn = true }) => {
               color: "white",
               display: "block",
               border: "3px solid transparent",
-              marginLeft: "1rem",
+              margin: "0 1rem",
               "&:hover": {
                 border: "3px solid hsl(216, 100%, 46%)",
               },

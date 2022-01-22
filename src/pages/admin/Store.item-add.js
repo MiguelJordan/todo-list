@@ -5,17 +5,21 @@ import AmForm from "../../components/subComponents/AmForm";
 
 // contexts
 import { AuthContext } from "../../contexts/AuthContext";
+import { SocketContext } from "../../contexts/SocketContext";
 
 // functions
 import { toBase64 } from "../../functions/data";
 import { sendFormData } from "../../functions/http";
+import queries from "../../functions/queries";
 
 export default function StoreAdd() {
   const { user } = useContext(AuthContext);
+  const { sendEvent } = useContext(SocketContext);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [image, setImage] = useState();
+  const [image, setImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState(null);
 
   const [item, setItem] = useState({
     name: "",
@@ -23,7 +27,7 @@ export default function StoreAdd() {
     category: "",
     cost: 0,
     prices: [],
-    commissionAmount: 0,
+    commission: 0,
     commissionRatio: 1,
     companyCode: user.company.code,
     storeId: user.workUnit.storeId,
@@ -33,7 +37,7 @@ export default function StoreAdd() {
     isBlocked: false,
   });
 
-  const handleSubmit = (e, item) => {
+  const handleSubmit = async (e, item) => {
     e.preventDefault();
     setError("");
 
@@ -45,26 +49,52 @@ export default function StoreAdd() {
 
     if (!item.measureUnit) return setError("Invalid measure unit");
 
-    if (!item.measureUnitPlural) {
-      return setError("Invalid measure unit");
-    }
+    if (!item.measureUnitPlural) return setError("Invalid measure unit");
 
     if (item.quantity < 0) return setError("Invalid quantity");
 
     if (item.cost < 0) return setError("Invalid cost price");
 
-    if (item.commissionAmount < 0) {
-      return setError("Invalid commission");
-    }
+    if (item.commission < 0) return setError("Invalid commission");
 
-    if (item.commissionRatio < 1) {
-      return setError("Invalid commission ratio");
-    }
+    if (item.commissionRatio < 1) return setError("Invalid commission ratio");
 
     setLoading(true);
 
+    if (imageUrl) {
+      item.imageUrl = imageUrl;
+    } else {
+      delete item?.imageUrl;
+    }
+
+    const res = await sendFormData({
+      url: "/storeItems",
+      values: item,
+      method: "POST",
+    });
+
+    if (res.error) {
+      setLoading(false);
+      return setError(res.error);
+    }
+
+    // reset create form
+    e.target.reset();
+
+    // send store item created/updated event
+    sendEvent({
+      name: "cE-store-items-updated",
+      props: {
+        companyCode: user.company.code,
+        query: queries["cE-store-items-updated"]({
+          items: [item.name],
+          storeId: item.storeId,
+        }),
+      },
+      rooms: [user.workUnit.code],
+    });
+
     setLoading(false);
-    console.log(item);
   };
 
   const AddImage = async (e) => {
@@ -90,11 +120,13 @@ export default function StoreAdd() {
     let base64 = await toBase64(file);
 
     setImage(base64);
-
-    return file;
+    setImageUrl(file);
   };
 
-  const RemoveImage = () => setImage(null);
+  const RemoveImage = () => {
+    setImage(null);
+    setImageUrl(null);
+  };
 
   //console.log(image);
 

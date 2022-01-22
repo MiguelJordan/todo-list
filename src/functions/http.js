@@ -14,7 +14,9 @@ const getHeaders = () => {
 };
 
 const getError = (err) => {
-  let errRes = { error: err?.response?.data?.error ?? err?.message };
+  let errRes = {
+    error: err?.response?.data?.error ?? err?.error ?? err?.message,
+  };
   if (["jwt expired", "jwt must be provided"].includes(errRes.error)) {
     localStorage.removeItem("user");
     return window.location.reload();
@@ -62,13 +64,15 @@ export const post = async ({ url = "", body = {}, fullUrl = false }) => {
   }
 };
 
-export const sendFormData = async (
+export const sendFormData = async ({
   url = "",
   values = {},
   method = "POST",
-  fullUrl = false
-) => {
+  fullUrl = false,
+}) => {
   const headers = getHeaders();
+  if (!fullUrl) url = apiUrl + url;
+
   const body = new FormData();
 
   for (let prop in values) {
@@ -88,6 +92,7 @@ export const sendFormData = async (
       })
     ).json();
   } catch (err) {
+    // console.log(err);
     return getError(err);
   }
 };

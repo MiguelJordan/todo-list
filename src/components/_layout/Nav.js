@@ -51,7 +51,6 @@ const Nav = ({ links = [], showLoginBtn = true }) => {
 
   return (
     <AppBar position="static" sx={{ backgroundColor: "app.background" }}>
-      {/* <Container maxWidth="xl"> */}
       <Toolbar disableGutters>
         {links.length > 0 && (
           <>
@@ -201,7 +200,6 @@ const Nav = ({ links = [], showLoginBtn = true }) => {
           backgroundColor: "hsl(213, 51%, 35%)",
         }}
       />
-      {/* </Container> */}
     </AppBar>
   );
 };

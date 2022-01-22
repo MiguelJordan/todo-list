@@ -1,11 +1,7 @@
-import { useContext } from "react";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import { makeStyles } from "@material-ui/core";
-
-// contexts
-import { TranslationContext } from "../../contexts/TranslationContext";
 
 // functions
 import { capitalise } from "../../functions/data";
@@ -21,16 +17,14 @@ export default function Dropdown({
   capitalised = true,
   handleChange,
   label = "",
-  translated = false,
+  readOnly = false,
+  sx = {},
+  textColor,
   value,
   values = [],
   variant = "outlined",
-  sx = {},
-  textColor,
-  read = false,
 }) {
   const classes = useStyles({ textColor });
-  const { t } = useContext(TranslationContext);
 
   return (
     <FormControl
@@ -59,18 +53,13 @@ export default function Dropdown({
         style={{ color: textColor ?? "#B3B3B3" }}
         onChange={(e) => handleChange(e.target.value)}
         inputProps={{
-          readOnly: read,
+          readOnly,
           className: classes.inputProps,
         }}
       >
         {values.map((value) => (
           <MenuItem style={{ color: "#B3B3B3" }} value={value} key={value}>
-            {(() => {
-              let text = translated ? t(`compo.dropdown.${value}`) : value;
-
-              text = capitalised ? capitalise(text) : text;
-              return text;
-            })()}
+            {capitalised ? capitalise(value) : value}
           </MenuItem>
         ))}
       </TextField>

@@ -24,9 +24,7 @@
   },
   "compo": {
     "dropdown": {
-      "drinks": "Drinks",
       "false": "False",
-      "meals": "Meals",
       "no": "No",
       "true": "True",
       "yes": "Yes"

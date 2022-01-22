@@ -25,7 +25,7 @@ export default function StoreAdd() {
   const [image, setImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
 
-  const [item, setItem] = useState({
+  const _item = {
     name: "",
     family: "",
     category: "",
@@ -39,37 +39,63 @@ export default function StoreAdd() {
     measureUnitPlural: "",
     quantity: 0,
     isBlocked: false,
-  });
+  };
 
-  const handleSubmit = async (e, item) => {
-    e.preventDefault();
+  const [item, setItem] = useState(_item);
+
+  const validateItem = (item) => {
     setError("");
 
+    item.name = item.name?.trim();
     if (!item.name) return setError("Invalid item name");
 
+    item.family = item.family?.trim();
     if (!item.family) return setError("Invalid family");
 
+    item.category = item.category?.trim();
     if (!item.category) return setError("Invalid category");
 
+    item.measureUnit = item.measureUnit?.trim();
     if (!item.measureUnit) return setError("Invalid measure unit");
 
+    item.measureUnitPlural = item.measureUnitPlural?.trim();
     if (!item.measureUnitPlural) return setError("Invalid measure unit");
 
-    if (item.quantity < 0) return setError("Invalid quantity");
+    if (isNaN(item.quantity) || item.quantity < 0) {
+      return setError("Invalid quantity");
+    }
+    item.quantity = Number(item.quantity);
 
-    if (item.cost < 0) return setError("Invalid cost price");
+    if (isNaN(item.cost) || item.cost < 0) {
+      return setError("Invalid cost price");
+    }
+    item.cost = Number(item.cost);
 
-    if (item.commission < 0) return setError("Invalid commission");
+    if (isNaN(item.commission) || item.commission < 0) {
+      return setError("Invalid commission");
+    }
+    item.commission = Number(item.commission);
 
-    if (item.commissionRatio < 1) return setError("Invalid commission ratio");
-
-    setLoading(true);
+    if (isNaN(item.commissionRatio) || item.commissionRatio < 1) {
+      return setError("Invalid commission ratio");
+    }
+    item.commissionRatio = Number(item.commissionRatio);
 
     if (imageUrl) {
       item.imageUrl = imageUrl;
     } else {
       delete item?.imageUrl;
     }
+
+    return item;
+  };
+
+  const handleSubmit = async (e, item) => {
+    e.preventDefault();
+
+    item = validateItem(item);
+
+    setLoading(true);
 
     const res = await sendFormData({
       url: "/storeItems",
@@ -82,8 +108,9 @@ export default function StoreAdd() {
       return setError(res.error);
     }
 
-    // reset create form
-    e.target.reset();
+    // reset create form if all is good
+    // e.target.reset()
+    // setItem(_item);
 
     // send store item created/updated event
     sendEvent({

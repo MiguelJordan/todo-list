@@ -87,7 +87,7 @@ const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
   const [isOffer, setIsOffer] = useState("no");
   const [price, setPrice] = useState(data.prices[0]);
 
-  const handleSubmit = async (item, e) => {
+  const handleSubmit = async (e, item) => {
     e.preventDefault();
 
     const _isOffer = getBool(isOffer);
@@ -125,7 +125,7 @@ const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
       });
     }
 
-    // reset form is all is good
+    // reset form if all is good
     e.target.reset();
 
     // send store item updated event
@@ -180,7 +180,7 @@ const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
           />
           <form
             className={classes.formControl}
-            onSubmit={(e) => handleSubmit(data, e)}
+            onSubmit={(e) => handleSubmit(e, data)}
           >
             <div>
               <Dropdown

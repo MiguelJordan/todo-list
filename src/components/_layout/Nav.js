@@ -50,7 +50,10 @@ const Nav = ({ links = [], showLoginBtn = true }) => {
   });
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "app.background" }}>
+    <AppBar
+      position="fixed"
+      sx={{ backgroundColor: "app.background", padding: "0 12px" }}
+    >
       <Toolbar disableGutters>
         {links.length > 0 && (
           <>
@@ -61,7 +64,7 @@ const Nav = ({ links = [], showLoginBtn = true }) => {
               aria-haspopup="true"
               onClick={toggleDrawer}
               color="inherit"
-              sx={{ display: { xs: "flex", sm: "none" }, paddingRight: 0 }}
+              sx={{ display: { xs: "flex", sm: "none" }, paddingLeft: 0 }}
             >
               <MenuIcon />
             </IconButton>
@@ -125,7 +128,7 @@ const Nav = ({ links = [], showLoginBtn = true }) => {
           noWrap
           component="div"
           onClick={() => navigate("/")}
-          sx={{ cursor: "pointer", marginLeft: "12px", marginRight: "auto" }}
+          sx={{ cursor: "pointer", marginRight: "auto" }}
         >
           MonMagazin
         </Typography>
@@ -183,7 +186,7 @@ const Nav = ({ links = [], showLoginBtn = true }) => {
               color: "white",
               display: "block",
               border: "3px solid transparent",
-              margin: "0 1rem",
+              marginLeft: "1rem",
               "&:hover": {
                 border: "3px solid hsl(216, 100%, 46%)",
               },

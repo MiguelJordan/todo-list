@@ -37,7 +37,15 @@
     "order": { "items": "Articles" },
     "item": {
       "btn-add": "Ajouter",
+      "category": "Catégorie",
+      "cost": "Prix d'achat",
+      "commission": "Commission",
+      "commissionRatio": "Taux de commission",
+      "family": "Famille",
+      "isBlocked": "Bloqué",
       "isOffer": "Offre",
+      "measureUnit": "Unité de mesure",
+      "measureUnitPlural": "Unité de mesure pluriel",
       "name": "Nom",
       "price": "Prix",
       "prices": "Prix",
@@ -61,7 +69,10 @@
   },
   "pages": {
     "404": { "back_home": "Retour à l'accueil", "message": "Page Non Trouvée" },
-    "admin": { "add-staff": { "register": "Enregistrer" } },
+    "admin": {
+      "add-staff": { "register": "Enregistrer" },
+      "add-storeItem": { "add-btn": "Ajouter" }
+    },
     "auth": {
       "passwordField": "Mot De Passe",
       "forgot_password": "Mot de passe Oublie?"
@@ -96,7 +107,7 @@
     "Invalid Credentials": "Identifiants Invalides",
     "Invalid category": "Catégorie invalide",
     "Invalid cashier id": "Identifiant de caissier invalide",
-    "Invalid commission amount": "Commission invalide",
+    "Invalid commission": "Commission invalide",
     "Invalid commission ratio": "Taux de commission invalide",
     "Invalid company code": "Code d'entreprise invalide",
     "Invalid company id": "Identifiant d'entreprise invalide",

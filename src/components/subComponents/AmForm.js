@@ -175,7 +175,7 @@ export default function AmForm({
               display: "flex",
               flexFlow: "column",
               justifyContent: "space-between",
-              maxHeight: "190px",
+              height: "200px",
               overflowY: "auto",
             }}
           >
@@ -189,7 +189,7 @@ export default function AmForm({
               }}
             >
               <Dropdown
-                label="Family*"
+                label={t("compo.item.family") + "*"}
                 values={["Drinks", "Meals"]}
                 value={updatedItem.family}
                 handleChange={(val) => setItem({ ...updatedItem, family: val })}
@@ -200,11 +200,10 @@ export default function AmForm({
               />
               <FormControl fullWidth>
                 <InputLabel style={{ marginTop: "2px", marginLeft: "-10px" }}>
-                  {"Category*"}
+                  {t("compo.item.category") + "*"}
                 </InputLabel>
                 <Input
                   fullWidth
-                  label="Category*"
                   type="text"
                   name="category"
                   value={updatedItem.category}
@@ -253,7 +252,7 @@ export default function AmForm({
             >
               <FormControl fullWidth>
                 <InputLabel style={{ marginTop: "2px", marginLeft: "-10px" }}>
-                  {"Name*"}
+                  {t("compo.item.name") + "*"}
                 </InputLabel>
                 <Input
                   fullWidth
@@ -307,7 +306,7 @@ export default function AmForm({
             >
               <FormControl fullWidth>
                 <InputLabel style={{ marginTop: "2px", marginLeft: "-10px" }}>
-                  {"Measure Unit*"}
+                  {t("compo.item.measureUnit") + "*"}
                 </InputLabel>
                 <Input
                   fullWidth
@@ -353,7 +352,7 @@ export default function AmForm({
 
               <FormControl fullWidth>
                 <InputLabel style={{ marginTop: "2px", marginLeft: "-10px" }}>
-                  {"Measure Unit Plural*"}
+                  {t("compo.item.measureUnitPlural") + "*"}
                 </InputLabel>
                 <Input
                   fullWidth
@@ -406,7 +405,7 @@ export default function AmForm({
             >
               <FormControl fullWidth>
                 <InputLabel style={{ marginTop: "2px", marginLeft: "-10px" }}>
-                  {"Quantity"}
+                  {t("compo.item.quantity")}
                 </InputLabel>
                 <Input
                   fullWidth
@@ -451,7 +450,7 @@ export default function AmForm({
 
               <FormControl fullWidth>
                 <InputLabel style={{ marginTop: "2px", marginLeft: "-10px" }}>
-                  {"Cost"}
+                  {t("compo.item.cost")}
                 </InputLabel>
                 <Input
                   fullWidth
@@ -503,7 +502,7 @@ export default function AmForm({
             >
               <FormControl fullWidth>
                 <InputLabel style={{ marginTop: "2px", marginLeft: "-10px" }}>
-                  {"Commission Amount"}
+                  {t("compo.item.commission")}
                 </InputLabel>
                 <Input
                   fullWidth
@@ -548,7 +547,7 @@ export default function AmForm({
 
               <FormControl fullWidth>
                 <InputLabel style={{ marginTop: "2px", marginLeft: "-10px" }}>
-                  {"Commission Ratio"}
+                  {t("compo.item.commissionRatio")}
                 </InputLabel>
                 <Input
                   fullWidth
@@ -604,7 +603,7 @@ export default function AmForm({
                 htmlFor="isBlocked"
                 style={{ color: "black", marginTop: "15px" }}
               >
-                Blocked
+                {t("compo.item.isBlocked")}
               </label>
             </div>
           </div>
@@ -615,7 +614,7 @@ export default function AmForm({
           type="submit"
           style={{ marginTop: "20px", marginBottom: "25px" }}
         >
-          {"Add"}
+          {t("pages.admin.add-storeItem.add-btn")}
         </LoadingButton>
       </form>
     </>

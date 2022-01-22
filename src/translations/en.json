@@ -34,7 +34,15 @@
     "order": { "items": "Items" },
     "item": {
       "btn-add": "Add",
+      "category": "Category",
+      "cost": "Cost",
+      "commission": "Commission",
+      "commissionRatio": "Commission ratio",
+      "family": "Family",
+      "isBlocked": "Blocked",
       "isOffer": "Offer",
+      "measureUnit": "Measure unit",
+      "measureUnitPlural": "Measure unit plural",
       "name": "Name",
       "price": "Price",
       "prices": "Prices",
@@ -58,7 +66,10 @@
   },
   "pages": {
     "404": { "back_home": "Back to Home", "message": "Page Not Found" },
-    "admin": { "add-staff": { "register": "Register" } },
+    "admin": {
+      "add-staff": { "register": "Register" },
+      "add-storeItem": { "add-btn": "Add" }
+    },
     "auth": {
       "passwordField": "Password",
       "forgot_password": "Forgot Password?"
@@ -88,7 +99,7 @@
     "Invalid Credentials": "Invalid Credentials",
     "Invalid category": "Invalid category",
     "Invalid cashier id": "Invalid cashier id",
-    "Invalid commission amount": "Invalid commission amount",
+    "Invalid commission": "Invalid commission",
     "Invalid commission ratio": "Invalid commission ratio",
     "Invalid company code": "Invalid company code",
     "Invalid company id": "Invalid company id",

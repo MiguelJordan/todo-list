@@ -54,7 +54,7 @@ export default function StoreAdd() {
     if (item.cost < 0) return setError("Invalid cost price");
 
     if (item.commissionAmount < 0) {
-      return setError("Invalid commission amount");
+      return setError("Invalid commission");
     }
 
     if (item.commissionRatio < 1) {

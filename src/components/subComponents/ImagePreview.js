@@ -9,7 +9,6 @@ export default function ImagePreview({ button, handleClick, imageSrc }) {
         margin: "-10px auto",
         marginBottom: "10px",
         width: "fit-content",
-        // border: "1px solid red",
       }}
     >
       <img

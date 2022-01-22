@@ -17,10 +17,10 @@ import NotificationProvider from "./contexts/feedback/NotificationContext";
 
 function App() {
   return (
-    <ThemeProvider>
-      <TranslationProvider>
-        <NotificationProvider>
-          <BackdropProvider>
+    <TranslationProvider>
+      <NotificationProvider>
+        <BackdropProvider>
+          <ThemeProvider>
             <AuthProvider>
               <SocketProvider>
                 <StoreProvider>
@@ -34,10 +34,10 @@ function App() {
                 </StoreProvider>
               </SocketProvider>
             </AuthProvider>
-          </BackdropProvider>
-        </NotificationProvider>
-      </TranslationProvider>
-    </ThemeProvider>
+          </ThemeProvider>
+        </BackdropProvider>
+      </NotificationProvider>
+    </TranslationProvider>
   );
 }
 

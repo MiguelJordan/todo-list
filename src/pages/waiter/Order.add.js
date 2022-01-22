@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { makeStyles } from "@material-ui/core";
-import { Button, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { LoadingButton } from "@mui/lab";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
@@ -10,7 +10,6 @@ import Dropdown from "../../components/subComponents/Dropdown";
 
 // contexts
 import { AuthContext } from "../../contexts/AuthContext";
-import { BackdropContext } from "../../contexts/feedback/BackdropContext";
 import { SocketContext } from "../../contexts/SocketContext";
 import { TranslationContext } from "../../contexts/TranslationContext";
 
@@ -18,9 +17,7 @@ import { TranslationContext } from "../../contexts/TranslationContext";
 import { post } from "../../functions/http";
 
 const useStyles = makeStyles((theme) => ({
-  inputText: {
-    color: "black",
-  },
+  inputText: { color: "black", marginBottom: "5px", marginTop: "0px" },
   form: {
     display: "flex",
     flexFlow: "column",
@@ -28,12 +25,12 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#FFFFFF",
     margin: "auto",
     maxWidth: "350px",
-
     padding: "20px",
     color: "#B3B3B3",
     borderRadius: "3px",
     [theme.breakpoints.down("sm")]: {
-      marginTop: "90px",
+      marginTop: 45,
+      width: 250,
     },
     [theme.breakpoints.up("md")]: {
       marginTop: "100px",
@@ -43,7 +40,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CreateOrder() {
   const { user } = useContext(AuthContext);
-  const { toggleBackdrop } = useContext(BackdropContext);
   const { sendEvent } = useContext(SocketContext);
   const { t } = useContext(TranslationContext);
 
@@ -54,7 +50,6 @@ export default function CreateOrder() {
 
   const [orderInfo, setOrderInfo] = useState({
     tableName: "",
-    balanceForward: "",
     companyCode: user.company.code,
     unitCode: user.workUnit.code,
     waiterId: user.id,
@@ -66,35 +61,24 @@ export default function CreateOrder() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    setLoading(true);
 
     let order = { ...orderInfo };
 
     // console.log(order);
+    order.tableName = order.tableName?.trim();
+    if (!order.tableName) return setError("Invalid table name");
 
-    // if (!order.tableName) return setError(t("_errors.Invalid table name"));
+    if (!order.consumptionPoint) return setError("Invalid consumption point");
 
-    if (!order.consumptionPoint) {
-      setLoading(false);
-      return setError(t("_errors.Invalid consumption point"));
-    }
-
-    if (order.balanceForward < 0) {
-      setLoading(false);
-      return setError(t("_errors.Invalid balance carried forward"));
-    }
-
-    //toggleBackdrop(true);
+    setLoading(true);
 
     // request order creation
     const res = await post({ url: "/orders", body: order });
 
-    //toggleBackdrop(false);
-
     // handle order creation errors
     if (res?.error) {
       setLoading(false);
-      return setError(t(`_errors.${res.error}`));
+      return setError(res.error);
     }
 
     // sending order created event
@@ -106,6 +90,7 @@ export default function CreateOrder() {
       },
       rooms: [user.workUnit.code],
     });
+
     setLoading(false);
 
     // navigation
@@ -124,40 +109,19 @@ export default function CreateOrder() {
         {t("pages.waiter.orders.form_add_order.title")}
       </h2>
       {error && <div className="formError"> {t(`_errors.${error}`)}</div>}
+
       <TextField
         required
         type="text"
         variant="standard"
         name="tableName"
         fullWidth
-        inputProps={{
-          className: classes.inputText,
-        }}
+        className={classes.inputText}
+        inputProps={{ className: classes.inputText }}
         label="Table Name"
-        style={{ color: "black", marginBottom: "5px", marginTop: "0px" }}
         onChange={(e) =>
-          setOrderInfo({
-            ...orderInfo,
-            [e.target.name]: e.target.value.trim(),
-          })
+          setOrderInfo({ ...orderInfo, [e.target.name]: e.target.value })
         }
-      />
-      <TextField
-        // fullWidth
-        type="number"
-        name="balanceForward"
-        variant="standard"
-        inputProps={{
-          className: classes.inputText,
-        }}
-        style={{ color: "black", marginBottom: "5px" }}
-        onChange={(e) =>
-          setOrderInfo({
-            ...orderInfo,
-            [e.target.name]: e.target.value.trim(),
-          })
-        }
-        label="Balance Forward"
       />
 
       <Dropdown
@@ -176,9 +140,8 @@ export default function CreateOrder() {
         loading={loading}
         loadingPosition="start"
         variant="contained"
-        startIcon={<AddShoppingCartIcon style={{ color: "#2196f3" }} />}
         type="submit"
-        style={{ marginTop: "20px", marginBottom: "25px" }}
+        style={{ marginTop: 30 }}
       >
         {t("pages.waiter.orders.form_add_order.add_btn")}
       </LoadingButton>

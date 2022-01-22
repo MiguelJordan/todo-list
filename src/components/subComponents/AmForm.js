@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { makeStyles } from "@material-ui/core";
 
 // components
-import Dropdown from "./Dropdown";
 import ImagePreview from "./ImagePreview";
 import PopOver from "./PopOver";
 
@@ -18,6 +17,7 @@ import {
   Input,
   InputAdornment,
   InputLabel,
+  TextField,
 } from "@mui/material";
 
 // icons
@@ -29,11 +29,6 @@ import {
 } from "@mui/icons-material";
 
 const useStyles = makeStyles((theme) => ({
-  inputText: {
-    color: "black",
-    width: "100px",
-    marginLeft: "9px",
-  },
   form: {
     display: "flex",
     flexFlow: "column",
@@ -41,16 +36,26 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#FFFFFF",
     margin: "auto",
     maxWidth: "350px",
-
     padding: "20px",
-    //color: "#B3B3B3",
     borderRadius: "3px",
     [theme.breakpoints.down("sm")]: {
       marginTop: "55px",
+      width: 300,
     },
     [theme.breakpoints.up("md")]: {
       marginTop: "90px",
     },
+  },
+  rowField: {
+    display: "flex",
+    flexFlow: "row",
+    justifyContent: "space-between",
+    gap: "10px",
+  },
+  inputText: {
+    color: "black",
+    margin: 0,
+    marginBottom: 5,
   },
   dialogText: {
     color: "#B3B3B3",
@@ -122,6 +127,10 @@ export default function AmForm({
     },
   };
 
+  const getInputValue = (e) => {
+    setItem({ ...updatedItem, [e.target.name]: e.target.value });
+  };
+
   return (
     <>
       <AlertDialogSlide
@@ -175,456 +184,134 @@ export default function AmForm({
               display: "flex",
               flexFlow: "column",
               justifyContent: "flex-start",
-              height: "215px",
+              height: "235px",
               overflowY: "auto",
               paddingTop: 5,
             }}
           >
-            <div
-              style={{
-                display: "flex",
-                flexFlow: "row",
-                justifyContent: "space-between",
-                gap: "10px",
-              }}
-            >
-              <FormControl fullWidth>
-                <InputLabel style={{ marginTop: "2px", marginLeft: "-10px" }}>
-                  {t("compo.item.family") + "*"}
-                </InputLabel>
-                <Input
-                  fullWidth
-                  type="text"
-                  name="family"
-                  value={updatedItem.family}
-                  // variant="standard"
-                  inputProps={{
-                    className: classes.inputText,
-                    readOnly: modify,
-                  }}
-                  endAdornment={
-                    modify ? (
-                      <InputAdornment position="end">
-                        <IconButton
-                          style={{ margin: 0 }}
-                          onClick={() => {
-                            setContent({
-                              name: "family",
-                              label: "Family*",
-                              value: updatedItem.family,
-                              type: "text",
-                            });
-                            setOpen(true);
-                          }}
-                        >
-                          <EditRounded />
-                        </IconButton>
-                      </InputAdornment>
-                    ) : (
-                      ""
-                    )
-                  }
-                  style={{ color: "black", marginBottom: "5px" }}
-                  onChange={(e) =>
-                    setItem({
-                      ...updatedItem,
-                      [e.target.name]: e.target.value.trim(),
-                    })
-                  }
-                />
-              </FormControl>
+            <div className={classes.rowField}>
+              <TextField
+                fullWidth
+                required
+                variant="standard"
+                type="text"
+                name="family"
+                value={updatedItem.family}
+                className={classes.inputText}
+                inputProps={{ className: classes.inputText }}
+                label={t("compo.item.family") + "*"}
+                onChange={getInputValue}
+              />
 
-              <FormControl fullWidth>
-                <InputLabel style={{ marginTop: "2px", marginLeft: "-10px" }}>
-                  {t("compo.item.category") + "*"}
-                </InputLabel>
-                <Input
-                  fullWidth
-                  type="text"
-                  name="category"
-                  value={updatedItem.category}
-                  // variant="standard"
-                  inputProps={{
-                    className: classes.inputText,
-                    readOnly: modify,
-                  }}
-                  endAdornment={
-                    modify ? (
-                      <InputAdornment position="end">
-                        <IconButton
-                          style={{ margin: 0 }}
-                          onClick={() => {
-                            setContent({
-                              name: "category",
-                              label: "Category*",
-                              value: updatedItem.category,
-                              type: "text",
-                            });
-                            setOpen(true);
-                          }}
-                        >
-                          <EditRounded />
-                        </IconButton>
-                      </InputAdornment>
-                    ) : (
-                      ""
-                    )
-                  }
-                  style={{ color: "black", marginBottom: "5px" }}
-                  onChange={(e) =>
-                    setItem({
-                      ...updatedItem,
-                      [e.target.name]: e.target.value.trim(),
-                    })
-                  }
-                />
-              </FormControl>
+              <TextField
+                fullWidth
+                required
+                variant="standard"
+                type="text"
+                name="category"
+                value={updatedItem.category}
+                className={classes.inputText}
+                inputProps={{ className: classes.inputText }}
+                label={t("compo.item.category") + "*"}
+                onChange={getInputValue}
+              />
             </div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-              }}
-            >
-              <FormControl fullWidth>
-                <InputLabel style={{ marginTop: "2px", marginLeft: "-10px" }}>
-                  {t("compo.item.name") + "*"}
-                </InputLabel>
-                <Input
-                  fullWidth
-                  required
-                  type="text"
-                  variant="standard"
-                  name="name"
-                  value={updatedItem.name}
-                  // variant="standard"
-                  inputProps={{
-                    className: classes.inputText,
-                    readOnly: modify,
-                  }}
-                  endAdornment={
-                    modify ? (
-                      <InputAdornment position="end">
-                        <IconButton
-                          onClick={() => {
-                            setContent({
-                              name: "name",
-                              label: "Name*",
-                              value: updatedItem.name,
-                              type: "text",
-                            });
-                            setOpen(true);
-                          }}
-                        >
-                          <EditRounded />
-                        </IconButton>
-                      </InputAdornment>
-                    ) : (
-                      ""
-                    )
-                  }
-                  style={{ color: "black", marginBottom: "5px" }}
-                  onChange={(e) =>
-                    setItem({
-                      ...updatedItem,
-                      [e.target.name]: e.target.value.trim(),
-                    })
-                  }
-                />
-              </FormControl>
-            </div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                gap: "10px",
-              }}
-            >
-              <FormControl fullWidth>
-                <InputLabel style={{ marginTop: "2px", marginLeft: "-10px" }}>
-                  {t("compo.item.measureUnit") + "*"}
-                </InputLabel>
-                <Input
-                  fullWidth
-                  required
-                  type="text"
-                  name="measureUnit"
-                  value={updatedItem.measureUnit}
-                  // variant="standard"
-                  inputProps={{
-                    className: classes.inputText,
-                    readOnly: modify,
-                  }}
-                  endAdornment={
-                    modify ? (
-                      <InputAdornment position="end">
-                        <IconButton
-                          onClick={() => {
-                            setContent({
-                              name: "measureUnit",
-                              label: "Measure Unit*",
-                              value: updatedItem.measureUnit,
-                              type: "text",
-                            });
-                            setOpen(true);
-                          }}
-                        >
-                          <EditRounded />
-                        </IconButton>
-                      </InputAdornment>
-                    ) : (
-                      ""
-                    )
-                  }
-                  style={{ color: "black", marginBottom: "5px" }}
-                  onChange={(e) =>
-                    setItem({
-                      ...updatedItem,
-                      [e.target.name]: e.target.value.trim(),
-                    })
-                  }
-                />
-              </FormControl>
 
-              <FormControl fullWidth>
-                <InputLabel style={{ marginTop: "2px", marginLeft: "-10px" }}>
-                  {t("compo.item.measureUnitPlural") + "*"}
-                </InputLabel>
-                <Input
-                  fullWidth
-                  required
-                  type="text"
-                  name="measureUnitPlural"
-                  value={updatedItem.measureUnitPlural}
-                  // variant="standard"
-                  inputProps={{
-                    className: classes.inputText,
-                    readOnly: modify,
-                  }}
-                  endAdornment={
-                    modify ? (
-                      <InputAdornment position="end">
-                        <IconButton
-                          onClick={() => {
-                            setContent({
-                              name: "measureUnitPlural",
-                              label: "Measure Unit Plural*",
-                              value: updatedItem.measureUnitPlural,
-                              type: "text",
-                            });
-                            setOpen(true);
-                          }}
-                        >
-                          <EditRounded />
-                        </IconButton>
-                      </InputAdornment>
-                    ) : (
-                      ""
-                    )
-                  }
-                  style={{ color: "black", marginBottom: "5px" }}
-                  onChange={(e) =>
-                    setItem({
-                      ...updatedItem,
-                      [e.target.name]: e.target.value.trim(),
-                    })
-                  }
-                />
-              </FormControl>
-            </div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                gap: "10px",
-              }}
-            >
-              <FormControl fullWidth>
-                <InputLabel style={{ marginTop: "2px", marginLeft: "-10px" }}>
-                  {t("compo.item.quantity")}
-                </InputLabel>
-                <Input
-                  fullWidth
-                  type="number"
-                  name="quantity"
-                  value={updatedItem.quantity}
-                  // variant="standard"
-                  inputProps={{
-                    className: classes.inputText,
-                    readOnly: modify,
-                  }}
-                  endAdornment={
-                    modify ? (
-                      <InputAdornment position="end">
-                        <IconButton
-                          onClick={() => {
-                            setContent({
-                              name: "quantity",
-                              label: "Quantity",
-                              value: updatedItem.quantity,
-                              type: "number",
-                            });
-                            setOpen(true);
-                          }}
-                        >
-                          <EditRounded />
-                        </IconButton>
-                      </InputAdornment>
-                    ) : (
-                      ""
-                    )
-                  }
-                  style={{ color: "black", marginBottom: "5px" }}
-                  onChange={(e) =>
-                    setItem({
-                      ...updatedItem,
-                      [e.target.name]: e.target.value.trim(),
-                    })
-                  }
-                />
-              </FormControl>
+            <TextField
+              fullWidth
+              required
+              variant="standard"
+              type="text"
+              name="name"
+              value={updatedItem.name}
+              className={classes.inputText}
+              inputProps={{ className: classes.inputText }}
+              label={t("compo.item.name") + "*"}
+              onChange={getInputValue}
+            />
 
-              <FormControl fullWidth>
-                <InputLabel style={{ marginTop: "2px", marginLeft: "-10px" }}>
-                  {t("compo.item.cost")}
-                </InputLabel>
-                <Input
-                  fullWidth
-                  type="number"
-                  name="cost"
-                  value={updatedItem.cost}
-                  // variant="standard"
-                  inputProps={{
-                    className: classes.inputText,
-                    readOnly: modify,
-                  }}
-                  endAdornment={
-                    modify ? (
-                      <InputAdornment position="end">
-                        <IconButton
-                          onClick={() => {
-                            setContent({
-                              name: "cost",
-                              label: "cost",
-                              value: updatedItem.cost,
-                              type: "number",
-                            });
-                            setOpen(true);
-                          }}
-                        >
-                          <EditRounded />
-                        </IconButton>
-                      </InputAdornment>
-                    ) : (
-                      ""
-                    )
-                  }
-                  style={{ color: "black", marginBottom: "5px" }}
-                  onChange={(e) =>
-                    setItem({
-                      ...updatedItem,
-                      [e.target.name]: e.target.value.trim(),
-                    })
-                  }
-                />
-              </FormControl>
-            </div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                gap: "10px",
-              }}
-            >
-              <FormControl fullWidth>
-                <InputLabel style={{ marginTop: "2px", marginLeft: "-10px" }}>
-                  {t("compo.item.commission")}
-                </InputLabel>
-                <Input
-                  fullWidth
-                  type="number"
-                  name="commission"
-                  value={updatedItem.commission}
-                  // variant="standard"
-                  inputProps={{
-                    className: classes.inputText,
-                    readOnly: modify,
-                  }}
-                  endAdornment={
-                    modify ? (
-                      <InputAdornment position="end">
-                        <IconButton
-                          onClick={() => {
-                            setContent({
-                              name: "commissionAmount",
-                              label: "Commission Amount",
-                              value: updatedItem.commissionAmount,
-                              type: "number",
-                            });
-                            setOpen(true);
-                          }}
-                        >
-                          <EditRounded />
-                        </IconButton>
-                      </InputAdornment>
-                    ) : (
-                      ""
-                    )
-                  }
-                  style={{ color: "black", marginBottom: "5px" }}
-                  onChange={(e) =>
-                    setItem({
-                      ...updatedItem,
-                      [e.target.name]: e.target.value.trim(),
-                    })
-                  }
-                />
-              </FormControl>
+            <div className={classes.rowField}>
+              <TextField
+                fullWidth
+                required
+                variant="standard"
+                type="text"
+                name="measureUnit"
+                value={updatedItem.measureUnit}
+                className={classes.inputText}
+                inputProps={{ className: classes.inputText }}
+                label={t("compo.item.measureUnit") + "*"}
+                onChange={getInputValue}
+              />
 
-              <FormControl fullWidth>
-                <InputLabel style={{ marginTop: "2px", marginLeft: "-10px" }}>
-                  {t("compo.item.commissionRatio")}
-                </InputLabel>
-                <Input
-                  fullWidth
-                  type="number"
-                  name="commissionRatio"
-                  value={updatedItem.commissionRatio}
-                  // variant="standard"
-                  inputProps={{
-                    className: classes.inputText,
-                    readOnly: modify,
-                  }}
-                  endAdornment={
-                    modify ? (
-                      <InputAdornment position="end">
-                        <IconButton
-                          onClick={() => {
-                            setContent({
-                              name: "commissionRatio",
-                              label: "Commission Ratio",
-                              value: updatedItem.commissionRatio,
-                              type: "number",
-                            });
-                            setOpen(true);
-                          }}
-                        >
-                          <EditRounded />
-                        </IconButton>
-                      </InputAdornment>
-                    ) : (
-                      ""
-                    )
-                  }
-                  style={{ color: "black", marginBottom: "5px" }}
-                  onChange={(e) =>
-                    setItem({
-                      ...updatedItem,
-                      [e.target.name]: e.target.value.trim(),
-                    })
-                  }
-                />
-              </FormControl>
+              <TextField
+                fullWidth
+                required
+                variant="standard"
+                type="text"
+                name="measureUnitPlural"
+                value={updatedItem.measureUnitPlural}
+                className={classes.inputText}
+                inputProps={{ className: classes.inputText }}
+                label={t("compo.item.measureUnitPlural") + "*"}
+                onChange={getInputValue}
+              />
+            </div>
+
+            <div className={classes.rowField}>
+              <TextField
+                fullWidth
+                required
+                variant="standard"
+                type="number"
+                name="quantity"
+                value={updatedItem.quantity}
+                className={classes.inputText}
+                inputProps={{ className: classes.inputText }}
+                label={t("compo.item.quantity")}
+                onChange={getInputValue}
+              />
+
+              <TextField
+                fullWidth
+                required
+                variant="standard"
+                type="number"
+                name="cost"
+                value={updatedItem.cost}
+                className={classes.inputText}
+                inputProps={{ className: classes.inputText }}
+                label={t("compo.item.cost")}
+                onChange={getInputValue}
+              />
+            </div>
+
+            <div className={classes.rowField}>
+              <TextField
+                fullWidth
+                required
+                variant="standard"
+                type="number"
+                name="commission"
+                value={updatedItem.commission}
+                className={classes.inputText}
+                inputProps={{ className: classes.inputText }}
+                label={t("compo.item.commission")}
+                onChange={getInputValue}
+              />
+
+              <TextField
+                fullWidth
+                required
+                variant="standard"
+                type="number"
+                name="commissionRatio"
+                value={updatedItem.commissionRatio}
+                className={classes.inputText}
+                inputProps={{ className: classes.inputText }}
+                label={t("compo.item.commissionRatio")}
+                onChange={getInputValue}
+              />
             </div>
 
             <div style={{ display: "flex" }}>
@@ -648,7 +335,7 @@ export default function AmForm({
           loading={loading}
           variant="contained"
           type="submit"
-          style={{ marginTop: "20px", marginBottom: "25px" }}
+          style={{ marginTop: 20 }}
         >
           {t("pages.admin.add-storeItem.add-btn")}
         </LoadingButton>

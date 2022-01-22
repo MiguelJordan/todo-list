@@ -13,10 +13,9 @@ body {
 .main {
   text-align: left;
   overflow-y: auto;
-  height: 90vh;
-  padding: 0 20px 0px 20px;
-  /* border: 2px solid green;
-  border-top: none; */
+  height: 91vh;
+  margin-top: 55px;
+  /* border: 2px solid green; */
 }
 
 .main .center {

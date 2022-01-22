@@ -44,40 +44,42 @@ export default function StoreAdd() {
   const [item, setItem] = useState(_item);
 
   const validateItem = (item) => {
-    setError("");
-
     item.name = item.name?.trim();
-    if (!item.name) return setError("Invalid item name");
+    if (!item.name) return { valid: false, message: "Invalid item name" };
 
     item.family = item.family?.trim();
-    if (!item.family) return setError("Invalid family");
+    if (!item.family) return { valid: false, message: "Invalid family" };
 
     item.category = item.category?.trim();
-    if (!item.category) return setError("Invalid category");
+    if (!item.category) return { valid: false, message: "Invalid category" };
 
     item.measureUnit = item.measureUnit?.trim();
-    if (!item.measureUnit) return setError("Invalid measure unit");
+    if (!item.measureUnit) {
+      return { valid: false, message: "Invalid measure unit" };
+    }
 
     item.measureUnitPlural = item.measureUnitPlural?.trim();
-    if (!item.measureUnitPlural) return setError("Invalid measure unit");
+    if (!item.measureUnitPlural) {
+      return { valid: false, message: "Invalid measure unit" };
+    }
 
     if (isNaN(item.quantity) || item.quantity < 0) {
-      return setError("Invalid quantity");
+      return { valid: false, message: "Invalid quantity" };
     }
     item.quantity = Number(item.quantity);
 
     if (isNaN(item.cost) || item.cost < 0) {
-      return setError("Invalid cost price");
+      return { valid: false, message: "Invalid cost price" };
     }
     item.cost = Number(item.cost);
 
     if (isNaN(item.commission) || item.commission < 0) {
-      return setError("Invalid commission");
+      return { valid: false, message: "Invalid commission" };
     }
     item.commission = Number(item.commission);
 
     if (isNaN(item.commissionRatio) || item.commissionRatio < 1) {
-      return setError("Invalid commission ratio");
+      return { valid: false, message: "Invalid commission ratio" };
     }
     item.commissionRatio = Number(item.commissionRatio);
 
@@ -87,13 +89,18 @@ export default function StoreAdd() {
       delete item?.imageUrl;
     }
 
-    return item;
+    return { valid: false, validated: item };
   };
 
   const handleSubmit = async (e, item) => {
     e.preventDefault();
+    setError("");
 
-    item = validateItem(item);
+    const { valid, validated, message } = validateItem(item);
+
+    if (!valid) return setError(message);
+
+    item = validated;
 
     setLoading(true);
 

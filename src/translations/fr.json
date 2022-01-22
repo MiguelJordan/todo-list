@@ -61,6 +61,7 @@
   },
   "pages": {
     "404": { "back_home": "Retour à l'accueil", "message": "Page Non Trouvée" },
+    "admin": { "add-staff": { "register": "Enregistrer" } },
     "auth": {
       "passwordField": "Mot De Passe",
       "forgot_password": "Mot de passe Oublie?"

@@ -58,6 +58,7 @@
   },
   "pages": {
     "404": { "back_home": "Back to Home", "message": "Page Not Found" },
+    "admin": { "add-staff": { "register": "Register" } },
     "auth": {
       "passwordField": "Password",
       "forgot_password": "Forgot Password?"

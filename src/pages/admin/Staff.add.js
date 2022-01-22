@@ -55,28 +55,25 @@ export default function AddStaff() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setError();
-    setLoading(true);
 
     if (!personInfo.email) {
-      setLoading(false);
-      return setError(t("Invalid email"));
+      return setError(t("_errors.Invalid email"));
     }
     if (!personInfo.firstName) {
-      setLoading(false);
-      return setError(t("Invalid first name"));
+      return setError(t("_errors.Invalid first name"));
     }
     if (!personInfo.lastName) {
-      setLoading(false);
-      return setError(t("Invalid last name"));
+      return setError(t("_errors.Invalid last name"));
     }
     if (!personInfo.role) {
-      setLoading(false);
-      return setError(t("Invalid role"));
+      return setError(t("_errors.Invalid role"));
     }
     if (!personInfo.tel) {
-      setLoading(false);
-      return setError(t("Invalid email"));
+      return setError(t("_errors.Invalid email"));
     }
+
+    setLoading(true);
+
     setLoading(false);
     console.log(personInfo);
   };
@@ -151,7 +148,7 @@ export default function AddStaff() {
       />
       <Dropdown
         label="Work Unit*"
-        values={user.workUnits}
+        values={user.company.workUnits}
         value={personInfo.workUnit}
         handleChange={(val) => setPersonInfo({ ...personInfo, workUnit: val })}
         variant="standard"
@@ -179,13 +176,11 @@ export default function AddStaff() {
 
       <LoadingButton
         loading={loading}
-        //loadingPosition="end"
         variant="contained"
-        //loadingIndicator="Loading..."
         type="submit"
         style={{ margin: "15px auto" }}
       >
-        Ajouter
+        {t("pages.admin.add-staff.register")}
       </LoadingButton>
     </form>
   );

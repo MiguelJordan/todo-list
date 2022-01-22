@@ -2,9 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import {
-  Button,
   Checkbox,
-  FormControl,
   FormControlLabel,
   IconButton,
   TextField,
@@ -15,8 +13,12 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 
 // components
-import OrderItem from "./OrderItem";
+import Dropdown from "../subComponents/Dropdown";
 import Fabs from "../../components/subComponents/Fabs";
+import RepeatManager from "../subComponents/RepeatManager";
+import OrderItem from "./OrderItem";
+import PmField, { validatePmAmount } from "../subComponents/PmField";
+import PopUp from "../subComponents/PopUp";
 import Search from "../subComponents/Search";
 
 // contexts
@@ -26,8 +28,6 @@ import { TranslationContext } from "../../contexts/TranslationContext";
 // icons
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { FilterAlt } from "@mui/icons-material";
-import PopUp from "../subComponents/PopUp";
-import Dropdown from "../subComponents/Dropdown";
 
 const useStyles = makeStyles((theme) => ({
   buttonGroup: {
@@ -63,6 +63,11 @@ export default function OrderDetails({ order, role = "" }) {
   const classes = useStyles();
   const navigate = useNavigate();
   let { id } = useParams();
+
+  const [valuesArray, setValuesArray] = useState([
+    ["CASH", 1000],
+    ["MOMO", 2500],
+  ]);
 
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(true);
@@ -127,13 +132,6 @@ export default function OrderDetails({ order, role = "" }) {
 
   return (
     <>
-      {/* <Dialog
-        content={msgDialog}
-        openDialog={openDialog}
-        closeDialog={CloseDialog}
-        PositiveRes={handleDelete}
-      /> */}
-
       <PopUp open={open} close={setOpen}>
         <Dropdown
           values={families}
@@ -230,7 +228,17 @@ export default function OrderDetails({ order, role = "" }) {
             <Typography>{t("pages.order-details.payment methods")}</Typography>
           </AccordionSummary>
           <AccordionDetails className={classes.accordionDetails}>
-            <Typography>Payment methods here</Typography>
+            <RepeatManager
+              Cp={PmField}
+              validate={validatePmAmount}
+              selectValues={["CASH", "MOMO", "OM"]}
+              readOnlyValues={valuesArray}
+              handleAdd={(vals) => {
+                setValuesArray([...valuesArray, vals]);
+              }}
+              // handleAdd={(vals) => console.log(vals)}
+              handleDelete={(key) => console.log("deleting:", key)}
+            />
           </AccordionDetails>
         </Accordion>
       </div>

@@ -36,11 +36,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function Search({
-  onChange,
-  list = [],
-  searchProps = [{ name: "", method: () => {} }],
-}) {
+export default function Search({ onChange }) {
   const { t } = useContext(TranslationContext);
   return (
     <_search>

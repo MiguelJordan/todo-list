@@ -13,13 +13,12 @@ import DisplayField from "../subComponents/DisplayField";
 
 // contexts
 import { AuthContext } from "../../contexts/AuthContext";
-import { BackdropContext } from "../../contexts/feedback/BackdropContext";
 import { NotificationContext } from "../../contexts/feedback/NotificationContext";
 import { SocketContext } from "../../contexts/SocketContext";
 import { TranslationContext } from "../../contexts/TranslationContext";
 
 // functions
-import { capitalise, getImage } from "../../functions/data";
+import { capitalise, getImage, getInputWith } from "../../functions/data";
 import { post } from "../../functions/http";
 import queries from "../../functions/queries";
 
@@ -73,7 +72,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
   const { user } = useContext(AuthContext);
-  const { toggleBackdrop } = useContext(BackdropContext);
   const { showNotification } = useContext(NotificationContext);
   const { sendEvent } = useContext(SocketContext);
   const { t } = useContext(TranslationContext);
@@ -166,11 +164,6 @@ const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
     });
   };
 
-  const getInputWith = (quantity) => {
-    let length = String(quantity ?? 0).length * 10;
-    return length > 40 ? 40 : length > 1 ? length : 1;
-  };
-
   return (
     <>
       <Card className={classes.card} sx={{ boxShadow: 0 }}>
@@ -232,7 +225,6 @@ const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
                 <input
                   readOnly
                   value={data.quantity}
-                  // type="number"
                   style={{
                     backgroundColor: "#415672",
                     color: "#FFFFFF",

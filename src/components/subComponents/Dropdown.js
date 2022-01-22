@@ -47,7 +47,7 @@ export default function Dropdown({
         select
         label={label}
         margin="none"
-        value={value}
+        value={value ?? ""}
         variant={variant}
         sx={{
           "&:hover": {

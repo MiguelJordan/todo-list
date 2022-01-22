@@ -44,6 +44,11 @@ export const getImage = ({ url = "", fullUrl = false }) => {
   return nodeEnv === "production" ? url : apiUrl + url;
 };
 
+export const getInputWith = (quantity) => {
+  let length = String(quantity ?? 0).length * 10;
+  return length > 40 ? 40 : length > 1 ? length : 1;
+};
+
 export const getList = ({ data = [], criteria }) => {
   return [...new Set(data.map((dt) => dt[criteria]))];
 };

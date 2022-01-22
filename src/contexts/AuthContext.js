@@ -8,8 +8,6 @@ import useStorage from "../hooks/useStorage";
 
 export const AuthContext = createContext();
 
-const loadUser = () => JSON.parse(localStorage.getItem("user"));
-
 const AuthProvider = ({ children }) => {
   const storage = useStorage();
   const [user, setUser] = useState(storage.get("user"));

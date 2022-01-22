@@ -5,13 +5,12 @@ import AmForm from "../../components/subComponents/AmForm";
 
 // contexts
 import { AuthContext } from "../../contexts/AuthContext";
-import { TranslationContext } from "../../contexts/TranslationContext";
 
 // functions
 import { toBase64 } from "../../functions/data";
+import { sendFormData } from "../../functions/http";
 
 export default function StoreAdd() {
-  const { t } = useContext(TranslationContext);
   const { user } = useContext(AuthContext);
 
   const [loading, setLoading] = useState(false);
@@ -19,18 +18,18 @@ export default function StoreAdd() {
   const [image, setImage] = useState();
 
   const [item, setItem] = useState({
-    name: "Beejs",
-    family: "Drinks",
-    category: "Castel",
-    cost: "1000",
+    name: "",
+    family: "",
+    category: "",
+    cost: 0,
     prices: [],
-    commissionAmount: "50",
-    commissionRatio: "1",
+    commissionAmount: 0,
+    commissionRatio: 1,
     companyCode: user.company.code,
     storeId: user.workUnit.storeId,
-    quantity: "50",
+    measureUnit: "",
     measureUnitPlural: "",
-    measureUnit: "Bottle",
+    quantity: 0,
     isBlocked: false,
   });
 
@@ -38,28 +37,28 @@ export default function StoreAdd() {
     e.preventDefault();
     setError("");
 
-    if (!item.name) return setError(t("_errors.Invalid item name"));
+    if (!item.name) return setError("Invalid item name");
 
-    if (!item.family) return setError(t("_errors.Invalid family"));
+    if (!item.family) return setError("Invalid family");
 
-    if (!item.category) return setError(t("_errors.Invalid category"));
+    if (!item.category) return setError("Invalid category");
 
-    if (!item.measureUnit) return setError(t("_errors.Invalid measure unit"));
+    if (!item.measureUnit) return setError("Invalid measure unit");
 
     if (!item.measureUnitPlural) {
-      return setError(t("_errors.Invalid measure unit"));
+      return setError("Invalid measure unit");
     }
 
-    if (item.quantity < 0) return setError(t("_errors.Invalid quantity"));
+    if (item.quantity < 0) return setError("Invalid quantity");
 
-    if (item.cost < 0) return setError(t("_errors.Invalid cost price"));
+    if (item.cost < 0) return setError("Invalid cost price");
 
     if (item.commissionAmount < 0) {
-      return setError(t("_errors.Invalid commission amount"));
+      return setError("Invalid commission amount");
     }
 
     if (item.commissionRatio < 1) {
-      return setError(t("_errors.Invalid commission ratio"));
+      return setError("Invalid commission ratio");
     }
 
     setLoading(true);
@@ -80,12 +79,12 @@ export default function StoreAdd() {
       typeInfo[0] != "image" ||
       !["jpg", "png", "jpeg"].includes(typeInfo[1])
     ) {
-      return setError(t("_errors.Invalid image format"));
+      return setError("Invalid image - format");
     }
 
     // validate file size
     if (file.size > 5 * 1024 * 1024) {
-      return setError(t("_errors.Invalid image size too large"));
+      return setError("Invalid image - size too large");
     }
 
     let base64 = await toBase64(file);

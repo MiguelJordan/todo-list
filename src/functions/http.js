@@ -14,7 +14,7 @@ const getHeaders = () => {
 };
 
 const getError = (err) => {
-  let errRes = { error: err?.response?.data?.message ?? err?.message };
+  let errRes = { error: err?.response?.data?.error ?? err?.message };
   if (["jwt expired", "jwt must be provided"].includes(errRes.error)) {
     localStorage.removeItem("user");
     return window.location.reload();
@@ -30,7 +30,7 @@ const getUrl = (url, params) => {
 
 export const _delete = async ({ url = "", params = {}, fullUrl = false }) => {
   try {
-    let headers = getHeaders();
+    const headers = getHeaders();
     if (!fullUrl) url = apiUrl + url;
     const reqUrl = getUrl(url, params);
     return (await axios.delete(reqUrl, { headers })).data;
@@ -41,7 +41,7 @@ export const _delete = async ({ url = "", params = {}, fullUrl = false }) => {
 
 export const get = async ({ url = "", params = {}, fullUrl = false }) => {
   try {
-    let headers = getHeaders();
+    const headers = getHeaders();
     if (!fullUrl) url = apiUrl + url;
     const reqUrl = getUrl(url, params);
     return (await axios.get(reqUrl, { headers })).data;
@@ -52,7 +52,7 @@ export const get = async ({ url = "", params = {}, fullUrl = false }) => {
 
 export const post = async ({ url = "", body = {}, fullUrl = false }) => {
   try {
-    let headers = getHeaders();
+    const headers = getHeaders();
     if (!fullUrl) url = apiUrl + url;
     return await (
       await axios.post(url, body, { headers })
@@ -62,24 +62,29 @@ export const post = async ({ url = "", body = {}, fullUrl = false }) => {
   }
 };
 
-export const postFormData = async (url = "", values = {}, fullUrl = false) => {
-  // let headers = getHeaders();
-
-  const formData = new FormData();
+export const sendFormData = async (
+  url = "",
+  values = {},
+  method = "POST",
+  fullUrl = false
+) => {
+  const headers = getHeaders();
+  const body = new FormData();
 
   for (let prop in values) {
     let value = Array.isArray(values[prop])
       ? JSON.stringify(values[prop])
       : values[prop];
 
-    formData.append(prop, value);
+    body.append(prop, value);
   }
 
   try {
     return await (
       await fetch(url, {
-        method: "POST",
-        body: formData,
+        method,
+        body,
+        headers,
       })
     ).json();
   } catch (err) {

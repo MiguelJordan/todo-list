@@ -56,9 +56,9 @@ const Page = () => {
     setError();
 
     // validate data
-    if (!user.id) return setError(t("_errors.Invalid user id"));
+    if (!user.id) return setError("Invalid user id");
 
-    if (!user.password) return setError(t("_errors.Invalid password"));
+    if (!user.password) return setError("Invalid password");
 
     setLoading(true);
 
@@ -68,7 +68,7 @@ const Page = () => {
     setLoading(false);
 
     // verify response
-    if (res.error) return setError(t(`_errors.${res.error}`));
+    if (res.error) return setError(res.error);
 
     // redirect to dashboard
     return navigate(`/${res.role}`);
@@ -120,7 +120,7 @@ const Page = () => {
             }}
           >
             <Typography variant="subtitle2" style={{ color: "black" }}>
-              {t(`server_err.${error}`)}
+              {t(`_errors.${error}`)}
             </Typography>
           </div>
         )}

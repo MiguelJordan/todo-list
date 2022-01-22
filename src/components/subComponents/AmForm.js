@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { makeStyles } from "@material-ui/core";
 
 // components
 import Dropdown from "./Dropdown";
 import ImagePreview from "./ImagePreview";
 import PopOver from "./PopOver";
+
+// contexts
+import { TranslationContext } from "../../contexts/TranslationContext";
 
 import AlertDialogSlide from "./Dialog";
 import { LoadingButton } from "@mui/lab";
@@ -65,6 +68,7 @@ export default function AmForm({
   loading,
   error,
 }) {
+  const { t } = useContext(TranslationContext);
   const classes = useStyles();
 
   const [updatedItem, setItem] = useState(item);
@@ -164,7 +168,7 @@ export default function AmForm({
             imageSrc={image}
           />
         )}
-        {error && <div className="formError"> {error}</div>}
+        {error && <div className="formError"> {t(`_errors.${error}`)}</div>}
         {target === "storeItems" && (
           <div
             style={{

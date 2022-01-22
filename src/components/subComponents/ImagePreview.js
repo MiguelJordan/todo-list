@@ -7,7 +7,7 @@ export default function ImagePreview({ button, handleClick, imageSrc }) {
       style={{
         position: "relative",
         margin: "-10px auto",
-        marginBottom: "10px",
+        marginBottom: "5px",
         width: "fit-content",
       }}
     >

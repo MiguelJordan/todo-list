@@ -174,30 +174,66 @@ export default function AmForm({
             style={{
               display: "flex",
               flexFlow: "column",
-              justifyContent: "space-between",
-              height: "200px",
+              justifyContent: "flex-start",
+              height: "215px",
               overflowY: "auto",
+              paddingTop: 5,
             }}
           >
             <div
               style={{
                 display: "flex",
-                flexWrap: "wrap",
-                justifyContent: "space-between",
                 flexFlow: "row",
-                marginTop: "4px",
+                justifyContent: "space-between",
+                gap: "10px",
               }}
             >
-              <Dropdown
-                label={t("compo.item.family") + "*"}
-                values={["Drinks", "Meals"]}
-                value={updatedItem.family}
-                handleChange={(val) => setItem({ ...updatedItem, family: val })}
-                textColor={"black"}
-                variant="standard"
-                sx={{ marginTop: "-3px", width: "100%" }}
-                read={modify}
-              />
+              <FormControl fullWidth>
+                <InputLabel style={{ marginTop: "2px", marginLeft: "-10px" }}>
+                  {t("compo.item.family") + "*"}
+                </InputLabel>
+                <Input
+                  fullWidth
+                  type="text"
+                  name="family"
+                  value={updatedItem.family}
+                  // variant="standard"
+                  inputProps={{
+                    className: classes.inputText,
+                    readOnly: modify,
+                  }}
+                  endAdornment={
+                    modify ? (
+                      <InputAdornment position="end">
+                        <IconButton
+                          style={{ margin: 0 }}
+                          onClick={() => {
+                            setContent({
+                              name: "family",
+                              label: "Family*",
+                              value: updatedItem.family,
+                              type: "text",
+                            });
+                            setOpen(true);
+                          }}
+                        >
+                          <EditRounded />
+                        </IconButton>
+                      </InputAdornment>
+                    ) : (
+                      ""
+                    )
+                  }
+                  style={{ color: "black", marginBottom: "5px" }}
+                  onChange={(e) =>
+                    setItem({
+                      ...updatedItem,
+                      [e.target.name]: e.target.value.trim(),
+                    })
+                  }
+                />
+              </FormControl>
+
               <FormControl fullWidth>
                 <InputLabel style={{ marginTop: "2px", marginLeft: "-10px" }}>
                   {t("compo.item.category") + "*"}

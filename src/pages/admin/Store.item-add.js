@@ -30,7 +30,7 @@ export default function StoreAdd() {
     family: "",
     category: "",
     cost: 0,
-    prices: [],
+    prices: [750, 900],
     commission: 0,
     commissionRatio: 1,
     companyCode: user.company.code,

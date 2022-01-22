@@ -18,7 +18,12 @@ import { SocketContext } from "../../contexts/SocketContext";
 import { TranslationContext } from "../../contexts/TranslationContext";
 
 // functions
-import { capitalise, getImage, getInputWith } from "../../functions/data";
+import {
+  capitalise,
+  getBool,
+  getImage,
+  getInputWith,
+} from "../../functions/data";
 import { post } from "../../functions/http";
 import queries from "../../functions/queries";
 
@@ -81,10 +86,6 @@ const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
 
   const [isOffer, setIsOffer] = useState("no");
   const [price, setPrice] = useState(data.prices[0]);
-
-  const getBool = (value) => {
-    return ["true", "yes"].includes(value.toLowerCase()) ? true : false;
-  };
 
   const handleSubmit = async (item, e) => {
     e.preventDefault();

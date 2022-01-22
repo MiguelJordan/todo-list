@@ -37,6 +37,10 @@ export const filter = ({
   });
 };
 
+export const getBool = (value) => {
+  return ["true", "yes"].includes(value.toLowerCase()) ? true : false;
+};
+
 export const getImage = ({ url = "", fullUrl = false }) => {
   // this is in case the resource
   // is independent of NODE_ENV

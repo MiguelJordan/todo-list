@@ -10,20 +10,21 @@ const useStyles = makeStyles(() => ({
     // border: "1px solid red",
   },
   repeatParent: {
-    boxSizing: "border-box",
+    // boxSizing: "border-box",
     display: "flex",
     flexFlow: "column",
-    justifyContent: "space-around",
-    alignItems: "center",
-    // padding: 10,
+    justifyContent: "flex-start",
     width: "100%",
+    maxHeight: 100,
+    height: "fit-content",
     overflowY: "auto",
     border: "1px solid grey",
   },
   addField: {
-    display: "inherit",
+    display: "flex",
     flexFlow: "row",
     justifyContent: "space-between",
+    width: "100%",
   },
 }));
 
@@ -35,7 +36,7 @@ const RepeatManager = ({
   addText = "Add",
   selectValues = [],
   readOnlyValues = [],
-  repeatHeight = 100,
+  repeatHeight = 150,
   width = "100%",
 }) => {
   const classes = useStyles();
@@ -44,7 +45,7 @@ const RepeatManager = ({
 
   return (
     <div className={classes.parent} style={{ width }}>
-      <div className={classes.repeatParent} style={{ height: repeatHeight }}>
+      <div className={classes.repeatParent} style={{ maxHeight: repeatHeight }}>
         {readOnlyValues.map((val, index) => {
           return (
             <Cp
@@ -62,7 +63,7 @@ const RepeatManager = ({
           readOnly={false}
           selectValues={selectValues}
           onChange={(_values) => {
-            if (validate) setBtnDisabled(!validate(_values[1]));
+            if (validate) setBtnDisabled(!validate(_values));
 
             setValues(_values);
           }}

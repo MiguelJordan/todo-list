@@ -1,5 +1,4 @@
 import { useContext, useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import {
   Checkbox,
@@ -22,8 +21,11 @@ import PopUp from "../subComponents/PopUp";
 import Search from "../subComponents/Search";
 
 // contexts
-// import { BackdropContext } from "../../contexts/feedback/BackdropContext";
+import { AuthContext } from "../../contexts/AuthContext";
 import { TranslationContext } from "../../contexts/TranslationContext";
+
+// functions
+import { getBool } from "../../functions/data";
 
 // icons
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -57,16 +59,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function OrderDetails({ order, role = "" }) {
-  // const { toggleBackdrop } = useContext(BackdropContext);
+export default function OrderDetails({ order }) {
+  const { user } = useContext(AuthContext);
   const { t } = useContext(TranslationContext);
   const classes = useStyles();
-  const navigate = useNavigate();
-  let { id } = useParams();
 
   const [valuesArray, setValuesArray] = useState([
-    ["CASH", 1000],
-    ["MOMO", 2500],
+    { name: "CASH", amount: 1000 },
+    { name: "MOMO", amount: 2500 },
   ]);
 
   const [open, setOpen] = useState(false);
@@ -85,17 +85,13 @@ export default function OrderDetails({ order, role = "" }) {
     return acc;
   }, {});
 
-  const [famCat, setFamCat] = useState(FamCat);
-  const [families, setFamilies] = useState(Object.keys(famCat));
+  const [famCat] = useState(FamCat);
+  const [families] = useState(Object.keys(famCat));
   const [family, setFamily] = useState(families[0]);
   const [categories, setCategories] = useState(famCat[family] ?? []);
   const [cat, setCat] = useState(categories[0] ?? "");
   const [offer, setOffer] = useState("no");
   const [searchVal, setSearchVal] = useState("");
-
-  const getBool = (value) => {
-    return ["true", "yes"].includes(value.toLowerCase()) ? true : false;
-  };
 
   const _isOffer = getBool(offer);
 
@@ -106,11 +102,6 @@ export default function OrderDetails({ order, role = "" }) {
   useEffect(() => {
     setCat(categories[0] ?? "");
   }, [categories]);
-
-  let total = order.items.reduce((prev, next) => {
-    if (next.isOffer) return prev;
-    return (prev += next.quantity * next.price);
-  }, 0);
 
   const filterItems = order.items.filter((item) => {
     if (
@@ -188,11 +179,11 @@ export default function OrderDetails({ order, role = "" }) {
               <IconButton onClick={() => setOpen(true)}>
                 <FilterAlt style={{ color: "#9e9e9e" }} />
               </IconButton>
-              {role === "waiter" && (
+              {user.role === "waiter" && (
                 <Fabs
                   sx={{ width: "40px", height: "40px" }}
                   ToolTipText="Ajouter Produits"
-                  path={`/waiter/orders/${id}/add-items`}
+                  path={`/waiter/orders/${order.id}/add-items`}
                 />
               )}
 
@@ -209,7 +200,7 @@ export default function OrderDetails({ order, role = "" }) {
             >
               {filterItems.lenght !== 0 ? (
                 filterItems.map((item) => (
-                  <OrderItem item={item} role={role} key={item.id} />
+                  <OrderItem item={item} role={user.role} key={item.id} />
                 ))
               ) : (
                 <h2 style={{ marginTop: "100px", color: "white" }}>
@@ -231,13 +222,14 @@ export default function OrderDetails({ order, role = "" }) {
             <RepeatManager
               Cp={PmField}
               validate={validatePmAmount}
-              selectValues={["CASH", "MOMO", "OM"]}
+              selectValues={user.workUnit.paymentMethods}
               readOnlyValues={valuesArray}
-              handleAdd={(vals) => {
-                setValuesArray([...valuesArray, vals]);
+              handleAdd={(vals) => setValuesArray([...valuesArray, vals])}
+              handleDelete={(key) => {
+                let _arr = [...valuesArray];
+                _arr.splice(key, 1);
+                setValuesArray(_arr);
               }}
-              // handleAdd={(vals) => console.log(vals)}
-              handleDelete={(key) => console.log("deleting:", key)}
             />
           </AccordionDetails>
         </Accordion>

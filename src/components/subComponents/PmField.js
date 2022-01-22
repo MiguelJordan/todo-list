@@ -2,9 +2,6 @@ import { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import { IconButton } from "@mui/material";
 
-// functions
-import { getInputWith } from "../../functions/data";
-
 // icons
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 
@@ -15,11 +12,8 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     flexFlow: "row",
     alignItems: "center",
-    // border: "2px solid",
     justifyContent: "space-around",
-    width: "100%",
     "& > input": {
-      marginRight: 10,
       backgroundColor: "#415672",
       color: "#FFFFFF",
       width: 100,
@@ -32,11 +26,11 @@ const useStyles = makeStyles(() => ({
       borderRadius: "5px",
     },
     "& .MuiIconButton-root": { color: "white" },
-    marginTop: 10,
   },
+  ph: { "&::placeholder": { color: "#B3B3B3" } },
 }));
 
-export const validatePmAmount = (amount) => {
+export const validatePmAmount = ({ amount }) => {
   if (["+", "-", "e"].includes(amount)) return false;
 
   if (isNaN(amount)) return false;
@@ -52,7 +46,7 @@ const PmField = ({
   uniqueKey,
   readOnly = false,
   handleDelete,
-  values = [],
+  values: payment = {},
   selectValues = [],
   onChange = () => {},
 }) => {
@@ -60,12 +54,12 @@ const PmField = ({
   const [name, setName] = useState(selectValues[0]);
   const [amount, setAmount] = useState();
 
-  useEffect(() => onChange([name, amount]), [amount, name]);
+  useEffect(() => onChange({ name, amount }), [amount, name]);
 
   return readOnly ? (
     <div className={classes.PmField}>
-      <input readOnly value={values[0] ?? ""} />
-      <input readOnly value={values[1] ?? 0} />
+      <input readOnly value={payment.name ?? ""} />
+      <input readOnly value={payment.amount ?? 0} />
 
       <IconButton onClick={() => handleDelete(uniqueKey)}>
         <RemoveCircleOutlineIcon />
@@ -83,11 +77,12 @@ const PmField = ({
       <input
         placeholder="Amount"
         defaultValue={amount}
+        className={classes.ph}
         onChange={(e) => {
           let value = e.target.value;
           let valid = validatePmAmount(value);
           if (valid) return setAmount(Number(value));
-          setAmount(-10000);
+          setAmount(-10);
         }}
       />
     </div>

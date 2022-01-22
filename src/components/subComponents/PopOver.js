@@ -12,7 +12,13 @@ import {
 // contexts
 import { TranslationContext } from "../../contexts/TranslationContext";
 
-export default function PopOver({ items = [], Icon, event, sx = {} }) {
+export default function PopOver({
+  items = [],
+  Icon,
+  event,
+  sx = {},
+  tooltipText = "",
+}) {
   const { t } = useContext(TranslationContext);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
@@ -25,7 +31,7 @@ export default function PopOver({ items = [], Icon, event, sx = {} }) {
 
   return (
     <>
-      <Tooltip title="Action">
+      <Tooltip title={tooltipText}>
         <IconButton
           onClick={handleOpenUser}
           style={{ color: "#04A5E0", ...sx }}
@@ -52,7 +58,9 @@ export default function PopOver({ items = [], Icon, event, sx = {} }) {
             <MenuItem
               onClick={() => {
                 if (item.type === "image") return handleCloseUser();
-                return item.action(event);
+
+                item.action(event);
+                handleCloseUser();
               }}
             >
               <input

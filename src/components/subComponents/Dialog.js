@@ -33,7 +33,10 @@ export default function AlertDialogSlide({
   const [open, setOpen] = useState(_open);
   const handleClose = () => setOpen(false);
 
-  useEffect(() => setOpen(_open), [_open]);
+  useEffect(() => {
+    setOpen(_open);
+    console.log("Re-render");
+  }, [_open]);
 
   return (
     <Dialog
@@ -54,7 +57,7 @@ export default function AlertDialogSlide({
             handleClose();
             disagree.handler();
           }}
-          style={{ backgroundColor: disagree.bgcolor }}
+          style={{ backgroundColor: disagree.bgcolor, color: disagree.color }}
         >
           {disagree.text}
         </Button>
@@ -63,7 +66,7 @@ export default function AlertDialogSlide({
             handleClose();
             agree.handler();
           }}
-          style={{ backgroundColor: agree.bgcolor }}
+          style={{ backgroundColor: agree.bgcolor, color: agree.color }}
         >
           {agree.text}
         </Button>

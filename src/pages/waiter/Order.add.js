@@ -33,10 +33,10 @@ const useStyles = makeStyles((theme) => ({
     color: "#B3B3B3",
     borderRadius: "3px",
     [theme.breakpoints.down("sm")]: {
-      marginTop: "160px",
+      marginTop: "90px",
     },
     [theme.breakpoints.up("md")]: {
-      marginTop: "130px",
+      marginTop: "100px",
     },
   },
 }));

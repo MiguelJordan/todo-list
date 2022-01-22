@@ -89,11 +89,10 @@ const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
 
   const handleSubmit = async (item, e) => {
     e.preventDefault();
-    setLoading(true);
 
     const _isOffer = getBool(isOffer);
 
-    // regroup data
+    // gather data
     let _item = {
       companyCode: item.companyCode,
       isOffer: _isOffer,
@@ -103,29 +102,25 @@ const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
       price,
       storeId: item.storeId,
     };
-    // console.log(_item);
 
     if (
       !_isOffer &&
       (!_item.quantity || _item.quantity <= 0 || _item.quantity > item.quantity)
     ) {
-      setLoading(false);
       return showNotification({
-        msg: t("server_err.Invalid quantity"),
+        msg: t("_errors.Invalid quantity"),
         color: "error",
       });
     }
 
-    //toggleBackdrop(true);
+    setLoading(true);
 
     const res = await post({ url: "/orderItems", body: _item });
-    // console.log(res);
 
     if (res?.error) {
-      //toggleBackdrop(false);
       setLoading(false);
       return showNotification({
-        msg: t(`server_err.${res.error}`),
+        msg: t(`_errors.${res.error}`),
         color: "error",
       });
     }

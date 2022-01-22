@@ -507,8 +507,8 @@ export default function AmForm({
                 <Input
                   fullWidth
                   type="number"
-                  name="commissionAmount"
-                  value={updatedItem.commissionAmount}
+                  name="commission"
+                  value={updatedItem.commission}
                   // variant="standard"
                   inputProps={{
                     className: classes.inputText,

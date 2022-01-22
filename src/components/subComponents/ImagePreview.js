@@ -1,6 +1,5 @@
-import { IconButton } from "@mui/material";
 import React from "react";
-import image from "../../default.png";
+import defaultImage from "../../assests/default.png";
 
 export default function ImagePreview({ button, handleClick, imageSrc }) {
   return (
@@ -9,16 +8,17 @@ export default function ImagePreview({ button, handleClick, imageSrc }) {
         display: "flex",
         position: "relative",
         justifyContent: "center",
-        marginBottom: "10px",
+        marginBottom: "20px",
+        marginTop: "-10px",
       }}
     >
       <img
-        src={imageSrc ?? image}
+        src={imageSrc ?? defaultImage}
         style={{
-          width: "105px",
-          height: "105px",
+          width: "140px",
+          height: "140px",
           borderRadius: "300px",
-          backgroundColor: "#B3B3B3",
+          //backgroundColor: "#B3B3B3",
           border: 0,
           borderImage: "none",
         }}
@@ -31,7 +31,7 @@ export default function ImagePreview({ button, handleClick, imageSrc }) {
           width: "40px",
           height: "40px",
           borderRadius: "30px",
-          backgroundColor: "black",
+          backgroundColor: "#001d42",
           marginTop: "5px",
         }}
         onClick={handleClick}

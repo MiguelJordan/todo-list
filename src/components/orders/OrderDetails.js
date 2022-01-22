@@ -1,10 +1,12 @@
 import { useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import { makeStyles } from "@material-ui/core";
 import {
   Checkbox,
   FormControlLabel,
   IconButton,
   TextField,
+  Tooltip,
 } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -13,7 +15,6 @@ import Typography from "@mui/material/Typography";
 
 // components
 import Dropdown from "../subComponents/Dropdown";
-import Fabs from "../../components/subComponents/Fabs";
 import RepeatManager from "../subComponents/RepeatManager";
 import OrderItem from "./OrderItem";
 import PmField, { validatePmAmount } from "../subComponents/PmField";
@@ -29,7 +30,7 @@ import { getBool } from "../../functions/data";
 
 // icons
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { FilterAlt } from "@mui/icons-material";
+import { FilterAlt, AddShoppingCart, AddCircle } from "@mui/icons-material";
 
 const useStyles = makeStyles((theme) => ({
   buttonGroup: {
@@ -62,6 +63,7 @@ const useStyles = makeStyles((theme) => ({
 export default function OrderDetails({ order }) {
   const { user } = useContext(AuthContext);
   const { t } = useContext(TranslationContext);
+  const navigate = useNavigate();
   const classes = useStyles();
 
   const [valuesArray, setValuesArray] = useState([
@@ -179,15 +181,19 @@ export default function OrderDetails({ order }) {
               <IconButton onClick={() => setOpen(true)}>
                 <FilterAlt style={{ color: "#9e9e9e" }} />
               </IconButton>
-              {user.role === "waiter" && (
-                <Fabs
-                  sx={{ width: "40px", height: "40px" }}
-                  ToolTipText="Ajouter Produits"
-                  path={`/waiter/orders/${order.id}/add-items`}
-                />
-              )}
 
               <Search onChange={setSearchVal} />
+              {user.role === "waiter" && (
+                <Tooltip title="Ajouter Produits">
+                  <IconButton
+                    onClick={() =>
+                      navigate(`/waiter/orders/${order.id}/add-items`)
+                    }
+                  >
+                    <AddCircle style={{ color: "#2196f3" }} />
+                  </IconButton>
+                </Tooltip>
+              )}
             </div>
 
             <div

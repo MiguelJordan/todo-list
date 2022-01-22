@@ -24,10 +24,10 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "350px",
     borderRadius: "3px",
     [theme.breakpoints.down("sm")]: {
-      marginTop: "130px",
+      marginTop: "60px",
     },
     [theme.breakpoints.up("md")]: {
-      marginTop: "140px",
+      marginTop: "100px",
     },
   },
 }));
@@ -49,6 +49,7 @@ export default function AddStaff() {
     email: "",
     tel: "",
     unitCode: user.workUnit.code,
+    workUnit: user.workUnits[0],
   });
 
   const handleSubmit = (e) => {
@@ -94,7 +95,7 @@ export default function AddStaff() {
           className: classes.inputText,
         }}
         fullWidth
-        label="First Name"
+        label="First Name*"
         style={{ color: "#B3B3B3" }}
         onChange={(e) =>
           setPersonInfo({
@@ -112,7 +113,7 @@ export default function AddStaff() {
           className: classes.inputText,
         }}
         fullWidth
-        label="Last Name"
+        label="Last Name*"
         style={{ color: "#B3B3B3" }}
         onChange={(e) =>
           setPersonInfo({
@@ -140,9 +141,19 @@ export default function AddStaff() {
         label="Tel"
       />
       <Dropdown
+        label="Role*"
         values={["cashier", "waiter"]}
         value={personInfo.role}
         handleChange={(val) => setPersonInfo({ ...personInfo, role: val })}
+        variant="standard"
+        sx={{ margin: 0 }}
+        textColor={"black"}
+      />
+      <Dropdown
+        label="Work Unit*"
+        values={user.workUnits}
+        value={personInfo.workUnit}
+        handleChange={(val) => setPersonInfo({ ...personInfo, workUnit: val })}
         variant="standard"
         sx={{ margin: 0 }}
         textColor={"black"}
@@ -156,7 +167,7 @@ export default function AddStaff() {
           className: classes.inputText,
         }}
         fullWidth
-        label="Email"
+        label="Email*"
         name="email"
         onChange={(e) =>
           setPersonInfo({

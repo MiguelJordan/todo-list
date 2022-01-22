@@ -23,7 +23,7 @@ import queries from "../../functions/queries";
 // icons
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { DeleteRounded } from "@mui/icons-material";
-import PreviewIcon from "@mui/icons-material/Preview";
+import InfoIcon from "@mui/icons-material/Info";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     overflowY: "auto",
     flexWrap: "wrap",
+
     height: ({ role }) => {
       if (role === "admin") return "63vh";
       return "68vh";
@@ -142,26 +143,26 @@ export default function OrderList({ role = "", orders = [] }) {
       action: (order) => deleteOrder(order),
     },
     {
-      name: "Detail",
+      name: "Details",
       color: "#04A5E0",
-      Icon: <PreviewIcon />,
+      Icon: <InfoIcon />,
       action: (order) => viewOrderDetails(order),
     },
   ];
   const cashierPopMenu = [
     {
-      name: "Detail",
+      name: "Details",
       color: "#04A5E0",
-      Icon: <PreviewIcon />,
+      Icon: <InfoIcon />,
       action: (order) => viewOrderDetails(order),
     },
   ];
 
   const AdminPopMenu = [
     {
-      name: "Detail",
+      name: "Details",
       color: "#04A5E0",
-      Icon: <PreviewIcon />,
+      Icon: <InfoIcon />,
       action: (e) => viewOrderDetails(e),
     },
   ];

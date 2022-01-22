@@ -3,10 +3,9 @@ import { makeStyles } from "@material-ui/core";
 import TextField from "@mui/material/TextField";
 import { LoadingButton } from "@mui/lab";
 
-import Dropdown from "../subComponents/Dropdown";
-
-import { TranslationContext } from "../../contexts/TranslationContext";
+// contexts
 import { AuthContext } from "../../contexts/AuthContext";
+import { TranslationContext } from "../../contexts/TranslationContext";
 
 const useStyles = makeStyles((theme) => ({
   inputText: {

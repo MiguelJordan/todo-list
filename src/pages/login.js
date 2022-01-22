@@ -2,12 +2,10 @@ import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 
 import {
-  Button,
   Typography,
   TextField,
   FormControl,
   InputLabel,
-  Input,
   InputAdornment,
   IconButton,
   OutlinedInput,
@@ -56,28 +54,22 @@ const Page = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError();
-    setLoading(true);
 
     // validate data
-    if (!user.id) {
-      setLoading(false);
-      return setError(t("Invalid user id"));
-    }
-    if (!user.password) {
-      setLoading(false);
-      return setError(t("Invalid password"));
-    }
+    if (!user.id) return setError(t("_errors.Invalid user id"));
+
+    if (!user.password) return setError(t("_errors.Invalid password"));
+
+    setLoading(true);
 
     // submit data
     const res = await login(user);
 
-    // verify response
-    if (res.error) {
-      setLoading(false);
-      return setError(res.error);
-    }
-
     setLoading(false);
+
+    // verify response
+    if (res.error) return setError(t(`_errors.${res.error}`));
+
     // redirect to dashboard
     return navigate(`/${res.role}`);
   };

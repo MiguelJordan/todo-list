@@ -84,7 +84,7 @@
       }
     }
   },
-  "server_err": {
+  "_errors": {
     "Access Denied": "Accès refusé",
     "Cashier not recognised in specified work unit": "Caissier non reconnu dans l'unité de travail spécifiée",
     "Company already has a central store": "L'entreprise a déjà un magasin central",
@@ -95,10 +95,12 @@
     "Invalid Credentials": "Identifiants Invalides",
     "Invalid category": "Catégorie invalide",
     "Invalid cashier id": "Identifiant de caissier invalide",
-    "Invalid consumption point": "Point de consommation invalide",
+    "Invalid commission amount": "Commission invalide",
+    "Invalid commission ratio": "Taux de commission invalide",
     "Invalid company code": "Code d'entreprise invalide",
     "Invalid company id": "Identifiant d'entreprise invalide",
     "Invalid company name": "Nom d'entreprise invalide",
+    "Invalid consumption point": "Point de consommation invalide",
     "Invalid cost price": "Prix d'achat invalide",
     "Invalid customer name": "Nom de client invalide",
     "Invalid discount": "Remise invalide",
@@ -106,12 +108,14 @@
     "Invalid email": "Email invalide",
     "Invalid family": "Famille invalide",
     "Invalid first name": "Prénom invalide",
+    "Invalid image format": "Format d'image invalide",
+    "Invalid image size too large": "Taille de l'image trop grande",
     "Invalid item commission": "Commission invalide",
     "Invalid item commission ratio": "Taux de commission invalide",
     "Invalid item name": "Nom d'article invalide",
     "Invalid item id": "Identifiant d'article invalide",
     "Invalid last name": "Nom de famille Invalide",
-    "Invalid measure unit(s)": "Unité(s) de mesure non valide(s)",
+    "Invalid measure unit": "Unité de mesure non valide",
     "Invalid operation": "Opération Invalide",
     "Invalid order id": "Identifiant de commande invalide",
     "Invalid password": "Mot de passe incorrect",

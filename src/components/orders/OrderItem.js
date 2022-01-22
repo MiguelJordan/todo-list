@@ -83,7 +83,7 @@ const OrderItem = ({ item = {}, role = "" }) => {
     if (res.error) {
       toggleBackdrop(false);
       return showNotification({
-        msg: t(`server_err.${res.error}`),
+        msg: t(`_errors.${res.error}`),
         color: "error",
       });
     }

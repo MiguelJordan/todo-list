@@ -72,16 +72,16 @@ export default function CreateOrder() {
 
     // console.log(order);
 
-    // if (!order.tableName) return setError(t("server_err.Invalid table name"));
+    // if (!order.tableName) return setError(t("_errors.Invalid table name"));
 
     if (!order.consumptionPoint) {
       setLoading(false);
-      return setError(t("server_err.Invalid consumption point"));
+      return setError(t("_errors.Invalid consumption point"));
     }
 
     if (order.balanceForward < 0) {
       setLoading(false);
-      return setError(t("server_err.Invalid balance carried forward"));
+      return setError(t("_errors.Invalid balance carried forward"));
     }
 
     //toggleBackdrop(true);
@@ -94,7 +94,7 @@ export default function CreateOrder() {
     // handle order creation errors
     if (res?.error) {
       setLoading(false);
-      return setError(t(`server_err.${res.error}`));
+      return setError(t(`_errors.${res.error}`));
     }
 
     // sending order created event
@@ -123,7 +123,7 @@ export default function CreateOrder() {
       >
         {t("pages.waiter.orders.form_add_order.title")}
       </h2>
-      {error && <div className="formError"> {t(`server_err.${error}`)}</div>}
+      {error && <div className="formError"> {t(`_errors.${error}`)}</div>}
       <TextField
         required
         type="text"

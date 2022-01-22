@@ -30,7 +30,7 @@ import { getBool } from "../../functions/data";
 
 // icons
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { FilterAlt, AddShoppingCart, AddCircle } from "@mui/icons-material";
+import { FilterAlt, AddCircle } from "@mui/icons-material";
 
 const useStyles = makeStyles((theme) => ({
   buttonGroup: {

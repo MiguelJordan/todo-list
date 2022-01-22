@@ -76,7 +76,7 @@
       "orders": { "form_add_order": { "title": "New Order", "add_btn": "Add" } }
     }
   },
-  "server_err": {
+  "_errors": {
     "Access Denied": "Access Denied",
     "Cashier not recognised in specified work unit": "Cashier not recognised in specified work unit",
     "Company already has a central store": "Company already has a central store",
@@ -87,10 +87,12 @@
     "Invalid Credentials": "Invalid Credentials",
     "Invalid category": "Invalid category",
     "Invalid cashier id": "Invalid cashier id",
-    "Invalid consumption point": "Invalid consumption point",
+    "Invalid commission amount": "Invalid commission amount",
+    "Invalid commission ratio": "Invalid commission ratio",
     "Invalid company code": "Invalid company code",
     "Invalid company id": "Invalid company id",
     "Invalid company name": "Invalid company name",
+    "Invalid consumption point": "Invalid consumption point",
     "Invalid cost price": "Invalid cost price",
     "Invalid customer name": "Invalid customer name",
     "Invalid discount": "Invalid discount",
@@ -98,12 +100,14 @@
     "Invalid email": "Invalid email",
     "Invalid family": "Invalid family",
     "Invalid first name": "Invalid first name",
+    "Invalid image format": "Invalid image format",
+    "Invalid image size too large": "Invalid image format",
     "Invalid item commission": "Invalid commission",
     "Invalid item commission ratio": "Invalid commission ratio",
     "Invalid item name": "Invalid item name",
     "Invalid item id": "Invalid item id",
     "Invalid last name": "Invalid last name",
-    "Invalid measure unit(s)": "Invalid measure unit(s)",
+    "Invalid measure unit": "Invalid measure unit",
     "Invalid operation": "Invalid Operation",
     "Invalid order id": "Invalid order id",
     "Invalid password": "Invalid password",

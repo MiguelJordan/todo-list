@@ -46,14 +46,14 @@ export default function CreateOrder() {
 
     // console.log(order);
 
-    if (!order.tableName) return setError(t("server_err.Invalid table name"));
+    if (!order.tableName) return setError(t("_errors.Invalid table name"));
 
     if (!order.consumptionPoint) {
-      return setError(t("server_err.Invalid consumption point"));
+      return setError(t("_errors.Invalid consumption point"));
     }
 
     if (order.balanceForward < 0) {
-      return setError(t("server_err.Invalid balance carried forward"));
+      return setError(t("_errors.Invalid balance carried forward"));
     }
 
     // request order creation

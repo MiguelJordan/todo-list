@@ -74,54 +74,6 @@ export default function StoreAdd() {
     return { valid: true, validated: item };
   };
 
-  const handleSubmit = async (item, reset) => {
-    setError("");
-
-    //console.log(reset);
-
-    const { valid, validated, message } = validateItem(item);
-
-    if (!valid) return setError(message);
-
-    item = validated;
-
-    setLoading(true);
-
-    const res = await sendFormData({
-      url: "/storeItems",
-      values: item,
-      method: "POST",
-    });
-
-    if (res.error) {
-      setLoading(false);
-      return setError(res.error);
-    }
-
-    // reset create form if all is good
-    reset();
-
-    // send store item created/updated event
-    sendEvent({
-      name: "cE-store-items-updated",
-      props: {
-        companyCode: user.company.code,
-        query: queries["cE-store-items-updated"]({
-          items: [item.name],
-          storeId: item.storeId,
-        }),
-      },
-      rooms: [user.workUnit.code],
-    });
-
-    showNotification({
-      msg: t("feedback.admin.store item created success"),
-      color: "success",
-    });
-
-    setLoading(false);
-  };
-
   const AddImage = async (e) => {
     if (!e) return "";
     setError("");
@@ -151,6 +103,53 @@ export default function StoreAdd() {
   const RemoveImage = () => {
     setImage(null);
     setImageUrl(null);
+  };
+
+  const handleSubmit = async (item, reset) => {
+    setError("");
+
+    const { valid, validated, message } = validateItem(item);
+
+    if (!valid) return setError(message);
+
+    item = validated;
+
+    setLoading(true);
+
+    const res = await sendFormData({
+      url: "/storeItems",
+      values: item,
+      method: "POST",
+    });
+
+    if (res.error) {
+      setLoading(false);
+      return setError(res.error);
+    }
+
+    // reset create form if all is good
+    reset();
+    RemoveImage();
+
+    // send store item created/updated event
+    sendEvent({
+      name: "cE-store-items-updated",
+      props: {
+        companyCode: user.company.code,
+        query: queries["cE-store-items-updated"]({
+          items: [item.name],
+          storeId: item.storeId,
+        }),
+      },
+      rooms: [user.workUnit.code],
+    });
+
+    showNotification({
+      msg: t("feedback.admin.store item created success"),
+      color: "success",
+    });
+
+    setLoading(false);
   };
 
   return (

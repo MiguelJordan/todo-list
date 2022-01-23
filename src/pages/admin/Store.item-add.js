@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useRef } from "react";
 
 // components
 import AmForm from "../../components/subComponents/AmForm";
@@ -19,6 +19,7 @@ export default function StoreAdd() {
   const { showNotification } = useContext(NotificationContext);
   const { sendEvent } = useContext(SocketContext);
   const { t } = useContext(TranslationContext);
+  const formRef = useRef();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -34,7 +35,7 @@ export default function StoreAdd() {
     commission: 0,
     commissionRatio: 1,
     companyCode: user.company.code,
-    storeId: user.workUnit.storeId ?? "",
+    storeId: "",
     measureUnit: "",
     measureUnitPlural: "",
     quantity: 0,
@@ -89,12 +90,14 @@ export default function StoreAdd() {
       delete item?.imageUrl;
     }
 
-    return { valid: false, validated: item };
+    return { valid: true, validated: item };
   };
 
-  const handleSubmit = async (e, item) => {
+  const handleSubmit = async (e, item, reset) => {
     e.preventDefault();
     setError("");
+
+    //console.log(reset);
 
     const { valid, validated, message } = validateItem(item);
 
@@ -181,6 +184,7 @@ export default function StoreAdd() {
       RemoveImage={RemoveImage}
       loading={loading}
       error={error}
+      reset={formRef}
     />
   );
 }

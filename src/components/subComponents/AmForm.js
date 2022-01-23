@@ -44,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexFlow: "row",
     justifyContent: "space-between",
+    alignItems: "center",
     gap: "10px",
   },
   inputText: {
@@ -66,6 +67,7 @@ export default function AmForm({
   RemoveImage,
   loading,
   error,
+  reset,
 }) {
   const { t } = useContext(TranslationContext);
   const { user } = useContext(AuthContext);
@@ -74,6 +76,8 @@ export default function AmForm({
   const stores = [user.workUnit.storeId ?? "", user.company.storeId ?? ""];
 
   const [updatedItem, setItem] = useState(item);
+
+  updatedItem.storeId = stores[0];
 
   const [open, setOpen] = useState(false);
 
@@ -164,7 +168,8 @@ export default function AmForm({
 
       <form
         className={classes.form}
-        onSubmit={(e) => handleSubmit(e, updatedItem)}
+        onSubmit={(e) => handleSubmit(e, updatedItem, reset)}
+        ref={reset}
       >
         {target === "storeItems" && (
           <ImagePreview
@@ -340,22 +345,20 @@ export default function AmForm({
                   }
                   id="isBlocked"
                 />
-                <label
-                  htmlFor="isBlocked"
-                  style={{ color: "black", marginTop: "15px" }}
-                >
+                <label htmlFor="isBlocked" style={{ color: "black" }}>
                   {t("compo.item.isBlocked")}
                 </label>
               </span>
               <Dropdown
                 label={t("compo.item.store")}
                 values={stores}
-                value={stores[0]}
+                value={updatedItem.storeId}
                 textColor={"black"}
                 handleChange={(val) =>
                   setItem({ ...updatedItem, storeId: val })
                 }
                 sx={{ width: "50%" }}
+                capitalised={false}
               />
             </div>
           </div>

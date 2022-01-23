@@ -184,7 +184,7 @@ export default function OrderDetails({ order }) {
 
               <Search onChange={setSearchVal} />
               {user.role === "waiter" && (
-                <Tooltip title="Ajouter Produits">
+                <Tooltip title={t("_var.*.tooltip.add item")}>
                   <IconButton
                     onClick={() =>
                       navigate(`/waiter/orders/${order.id}/add-items`)
@@ -195,6 +195,9 @@ export default function OrderDetails({ order }) {
                       style={{
                         color: "#2196f3",
                         fontSize: "30px",
+                        width: "fit-content",
+                        margin: 0,
+                        padding: 0,
                       }}
                     />
                   </IconButton>

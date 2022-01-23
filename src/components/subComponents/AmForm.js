@@ -1,18 +1,11 @@
 import React, { useContext, useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import { LoadingButton } from "@mui/lab";
-import {
-  Checkbox,
-  FormControl,
-  Input,
-  InputLabel,
-  TextField,
-} from "@mui/material";
+import { Checkbox, TextField } from "@mui/material";
 
 // components
 import ImagePreview from "./ImagePreview";
 import PopOver from "./PopOver";
-import AlertDialogSlide from "./Dialog";
 
 // contexts
 import { TranslationContext } from "../../contexts/TranslationContext";
@@ -59,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AmForm({
   modify = false,
-  item = {},
+
   handleSubmit,
   target = "storeItems",
   image,
@@ -67,26 +60,32 @@ export default function AmForm({
   RemoveImage,
   loading,
   error,
-  reset,
 }) {
   const { t } = useContext(TranslationContext);
   const { user } = useContext(AuthContext);
   const classes = useStyles();
 
+  const _item = {
+    name: "",
+    family: "",
+    category: "",
+    cost: 0,
+    prices: [],
+    commission: 0,
+    commissionRatio: 1,
+    companyCode: user.company.code,
+    storeId: "",
+    measureUnit: "",
+    measureUnitPlural: "",
+    quantity: 0,
+    isBlocked: false,
+  };
+
   const stores = [user.workUnit.storeId ?? "", user.company.storeId ?? ""];
 
-  const [updatedItem, setItem] = useState(item);
+  const [item, setItem] = useState(_item);
 
-  updatedItem.storeId = stores[0];
-
-  const [open, setOpen] = useState(false);
-
-  const [DialogContent, setContent] = useState({
-    name: "",
-    label: "",
-    value: "",
-    type: "",
-  });
+  item.storeId = stores[0];
 
   const popMenu = [
     {
@@ -105,273 +104,222 @@ export default function AmForm({
     },
   ];
 
-  const agree = {
-    bgcolor: "#04A5E0",
-    color: "white",
-    text: "Valider",
-    handler: () => {
-      setItem({ ...updatedItem, [DialogContent.name]: DialogContent.value });
-      //console.log(item);
-    },
-  };
-
-  const disAgree = {
-    bgcolor: "red",
-    color: "white",
-    text: "Annuler",
-    handler: () => {
-      setItem({
-        ...updatedItem,
-        [DialogContent.name]: item[DialogContent.name],
-      });
-      //console.log(item);
-    },
-  };
-
   const getInputValue = (e) => {
     setItem({
-      ...updatedItem,
+      ...item,
       [e.target.name]:
         e.target.name === "prices" ? [e.target.value] : e.target.value,
     });
   };
 
+  const reset = () => setItem(_item);
+
   return (
-    <>
-      <AlertDialogSlide
-        _open={open}
-        content={
-          <FormControl sx={{ m: 1 }}>
-            <InputLabel>{DialogContent.label}</InputLabel>
-            <Input
-              fullWidth
-              type={DialogContent.type}
-              name={DialogContent.name}
-              variant="standard"
-              value={DialogContent.value}
-              inputProps={{
-                className: classes.dialogText,
-              }}
-              style={{ color: "black", marginBottom: "5px" }}
-              onChange={(e) => {
-                setContent({
-                  ...DialogContent,
-                  value: e.target.value.trim(),
-                });
-              }}
+    <form
+      className={classes.form}
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleSubmit(item, reset);
+      }}
+    >
+      {target === "storeItems" && (
+        <ImagePreview
+          button={
+            <PopOver
+              items={popMenu}
+              Icon={<CameraAlt />}
+              tooltipText="Upload"
             />
-          </FormControl>
-        }
-        agree={agree}
-        disagree={disAgree}
-      />
-
-      <form
-        className={classes.form}
-        onSubmit={(e) => handleSubmit(e, updatedItem, reset)}
-        ref={reset}
-      >
-        {target === "storeItems" && (
-          <ImagePreview
-            button={
-              <PopOver
-                items={popMenu}
-                Icon={<CameraAlt />}
-                tooltipText="Upload"
-              />
-            }
-            imageSrc={image}
-          />
-        )}
-        {error && <div className="formError"> {t(`_errors.${error}`)}</div>}
-        {target === "storeItems" && (
-          <div
-            style={{
-              display: "flex",
-              flexFlow: "column",
-              justifyContent: "flex-start",
-              height: "235px",
-              overflowY: "auto",
-              paddingTop: 5,
-            }}
-          >
-            <div className={classes.rowField}>
-              <TextField
-                fullWidth
-                required
-                variant="standard"
-                type="text"
-                name="family"
-                value={updatedItem.family}
-                className={classes.inputText}
-                inputProps={{ className: classes.inputText }}
-                label={t("compo.item.family") + "*"}
-                onChange={getInputValue}
-              />
-
-              <TextField
-                fullWidth
-                required
-                variant="standard"
-                type="text"
-                name="category"
-                value={updatedItem.category}
-                className={classes.inputText}
-                inputProps={{ className: classes.inputText }}
-                label={t("compo.item.category") + "*"}
-                onChange={getInputValue}
-              />
-            </div>
+          }
+          imageSrc={image}
+        />
+      )}
+      {error && <div className="formError"> {t(`_errors.${error}`)}</div>}
+      {target === "storeItems" && (
+        <div
+          style={{
+            display: "flex",
+            flexFlow: "column",
+            justifyContent: "flex-start",
+            height: "235px",
+            overflowY: "auto",
+            paddingTop: 5,
+          }}
+        >
+          <div className={classes.rowField}>
+            <TextField
+              fullWidth
+              required
+              variant="standard"
+              type="text"
+              name="family"
+              value={item.family}
+              className={classes.inputText}
+              inputProps={{ className: classes.inputText }}
+              label={t("compo.item.family") + "*"}
+              onChange={getInputValue}
+            />
 
             <TextField
               fullWidth
               required
               variant="standard"
               type="text"
-              name="name"
-              value={updatedItem.name}
+              name="category"
+              value={item.category}
               className={classes.inputText}
               inputProps={{ className: classes.inputText }}
-              label={t("compo.item.name") + "*"}
+              label={t("compo.item.category") + "*"}
+              onChange={getInputValue}
+            />
+          </div>
+
+          <TextField
+            fullWidth
+            required
+            variant="standard"
+            type="text"
+            name="name"
+            value={item.name}
+            className={classes.inputText}
+            inputProps={{ className: classes.inputText }}
+            label={t("compo.item.name") + "*"}
+            onChange={getInputValue}
+          />
+
+          <div className={classes.rowField}>
+            <TextField
+              fullWidth
+              required
+              variant="standard"
+              type="text"
+              name="measureUnit"
+              value={item.measureUnit}
+              className={classes.inputText}
+              inputProps={{ className: classes.inputText }}
+              label={t("compo.item.measureUnit") + "*"}
               onChange={getInputValue}
             />
 
-            <div className={classes.rowField}>
-              <TextField
-                fullWidth
-                required
-                variant="standard"
-                type="text"
-                name="measureUnit"
-                value={updatedItem.measureUnit}
-                className={classes.inputText}
-                inputProps={{ className: classes.inputText }}
-                label={t("compo.item.measureUnit") + "*"}
-                onChange={getInputValue}
-              />
+            <TextField
+              fullWidth
+              required
+              variant="standard"
+              type="text"
+              name="measureUnitPlural"
+              value={item.measureUnitPlural}
+              className={classes.inputText}
+              inputProps={{ className: classes.inputText }}
+              label={t("compo.item.measureUnitPlural") + "*"}
+              onChange={getInputValue}
+            />
+          </div>
 
-              <TextField
-                fullWidth
-                required
-                variant="standard"
-                type="text"
-                name="measureUnitPlural"
-                value={updatedItem.measureUnitPlural}
-                className={classes.inputText}
-                inputProps={{ className: classes.inputText }}
-                label={t("compo.item.measureUnitPlural") + "*"}
-                onChange={getInputValue}
-              />
-            </div>
-
-            <div className={classes.rowField}>
-              <TextField
-                fullWidth
-                required
-                variant="standard"
-                type="number"
-                name="quantity"
-                value={updatedItem.quantity}
-                className={classes.inputText}
-                inputProps={{ className: classes.inputText }}
-                label={t("compo.item.quantity")}
-                onChange={getInputValue}
-              />
-
-              <TextField
-                fullWidth
-                required
-                variant="standard"
-                type="number"
-                name="cost"
-                value={updatedItem.cost}
-                className={classes.inputText}
-                inputProps={{ className: classes.inputText }}
-                label={t("compo.item.cost")}
-                onChange={getInputValue}
-              />
-            </div>
+          <div className={classes.rowField}>
+            <TextField
+              fullWidth
+              required
+              variant="standard"
+              type="number"
+              name="quantity"
+              value={item.quantity}
+              className={classes.inputText}
+              inputProps={{ className: classes.inputText }}
+              label={t("compo.item.quantity")}
+              onChange={getInputValue}
+            />
 
             <TextField
               fullWidth
               required
               variant="standard"
               type="number"
-              name="prices"
-              value={updatedItem.prices}
+              name="cost"
+              value={item.cost}
               className={classes.inputText}
               inputProps={{ className: classes.inputText }}
-              label={t("compo.item.price")}
+              label={t("compo.item.cost")}
+              onChange={getInputValue}
+            />
+          </div>
+
+          <TextField
+            fullWidth
+            required
+            variant="standard"
+            type="number"
+            name="prices"
+            value={item.prices}
+            className={classes.inputText}
+            inputProps={{ className: classes.inputText }}
+            label={t("compo.item.price")}
+            onChange={getInputValue}
+          />
+
+          <div className={classes.rowField}>
+            <TextField
+              fullWidth
+              required
+              variant="standard"
+              type="number"
+              name="commission"
+              value={item.commission}
+              className={classes.inputText}
+              inputProps={{ className: classes.inputText }}
+              label={t("compo.item.commission")}
               onChange={getInputValue}
             />
 
-            <div className={classes.rowField}>
-              <TextField
-                fullWidth
-                required
-                variant="standard"
-                type="number"
-                name="commission"
-                value={updatedItem.commission}
-                className={classes.inputText}
-                inputProps={{ className: classes.inputText }}
-                label={t("compo.item.commission")}
-                onChange={getInputValue}
-              />
-
-              <TextField
-                fullWidth
-                required
-                variant="standard"
-                type="number"
-                name="commissionRatio"
-                value={updatedItem.commissionRatio}
-                className={classes.inputText}
-                inputProps={{ className: classes.inputText }}
-                label={t("compo.item.commissionRatio")}
-                onChange={getInputValue}
-              />
-            </div>
-
-            <div className={classes.rowField}>
-              <span>
-                <Checkbox
-                  checked={updatedItem.isBlocked}
-                  onChange={() =>
-                    setItem({
-                      ...updatedItem,
-                      isBlocked: !updatedItem.isBlocked,
-                    })
-                  }
-                  id="isBlocked"
-                />
-                <label htmlFor="isBlocked" style={{ color: "black" }}>
-                  {t("compo.item.isBlocked")}
-                </label>
-              </span>
-              <Dropdown
-                label={t("compo.item.store")}
-                values={stores}
-                value={updatedItem.storeId}
-                textColor={"black"}
-                handleChange={(val) =>
-                  setItem({ ...updatedItem, storeId: val })
-                }
-                sx={{ width: "50%" }}
-                capitalised={false}
-              />
-            </div>
+            <TextField
+              fullWidth
+              required
+              variant="standard"
+              type="number"
+              name="commissionRatio"
+              value={item.commissionRatio}
+              className={classes.inputText}
+              inputProps={{ className: classes.inputText }}
+              label={t("compo.item.commissionRatio")}
+              onChange={getInputValue}
+            />
           </div>
-        )}
-        <LoadingButton
-          loading={loading}
-          variant="contained"
-          type="submit"
-          style={{ marginTop: 20 }}
-        >
-          {t("pages.admin.add-storeItem.add-btn")}
-        </LoadingButton>
-      </form>
-    </>
+
+          <div className={classes.rowField}>
+            <span>
+              <Checkbox
+                checked={item.isBlocked}
+                onChange={() =>
+                  setItem({
+                    ...item,
+                    isBlocked: !item.isBlocked,
+                  })
+                }
+                id="isBlocked"
+              />
+              <label htmlFor="isBlocked" style={{ color: "black" }}>
+                {t("compo.item.isBlocked")}
+              </label>
+            </span>
+            <Dropdown
+              label={t("compo.item.store")}
+              values={stores}
+              value={item.storeId}
+              textColor={"black"}
+              handleChange={(val) => setItem({ ...item, storeId: val })}
+              sx={{ width: "50%" }}
+              capitalised={false}
+            />
+          </div>
+        </div>
+      )}
+      <LoadingButton
+        loading={loading}
+        variant="contained"
+        type="submit"
+        style={{ marginTop: 20 }}
+      >
+        {t("pages.admin.add-storeItem.add-btn")}
+      </LoadingButton>
+    </form>
   );
 }

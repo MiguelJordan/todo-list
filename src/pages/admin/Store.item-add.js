@@ -1,4 +1,4 @@
-import { useState, useContext, useRef } from "react";
+import { useState, useContext } from "react";
 
 // components
 import AmForm from "../../components/subComponents/AmForm";
@@ -19,30 +19,11 @@ export default function StoreAdd() {
   const { showNotification } = useContext(NotificationContext);
   const { sendEvent } = useContext(SocketContext);
   const { t } = useContext(TranslationContext);
-  const formRef = useRef();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [image, setImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
-
-  const _item = {
-    name: "",
-    family: "",
-    category: "",
-    cost: 0,
-    prices: [],
-    commission: 0,
-    commissionRatio: 1,
-    companyCode: user.company.code,
-    storeId: "",
-    measureUnit: "",
-    measureUnitPlural: "",
-    quantity: 0,
-    isBlocked: false,
-  };
-
-  const [item, setItem] = useState(_item);
 
   const validateItem = (item) => {
     item.name = item.name?.trim();
@@ -93,8 +74,7 @@ export default function StoreAdd() {
     return { valid: true, validated: item };
   };
 
-  const handleSubmit = async (e, item, reset) => {
-    e.preventDefault();
+  const handleSubmit = async (item, reset) => {
     setError("");
 
     //console.log(reset);
@@ -119,8 +99,7 @@ export default function StoreAdd() {
     }
 
     // reset create form if all is good
-    // e.target.reset()
-    // setItem(_item);
+    reset();
 
     // send store item created/updated event
     sendEvent({
@@ -179,12 +158,10 @@ export default function StoreAdd() {
       target="storeItems"
       handleSubmit={handleSubmit}
       image={image}
-      item={item}
       AddImage={AddImage}
       RemoveImage={RemoveImage}
       loading={loading}
       error={error}
-      reset={formRef}
     />
   );
 }

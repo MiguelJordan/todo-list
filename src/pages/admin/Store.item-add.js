@@ -83,7 +83,7 @@ export default function StoreAdd() {
 
     // validate type & extension
     if (
-      typeInfo[0] != "image" ||
+      typeInfo[0] !== "image" ||
       !["jpg", "png", "jpeg"].includes(typeInfo[1])
     ) {
       return setError("Invalid image - format");

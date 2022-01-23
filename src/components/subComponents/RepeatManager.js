@@ -40,8 +40,10 @@ const RepeatManager = ({
   width = "100%",
 }) => {
   const classes = useStyles();
-  const [values, setValues] = useState();
+
   const [btnDisabled, setBtnDisabled] = useState(true);
+  const [reset, setReset] = useState(false);
+  const [values, setValues] = useState();
 
   return (
     <div className={classes.parent} style={{ width }}>
@@ -61,17 +63,20 @@ const RepeatManager = ({
       <div className={classes.addField}>
         <Cp
           readOnly={false}
+          reset={reset}
           selectValues={selectValues}
           onChange={(_values) => {
             if (validate) setBtnDisabled(!validate(_values));
-
             setValues(_values);
           }}
         />
         <Button
           variant="outlined"
-          onClick={() => handleAdd(values)}
           disabled={btnDisabled}
+          onClick={() => {
+            handleAdd(values);
+            setReset(!reset);
+          }}
         >
           {addText}
         </Button>

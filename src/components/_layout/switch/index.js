@@ -57,7 +57,7 @@ const IOSSwitch = styled((props) => (
   },
 }));
 
-export default () => {
+export default function _switch() {
   const { language, setLanguage } = useContext(TranslationContext);
 
   return (
@@ -65,7 +65,7 @@ export default () => {
       EN
       <IOSSwitch
         sx={{ m: 1 }}
-        checked={language == "fr" ? true : false}
+        checked={language === "fr" ? true : false}
         onChange={(e) => {
           setLanguage(e.target.checked ? "fr" : "en");
         }}
@@ -73,4 +73,4 @@ export default () => {
       FR
     </>
   );
-};
+}

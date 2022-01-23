@@ -1,9 +1,9 @@
-import { useContext, useState } from "react";
-import { TranslationContext } from "../../contexts/TranslationContext";
+import { useState } from "react";
+// import { TranslationContext } from "../../contexts/TranslationContext";
 import { makeStyles } from "@material-ui/core";
-import Divider from "@mui/material/Divider";
+// import Divider from "@mui/material/Divider";
 
-import { filter } from "../../functions/data";
+// import { filter } from "../../functions/data";
 
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { EditRounded, DeleteRounded } from "@mui/icons-material";
@@ -36,12 +36,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Staff() {
-  const { t } = useContext(TranslationContext);
+  // const { t } = useContext(TranslationContext);
   //const { showNotification } = useContext(NTContext);
   const classes = useStyles();
   const navigate = useNavigate();
-  const [openDialog, setOpenDialog] = useState(false);
-  const [msg, setMsg] = useState("");
+  const [, setOpenDialog] = useState(false);
+  const [, setMsg] = useState("");
 
   var users = [
     {
@@ -64,7 +64,7 @@ export default function Staff() {
   ];
 
   const [criteria, setCriteria] = useState("role");
-  const [user, setUser] = useState(users);
+  const [user] = useState(users);
 
   const { filtered, setSearchVal } = useSearch({
     data: user,

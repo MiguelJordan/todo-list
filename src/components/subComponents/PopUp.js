@@ -1,5 +1,4 @@
-import React from "react";
-import { Button, Modal, TextField, Box } from "@mui/material";
+import { Modal, Box } from "@mui/material";
 
 export default function PopUp({ children, open, close, sx = {} }) {
   return (

@@ -13,20 +13,13 @@ import { LoadingButton } from "@mui/lab";
 import {
   Checkbox,
   FormControl,
-  IconButton,
   Input,
-  InputAdornment,
   InputLabel,
   TextField,
 } from "@mui/material";
 
 // icons
-import {
-  CameraAlt,
-  PhotoCamera,
-  DeleteRounded,
-  EditRounded,
-} from "@mui/icons-material";
+import { CameraAlt, PhotoCamera, DeleteRounded } from "@mui/icons-material";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -78,7 +71,7 @@ export default function AmForm({
 
   const [updatedItem, setItem] = useState(item);
 
-  const [open, setOpen] = useState(false);
+  const [open] = useState(false);
 
   const [DialogContent, setContent] = useState({
     name: "",

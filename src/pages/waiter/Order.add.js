@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/core";
 import { TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { LoadingButton } from "@mui/lab";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
 // components
 import Dropdown from "../../components/subComponents/Dropdown";
@@ -17,7 +16,6 @@ import { TranslationContext } from "../../contexts/TranslationContext";
 import { post } from "../../functions/http";
 
 const useStyles = makeStyles((theme) => ({
-  inputText: { color: "black", marginBottom: "5px", marginTop: "0px" },
   form: {
     display: "flex",
     flexFlow: "column",
@@ -36,6 +34,12 @@ const useStyles = makeStyles((theme) => ({
       marginTop: "100px",
     },
   },
+  formHeader: {
+    color: "#001D42",
+    marginTop: "15px",
+    alignSelf: "center",
+  },
+  inputText: { color: "black", marginBottom: "5px", marginTop: "0px" },
 }));
 
 export default function CreateOrder() {
@@ -99,15 +103,10 @@ export default function CreateOrder() {
 
   return (
     <form className={classes.form} onSubmit={handleSubmit}>
-      <h2
-        style={{
-          color: "#001D42",
-          marginTop: "15px",
-          alignSelf: "center",
-        }}
-      >
+      <h2 className={classes.formHeader}>
         {t("pages.waiter.orders.form_add_order.title")}
       </h2>
+
       {error && <div className="formError"> {t(`_errors.${error}`)}</div>}
 
       <TextField
@@ -118,7 +117,7 @@ export default function CreateOrder() {
         fullWidth
         className={classes.inputText}
         inputProps={{ className: classes.inputText }}
-        label="Table Name"
+        label={t("compo.order.tableName")}
         onChange={(e) =>
           setOrderInfo({ ...orderInfo, [e.target.name]: e.target.value })
         }
@@ -126,7 +125,7 @@ export default function CreateOrder() {
 
       <Dropdown
         values={user.workUnit.consumptionPoints}
-        label="Consumption Point"
+        label={t("compo.order.consumptionPoint")}
         variant="standard"
         value={orderInfo.consumptionPoint}
         handleChange={(val) =>

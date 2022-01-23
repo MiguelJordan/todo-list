@@ -80,7 +80,7 @@ export default function OrderList({ role = "", orders = [] }) {
   const deleteOrder = async (order) => {
     if (!["admin", "waiter"].includes(user.role)) return;
 
-    if (order.isPaid && user.role != "admin") {
+    if (order.isPaid && user.role !== "admin") {
       return showNotification({
         msg: t("server_err.Invalid operation"),
         color: "error",

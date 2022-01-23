@@ -12,6 +12,7 @@ export default function ImagePreview({ button, handleClick, imageSrc }) {
       }}
     >
       <img
+        alt="preview"
         src={imageSrc ?? defaultImage}
         style={{
           width: "140px",

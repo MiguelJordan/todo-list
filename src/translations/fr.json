@@ -32,7 +32,11 @@
       "true": "Vrai",
       "yes": "Oui"
     },
-    "order": { "items": "Articles" },
+    "order": {
+      "consumptionPoint": "Point de consommation",
+      "items": "Articles",
+      "tableName": "Nom de table"
+    },
     "item": {
       "btn-add": "Ajouter",
       "category": "Catégorie",

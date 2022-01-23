@@ -60,7 +60,6 @@ const useStyles = makeStyles((theme) => ({
   inp: {
     width: "30px",
     marginLeft: 8,
-    backgroundColor: "#415672",
     color: "#FFFFFF",
     height: "18px",
     borderStyle: "solid",
@@ -235,7 +234,7 @@ const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
                   }}
                 />
               </div>
-              {!preview && role == "waiter" && (
+              {!preview && role === "waiter" && (
                 <>
                   <div style={{ display: "flex", flexFlow: "row" }}>
                     <label htmlFor="">{t("compo.item.quantity")} :</label>

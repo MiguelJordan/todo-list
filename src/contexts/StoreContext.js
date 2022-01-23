@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect } from "react";
 import { AuthContext } from "./AuthContext";
 
 // const apiUrl = process.env.REACT_APP_API_URL;

@@ -6,7 +6,6 @@ import {
   Typography,
   ListItemIcon,
   IconButton,
-  Input,
 } from "@mui/material";
 
 // contexts

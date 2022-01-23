@@ -1,11 +1,8 @@
 import { TextField, Button } from "@mui/material";
 import { useContext, useState } from "react";
-import { TrContext } from "../../contexts/TranslationContext";
 import { AuthContext } from "../../contexts/AuthContext";
 
 import { makeStyles } from "@material-ui/core";
-import { useParams } from "react-router-dom";
-import { useEffect } from "react";
 import Dropdown from "../../components/subComponents/Dropdown";
 
 const useStyles = makeStyles((theme) => ({
@@ -36,11 +33,9 @@ export default function StaffDetail() {
   const { user } = useContext(AuthContext);
   const classes = useStyles();
 
-  const { id } = useParams();
-
   const [read, setRead] = useState(true);
   const [error, setError] = useState("");
-  const [_user, setUser] = useState({
+  const [_user] = useState({
     firstName: "john",
     lastName: "mark",
     role: "waiter",
@@ -51,7 +46,7 @@ export default function StaffDetail() {
 
   const [userInfo, setUserInfo] = useState(_user);
 
-  const [userCpy, setUserCpy] = useState(_user);
+  const [userCpy] = useState(_user);
 
   const handleModify = (e) => {
     e.preventDefault();

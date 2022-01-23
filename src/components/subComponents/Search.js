@@ -5,7 +5,7 @@ import SearchIcon from "@mui/icons-material/Search";
 
 import { TranslationContext } from "../../contexts/TranslationContext";
 
-const _search = styled("div")(({ theme }) => ({
+const SearchStyled = styled("div")(({ theme }) => ({
   position: "relative",
   width: "fit-content",
   borderRadius: theme.shape.borderRadius,
@@ -39,7 +39,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function Search({ onChange }) {
   const { t } = useContext(TranslationContext);
   return (
-    <_search>
+    <SearchStyled>
       <SearchIconWrapper>
         <SearchIcon />
       </SearchIconWrapper>
@@ -48,6 +48,6 @@ export default function Search({ onChange }) {
         inputProps={{ "aria-label": "search" }}
         onChange={(event) => onChange(event.target.value)}
       />
-    </_search>
+    </SearchStyled>
   );
 }

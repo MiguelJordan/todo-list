@@ -1,4 +1,10 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useCallback,
+  useState,
+} from "react";
 import { io } from "socket.io-client";
 
 import { AuthContext } from "./AuthContext";
@@ -23,9 +29,9 @@ const SocketProvider = ({ children }) => {
 
   const [socketConnected, setSocketConnected] = useState(false);
 
-  const connectE = () => {
+  const connectE = useCallback(() => {
     if (user && !socketConnected) socket?.emit("register", _user);
-  };
+  }, [socketConnected, user]);
 
   // this is to prevent useless socket connections
   // attempt connection immediately user logs in successfully

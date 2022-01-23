@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 
 // functions
-import { filter, getUnique, getPeriod } from "../functions/data";
+import { filter, getUnique } from "../functions/data";
 import { get } from "../functions/http";
 
 export const OrderContext = createContext();
@@ -16,15 +16,15 @@ const OrderProvider = ({ children }) => {
   const getQuery = () => {
     let req = { companyCode: user.company.code };
 
-    if (user.role == "admin") {
+    if (user.role === "admin") {
       return { ...req, date: true, source: "unit", startTime: new Date() };
     }
 
-    if (user.role == "cashier") {
+    if (user.role === "cashier") {
       return { ...req, date: true, source: "unit", startTime: new Date() };
     }
 
-    if (user.role == "waiter") {
+    if (user.role === "waiter") {
       // const { startTime, stopTime } = getPeriod({ useDistance: true });
 
       return {

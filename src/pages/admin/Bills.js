@@ -3,13 +3,12 @@ import dayjs from "dayjs";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDayjs from "@mui/lab/AdapterDayjs";
 import MobileDatePicker from "@mui/lab/MobileDatePicker";
-import { Button, Modal, TextField, Box, IconButton } from "@mui/material";
+import { TextField, IconButton } from "@mui/material";
 import { makeStyles } from "@material-ui/core";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { FilterAlt } from "@mui/icons-material";
 
 //contexts
-import { TrContext } from "../../contexts/TranslationContext";
 import { AuthContext } from "../../contexts/AuthContext";
 import { OrderContext } from "../../contexts/OrderContext";
 
@@ -20,7 +19,7 @@ import Dropdown from "../../components/subComponents/Dropdown";
 import PopUp from "../../components/subComponents/PopUp";
 
 // contexts
-import { TranslationContext } from "../../contexts/TranslationContext";
+// import { TranslationContext } from "../../contexts/TranslationContext";
 
 const theme = createTheme({
   components: {
@@ -31,6 +30,7 @@ const theme = createTheme({
     },
   },
 });
+
 const useStyles = makeStyles((theme) => ({
   inputText: {
     color: "#B3B3B3",
@@ -50,9 +50,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Bills() {
-  const { t } = useContext(TranslationContext);
   const classes = useStyles();
-  //const { t } = useContext(TrContext);
   const { user } = useContext(AuthContext);
   const { orders } = useContext(OrderContext);
   const [_orders, setOrders] = useState([]);
@@ -97,12 +95,10 @@ export default function Bills() {
     });
 
     setOrders(filtered);
-  }, [orders, searchVal, startP, stopP, date]);
+  }, [date, format, orders, searchVal, startP, stopP]);
 
   return (
     <>
-      {/* <h1 className="center">{t("Admin's Bills")}</h1> */}
-
       <PopUp open={open} close={setOpen}>
         <div style={{ display: "flex", marginLeft: "-10px" }}>
           <Dropdown

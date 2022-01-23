@@ -145,6 +145,7 @@ const OrderItem = ({ item = {}, role = "" }) => {
     <div className={classes.orderItem}>
       <img
         className={classes.img}
+        alt={item.name}
         src={getImage({ url: item.imageUrl })}
         loading="lazy"
       />

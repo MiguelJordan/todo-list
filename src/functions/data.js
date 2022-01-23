@@ -6,15 +6,15 @@ const toCapital = (word = "") => {
 };
 
 export const capitalise = (value) => {
-  if (typeof value != "string") return value;
+  if (typeof value !== "string") return value;
 
   value = value.trim();
-  if (value == "") return value;
+  if (value === "") return value;
 
   let _capitalised = "";
 
   value.split(" ").forEach((word, index) => {
-    if (index != 0) _capitalised += " ";
+    if (index !== 0) _capitalised += " ";
     _capitalised += toCapital(word);
   });
 

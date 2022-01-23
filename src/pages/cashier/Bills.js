@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import { IconButton } from "@mui/material";
 
 // contexts
-//import { TrContext } from "../../contexts/TranslationContext";
+// import { TranslationContext } from "../../contexts/TranslationContext";
 import { AuthContext } from "../../contexts/AuthContext";
 import { OrderContext } from "../../contexts/OrderContext";
 
@@ -10,9 +10,6 @@ import { OrderContext } from "../../contexts/OrderContext";
 import OrderList from "../../components/orders/OrderList";
 import Search from "../../components/subComponents/Search";
 import Dropdown from "../../components/subComponents/Dropdown";
-
-// contexts
-import { TranslationContext } from "../../contexts/TranslationContext";
 import PopUp from "../../components/subComponents/PopUp";
 
 //icon
@@ -29,7 +26,7 @@ export default function Bills() {
 
   useEffect(() => {
     const waiters = [];
-    orders.map((order) => {
+    orders.forEach((order) => {
       if (!waiterList.includes(order.waiterName)) waiters.push(order);
     });
 

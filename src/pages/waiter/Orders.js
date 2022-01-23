@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import { useNavigate } from "react-router";
 
 // components
 import OrderList from "../../components/orders/OrderList";
@@ -14,7 +13,6 @@ import useSearch from "../../hooks/useSearch";
 
 export default function Orders() {
   const { orders } = useContext(OrderContext);
-  const navigate = useNavigate();
 
   const { filtered, setSearchVal } = useSearch({
     data: orders,

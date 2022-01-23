@@ -29,7 +29,11 @@
       "true": "True",
       "yes": "Yes"
     },
-    "order": { "items": "Items" },
+    "order": {
+      "consumptionPoint": "Consumption point",
+      "items": "Items",
+      "tableName": "Table name"
+    },
     "item": {
       "btn-add": "Add",
       "category": "Category",

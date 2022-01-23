@@ -2,8 +2,6 @@ import { useContext, useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import { Button, TextField } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import IconButton from "@mui/material/IconButton";
-//import { useNavigate } from "react-router-dom";
 
 import { AuthContext } from "../../contexts/AuthContext";
 //import { SocketContext } from "../../contexts/SocketContext";
@@ -42,7 +40,7 @@ export default function Recovery() {
   const { t } = useContext(TranslationContext);
   const classes = useStyles();
 
-  const [error, setError] = useState("");
+  const [error] = useState("");
 
   const [addPayment, setAddPayement] = useState([]);
 

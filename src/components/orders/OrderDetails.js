@@ -15,10 +15,10 @@ import Typography from "@mui/material/Typography";
 
 // components
 import Dropdown from "../subComponents/Dropdown";
-import RepeatManager from "../subComponents/RepeatManager";
 import OrderItem from "./OrderItem";
 import PmField, { validatePmAmount } from "../subComponents/PmField";
 import PopUp from "../subComponents/PopUp";
+import RepeatManager from "../subComponents/RepeatManager";
 import Search from "../subComponents/Search";
 
 // contexts
@@ -99,7 +99,7 @@ export default function OrderDetails({ order }) {
 
   useEffect(() => {
     setCategories(famCat[family] ?? []);
-  }, [family]);
+  }, [famCat, family]);
 
   useEffect(() => {
     setCat(categories[0] ?? "");
@@ -232,7 +232,7 @@ export default function OrderDetails({ order }) {
               readOnlyValues={valuesArray}
               handleAdd={(vals) => setValuesArray([...valuesArray, vals])}
               handleDelete={(key) => {
-                let _arr = [...valuesArray];
+                const _arr = [...valuesArray];
                 _arr.splice(key, 1);
                 setValuesArray(_arr);
               }}

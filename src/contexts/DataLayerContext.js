@@ -25,9 +25,9 @@ const DataLayerProvider = ({ children }) => {
       return;
     }
 
-    if (user.role == "waiter") {
+    if (user.role === "waiter") {
       // console.log(_order);
-      if (_order.waiterId != user.id) return;
+      if (_order.waiterId !== user.id) return;
     }
 
     updateOrders([_order]);
@@ -40,14 +40,14 @@ const DataLayerProvider = ({ children }) => {
       return;
     }
 
-    if (user.role == "admin") {
+    if (user.role === "admin") {
       // group data by stores
       // if (!data.length) return;
       return;
       // updateAdminStore(_items)
     }
 
-    if (user.role == "waiter") {
+    if (user.role === "waiter") {
       // console.log(_items);
       _items = filter({ data: _items, criteria: "isBlocked", value: false });
       updateItems(_items);

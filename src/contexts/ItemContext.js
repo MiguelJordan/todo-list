@@ -38,7 +38,7 @@ const ItemProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (user?.role != "waiter") return;
+    if (user?.role !== "waiter") return;
     getItems();
   }, [user]);
 

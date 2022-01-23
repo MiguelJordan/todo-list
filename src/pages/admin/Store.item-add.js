@@ -89,7 +89,7 @@ export default function StoreAdd() {
       delete item?.imageUrl;
     }
 
-    return { valid: false, validated: item };
+    return { valid: true, validated: item };
   };
 
   const handleSubmit = async (e, item) => {

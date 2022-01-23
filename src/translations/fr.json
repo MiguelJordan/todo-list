@@ -48,7 +48,8 @@
       "price": "Prix",
       "prices": "Prix",
       "quantity": "Quantité",
-      "stock-quantity": "Quantité en stock"
+      "stock-quantity": "Quantité en stock",
+      "store": "Magazin"
     },
     "search": {
       "placeholder": "Rechercher..."

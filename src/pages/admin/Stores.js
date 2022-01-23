@@ -7,12 +7,12 @@ import ItemList from "../../components/storeItems/ItemList";
 import Fabs from "../../components/subComponents/Fabs";
 
 // contexts
-import { ItemContext } from "../../contexts/ItemContext";
+//import { ItemContext } from "../../contexts/ItemContext";
 import { TranslationContext } from "../../contexts/TranslationContext";
 
 export default function Drinks() {
   const { t } = useContext(TranslationContext);
-  const { items } = useContext(ItemContext);
+  //const { items } = useContext(ItemContext);
 
   const list = [
     { id: "1", name: "Castel", prices: [1000, 2000], quantity: 50 },
@@ -52,7 +52,7 @@ export default function Drinks() {
         }}
       >
         <Dropdown
-          label="Store"
+          label={t("compo.item.store")}
           values={["Central", "Unit"]}
           value={store}
           handleChange={setStore}

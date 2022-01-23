@@ -173,7 +173,7 @@ export default function OrderDetails({ order }) {
                 display: "flex",
                 justifyContent: "space-between",
                 marginTop: "10px",
-                marginBottom: "10px",
+                marginBottom: "5px",
                 backgroundColor: "#001d42",
                 width: "90%",
               }}
@@ -189,8 +189,14 @@ export default function OrderDetails({ order }) {
                     onClick={() =>
                       navigate(`/waiter/orders/${order.id}/add-items`)
                     }
+                    style={{ margin: 0 }}
                   >
-                    <AddCircle style={{ color: "#2196f3" }} />
+                    <AddCircle
+                      style={{
+                        color: "#2196f3",
+                        fontSize: "30px",
+                      }}
+                    />
                   </IconButton>
                 </Tooltip>
               )}

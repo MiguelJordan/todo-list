@@ -2,13 +2,12 @@ import { useContext, useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import { Button, TextField } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import IconButton from "@mui/material/IconButton";
-//import { useNavigate } from "react-router-dom";
 
+//context
 import { AuthContext } from "../../contexts/AuthContext";
-//import { SocketContext } from "../../contexts/SocketContext";
 import { TranslationContext } from "../../contexts/TranslationContext";
 
+//components
 import Dropdown from "../../components/subComponents/Dropdown";
 import Fabs from "../../components/subComponents/Fabs";
 
@@ -38,7 +37,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Recovery() {
   const { user } = useContext(AuthContext);
-  //const { sendEvent } = useContext(SocketContext);
   const { t } = useContext(TranslationContext);
   const classes = useStyles();
 

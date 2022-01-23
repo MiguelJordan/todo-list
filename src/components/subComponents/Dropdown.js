@@ -56,15 +56,18 @@ export default function Dropdown({
           className: classes.inputProps,
         }}
       >
-        {values.map((value) => (
-          <MenuItem style={{ color: "#B3B3B3" }} value={value} key={value}>
-            {(() => {
-              let text = translated ? t(`compo.dropdown.${value}`) : value;
-              text = capitalised ? capitalise(text) : text;
-              return text;
-            })()}
-          </MenuItem>
-        ))}
+        {values.map((value) => {
+          if (value)
+            return (
+              <MenuItem style={{ color: "#B3B3B3" }} value={value} key={value}>
+                {(() => {
+                  let text = translated ? t(`compo.dropdown.${value}`) : value;
+                  text = capitalised ? capitalise(text) : text;
+                  return text;
+                })()}
+              </MenuItem>
+            );
+        })}
       </TextField>
     </FormControl>
   );

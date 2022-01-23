@@ -1,32 +1,26 @@
 import React, { useContext, useState } from "react";
 import { makeStyles } from "@material-ui/core";
-
-// components
-import ImagePreview from "./ImagePreview";
-import PopOver from "./PopOver";
-
-// contexts
-import { TranslationContext } from "../../contexts/TranslationContext";
-
-import AlertDialogSlide from "./Dialog";
 import { LoadingButton } from "@mui/lab";
 import {
   Checkbox,
   FormControl,
-  IconButton,
   Input,
-  InputAdornment,
   InputLabel,
   TextField,
 } from "@mui/material";
 
+// components
+import ImagePreview from "./ImagePreview";
+import PopOver from "./PopOver";
+import AlertDialogSlide from "./Dialog";
+
+// contexts
+import { TranslationContext } from "../../contexts/TranslationContext";
+import { AuthContext } from "../../contexts/AuthContext";
+import Dropdown from "./Dropdown";
+
 // icons
-import {
-  CameraAlt,
-  PhotoCamera,
-  DeleteRounded,
-  EditRounded,
-} from "@mui/icons-material";
+import { CameraAlt, PhotoCamera, DeleteRounded } from "@mui/icons-material";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -74,7 +68,10 @@ export default function AmForm({
   error,
 }) {
   const { t } = useContext(TranslationContext);
+  const { user } = useContext(AuthContext);
   const classes = useStyles();
+
+  const stores = [user.workUnit.storeId ?? "", user.company.storeId ?? ""];
 
   const [updatedItem, setItem] = useState(item);
 
@@ -128,7 +125,11 @@ export default function AmForm({
   };
 
   const getInputValue = (e) => {
-    setItem({ ...updatedItem, [e.target.name]: e.target.value });
+    setItem({
+      ...updatedItem,
+      [e.target.name]:
+        e.target.name === "prices" ? [e.target.value] : e.target.value,
+    });
   };
 
   return (
@@ -286,6 +287,19 @@ export default function AmForm({
               />
             </div>
 
+            <TextField
+              fullWidth
+              required
+              variant="standard"
+              type="number"
+              name="prices"
+              value={updatedItem.prices}
+              className={classes.inputText}
+              inputProps={{ className: classes.inputText }}
+              label={t("compo.item.price")}
+              onChange={getInputValue}
+            />
+
             <div className={classes.rowField}>
               <TextField
                 fullWidth
@@ -314,20 +328,35 @@ export default function AmForm({
               />
             </div>
 
-            <div style={{ display: "flex" }}>
-              <Checkbox
-                checked={updatedItem.isBlocked}
-                onChange={() =>
-                  setItem({ ...updatedItem, isBlocked: !updatedItem.isBlocked })
+            <div className={classes.rowField}>
+              <span>
+                <Checkbox
+                  checked={updatedItem.isBlocked}
+                  onChange={() =>
+                    setItem({
+                      ...updatedItem,
+                      isBlocked: !updatedItem.isBlocked,
+                    })
+                  }
+                  id="isBlocked"
+                />
+                <label
+                  htmlFor="isBlocked"
+                  style={{ color: "black", marginTop: "15px" }}
+                >
+                  {t("compo.item.isBlocked")}
+                </label>
+              </span>
+              <Dropdown
+                label={t("compo.item.store")}
+                values={stores}
+                value={stores[0]}
+                textColor={"black"}
+                handleChange={(val) =>
+                  setItem({ ...updatedItem, storeId: val })
                 }
-                id="isBlocked"
+                sx={{ width: "50%" }}
               />
-              <label
-                htmlFor="isBlocked"
-                style={{ color: "black", marginTop: "15px" }}
-              >
-                {t("compo.item.isBlocked")}
-              </label>
             </div>
           </div>
         )}

@@ -45,7 +45,8 @@
       "price": "Price",
       "prices": "Prices",
       "quantity": "Quantity",
-      "stock-quantity": "Quantity available"
+      "stock-quantity": "Quantity available",
+      "store": "Store"
     },
     "search": {
       "placeholder": "Search..."

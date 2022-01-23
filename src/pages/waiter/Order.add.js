@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/core";
 import { TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { LoadingButton } from "@mui/lab";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
 // components
 import Dropdown from "../../components/subComponents/Dropdown";
@@ -138,7 +137,6 @@ export default function CreateOrder() {
 
       <LoadingButton
         loading={loading}
-        loadingPosition="start"
         variant="contained"
         type="submit"
         style={{ marginTop: 30 }}

@@ -1,11 +1,12 @@
 import { TextField, Button } from "@mui/material";
 import { useContext, useState } from "react";
-import { TrContext } from "../../contexts/TranslationContext";
+import { makeStyles } from "@material-ui/core";
+//import { useParams } from "react-router-dom";
+
+//context
 import { AuthContext } from "../../contexts/AuthContext";
 
-import { makeStyles } from "@material-ui/core";
-import { useParams } from "react-router-dom";
-import { useEffect } from "react";
+//component
 import Dropdown from "../../components/subComponents/Dropdown";
 
 const useStyles = makeStyles((theme) => ({
@@ -36,7 +37,7 @@ export default function StaffDetail() {
   const { user } = useContext(AuthContext);
   const classes = useStyles();
 
-  const { id } = useParams();
+  // const { id } = useParams();
 
   const [read, setRead] = useState(true);
   const [error, setError] = useState("");

@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 
-import { Button, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { makeStyles } from "@material-ui/core";
 import Dropdown from "../../components/subComponents/Dropdown";
@@ -48,7 +48,6 @@ export default function AddStaff() {
     companyCode: user.company.code,
     email: "",
     tel: "",
-    unitCode: user.workUnit.code,
     workUnit: user.workUnits[0],
   });
 
@@ -56,21 +55,13 @@ export default function AddStaff() {
     e.preventDefault();
     setError();
 
-    if (!personInfo.email) {
-      return setError(t("_errors.Invalid email"));
-    }
-    if (!personInfo.firstName) {
-      return setError(t("_errors.Invalid first name"));
-    }
-    if (!personInfo.lastName) {
-      return setError(t("_errors.Invalid last name"));
-    }
-    if (!personInfo.role) {
-      return setError(t("_errors.Invalid role"));
-    }
-    if (!personInfo.tel) {
-      return setError(t("_errors.Invalid email"));
-    }
+    if (!personInfo.email) return setError(t("_errors.Invalid email"));
+
+    if (!personInfo.firstName) return setError(t("_errors.Invalid first name"));
+
+    if (!personInfo.lastName) return setError(t("_errors.Invalid last name"));
+
+    if (!personInfo.role) return setError(t("_errors.Invalid role"));
 
     setLoading(true);
 
@@ -120,7 +111,6 @@ export default function AddStaff() {
         }
       />
       <TextField
-        required
         fullWidth
         type="number"
         name="tel"
@@ -148,7 +138,7 @@ export default function AddStaff() {
       />
       <Dropdown
         label="Work Unit*"
-        values={user.company.workUnits}
+        values={user.workUnits}
         value={personInfo.workUnit}
         handleChange={(val) => setPersonInfo({ ...personInfo, workUnit: val })}
         variant="standard"
@@ -178,7 +168,7 @@ export default function AddStaff() {
         loading={loading}
         variant="contained"
         type="submit"
-        style={{ margin: "15px auto" }}
+        style={{ marginTop: 20 }}
       >
         {t("pages.admin.add-staff.register")}
       </LoadingButton>

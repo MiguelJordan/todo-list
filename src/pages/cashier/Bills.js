@@ -2,7 +2,6 @@ import { useContext, useState, useEffect } from "react";
 import { IconButton } from "@mui/material";
 
 // contexts
-//import { TrContext } from "../../contexts/TranslationContext";
 import { AuthContext } from "../../contexts/AuthContext";
 import { OrderContext } from "../../contexts/OrderContext";
 

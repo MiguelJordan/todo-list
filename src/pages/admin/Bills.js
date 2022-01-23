@@ -58,7 +58,6 @@ export default function Bills() {
   //date at which the workUnit was created
   const createdDate = dayjs(new Date(user.workUnit.createdAt));
 
-  //get current date and and 1 day to it
   const [open, setOpen] = useState(false);
   const [startP, setStartD] = useState(createdDate);
   const [stopP, setStopD] = useState(dayjs(new Date()));
@@ -66,34 +65,40 @@ export default function Bills() {
 
   const [format, setFormat] = useState("Period");
   const [payment, setPayment] = useState(user.workUnit.paymentMethods[0]);
+  const [_synthesis, setSynthesis] = useState("Drinks");
+
+  const synthesis = { Global: 20000, Meals: 10000, Drinks: 10000 };
 
   const [searchVal, setSearchVal] = useState("");
+
+  const convert = (date) => {
+    return dayjs(new Date(date)).format("DD-MM-YYYY");
+  };
 
   useEffect(() => {
     const filtered = orders.filter((order) => {
       if (format === "Date") {
         if (
-          date === order.createdAt &&
-          (order.waiterName
-            .toLowerCase()
-            .includes(searchVal.toLowerCase().trim()) ||
-            !order.waiterName)
+          convert(date) === convert(order.createdAt) &&
+          (!searchVal ||
+            order.waiter.name
+              .toLowerCase()
+              .includes(searchVal.toLowerCase().trim()))
         )
           return true;
       } else if (format === "Period") {
         if (
-          order.createdDate <= stopP &&
-          order.createdDate >= startP &&
-          (order.waiterName
-            .toLowerCase()
-            .includes(searchVal.toLowerCase().trim()) ||
-            !order.waiterName)
+          convert(order.createdDate) < convert(stopP) &&
+          convert(order.createdDate) > convert(startP) &&
+          (!searchVal ||
+            order.waiter.name
+              .toLowerCase()
+              .includes(searchVal.toLowerCase().trim()))
         )
           return true;
       }
       return false;
     });
-
     setOrders(filtered);
   }, [date, format, orders, searchVal, startP, stopP]);
 
@@ -224,7 +229,7 @@ export default function Bills() {
         style={{
           display: "flex",
           justifyContent: "center",
-          marginTop: "10px",
+          marginTop: "25px",
         }}
       >
         <Search onChange={setSearchVal} />
@@ -235,7 +240,7 @@ export default function Bills() {
           <FilterAlt style={{ color: "#9e9e9e" }} />
         </IconButton>
       </div>
-      <OrderList array={_orders} role="admin" />
+      <OrderList orders={_orders} role="admin" />
 
       <div
         style={{
@@ -250,16 +255,19 @@ export default function Bills() {
         <span>
           <Dropdown
             label=" Synthese "
-            values={["Drinks", "Meal", "Global"]}
-            value={"Drinks"}
+            values={["Drinks", "Meals", "Global"]}
+            value={_synthesis}
+            handleChange={setSynthesis}
           />
         </span>
         <span style={{ marginTop: "-10px" }}>
           <TextField
             variant="standard"
             label="Total"
+            value={synthesis[_synthesis]}
             inputProps={{
               className: classes.inputText,
+              readOnly: true,
             }}
           />
         </span>

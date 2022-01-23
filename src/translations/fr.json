@@ -4,6 +4,9 @@
       "menu": {
         "dashboard": { "text": "Tableau de bord" },
         "logout": { "text": "Deconnexion" }
+      },
+      "tooltip": {
+        "add item": "AJouter Articles"
       }
     },
     "admin": {
@@ -21,7 +24,8 @@
       "nav": { "items": "Articles", "orders": "Commandes" },
       "popover": {
         "orderItem-delete": "Supprimer",
-        "orderItem-update": "Modifier"
+        "orderItem-update": "Modifier",
+        "order-delete": "Supprimer"
       }
     }
   },
@@ -52,7 +56,8 @@
       "price": "Prix",
       "prices": "Prix",
       "quantity": "Quantité",
-      "stock-quantity": "Quantité en stock"
+      "stock-quantity": "Quantité en stock",
+      "store": "Magazin"
     },
     "search": {
       "placeholder": "Rechercher..."

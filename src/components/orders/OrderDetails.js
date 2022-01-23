@@ -173,7 +173,7 @@ export default function OrderDetails({ order }) {
                 display: "flex",
                 justifyContent: "space-between",
                 marginTop: "10px",
-                marginBottom: "10px",
+                marginBottom: "5px",
                 backgroundColor: "#001d42",
                 width: "90%",
               }}
@@ -184,13 +184,22 @@ export default function OrderDetails({ order }) {
 
               <Search onChange={setSearchVal} />
               {user.role === "waiter" && (
-                <Tooltip title="Ajouter Produits">
+                <Tooltip title={t("_var.*.tooltip.add item")}>
                   <IconButton
                     onClick={() =>
                       navigate(`/waiter/orders/${order.id}/add-items`)
                     }
+                    style={{ margin: 0 }}
                   >
-                    <AddCircle style={{ color: "#2196f3" }} />
+                    <AddCircle
+                      style={{
+                        color: "#2196f3",
+                        fontSize: "30px",
+                        width: "fit-content",
+                        margin: 0,
+                        padding: 0,
+                      }}
+                    />
                   </IconButton>
                 </Tooltip>
               )}

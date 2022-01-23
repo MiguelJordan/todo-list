@@ -31,7 +31,7 @@ export default function ImagePreview({ button, handleClick, imageSrc }) {
           height: "40px",
           borderRadius: "30px",
           backgroundColor: "#001d42",
-          border: "3px solid",
+          border: "3px solid white",
         }}
         onClick={handleClick}
       >

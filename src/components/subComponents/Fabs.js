@@ -17,7 +17,10 @@ export default function Fabs({
   return (
     <Tooltip TransitionComponent={Zoom} title={ToolTipText}>
       <Fab
-        onClick={handleClick}
+        onClick={() => {
+          if (path) return navigate(path);
+          handleClick();
+        }}
         color="primary"
         aria-label="add"
         style={{
@@ -30,10 +33,6 @@ export default function Fabs({
         }}
       >
         <AddIcon
-          onClick={() => {
-            if (path) return navigate(path);
-            handleClick();
-          }}
           style={{
             alignSelf: "center",
           }}

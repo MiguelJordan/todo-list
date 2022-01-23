@@ -5,19 +5,16 @@ import { makeStyles } from "@material-ui/core";
 
 // import { filter } from "../../functions/data";
 
+//icons
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { EditRounded, DeleteRounded } from "@mui/icons-material";
 
-//import { NTContext } from "../../contexts/NTContext";
+//components
 import Dropdown from "../../components/subComponents/Dropdown";
-//import Dialog from "../../components/subComponents/Dialog";
 import DisplayField from "../../components/subComponents/DisplayField";
 import PopOver from "../../components/subComponents/PopOver";
 import useSearch from "../../hooks/useSearch";
 import Search from "../../components/subComponents/Search";
-
-import { List, ListItem, ListItemText } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   container: {

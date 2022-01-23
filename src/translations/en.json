@@ -4,6 +4,9 @@
       "menu": {
         "dashboard": { "text": "Dashboard" },
         "logout": { "text": "Logout" }
+      },
+      "tooltip": {
+        "add item": "Add Items"
       }
     },
     "admin": {
@@ -19,7 +22,11 @@
     },
     "waiter": {
       "nav": { "items": "Items", "orders": "Orders" },
-      "popover": { "orderItem-delete": "Delete", "orderItem-update": "Update" }
+      "popover": {
+        "orderItem-delete": "Delete",
+        "orderItem-update": "Update",
+        "order-delete": "Delete"
+      }
     }
   },
   "compo": {
@@ -49,7 +56,8 @@
       "price": "Price",
       "prices": "Prices",
       "quantity": "Quantity",
-      "stock-quantity": "Quantity available"
+      "stock-quantity": "Quantity available",
+      "store": "Store"
     },
     "search": {
       "placeholder": "Search..."

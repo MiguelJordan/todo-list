@@ -137,10 +137,11 @@ export default function OrderList({ role = "", orders = [] }) {
 
   const WaiterPopMenu = [
     {
-      name: "Supprimer",
+      name: "order-delete",
       Icon: <DeleteRounded />,
       color: "#FF0000",
       action: (order) => deleteOrder(order),
+      role: "waiter",
     },
     {
       name: "Details",

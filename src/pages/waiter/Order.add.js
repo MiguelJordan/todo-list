@@ -24,14 +24,13 @@ const useStyles = makeStyles((theme) => ({
     margin: "auto",
     maxWidth: "350px",
     padding: "20px",
-    color: "#B3B3B3",
     borderRadius: "3px",
     [theme.breakpoints.down("sm")]: {
-      marginTop: 45,
-      width: 250,
+      marginTop: "55px",
+      width: 300,
     },
     [theme.breakpoints.up("md")]: {
-      marginTop: "100px",
+      marginTop: "90px",
     },
   },
   formHeader: {
@@ -137,7 +136,6 @@ export default function CreateOrder() {
 
       <LoadingButton
         loading={loading}
-        loadingPosition="start"
         variant="contained"
         type="submit"
         style={{ marginTop: 30 }}

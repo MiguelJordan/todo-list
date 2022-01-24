@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core";
 
 // components
 import DisplayField from "../subComponents/DisplayField";
+import Image from "../subComponents/Image";
 import PopOver from "../subComponents/PopOver";
 
 // contexts
@@ -143,12 +144,17 @@ const OrderItem = ({ item = {}, role = "" }) => {
 
   return (
     <div className={classes.orderItem}>
-      <img
+      <Image
+        className={classes.img}
+        alt={item.name}
+        src={getImage({ url: item.imageUrl })}
+      />
+      {/* <img
         className={classes.img}
         alt={item.name}
         src={getImage({ url: item.imageUrl })}
         loading="lazy"
-      />
+      /> */}
 
       <div className={classes.details}>
         <div className={classes.detailsText}>

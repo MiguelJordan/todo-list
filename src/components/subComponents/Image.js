@@ -1,13 +1,8 @@
-import { Suspense } from "react";
-import { useImage } from "react-image";
+import { Box } from "@mui/material";
 
-const Image = ({ className = "", src: _src, sx = {} }) => {
-  const { src } = useImage({ srcList: _src });
-
+const Image = ({ alt = "", className = "", src = "", sx = {} }) => {
   return (
-    <Suspense>
-      <img src={src} className={className} style={{ ...sx }} loading="lazy" />
-    </Suspense>
+    <Box className={className} component={"img"} alt={alt} src={src} sx={sx} />
   );
 };
 

@@ -71,7 +71,10 @@ export default function AmForm({
   const { user } = useContext(AuthContext);
   const classes = useStyles();
 
-  const stores = [user.workUnit.storeId ?? "", user.company.storeId ?? ""];
+  const [stores] = useState([
+    user.workUnit.storeId ?? "",
+    user.company.storeId ?? "",
+  ]);
 
   const _item = {
     name: "",

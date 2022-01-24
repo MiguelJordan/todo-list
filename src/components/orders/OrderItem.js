@@ -149,12 +149,6 @@ const OrderItem = ({ item = {}, role = "" }) => {
         alt={item.name}
         src={getImage({ url: item.imageUrl })}
       />
-      {/* <img
-        className={classes.img}
-        alt={item.name}
-        src={getImage({ url: item.imageUrl })}
-        loading="lazy"
-      /> */}
 
       <div className={classes.details}>
         <div className={classes.detailsText}>

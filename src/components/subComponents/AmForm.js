@@ -4,13 +4,21 @@ import { LoadingButton } from "@mui/lab";
 import { Checkbox, TextField } from "@mui/material";
 
 // components
+import AddOtherUnits, {
+  validateOtherUnits,
+} from "./repeated/MeasureUnits/AddOtherUnit";
+import AddPrices, { validatePrice } from "./repeated/AddPrices";
+import Dropdown from "./Dropdown";
 import ImagePreview from "./ImagePreview";
 import PopOver from "./PopOver";
+import RepeatManager from "./repeated/RepeatManager";
 
 // contexts
 import { TranslationContext } from "../../contexts/TranslationContext";
 import { AuthContext } from "../../contexts/AuthContext";
-import Dropdown from "./Dropdown";
+
+// functions
+import { removeAt } from "../../functions/data";
 
 // icons
 import { CameraAlt, PhotoCamera, DeleteRounded } from "@mui/icons-material";
@@ -63,6 +71,8 @@ export default function AmForm({
   const { user } = useContext(AuthContext);
   const classes = useStyles();
 
+  const stores = [user.workUnit.storeId ?? "", user.company.storeId ?? ""];
+
   const _item = {
     name: "",
     family: "",
@@ -72,14 +82,13 @@ export default function AmForm({
     commission: 0,
     commissionRatio: 1,
     companyCode: user.company.code,
-    storeId: "",
+    storeId: stores[0],
     measureUnit: "",
     measureUnitPlural: "",
+    otherUnits: [],
     quantity: 0,
     isBlocked: false,
   };
-
-  const stores = [user.workUnit.storeId ?? "", user.company.storeId ?? ""];
 
   const [item, setItem] = useState(_item);
 
@@ -103,11 +112,7 @@ export default function AmForm({
   ];
 
   const getInputValue = (e) => {
-    setItem({
-      ...item,
-      [e.target.name]:
-        e.target.name === "prices" ? [e.target.value] : e.target.value,
-    });
+    setItem({ ...item, [e.target.name]: e.target.value });
   };
 
   const reset = () => setItem(_item);
@@ -213,6 +218,32 @@ export default function AmForm({
             />
           </div>
 
+          {t("compo.item.otherUnits")}
+          <RepeatManager
+            Component={AddOtherUnits}
+            readOnlyValues={item.otherUnits}
+            validate={validateOtherUnits}
+            sx={{ width: "95%", margin: "5px auto" }}
+            sxAddbtn={{ color: "black" }}
+            sxRepeat={{
+              border: "1px solid grey",
+              borderRadius: 8,
+              maxHeight: 80,
+            }}
+            handleAdd={(unit) => {
+              setItem({
+                ...item,
+                otherUnits: [...item.otherUnits, unit],
+              });
+            }}
+            handleDelete={(index) => {
+              setItem({
+                ...item,
+                otherUnits: removeAt({ index, list: [...item.otherUnits] }),
+              });
+            }}
+          />
+
           <div className={classes.rowField}>
             <TextField
               fullWidth
@@ -241,17 +272,30 @@ export default function AmForm({
             />
           </div>
 
-          <TextField
-            fullWidth
-            required
-            variant="standard"
-            type="number"
-            name="prices"
-            value={item.prices}
-            className={classes.inputText}
-            inputProps={{ className: classes.inputText }}
-            label={t("compo.item.price")}
-            onChange={getInputValue}
+          {t("compo.item.prices")}
+          <RepeatManager
+            Component={AddPrices}
+            readOnlyValues={item.prices}
+            validate={validatePrice}
+            sx={{ width: "95%", margin: "5px auto" }}
+            sxAddbtn={{ color: "black" }}
+            sxRepeat={{
+              border: "1px solid grey",
+              borderRadius: 8,
+              maxHeight: 80,
+            }}
+            handleAdd={(price) => {
+              setItem({
+                ...item,
+                prices: [...item.prices, price],
+              });
+            }}
+            handleDelete={(index) => {
+              setItem({
+                ...item,
+                prices: removeAt({ index, list: [...item.prices] }),
+              });
+            }}
           />
 
           <div className={classes.rowField}>
@@ -303,7 +347,7 @@ export default function AmForm({
               values={stores}
               value={item.storeId}
               textColor={"black"}
-              handleChange={(val) => setItem({ ...item, storeId: val })}
+              handleChange={(storeId) => setItem({ ...item, storeId })}
               sx={{ width: "50%" }}
               capitalised={false}
             />

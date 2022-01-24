@@ -36,11 +36,6 @@
       "true": "True",
       "yes": "Yes"
     },
-    "order": {
-      "consumptionPoint": "Consumption point",
-      "items": "Items",
-      "tableName": "Table name"
-    },
     "item": {
       "btn-add": "Add",
       "category": "Category",
@@ -53,15 +48,25 @@
       "measureUnit": "Measure unit",
       "measureUnitPlural": "Measure unit plural",
       "name": "Name",
+      "otherUnits": "Other measure units",
+      "otherQuantities": "Other quantities",
       "price": "Price",
       "prices": "Prices",
       "quantity": "Quantity",
       "stock-quantity": "Quantity available",
       "store": "Store"
     },
+    "order": {
+      "consumptionPoint": "Consumption point",
+      "items": "Items",
+      "tableName": "Table name"
+    },
+    "paymentMethod": { "name": "Name", "amount": "Amount" },
+    "repeatManager": { "add-btn": "Add" },
     "search": {
       "placeholder": "Search..."
     },
+    "toolbar": { "all-items": "All items" },
     "nav": {
       "login_btn": "Log In",
       "account_menu": { "tooltip": "Account settings" }
@@ -96,7 +101,7 @@
         },
         "not-found": "No such item found"
       },
-      "orders": { "form_add_order": { "title": "New Order", "add_btn": "Add" } }
+      "orders": { "form_add_order": { "title": "New Order", "add-btn": "Add" } }
     }
   },
   "_errors": {

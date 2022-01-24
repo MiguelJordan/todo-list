@@ -140,7 +140,7 @@ export default function CreateOrder() {
         type="submit"
         style={{ marginTop: 30 }}
       >
-        {t("pages.waiter.orders.form_add_order.add_btn")}
+        {t("pages.waiter.orders.form_add_order.add-btn")}
       </LoadingButton>
     </form>
   );

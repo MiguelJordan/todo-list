@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import { Button } from "@mui/material";
+
+// contexts
+import { TranslationContext } from "../../../contexts/TranslationContext";
 
 const useStyles = makeStyles(() => ({
   parent: {
@@ -10,7 +13,6 @@ const useStyles = makeStyles(() => ({
     // border: "1px solid red",
   },
   repeatParent: {
-    // boxSizing: "border-box",
     display: "flex",
     flexFlow: "column",
     justifyContent: "flex-start",
@@ -18,27 +20,31 @@ const useStyles = makeStyles(() => ({
     maxHeight: 100,
     height: "fit-content",
     overflowY: "auto",
-    border: "1px solid grey",
+    marginBottom: "2px",
   },
   addField: {
     display: "flex",
     flexFlow: "row",
     justifyContent: "space-between",
+    alignItems: "center",
     width: "100%",
   },
 }));
 
 const RepeatManager = ({
-  Cp,
+  Component,
+  extraData = [],
   handleAdd,
   handleDelete,
-  validate,
-  addText = "Add",
-  selectValues = [],
   readOnlyValues = [],
-  repeatHeight = 150,
-  width = "100%",
+  validate,
+  sx = {},
+  sxAddbtn = {},
+  sxComponent = {},
+  sxComponentRepeat = {},
+  sxRepeat = {},
 }) => {
+  const { t } = useContext(TranslationContext);
   const classes = useStyles();
 
   const [btnDisabled, setBtnDisabled] = useState(true);
@@ -46,39 +52,43 @@ const RepeatManager = ({
   const [values, setValues] = useState();
 
   return (
-    <div className={classes.parent} style={{ width }}>
-      <div className={classes.repeatParent} style={{ maxHeight: repeatHeight }}>
+    <div className={classes.parent} style={{ width: "100%", ...sx }}>
+      <div className={classes.repeatParent} style={{ ...sxRepeat }}>
         {readOnlyValues.map((val, index) => {
           return (
-            <Cp
+            <Component
               key={index}
-              uniqueKey={index}
+              deleteKey={index}
               readOnly={true}
               values={val}
               handleDelete={handleDelete}
+              sx={sxComponentRepeat}
             />
           );
         })}
       </div>
       <div className={classes.addField}>
-        <Cp
-          readOnly={false}
+        <Component
           reset={reset}
-          selectValues={selectValues}
-          onChange={(_values) => {
-            if (validate) setBtnDisabled(!validate(_values));
-            setValues(_values);
+          extraData={extraData}
+          sx={sxComponent}
+          onChange={(newVals) => {
+            if (validate) setBtnDisabled(!validate(newVals)?.valid);
+            setValues(newVals);
           }}
         />
         <Button
-          variant="outlined"
+          style={{
+            ...sxAddbtn,
+            color: !btnDisabled ? sxAddbtn.color ?? "#B3B3B3" : "",
+          }}
           disabled={btnDisabled}
           onClick={() => {
             handleAdd(values);
             setReset(!reset);
           }}
         >
-          {addText}
+          {t("compo.repeatManager.add-btn")}
         </Button>
       </div>
     </div>

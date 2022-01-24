@@ -16,9 +16,11 @@ import Typography from "@mui/material/Typography";
 // components
 import Dropdown from "../subComponents/Dropdown";
 import OrderItem from "./OrderItem";
-import PmField, { validatePmAmount } from "../subComponents/PmField";
+import AddPM, {
+  validatePmAmount,
+} from "../subComponents/repeated/PaymentMethods/AddPM";
 import PopUp from "../subComponents/PopUp";
-import RepeatManager from "../subComponents/RepeatManager";
+import RepeatManager from "../subComponents/repeated/RepeatManager";
 import Search from "../subComponents/Search";
 
 // contexts
@@ -26,7 +28,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { TranslationContext } from "../../contexts/TranslationContext";
 
 // functions
-import { getBool } from "../../functions/data";
+import { getBool, removeAt } from "../../functions/data";
 
 // icons
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -130,26 +132,26 @@ export default function OrderDetails({ order }) {
           values={families}
           value={family}
           handleChange={setFamily}
-          label="Families"
+          label={t("pages.waiter.items.dropdown.families")}
           read={checked}
         />
         <Dropdown
           values={categories}
           value={cat}
           handleChange={setCat}
-          label="Categories"
+          label={t("pages.waiter.items.dropdown.categories")}
           read={checked}
         />
         <Dropdown
           values={["no", "yes"]}
           value={offer}
           handleChange={setOffer}
-          label="Offer"
+          label={t("compo.item.isOffer")}
           read={checked}
         />
         <FormControlLabel
           value={"start"}
-          label="All Items"
+          label={t("compo.toolbar.all-items")}
           labelPlacement="start"
           control={
             <Checkbox checked={checked} onChange={() => setChecked(!checked)} />
@@ -235,16 +237,14 @@ export default function OrderDetails({ order }) {
           </AccordionSummary>
           <AccordionDetails className={classes.accordionDetails}>
             <RepeatManager
-              Cp={PmField}
+              Component={AddPM}
+              extraData={user.workUnit.paymentMethods}
               validate={validatePmAmount}
-              selectValues={user.workUnit.paymentMethods}
               readOnlyValues={valuesArray}
               handleAdd={(vals) => setValuesArray([...valuesArray, vals])}
-              handleDelete={(key) => {
-                const _arr = [...valuesArray];
-                _arr.splice(key, 1);
-                setValuesArray(_arr);
-              }}
+              handleDelete={(index) =>
+                setValuesArray(removeAt({ index, list: valuesArray }))
+              }
             />
           </AccordionDetails>
         </Accordion>

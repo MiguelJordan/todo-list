@@ -1,13 +1,11 @@
-import { Suspense } from "react";
-import { useImage } from "react-image";
+import Card from "@mui/material/Card";
+import CardMedia from "@mui/material/CardMedia";
 
-const Image = ({ className = "", src: _src, sx = {} }) => {
-  const { src } = useImage({ srcList: _src });
-
+const Image = ({ alt = "", className = "", src = "", sx = {} }) => {
   return (
-    <Suspense>
-      <img src={src} className={className} style={{ ...sx }} loading="lazy" />
-    </Suspense>
+    <Card>
+      <CardMedia className={className} image={src} title={alt} />
+    </Card>
   );
 };
 

@@ -1,8 +1,11 @@
-import { Box } from "@mui/material";
+import Card from "@mui/material/Card";
+import CardMedia from "@mui/material/CardMedia";
 
 const Image = ({ alt = "", className = "", src = "", sx = {} }) => {
   return (
-    <Box className={className} component={"img"} alt={alt} src={src} sx={sx} />
+    <Card>
+      <CardMedia className={className} image={src} title={alt} />
+    </Card>
   );
 };
 

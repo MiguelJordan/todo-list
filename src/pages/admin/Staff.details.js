@@ -1,11 +1,14 @@
-import { TextField, Button } from "@mui/material";
+import { TextField, Button, createTheme } from "@mui/material";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 
-import { makeStyles } from "@material-ui/core";
+//import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@mui/styles";
 import Dropdown from "../../components/subComponents/Dropdown";
 
-const useStyles = makeStyles((theme) => ({
+const theme = createTheme();
+
+const useStyles = makeStyles(() => ({
   input: {
     color: "black",
   },

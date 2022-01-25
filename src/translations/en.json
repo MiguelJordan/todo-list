@@ -57,9 +57,17 @@
       "store": "Store"
     },
     "order": {
+      "approve": "Approve",
+      "cashierId": "Cashier ID",
       "consumptionPoint": "Consumption point",
+      "createdAt": "Created At",
+      "customerName": "Customer Name",
+      "delete": "Delete",
       "items": "Items",
-      "tableName": "Table name"
+      "tableName": "Table name",
+      "paid": "Paid",
+      "print": "Print",
+      "waiterId": "Waiter ID"
     },
     "paymentMethod": { "name": "Name", "amount": "Amount" },
     "repeatManager": { "add-btn": "Add" },

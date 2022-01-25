@@ -1,6 +1,7 @@
 import { useState } from "react";
 // import { TranslationContext } from "../../contexts/TranslationContext";
-import { makeStyles } from "@material-ui/core";
+//import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@mui/styles";
 // import Divider from "@mui/material/Divider";
 
 // import { filter } from "../../functions/data";
@@ -15,8 +16,11 @@ import Dropdown from "../../components/subComponents/Dropdown";
 // import PopOver from "../../components/subComponents/PopOver";
 import useSearch from "../../hooks/useSearch";
 import Search from "../../components/subComponents/Search";
+import { createTheme } from "@mui/material";
 
-const useStyles = makeStyles((theme) => ({
+const theme = createTheme();
+
+const useStyles = makeStyles(() => ({
   container: {
     display: "flex",
     flexFlow: "row",

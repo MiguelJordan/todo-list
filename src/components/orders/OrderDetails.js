@@ -1,7 +1,9 @@
 import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import { makeStyles } from "@material-ui/core";
+//import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@mui/styles";
 import {
+  Button,
   Checkbox,
   FormControlLabel,
   IconButton,
@@ -12,6 +14,7 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
+import dayjs from "dayjs";
 
 // components
 import Dropdown from "../subComponents/Dropdown";
@@ -33,6 +36,7 @@ import { getBool, removeAt } from "../../functions/data";
 // icons
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { FilterAlt, AddCircle } from "@mui/icons-material";
+import InfoIcon from "@mui/icons-material/Info";
 
 const useStyles = makeStyles((theme) => ({
   buttonGroup: {
@@ -40,7 +44,13 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     margin: "10px",
   },
-  accordionParent: { width: 350, margin: "0 auto", paddingTop: "50px" },
+  accordionParent: {
+    width: 350,
+    margin: "10px  auto",
+    //paddingTop: "60px",
+    height: "60vh",
+    overflowY: "auto",
+  },
   accordion: {
     backgroundColor: "#173153",
     color: "white",
@@ -62,18 +72,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function OrderDetails({ order }) {
+export default function OrderDetails({ order, role }) {
   const { user } = useContext(AuthContext);
   const { t } = useContext(TranslationContext);
   const navigate = useNavigate();
   const classes = useStyles();
 
-  const [valuesArray, setValuesArray] = useState([
-    { name: "CASH", amount: 1000 },
-    { name: "MOMO", amount: 2500 },
-  ]);
+  const [valuesArray, setValuesArray] = useState([]);
 
   const [open, setOpen] = useState(false);
+  const [component, setComponent] = useState("");
   const [checked, setChecked] = useState(true);
 
   let FamCat = order.items.reduce((acc, next) => {
@@ -125,39 +133,200 @@ export default function OrderDetails({ order }) {
     return false;
   });
 
+  useEffect(() => {
+    order.paymentMethods = valuesArray;
+    console.log(order.paymentMethods);
+  }, [valuesArray]);
+
   return (
     <>
       <PopUp open={open} close={setOpen}>
-        <Dropdown
-          values={families}
-          value={family}
-          handleChange={setFamily}
-          label={t("pages.waiter.items.dropdown.families")}
-          read={checked}
-        />
-        <Dropdown
-          values={categories}
-          value={cat}
-          handleChange={setCat}
-          label={t("pages.waiter.items.dropdown.categories")}
-          read={checked}
-        />
-        <Dropdown
-          values={["no", "yes"]}
-          value={offer}
-          handleChange={setOffer}
-          label={t("compo.item.isOffer")}
-          read={checked}
-        />
-        <FormControlLabel
-          value={"start"}
-          label={t("compo.toolbar.all-items")}
-          labelPlacement="start"
-          control={
-            <Checkbox checked={checked} onChange={() => setChecked(!checked)} />
-          }
-        />
+        {component === "filter" && (
+          <div>
+            <Dropdown
+              values={families}
+              value={family}
+              handleChange={setFamily}
+              label={t("pages.waiter.items.dropdown.families")}
+              read={checked}
+            />
+            <Dropdown
+              values={categories}
+              value={cat}
+              handleChange={setCat}
+              label={t("pages.waiter.items.dropdown.categories")}
+              read={checked}
+            />
+            <Dropdown
+              values={["no", "yes"]}
+              value={offer}
+              handleChange={setOffer}
+              label={t("compo.item.isOffer")}
+              read={checked}
+            />
+            <FormControlLabel
+              value={"start"}
+              label={t("compo.toolbar.all-items")}
+              labelPlacement="start"
+              control={
+                <Checkbox
+                  checked={checked}
+                  onChange={() => setChecked(!checked)}
+                />
+              }
+            />
+          </div>
+        )}
+        {component === "info" && (
+          <div
+            style={{
+              display: "flex",
+              flexFlow: "column",
+              alignItems: "center",
+              justifyContent: "space-around",
+
+              gap: "5px",
+            }}
+          >
+            <TextField
+              variant="standard"
+              label="ID"
+              inputProps={{
+                className: classes.inputText,
+                readOnly: true,
+              }}
+              value={order.id}
+            />
+            <TextField
+              variant="standard"
+              label={t("compo.order.customerName")}
+              inputProps={{
+                className: classes.inputText,
+                readOnly: true,
+              }}
+              value={order.customerName ?? ""}
+            />
+            <TextField
+              variant="standard"
+              label={t("compo.order.tableName")}
+              inputProps={{
+                className: classes.inputText,
+                readOnly: true,
+              }}
+              value={order.tableName}
+            />
+            <TextField
+              variant="standard"
+              label={t("compo.order.createdAt")}
+              inputProps={{
+                className: classes.inputText,
+                readOnly: true,
+              }}
+              value={dayjs(new Date(order.createdAt)).format(
+                "DD-MM-YY , hh : mm"
+              )}
+            />
+            {role === "waiter" ? (
+              <TextField
+                variant="standard"
+                label={t("compo.order.cashierId")}
+                inputProps={{
+                  className: classes.inputText,
+                  readOnly: true,
+                }}
+                value={order.cashierId ?? ""}
+              />
+            ) : role === "cashier" ? (
+              <TextField
+                variant="standard"
+                label={t("compo.order.waiterId")}
+                inputProps={{
+                  className: classes.inputText,
+                  readOnly: true,
+                }}
+                value={order.waiterId ?? ""}
+              />
+            ) : (
+              <>
+                <TextField
+                  variant="standard"
+                  label={t("compo.order.cashierId")}
+                  inputProps={{
+                    className: classes.inputText,
+                    readOnly: true,
+                  }}
+                  value={order.cashierId ?? ""}
+                />{" "}
+                <TextField
+                  variant="standard"
+                  label={t("compo.order.waiterId")}
+                  inputProps={{
+                    className: classes.inputText,
+                    readOnly: true,
+                  }}
+                  value={order.waiterId ?? ""}
+                />
+              </>
+            )}
+
+            <TextField
+              variant="standard"
+              label={t("compo.order.consumptionPoint")}
+              inputProps={{
+                className: classes.inputText,
+                readOnly: true,
+              }}
+              value={order.consumptionPoint}
+            />
+            <span>
+              <label>{t("compo.order.paid")}</label>
+              <Checkbox checked={order.isPaid} />
+            </span>
+          </div>
+        )}
       </PopUp>
+
+      <div
+        style={{
+          display: "flex",
+          flexFlow: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: "15px",
+        }}
+      >
+        <IconButton
+          onClick={() => {
+            setComponent("info");
+            setOpen(true);
+          }}
+        >
+          <InfoIcon
+            style={{
+              color: "#2196f3",
+              fontSize: "40px",
+              width: "fit-content",
+              margin: 0,
+              padding: 0,
+            }}
+          />
+        </IconButton>
+        {role === "waiter" && !order.isPaid && (
+          <div
+            style={{ display: "flex", justifyContent: "center", gap: "8px" }}
+          >
+            <Button variant="contained" style={{ backgroundColor: "#FF0000" }}>
+              {t("compo.order.delete")}
+            </Button>
+            <Button variant="contained" style={{ backgroundColor: "#65C466" }}>
+              {t("compo.order.print")}
+            </Button>
+          </div>
+        )}
+        {role === "cashier" && (
+          <Button variant="contained"> {t("compo.order.approve")}</Button>
+        )}
+      </div>
 
       <div className={classes.accordionParent}>
         <Accordion className={classes.accordion}>
@@ -180,7 +349,12 @@ export default function OrderDetails({ order }) {
                 width: "90%",
               }}
             >
-              <IconButton onClick={() => setOpen(true)}>
+              <IconButton
+                onClick={() => {
+                  setComponent("filter");
+                  setOpen(true);
+                }}
+              >
                 <FilterAlt style={{ color: "#9e9e9e" }} />
               </IconButton>
 
@@ -227,6 +401,7 @@ export default function OrderDetails({ order }) {
             </div>
           </AccordionDetails>
         </Accordion>
+
         <Accordion className={classes.accordion}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
@@ -253,19 +428,28 @@ export default function OrderDetails({ order }) {
       <div
         style={{
           display: "flex",
-          justifyContent: "flex-end",
+          justifyContent: "space-around",
           marginBottom: "auto",
           marginTop: "20px",
         }}
       >
         <TextField
           variant="standard"
-          label="Total(FCFA)"
+          label="Total Cost(FCFA)"
           inputProps={{
             className: classes.inputText,
             readOnly: true,
           }}
           value={order.totalCost}
+        />
+        <TextField
+          variant="standard"
+          label="Total Paid(FCFA)"
+          inputProps={{
+            className: classes.inputText,
+            readOnly: true,
+          }}
+          value={order.totalPaid}
         />
       </div>
     </>

@@ -1,6 +1,8 @@
 import { useContext, useState } from "react";
-import { makeStyles } from "@material-ui/core";
-import { Button, TextField } from "@mui/material";
+//import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@mui/styles";
+
+import { Button, TextField, createTheme } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
 //context
@@ -11,7 +13,9 @@ import { TranslationContext } from "../../contexts/TranslationContext";
 import Dropdown from "../../components/subComponents/Dropdown";
 import Fabs from "../../components/subComponents/Fabs";
 
-const useStyles = makeStyles((theme) => ({
+const theme = createTheme();
+
+const useStyles = makeStyles(() => ({
   inputText: {
     color: "black",
   },

@@ -1,5 +1,7 @@
 import { useContext } from "react";
-import { makeStyles } from "@material-ui/core";
+//import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@mui/styles";
+import { createTheme } from "@mui/material";
 
 // components
 import Item from "./Item";
@@ -7,7 +9,9 @@ import Item from "./Item";
 // contexts
 import { TranslationContext } from "../../contexts/TranslationContext";
 
-const useStyles = makeStyles((theme) => ({
+const theme = createTheme();
+
+const useStyles = makeStyles(() => ({
   container: {
     display: "flex",
     flexFlow: "row",

@@ -1,7 +1,16 @@
 import React, { useContext, useState } from "react";
-import { makeStyles } from "@material-ui/core";
+//import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@mui/styles";
 import { LoadingButton } from "@mui/lab";
-import { Checkbox, TextField } from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Checkbox,
+  TextField,
+  Typography,
+  createTheme,
+} from "@mui/material";
 
 // components
 import AddOtherUnits, {
@@ -21,9 +30,31 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { removeAt } from "../../functions/data";
 
 // icons
-import { CameraAlt, PhotoCamera, DeleteRounded } from "@mui/icons-material";
+import {
+  CameraAlt,
+  PhotoCamera,
+  DeleteRounded,
+  ExpandMore,
+} from "@mui/icons-material";
 
-const useStyles = makeStyles((theme) => ({
+const theme = createTheme();
+
+const useStyles = makeStyles(() => ({
+  accordion: {
+    backgroundColor: "lightgrey",
+    color: "black",
+    marginBottom: "5px",
+    borderRadius: "6px",
+  },
+  accordionDetails: {
+    backgroundColor: "lightgray",
+    height: "fit-content",
+    display: "flex",
+    flexFlow: "column",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 0,
+  },
   form: {
     display: "flex",
     flexFlow: "column",
@@ -221,31 +252,39 @@ export default function AmForm({
             />
           </div>
 
-          {t("compo.item.otherUnits")}
-          <RepeatManager
-            Component={AddOtherUnits}
-            readOnlyValues={item.otherUnits}
-            validate={validateOtherUnits}
-            sx={{ width: "95%", margin: "5px auto" }}
-            sxAddbtn={{ color: "black" }}
-            sxRepeat={{
-              border: "1px solid grey",
-              borderRadius: 8,
-              maxHeight: 80,
-            }}
-            handleAdd={(unit) => {
-              setItem({
-                ...item,
-                otherUnits: [...item.otherUnits, unit],
-              });
-            }}
-            handleDelete={(index) => {
-              setItem({
-                ...item,
-                otherUnits: removeAt({ index, list: [...item.otherUnits] }),
-              });
-            }}
-          />
+          <Accordion className={classes.accordion}>
+            <AccordionSummary
+              expandIcon={<ExpandMore style={{ color: "black" }} />}
+            >
+              <Typography>{t("compo.item.otherUnits")}</Typography>
+            </AccordionSummary>
+            <AccordionDetails className={classes.accordionDetails}>
+              <RepeatManager
+                Component={AddOtherUnits}
+                readOnlyValues={item.otherUnits}
+                validate={validateOtherUnits}
+                sx={{ width: "95%", margin: "5px auto" }}
+                sxAddbtn={{ color: "black" }}
+                sxRepeat={{
+                  border: "1px solid grey",
+                  borderRadius: 8,
+                  maxHeight: 80,
+                }}
+                handleAdd={(unit) => {
+                  setItem({
+                    ...item,
+                    otherUnits: [...item.otherUnits, unit],
+                  });
+                }}
+                handleDelete={(index) => {
+                  setItem({
+                    ...item,
+                    otherUnits: removeAt({ index, list: [...item.otherUnits] }),
+                  });
+                }}
+              />
+            </AccordionDetails>
+          </Accordion>
 
           <div className={classes.rowField}>
             <TextField
@@ -275,31 +314,39 @@ export default function AmForm({
             />
           </div>
 
-          {t("compo.item.prices")}
-          <RepeatManager
-            Component={AddPrices}
-            readOnlyValues={item.prices}
-            validate={validatePrice}
-            sx={{ width: "95%", margin: "5px auto" }}
-            sxAddbtn={{ color: "black" }}
-            sxRepeat={{
-              border: "1px solid grey",
-              borderRadius: 8,
-              maxHeight: 80,
-            }}
-            handleAdd={(price) => {
-              setItem({
-                ...item,
-                prices: [...item.prices, price],
-              });
-            }}
-            handleDelete={(index) => {
-              setItem({
-                ...item,
-                prices: removeAt({ index, list: [...item.prices] }),
-              });
-            }}
-          />
+          <Accordion className={classes.accordion}>
+            <AccordionSummary
+              expandIcon={<ExpandMore style={{ color: "black" }} />}
+            >
+              <Typography> {t("compo.item.prices")}</Typography>
+            </AccordionSummary>
+            <AccordionDetails className={classes.accordionDetails}>
+              <RepeatManager
+                Component={AddPrices}
+                readOnlyValues={item.prices}
+                validate={validatePrice}
+                sx={{ width: "95%", margin: "5px auto" }}
+                sxAddbtn={{ color: "black" }}
+                sxRepeat={{
+                  border: "1px solid grey",
+                  borderRadius: 8,
+                  maxHeight: 80,
+                }}
+                handleAdd={(price) => {
+                  setItem({
+                    ...item,
+                    prices: [...item.prices, price],
+                  });
+                }}
+                handleDelete={(index) => {
+                  setItem({
+                    ...item,
+                    prices: removeAt({ index, list: [...item.prices] }),
+                  });
+                }}
+              />
+            </AccordionDetails>
+          </Accordion>
 
           <div className={classes.rowField}>
             <TextField

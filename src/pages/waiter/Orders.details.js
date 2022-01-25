@@ -17,5 +17,5 @@ export default function OrderDetail() {
 
   if (!order) return <Navigate to={`/${user.role}/orders`} />;
 
-  return <OrderDetails order={order} />;
+  return <OrderDetails order={order} role="waiter" />;
 }

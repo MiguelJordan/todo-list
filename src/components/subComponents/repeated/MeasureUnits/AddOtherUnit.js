@@ -94,7 +94,7 @@ const AddOtherUnits = ({
       <DisplayField value={unit.coefficient ?? ""} sx={{ ...displayClass }} />
       <DisplayField
         value={unit.measureUnit ?? ""}
-        sx={{ ...displayClass, width: 69 }}
+        sx={{ ...displayClass, width: 68 }}
       />
       <DisplayField
         value={unit.measureUnitPlural ?? ""}

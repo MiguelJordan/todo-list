@@ -92,7 +92,8 @@
     "404": { "back_home": "Back to Home", "message": "Page Not Found" },
     "admin": {
       "add-staff": { "register": "Register" },
-      "add-storeItem": { "add-btn": "Add" }
+      "add-storeItem": { "add-btn": "Add" },
+      "modify-storeItem": { "modify-btn": "Modify", "cancel-btn": "Reset" }
     },
     "auth": {
       "passwordField": "Password",

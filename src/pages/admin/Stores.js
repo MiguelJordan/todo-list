@@ -36,7 +36,7 @@ export default function Drinks() {
 
         {/* <Search onChange={setSearchVal} /> */}
         <Fabs
-          path="/admin/stores/item-add"
+          path="/admin/stores/item-modify"
           sx={{ width: "45px", height: "45px", marginTop: "5px" }}
         />
       </div>

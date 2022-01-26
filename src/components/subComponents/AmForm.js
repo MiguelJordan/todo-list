@@ -9,6 +9,7 @@ import {
   TextField,
   Typography,
   createTheme,
+  Button,
 } from "@mui/material";
 
 // components
@@ -88,13 +89,17 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function AmForm({
+  storeItem,
+  modify = false,
   handleSubmit,
   target = "storeItems",
   image,
+  setImage,
   AddImage,
   RemoveImage,
   loading,
   error,
+  setError,
 }) {
   const { t } = useContext(TranslationContext);
   const { user } = useContext(AuthContext);
@@ -122,7 +127,10 @@ export default function AmForm({
     isBlocked: false,
   };
 
+  const modifyItem = storeItem;
+
   const [item, setItem] = useState(_item);
+  const [updateItem, setUpdate] = useState(modifyItem ?? "");
 
   item.storeId = stores[0];
 
@@ -144,7 +152,8 @@ export default function AmForm({
   ];
 
   const getInputValue = (e) => {
-    setItem({ ...item, [e.target.name]: e.target.value });
+    if (!modify) return setItem({ ...item, [e.target.name]: e.target.value });
+    return setUpdate({ ...updateItem, [e.target.name]: e.target.value });
   };
 
   const reset = () => setItem(_item);
@@ -154,7 +163,8 @@ export default function AmForm({
       className={classes.form}
       onSubmit={(e) => {
         e.preventDefault();
-        handleSubmit(item, reset);
+        if (!modify) return handleSubmit(item, reset);
+        return handleSubmit(updateItem);
       }}
     >
       {target === "storeItems" && (
@@ -188,7 +198,7 @@ export default function AmForm({
               variant="standard"
               type="text"
               name="family"
-              value={item.family}
+              value={modify ? updateItem.family : item.family}
               className={classes.inputText}
               inputProps={{ className: classes.inputText }}
               label={t("compo.item.family") + "*"}
@@ -201,7 +211,7 @@ export default function AmForm({
               variant="standard"
               type="text"
               name="category"
-              value={item.category}
+              value={modify ? updateItem.category : item.category}
               className={classes.inputText}
               inputProps={{ className: classes.inputText }}
               label={t("compo.item.category") + "*"}
@@ -215,7 +225,7 @@ export default function AmForm({
             variant="standard"
             type="text"
             name="name"
-            value={item.name}
+            value={modify ? updateItem.name : item.name}
             className={classes.inputText}
             inputProps={{ className: classes.inputText }}
             label={t("compo.item.name") + "*"}
@@ -229,7 +239,7 @@ export default function AmForm({
               variant="standard"
               type="text"
               name="measureUnit"
-              value={item.measureUnit}
+              value={modify ? updateItem.measureUnit : item.measureUnit}
               className={classes.inputText}
               inputProps={{ className: classes.inputText }}
               label={t("compo.item.measureUnit") + "*"}
@@ -242,7 +252,9 @@ export default function AmForm({
               variant="standard"
               type="text"
               name="measureUnitPlural"
-              value={item.measureUnitPlural}
+              value={
+                modify ? updateItem.measureUnitPlural : item.measureUnitPlural
+              }
               className={classes.inputText}
               inputProps={{ className: classes.inputText }}
               label={t("compo.item.measureUnitPlural") + "*"}
@@ -260,7 +272,9 @@ export default function AmForm({
             <AccordionDetails className={classes.accordionDetails}>
               <RepeatManager
                 Component={AddOtherUnits}
-                readOnlyValues={item.otherUnits}
+                readOnlyValues={
+                  modify ? updateItem.otherUnits : item.otherUnits
+                }
                 validate={validateOtherUnits}
                 sx={{ width: "95%", margin: "5px auto" }}
                 sxAddbtn={{ color: "black" }}
@@ -270,15 +284,31 @@ export default function AmForm({
                   maxHeight: 80,
                 }}
                 handleAdd={(unit) => {
-                  setItem({
-                    ...item,
-                    otherUnits: [...item.otherUnits, unit],
+                  if (!modify)
+                    return setItem({
+                      ...item,
+                      otherUnits: [...item.otherUnits, unit],
+                    });
+                  setUpdate({
+                    ...updateItem,
+                    otherUnits: [...updateItem.otherUnits, unit],
                   });
                 }}
                 handleDelete={(index) => {
-                  setItem({
-                    ...item,
-                    otherUnits: removeAt({ index, list: [...item.otherUnits] }),
+                  if (!modify)
+                    return setItem({
+                      ...item,
+                      otherUnits: removeAt({
+                        index,
+                        list: [...item.otherUnits],
+                      }),
+                    });
+                  setUpdate({
+                    ...updateItem,
+                    otherUnits: removeAt({
+                      index,
+                      list: [...updateItem.otherUnits],
+                    }),
                   });
                 }}
               />
@@ -292,7 +322,7 @@ export default function AmForm({
               variant="standard"
               type="number"
               name="quantity"
-              value={item.quantity}
+              value={modify ? updateItem.quantity : item.quantity}
               className={classes.inputText}
               inputProps={{ className: classes.inputText }}
               label={t("compo.item.quantity")}
@@ -305,7 +335,7 @@ export default function AmForm({
               variant="standard"
               type="number"
               name="cost"
-              value={item.cost}
+              value={modify ? updateItem.cost : item.cost}
               className={classes.inputText}
               inputProps={{ className: classes.inputText }}
               label={t("compo.item.cost")}
@@ -323,7 +353,7 @@ export default function AmForm({
             <AccordionDetails className={classes.accordionDetails}>
               <RepeatManager
                 Component={AddPrices}
-                readOnlyValues={item.prices}
+                readOnlyValues={modify ? updateItem.prices : item.prices}
                 validate={validatePrice}
                 sx={{ width: "95%", margin: "5px auto" }}
                 sxAddbtn={{ color: "black" }}
@@ -333,15 +363,25 @@ export default function AmForm({
                   maxHeight: 80,
                 }}
                 handleAdd={(price) => {
-                  setItem({
-                    ...item,
-                    prices: [...item.prices, price],
+                  if (!modify)
+                    return setItem({
+                      ...item,
+                      prices: [...item.prices, price],
+                    });
+                  setUpdate({
+                    ...updateItem,
+                    prices: [...updateItem.prices, price],
                   });
                 }}
                 handleDelete={(index) => {
-                  setItem({
-                    ...item,
-                    prices: removeAt({ index, list: [...item.prices] }),
+                  if (!modify)
+                    return setItem({
+                      ...item,
+                      prices: removeAt({ index, list: [...item.prices] }),
+                    });
+                  setUpdate({
+                    ...updateItem,
+                    prices: removeAt({ index, list: [...updateItem.prices] }),
                   });
                 }}
               />
@@ -355,7 +395,7 @@ export default function AmForm({
               variant="standard"
               type="number"
               name="commission"
-              value={item.commission}
+              value={modify ? updateItem.commission : item.commission}
               className={classes.inputText}
               inputProps={{ className: classes.inputText }}
               label={t("compo.item.commission")}
@@ -368,7 +408,7 @@ export default function AmForm({
               variant="standard"
               type="number"
               name="commissionRatio"
-              value={item.commissionRatio}
+              value={modify ? updateItem.commissionRatio : item.commissionRatio}
               className={classes.inputText}
               inputProps={{ className: classes.inputText }}
               label={t("compo.item.commissionRatio")}
@@ -379,13 +419,19 @@ export default function AmForm({
           <div className={classes.rowField}>
             <span>
               <Checkbox
-                checked={item.isBlocked}
-                onChange={() =>
+                checked={modify ? updateItem.isBlocked : item.isBlocked}
+                onChange={() => {
+                  if (modify)
+                    return setUpdate({
+                      ...updateItem,
+                      isBlocked: !updateItem.isBlocked,
+                    });
+
                   setItem({
                     ...item,
                     isBlocked: !item.isBlocked,
-                  })
-                }
+                  });
+                }}
                 id="isBlocked"
               />
               <label htmlFor="isBlocked" style={{ color: "black" }}>
@@ -397,21 +443,52 @@ export default function AmForm({
               values={stores}
               value={item.storeId}
               textColor={"black"}
-              handleChange={(storeId) => setItem({ ...item, storeId })}
+              handleChange={(storeId) => {
+                if (!modify) return setItem({ ...item, storeId });
+                return setUpdate({ ...updateItem, storeId });
+              }}
               sx={{ width: "50%" }}
               capitalised={false}
             />
           </div>
         </div>
       )}
-      <LoadingButton
-        loading={loading}
-        variant="contained"
-        type="submit"
-        style={{ marginTop: 20 }}
-      >
-        {t("pages.admin.add-storeItem.add-btn")}
-      </LoadingButton>
+
+      {modify ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "8px",
+            marginTop: 20,
+          }}
+        >
+          <LoadingButton loading={loading} variant="contained" type="submit">
+            {t("pages.admin.modify-storeItem.modify-btn")}
+          </LoadingButton>
+          <Button
+            variant="contained"
+            style={{ backgroundColor: "#FF0000" }}
+            onClick={() => {
+              setError("");
+              setImage(modifyItem.imageUrl);
+              setUpdate(modifyItem);
+            }}
+          >
+            {t("pages.admin.modify-storeItem.cancel-btn")}
+          </Button>
+        </div>
+      ) : (
+        <LoadingButton
+          loading={loading}
+          variant="contained"
+          type="submit"
+          style={{ marginTop: 20 }}
+        >
+          {t("pages.admin.add-storeItem.add-btn")}
+        </LoadingButton>
+      )}
     </form>
   );
 }

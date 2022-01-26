@@ -26,7 +26,7 @@ const useStyles = makeStyles(() => ({
   addField: {
     display: "flex",
     flexFlow: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     alignItems: "center",
     width: "100%",
   },

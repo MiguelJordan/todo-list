@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-//import { makeStyles } from "@material-ui/core";
 import { makeStyles } from "@mui/styles";
 
 import { IconButton, TextField } from "@mui/material";
@@ -95,7 +94,7 @@ const AddOtherUnits = ({
       <DisplayField value={unit.coefficient ?? ""} sx={{ ...displayClass }} />
       <DisplayField
         value={unit.measureUnit ?? ""}
-        sx={{ ...displayClass, width: 75 }}
+        sx={{ ...displayClass, width: 69 }}
       />
       <DisplayField
         value={unit.measureUnitPlural ?? ""}

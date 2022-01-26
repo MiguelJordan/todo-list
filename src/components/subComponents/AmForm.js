@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-//import { makeStyles } from "@material-ui/core";
 import { makeStyles } from "@mui/styles";
 import { LoadingButton } from "@mui/lab";
 import {
@@ -41,13 +40,12 @@ const theme = createTheme();
 
 const useStyles = makeStyles(() => ({
   accordion: {
-    backgroundColor: "lightgrey",
+    backgroundColor: "transparent",
     color: "black",
     marginBottom: "5px",
     borderRadius: "6px",
   },
   accordionDetails: {
-    backgroundColor: "lightgray",
     height: "fit-content",
     display: "flex",
     flexFlow: "column",
@@ -255,6 +253,7 @@ export default function AmForm({
           <Accordion className={classes.accordion}>
             <AccordionSummary
               expandIcon={<ExpandMore style={{ color: "black" }} />}
+              style={{ backgroundColor: "lightgrey" }}
             >
               <Typography>{t("compo.item.otherUnits")}</Typography>
             </AccordionSummary>
@@ -317,6 +316,7 @@ export default function AmForm({
           <Accordion className={classes.accordion}>
             <AccordionSummary
               expandIcon={<ExpandMore style={{ color: "black" }} />}
+              style={{ backgroundColor: "lightgrey" }}
             >
               <Typography> {t("compo.item.prices")}</Typography>
             </AccordionSummary>

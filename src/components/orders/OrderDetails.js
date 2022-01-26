@@ -1,6 +1,5 @@
 import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-//import { makeStyles } from "@material-ui/core";
 import { makeStyles } from "@mui/styles";
 import {
   Button,
@@ -35,7 +34,7 @@ import { getBool, removeAt } from "../../functions/data";
 
 // icons
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { FilterAlt, AddCircle } from "@mui/icons-material";
+import { FilterAlt, AddCircle, Delete, Print } from "@mui/icons-material";
 import InfoIcon from "@mui/icons-material/Info";
 
 const useStyles = makeStyles((theme) => ({
@@ -48,8 +47,6 @@ const useStyles = makeStyles((theme) => ({
     width: 350,
     margin: "10px  auto",
     //paddingTop: "60px",
-    height: "60vh",
-    overflowY: "auto",
   },
   accordion: {
     backgroundColor: "#173153",
@@ -289,7 +286,7 @@ export default function OrderDetails({ order, role }) {
       <div
         style={{
           display: "flex",
-          flexFlow: "column",
+          flexFlow: "row",
           justifyContent: "center",
           alignItems: "center",
           marginTop: "15px",
@@ -304,24 +301,24 @@ export default function OrderDetails({ order, role }) {
           <InfoIcon
             style={{
               color: "#2196f3",
-              fontSize: "40px",
+              fontSize: "30px",
               width: "fit-content",
               margin: 0,
               padding: 0,
             }}
           />
         </IconButton>
-        {role === "waiter" && !order.isPaid && (
-          <div
-            style={{ display: "flex", justifyContent: "center", gap: "8px" }}
-          >
-            <Button variant="contained" style={{ backgroundColor: "#FF0000" }}>
-              {t("compo.order.delete")}
-            </Button>
-            <Button variant="contained" style={{ backgroundColor: "#65C466" }}>
-              {t("compo.order.print")}
-            </Button>
-          </div>
+        {role === "waiter" && (
+          <>
+            <IconButton variant="contained">
+              <Print style={{ color: "#65C466" }} />
+            </IconButton>
+            {!order.isPaid && (
+              <IconButton variant="contained">
+                <Delete style={{ color: "#FF0000" }} />
+              </IconButton>
+            )}
+          </>
         )}
         {role === "cashier" && (
           <Button variant="contained"> {t("compo.order.approve")}</Button>
@@ -441,6 +438,7 @@ export default function OrderDetails({ order, role }) {
             readOnly: true,
           }}
           value={order.totalCost}
+          style={{ width: "90px" }}
         />
         <TextField
           variant="standard"
@@ -450,6 +448,7 @@ export default function OrderDetails({ order, role }) {
             readOnly: true,
           }}
           value={order.totalPaid}
+          style={{ width: "90px" }}
         />
       </div>
     </>

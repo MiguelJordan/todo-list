@@ -1,5 +1,4 @@
 import { useContext, useState } from "react";
-//import { makeStyles } from "@material-ui/core";
 import { makeStyles } from "@mui/styles";
 
 import { Button } from "@mui/material";
@@ -79,6 +78,8 @@ const RepeatManager = ({
             setValues(newVals);
           }}
         />
+      </div>
+      <div style={{ display: "flex", alignItems: "center" }}>
         <Button
           style={{
             ...sxAddbtn,

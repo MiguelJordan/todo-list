@@ -68,7 +68,7 @@ const RepeatManager = ({
           );
         })}
       </div>
-      <div className={classes.addField}>
+      <div className={classes.addField} style={{ ...sxAddbtn }}>
         <Component
           reset={reset}
           extraData={extraData}
@@ -78,11 +78,8 @@ const RepeatManager = ({
             setValues(newVals);
           }}
         />
-      </div>
-      <div style={{ display: "flex", alignItems: "center" }}>
         <Button
           style={{
-            ...sxAddbtn,
             color: !btnDisabled ? sxAddbtn.color ?? "#B3B3B3" : "",
           }}
           disabled={btnDisabled}

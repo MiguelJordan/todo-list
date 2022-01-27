@@ -46,7 +46,7 @@ const useStyles = makeStyles(() => ({
       width: 300,
     },
     [theme.breakpoints.up("md")]: {
-      marginTop: "90px",
+      marginTop: "120px",
     },
   },
   inputText: {

@@ -133,7 +133,7 @@ const AddOtherUnits = ({
         value={measureUnit}
         width={75}
         className={classes.inputText}
-        style={{ width: "85px", marginRight: "8px" }}
+        style={{ width: "90px", marginRight: "8px" }}
         inputProps={{ className: classes.inputText }}
         onChange={(e) => {
           const { validated } = validateOtherUnits({
@@ -152,7 +152,7 @@ const AddOtherUnits = ({
         value={measureUnitPlural}
         width={85}
         className={classes.inputText}
-        style={{ width: "85px", marginRight: "8px" }}
+        style={{ width: "95px", marginRight: "8px" }}
         inputProps={{ className: classes.inputText }}
         onChange={(e) => {
           const { validated } = validateOtherUnits({

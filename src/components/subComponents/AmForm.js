@@ -277,7 +277,10 @@ export default function AmForm({
                 }
                 validate={validateOtherUnits}
                 sx={{ width: "95%", margin: "5px auto" }}
-                sxAddbtn={{ color: "black" }}
+                sxAddbtn={{
+                  color: "black",
+                  flexWrap: "wrap",
+                }}
                 sxRepeat={{
                   border: "1px solid grey",
                   borderRadius: 8,

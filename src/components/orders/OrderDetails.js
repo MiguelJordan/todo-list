@@ -287,8 +287,9 @@ export default function OrderDetails({ order, role }) {
         style={{
           display: "flex",
           flexFlow: "row",
-          justifyContent: "center",
+          justifyContent: "flex-end",
           alignItems: "center",
+          gap: "6px",
           marginTop: "15px",
         }}
       >
@@ -301,7 +302,7 @@ export default function OrderDetails({ order, role }) {
           <InfoIcon
             style={{
               color: "#2196f3",
-              fontSize: "30px",
+
               width: "fit-content",
               margin: 0,
               padding: 0,
@@ -343,7 +344,7 @@ export default function OrderDetails({ order, role }) {
                 marginTop: "10px",
                 marginBottom: "5px",
                 backgroundColor: "#001d42",
-                width: "90%",
+                width: "95%",
               }}
             >
               <IconButton
@@ -367,8 +368,8 @@ export default function OrderDetails({ order, role }) {
                     <AddCircle
                       style={{
                         color: "#2196f3",
-                        fontSize: "30px",
-                        width: "fit-content",
+                        fontSize: "33px",
+
                         margin: 0,
                         padding: 0,
                       }}

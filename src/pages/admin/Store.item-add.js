@@ -10,12 +10,7 @@ import { SocketContext } from "../../contexts/SocketContext";
 import { TranslationContext } from "../../contexts/TranslationContext";
 
 // functions
-import {
-  toBase64,
-  validateItem,
-  AddImage,
-  RemoveImage,
-} from "../../functions/data";
+import { validateItem, AddImage, RemoveImage } from "../../functions/data";
 import { sendFormData } from "../../functions/http";
 import queries from "../../functions/queries";
 

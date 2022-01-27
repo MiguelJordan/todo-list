@@ -110,7 +110,7 @@ export default function AmForm({
     user.company.storeId ?? "",
   ]);
 
-  const _item = {
+  const [_item] = useState({
     name: "",
     family: "",
     category: "",
@@ -125,14 +125,12 @@ export default function AmForm({
     otherUnits: [],
     quantity: 0,
     isBlocked: false,
-  };
+  });
 
   const modifyItem = storeItem;
 
   const [item, setItem] = useState(_item);
   const [updateItem, setUpdate] = useState(modifyItem ?? "");
-
-  item.storeId = stores[0];
 
   const popMenu = [
     {
@@ -142,7 +140,6 @@ export default function AmForm({
       action: (image) => AddImage(image),
       type: "image",
     },
-
     {
       name: "Remove",
       color: "#FF0000",

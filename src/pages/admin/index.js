@@ -1,12 +1,12 @@
-import * as React from "react";
+import React from "react";
 import { Route, Routes } from "react-router-dom";
 
 import Layout from "../../components/_layout/Layout";
 
 import Orders from "./Orders";
 import OrderDetails from "./Order.details";
+import AddItem from "./Item.add";
 import Items from "./Items";
-import AddItem from "./Store.item-add";
 
 const NotFound = React.lazy(() => import("../404"));
 

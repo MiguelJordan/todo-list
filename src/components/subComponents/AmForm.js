@@ -44,7 +44,7 @@ const useStyles = makeStyles(() => ({
     backgroundColor: "transparent",
     color: "black",
     marginBottom: "5px",
-    borderRadius: "6px",
+    borderRadius: "8px",
   },
   accordionDetails: {
     height: "fit-content",
@@ -53,6 +53,10 @@ const useStyles = makeStyles(() => ({
     alignItems: "center",
     justifyContent: "space-between",
     padding: 0,
+  },
+  accordionSummary: {
+    backgroundColor: "lightgrey",
+    borderRadius: "8px",
   },
   form: {
     display: "flex",
@@ -127,10 +131,8 @@ export default function AmForm({
     isBlocked: false,
   });
 
-  const modifyItem = storeItem;
-
   const [item, setItem] = useState(_item);
-  const [updateItem, setUpdate] = useState(modifyItem ?? "");
+  const [updateItem, setUpdate] = useState(storeItem ?? {});
 
   const popMenu = [
     {
@@ -154,7 +156,12 @@ export default function AmForm({
       : setItem({ ...item, [e.target.name]: e.target.value });
   };
 
-  const reset = () => setItem(_item);
+  const reset = () => {
+    if (!modify) return setItem(_item);
+    setError("");
+    setImage(storeItem.imageUrl);
+    setUpdate(storeItem);
+  };
 
   return (
     <form
@@ -263,7 +270,7 @@ export default function AmForm({
           <Accordion className={classes.accordion}>
             <AccordionSummary
               expandIcon={<ExpandMore style={{ color: "black" }} />}
-              style={{ backgroundColor: "lightgrey" }}
+              className={classes.accordionSummary}
             >
               <Typography>{t("compo.item.otherUnits")}</Typography>
             </AccordionSummary>
@@ -345,7 +352,7 @@ export default function AmForm({
           <Accordion className={classes.accordion}>
             <AccordionSummary
               expandIcon={<ExpandMore style={{ color: "black" }} />}
-              style={{ backgroundColor: "lightgrey" }}
+              className={classes.accordionSummary}
             >
               <Typography> {t("compo.item.prices")}</Typography>
             </AccordionSummary>
@@ -469,11 +476,7 @@ export default function AmForm({
           <Button
             variant="contained"
             style={{ backgroundColor: "#FF0000" }}
-            onClick={() => {
-              setError("");
-              setImage(modifyItem.imageUrl);
-              setUpdate(modifyItem);
-            }}
+            onClick={() => reset()}
           >
             {t("pages.admin.modify-storeItem.cancel-btn")}
           </Button>

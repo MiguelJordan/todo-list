@@ -1,5 +1,5 @@
 import OrderDetails from "../waiter/Order.details";
 
 export default function BillDetail() {
-  return <OrderDetails />;
+  return <OrderDetails role="admin" />;
 }

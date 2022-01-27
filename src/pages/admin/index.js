@@ -12,7 +12,7 @@ const NotFound = React.lazy(() => import("../404"));
 
 const mainLinks = [
   { text: "bills", path: "/admin" },
-  { text: "items", path: "/admin/stores" },
+  { text: "items", path: "/admin/items" },
 ];
 
 export default function Admin() {
@@ -32,17 +32,17 @@ export default function Admin() {
         element={<Layout Main={StaffDetails} links={mainLinks} />}
       /> */}
       <Route
-        path="/stores"
+        path="/items"
         element={<Layout Main={Items} links={mainLinks} />}
       />
       <Route
-        path="/stores/item-add"
+        path="/items/add"
         element={<Layout Main={AddItem} links={mainLinks} />}
       />
-      <Route
+      {/* <Route
         path="/stores/item-modify"
         element={<Layout Main={ModifyStoreItem} links={mainLinks} />}
-      />
+      /> */}
       {/* <Route
         path="/store/:id"
         element={<Layout Main={StoreDetails} links={mainLinks} />}

@@ -40,7 +40,8 @@ const RepeatManager = ({
   readOnlyValues = [],
   validate,
   sx = {},
-  sxAddbtn = {},
+  sxAddBtn = {},
+  sxAddField = {},
   sxComponent = {},
   sxComponentRepeat = {},
   sxRepeat = {},
@@ -68,7 +69,7 @@ const RepeatManager = ({
           );
         })}
       </div>
-      <div className={classes.addField} style={{ ...sxAddbtn }}>
+      <div className={classes.addField} style={{ ...sxAddField }}>
         <Component
           reset={reset}
           extraData={extraData}
@@ -80,7 +81,8 @@ const RepeatManager = ({
         />
         <Button
           style={{
-            color: !btnDisabled ? sxAddbtn.color ?? "#B3B3B3" : "",
+            ...sxAddBtn,
+            color: !btnDisabled ? sxAddBtn.color ?? "#B3B3B3" : "",
           }}
           disabled={btnDisabled}
           onClick={() => {

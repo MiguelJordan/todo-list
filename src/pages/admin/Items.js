@@ -36,7 +36,7 @@ export default function Items() {
 
         {/* <Search onChange={setSearchVal} /> */}
         <Fabs
-          path="/admin/items/item-add"
+          path="/admin/items/add"
           sx={{ width: "45px", height: "45px", marginTop: "5px" }}
         />
       </div>

@@ -152,8 +152,9 @@ export default function AmForm({
   ];
 
   const getInputValue = (e) => {
-    if (!modify) return setItem({ ...item, [e.target.name]: e.target.value });
-    return setUpdate({ ...updateItem, [e.target.name]: e.target.value });
+    return modify
+      ? setUpdate({ ...updateItem, [e.target.name]: e.target.value })
+      : setItem({ ...item, [e.target.name]: e.target.value });
   };
 
   const reset = () => setItem(_item);
@@ -277,10 +278,8 @@ export default function AmForm({
                 }
                 validate={validateOtherUnits}
                 sx={{ width: "95%", margin: "5px auto" }}
-                sxAddbtn={{
-                  color: "black",
-                  flexWrap: "wrap",
-                }}
+                sxAddBtn={{ color: "black" }}
+                sxAddField={{ flexFlow: "column" }}
                 sxRepeat={{
                   border: "1px solid grey",
                   borderRadius: 8,
@@ -358,8 +357,8 @@ export default function AmForm({
                 Component={AddPrices}
                 readOnlyValues={modify ? updateItem.prices : item.prices}
                 validate={validatePrice}
-                sx={{ width: "95%", margin: "5px auto" }}
-                sxAddbtn={{ color: "black" }}
+                sx={{ width: "95%", margin: "5px 0" }}
+                sxAddBtn={{ color: "black" }}
                 sxRepeat={{
                   border: "1px solid grey",
                   borderRadius: 8,

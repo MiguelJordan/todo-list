@@ -36,11 +36,6 @@
       "true": "Vrai",
       "yes": "Oui"
     },
-    "order": {
-      "consumptionPoint": "Point de consommation",
-      "items": "Articles",
-      "tableName": "Nom de table"
-    },
     "item": {
       "btn-add": "Ajouter",
       "category": "Catégorie",
@@ -53,15 +48,25 @@
       "measureUnit": "Unité de mesure",
       "measureUnitPlural": "Unité de mesure pluriel",
       "name": "Nom",
+      "otherUnits": "Autres unités de mesure",
+      "otherQuantities": "Autres quantités",
       "price": "Prix",
       "prices": "Prix",
       "quantity": "Quantité",
       "stock-quantity": "Quantité en stock",
       "store": "Magazin"
     },
+    "order": {
+      "consumptionPoint": "Point de consommation",
+      "items": "Articles",
+      "tableName": "Nom de table"
+    },
+    "paymentMethod": { "name": "Nom", "amount": "Montant" },
+    "repeatManager": { "add-btn": "Ajouter" },
     "search": {
       "placeholder": "Rechercher..."
     },
+    "toolbar": { "all-items": "Tout les articles" },
     "nav": {
       "login_btn": "Connexion",
       "account_menu": { "tooltip": "Paramètres du compte" }

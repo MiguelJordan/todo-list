@@ -1,11 +1,15 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import { IconButton, TextField } from "@mui/material";
 
+// components
+import Dropdown from "../../Dropdown";
+
+// contexts
+import { TranslationContext } from "../../../../contexts/TranslationContext";
+
 // icons
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
-
-import Dropdown from "./Dropdown";
 
 const useStyles = makeStyles(() => ({
   PmField: {
@@ -27,32 +31,30 @@ const useStyles = makeStyles(() => ({
     },
     "& .MuiIconButton-root": { color: "white" },
   },
-  ph: { "&::placeholder": { color: "#B3B3B3" } },
   inputText: { color: "#B3B3B3", margin: 0, marginBottom: 5 },
 }));
 
 export const validatePmAmount = ({ amount }) => {
-  if (isNaN(amount) || Number(amount) <= 0) return false;
-  amount = Number(amount);
-
-  return true;
+  const valid = isNaN(amount) || Number(amount) <= 0 ? false : true;
+  return { valid, validated: valid ? Number(amount) : "" };
 };
 
-const PmField = ({
-  uniqueKey,
+const AddPM = ({
+  extraData = [],
+  deleteKey,
   readOnly = false,
   reset,
   handleDelete,
   values: payment = {},
-  selectValues = [],
   onChange = () => {},
 }) => {
+  const { t } = useContext(TranslationContext);
   const classes = useStyles();
-  const [name, setName] = useState(selectValues[0]);
+  const [name, setName] = useState(extraData[0]);
   const [amount, setAmount] = useState("");
 
   const _reset = () => {
-    setName(selectValues[0]);
+    setName(extraData[0]);
     setAmount("");
   };
 
@@ -65,36 +67,34 @@ const PmField = ({
       <input readOnly value={payment.name ?? ""} />
       <input readOnly value={payment.amount ?? ""} />
 
-      <IconButton onClick={() => handleDelete(uniqueKey)}>
+      <IconButton onClick={() => handleDelete(deleteKey)}>
         <RemoveCircleOutlineIcon />
       </IconButton>
     </div>
   ) : (
     <div className={classes.PmField}>
       <Dropdown
-        label="Name"
+        label={t("compo.paymentMethod.name")}
         capitalised={false}
         value={name}
-        values={selectValues}
+        values={extraData}
         handleChange={(value) => setName(value)}
       />
 
       <TextField
         variant="standard"
+        label={t("compo.paymentMethod.amount")}
         type="number"
         value={amount}
         className={classes.inputText}
         inputProps={{ className: classes.inputText }}
-        label={"Amount"}
         onChange={(e) => {
-          let val = e.target.value;
-          let valid = validatePmAmount({ amount: val });
-          val = valid ? Number(val) : "";
-          setAmount(val);
+          const { validated } = validatePmAmount({ amount: e.target.value });
+          setAmount(validated);
         }}
       />
     </div>
   );
 };
 
-export default PmField;
+export default AddPM;

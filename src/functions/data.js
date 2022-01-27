@@ -126,6 +126,12 @@ export const getPeriod = ({
   };
 };
 
+export const removeAt = ({ index = 0, list = [] }) => {
+  const newList = [...list];
+  newList.splice(index, 1);
+  return newList;
+};
+
 export const toBase64 = async (file) => {
   return new Promise((reslove, reject) => {
     const reader = new FileReader();

@@ -5,6 +5,11 @@
         "dashboard": { "text": "Dashboard" },
         "logout": { "text": "Logout" }
       },
+      "popover": {
+        "orderItem-delete": "Delete",
+        "orderItem-update": "Update",
+        "order-delete": "Delete"
+      },
       "tooltip": {
         "add item": "Add Items"
       }
@@ -21,12 +26,7 @@
       "nav": { "bills": "Bills" }
     },
     "waiter": {
-      "nav": { "items": "Items", "orders": "Orders" },
-      "popover": {
-        "orderItem-delete": "Delete",
-        "orderItem-update": "Update",
-        "order-delete": "Delete"
-      }
+      "nav": { "items": "Items", "orders": "Orders" }
     }
   },
   "compo": {

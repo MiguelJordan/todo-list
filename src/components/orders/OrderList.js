@@ -32,7 +32,6 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     overflowY: "auto",
     flexWrap: "wrap",
-
     height: ({ role }) => {
       if (role === "admin") return "63vh";
       return "68vh";
@@ -68,13 +67,13 @@ const useStyles = makeStyles((theme) => ({
   orderPaid: { backgroundColor: "green" },
 }));
 
-export default function OrderList({ role = "", orders = [] }) {
+export default function OrderList({ orders = [] }) {
   const { user } = useContext(AuthContext);
   const { toggleBackdrop } = useContext(BackdropContext);
   const { showNotification } = useContext(NotificationContext);
   const { sendEvent } = useContext(SocketContext);
   const { t } = useContext(TranslationContext);
-  const classes = useStyles({ role });
+  const classes = useStyles({ role: user.role });
   const navigate = useNavigate();
 
   const deleteOrder = async (order) => {
@@ -131,9 +130,7 @@ export default function OrderList({ role = "", orders = [] }) {
     });
   };
 
-  const viewOrderDetails = (e) => {
-    navigate(`/waiter/orders/${e.id}`);
-  };
+  const viewDetails = (e) => navigate(`/${user.role}/orders/${e.id}`);
 
   const WaiterPopMenu = [
     {
@@ -141,30 +138,38 @@ export default function OrderList({ role = "", orders = [] }) {
       Icon: <DeleteRounded />,
       color: "#FF0000",
       action: (order) => deleteOrder(order),
-      role: "waiter",
+      role: "*",
     },
     {
       name: "Details",
       color: "#04A5E0",
       Icon: <InfoIcon />,
-      action: (order) => viewOrderDetails(order),
+      action: (order) => viewDetails(order),
     },
   ];
+
   const cashierPopMenu = [
     {
       name: "Details",
       color: "#04A5E0",
       Icon: <InfoIcon />,
-      action: (order) => viewOrderDetails(order),
+      action: (order) => viewDetails(order),
     },
   ];
 
   const AdminPopMenu = [
     {
+      name: "order-delete",
+      Icon: <DeleteRounded />,
+      color: "#FF0000",
+      action: (order) => deleteOrder(order),
+      role: "*",
+    },
+    {
       name: "Details",
       color: "#04A5E0",
       Icon: <InfoIcon />,
-      action: (e) => viewOrderDetails(e),
+      action: (e) => viewDetails(e),
     },
   ];
 
@@ -193,7 +198,7 @@ export default function OrderList({ role = "", orders = [] }) {
               >
                 <DisplayField
                   value={
-                    ["cashier", "waiter"].includes(role)
+                    ["cashier", "waiter"].includes(user.role)
                       ? order.tableName
                       : `${order.waiter.name} (${order.waiter.id})`
                   }
@@ -242,13 +247,13 @@ export default function OrderList({ role = "", orders = [] }) {
                   </div>
                 </div>
 
-                {role === "waiter" ? (
+                {user.role === "waiter" ? (
                   <PopOver
                     items={WaiterPopMenu}
                     Icon={<MoreVertIcon />}
                     event={order}
                   />
-                ) : role === "cashier" ? (
+                ) : user.role === "cashier" ? (
                   <PopOver
                     items={cashierPopMenu}
                     Icon={<MoreVertIcon />}

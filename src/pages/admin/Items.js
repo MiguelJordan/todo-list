@@ -10,7 +10,7 @@ import Fabs from "../../components/subComponents/Fabs";
 // import { ItemContext } from "../../contexts/ItemContext";
 // import { TranslationContext } from "../../contexts/TranslationContext";
 
-export default function Drinks() {
+export default function Items() {
   // const { t } = useContext(TranslationContext);
   // const { items } = useContext(ItemContext);
 
@@ -36,7 +36,7 @@ export default function Drinks() {
 
         {/* <Search onChange={setSearchVal} /> */}
         <Fabs
-          path="/admin/stores/item-add"
+          path="/admin/items/item-add"
           sx={{ width: "45px", height: "45px", marginTop: "5px" }}
         />
       </div>

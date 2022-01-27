@@ -3,33 +3,26 @@ import { Route, Routes } from "react-router-dom";
 
 import Layout from "../../components/_layout/Layout";
 
-import Bills from "./Bills";
-// import StaffList from "./Staff";
-// import AddStaff from "./Staff.add";
-// import StaffDetails from "./Staff.details";
-import Stores from "./Stores";
-// import StoreDetails from "./Store.details";
-import StoreAdd from "./Store.item-add";
+import Orders from "./Orders";
+import OrderDetails from "./Order.details";
+import Items from "./Items";
+import AddItem from "./Store.item-add";
 
 const NotFound = React.lazy(() => import("../404"));
 
 const mainLinks = [
   { text: "bills", path: "/admin" },
-  // { text: "staff", path: "/admin/staff" },
-  // { text: "staff_add", path: "/admin/staff/add" },
-  // { text: "staff_details", path: "/admin/staff/:id" },
   { text: "items", path: "/admin/stores" },
-  // { text: "store_details", path: "/admin/store/:id" },
 ];
 
 export default function Admin() {
   return (
     <Routes>
-      <Route path="/" element={<Layout Main={Bills} links={mainLinks} />} />
-      {/* <Route
-        path="/staff"
-        element={<Layout Main={StaffList} links={mainLinks} />}
-      /> */}
+      <Route path="/" element={<Layout Main={Orders} links={mainLinks} />} />
+      <Route
+        path="/orders/:id"
+        element={<Layout Main={OrderDetails} links={mainLinks} />}
+      />
       {/* <Route
         path="/staff/add"
         element={<Layout Main={AddStaff} links={mainLinks} />}
@@ -40,11 +33,11 @@ export default function Admin() {
       /> */}
       <Route
         path="/stores"
-        element={<Layout Main={Stores} links={mainLinks} />}
+        element={<Layout Main={Items} links={mainLinks} />}
       />
       <Route
         path="/stores/item-add"
-        element={<Layout Main={StoreAdd} links={mainLinks} />}
+        element={<Layout Main={AddItem} links={mainLinks} />}
       />
       {/* <Route
         path="/store/:id"

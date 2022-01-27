@@ -42,16 +42,10 @@ export const validateOtherUnits = ({
   }
 
   measureUnit = String(measureUnit).trim();
-  if (!measureUnit) {
-    valid = false;
-    measureUnit = "";
-  }
+  if (!measureUnit) valid = false;
 
   measureUnitPlural = String(measureUnitPlural).trim();
-  if (!measureUnitPlural) {
-    valid = false;
-    measureUnitPlural = "";
-  }
+  if (!measureUnitPlural) valid = false;
 
   return {
     valid,
@@ -60,7 +54,6 @@ export const validateOtherUnits = ({
 };
 
 const AddOtherUnits = ({
-  extraData = [],
   deleteKey,
   readOnly = false,
   reset,
@@ -70,6 +63,7 @@ const AddOtherUnits = ({
 }) => {
   const { t } = useContext(TranslationContext);
   const classes = useStyles();
+
   const [displayClass] = useState({
     margin: 2,
     padding: 8,
@@ -78,6 +72,7 @@ const AddOtherUnits = ({
     borderRadius: 5,
     color: "#FFFFFF",
   });
+
   const [coefficient, setCoeff] = useState("");
   const [measureUnit, setMU] = useState("");
   const [measureUnitPlural, setMUPlural] = useState("");

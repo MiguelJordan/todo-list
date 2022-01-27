@@ -37,12 +37,12 @@ export const validatePrice = (price = 0) => {
   return { valid, validated: valid ? Number(price) : "" };
 };
 
-const CreatePM = ({
+const AddPrices = ({
   deleteKey,
   readOnly = false,
   reset,
   handleDelete,
-  values: _name = "",
+  values: _price = "",
   onChange = () => {},
 }) => {
   const { t } = useContext(TranslationContext);
@@ -58,7 +58,7 @@ const CreatePM = ({
 
   return readOnly ? (
     <div className={classes.priceField}>
-      <input readOnly value={_name ?? ""} />
+      <input readOnly value={_price ?? ""} />
 
       <IconButton onClick={() => handleDelete(deleteKey)}>
         <RemoveCircleOutlineIcon />
@@ -81,4 +81,4 @@ const CreatePM = ({
   );
 };
 
-export default CreatePM;
+export default AddPrices;

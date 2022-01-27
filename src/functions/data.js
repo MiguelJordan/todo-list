@@ -103,26 +103,38 @@ export const getDate = ({ date }) => {
 };
 
 export const getPeriod = ({
-  startTime = new Date(),
-  stopTime,
+  asDate = true,
+  start = new Date(),
+  stop,
   distance = 1,
   useDistance = false,
 }) => {
   let otherTime;
 
-  if (!startTime && useDistance) {
-    otherTime = new Date(getDateString(stopTime));
-    startTime = new Date(otherTime.getTime() - distance * 24 * 60 * 60 * 1000);
+  if (!start && useDistance) {
+    otherTime = new Date(getDateString(stop));
+    start = new Date(otherTime.getTime() - distance * 24 * 60 * 60 * 1000);
   }
 
-  if (!stopTime && useDistance) {
-    otherTime = new Date(getDateString(startTime));
-    stopTime = new Date(otherTime.getTime() + distance * 24 * 60 * 60 * 1000);
+  if (!stop && useDistance) {
+    otherTime = new Date(getDateString(start));
+    stop = new Date(otherTime.getTime() + distance * 24 * 60 * 60 * 1000);
   }
+
+  if (asDate) {
+    return {
+      start: new Date(getDateString(start)),
+      stop: new Date(getDateString(stop)),
+    };
+  }
+
+  stop = new Date(
+    new Date(getDateString(stop)).getTime() + 1 * 24 * 60 * 60 * 1000
+  );
 
   return {
-    startTime: new Date(getDateString(startTime)),
-    stopTime: new Date(getDateString(stopTime)),
+    start: new Date(getDateString(start)),
+    stop: new Date(getDateString(stop)),
   };
 };
 

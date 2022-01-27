@@ -8,10 +8,6 @@ import { makeStyles } from "@material-ui/core";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { FilterAlt } from "@mui/icons-material";
 
-//contexts
-import { AuthContext } from "../../contexts/AuthContext";
-import { OrderContext } from "../../contexts/OrderContext";
-
 //components
 import OrderList from "../../components/orders/OrderList";
 import Search from "../../components/subComponents/Search";
@@ -19,7 +15,15 @@ import Dropdown from "../../components/subComponents/Dropdown";
 import PopUp from "../../components/subComponents/PopUp";
 
 // contexts
+import { AuthContext } from "../../contexts/AuthContext";
+import { OrderContext } from "../../contexts/OrderContext";
 // import { TranslationContext } from "../../contexts/TranslationContext";
+
+// functions
+import { getPeriod } from "../../functions/data";
+
+// hooks
+import useSearch from "../../hooks/useSearch";
 
 const theme = createTheme({
   components: {
@@ -52,67 +56,63 @@ const useStyles = makeStyles((theme) => ({
 export default function Bills() {
   const classes = useStyles();
   const { user } = useContext(AuthContext);
-  const { orders } = useContext(OrderContext);
-  const [_orders, setOrders] = useState([]);
+  const { orders, makeQuery, setQuery } = useContext(OrderContext);
 
-  //date at which the workUnit was created
-  const createdDate = dayjs(new Date(user.workUnit.createdAt));
+  const [popupOpen, setPopupOpen] = useState(false);
 
-  const [open, setOpen] = useState(false);
-  const [startP, setStartD] = useState(createdDate);
-  const [stopP, setStopD] = useState(dayjs(new Date()));
-  const [date, setDate] = useState(createdDate);
+  // date at which the workUnit was created
+  const [oldestDate] = useState(dayjs(new Date(user.workUnit.createdAt)));
 
   const [format, setFormat] = useState("Period");
-  const [payment, setPayment] = useState(user.workUnit.paymentMethods[0]);
-  const [_synthesis, setSynthesis] = useState("Drinks");
+  const [criteria, setCriteria] = useState("waiterId");
+  const [date, setDate] = useState(oldestDate);
+  const [selectedDate, setSelectedDate] = useState(oldestDate);
 
-  const synthesis = { Global: 20000, Meals: 10000, Drinks: 10000 };
+  const [period, setPeriod] = useState({
+    start: oldestDate,
+    stop: dayjs(new Date()),
+  });
+  const [selectedPeriod, setSelectedPeriod] = useState({
+    start: oldestDate,
+    stop: dayjs(new Date()),
+  });
 
-  const [searchVal, setSearchVal] = useState("");
-
-  const convert = (date) => {
-    return dayjs(new Date(date)).format("DD-MM-YYYY");
-  };
+  const { filtered, setSearchVal } = useSearch({
+    data: orders,
+    criteria,
+  });
 
   useEffect(() => {
-    const filtered = orders.filter((order) => {
-      if (format === "Date") {
-        if (
-          convert(date) === convert(order.createdAt) &&
-          (!searchVal ||
-            order.waiter.name
-              .toLowerCase()
-              .includes(searchVal.toLowerCase().trim()))
-        )
-          return true;
-      } else if (format === "Period") {
-        if (
-          convert(order.createdDate) < convert(stopP) &&
-          convert(order.createdDate) > convert(startP) &&
-          (!searchVal ||
-            order.waiter.name
-              .toLowerCase()
-              .includes(searchVal.toLowerCase().trim()))
-        )
-          return true;
-      }
-      return false;
+    const { start, stop } = getPeriod({ start: date, useDistance: true });
+    let _query = makeQuery({ _start: start, _stop: stop });
+    setQuery(_query);
+  }, [date]);
+
+  useEffect(() => {
+    const { start, stop } = getPeriod({
+      asDate: false,
+      start: period.start,
+      stop: period.stop,
     });
-    setOrders(filtered);
-  }, [date, format, orders, searchVal, startP, stopP]);
+
+    let _query = makeQuery({ _start: start, _stop: stop });
+    setQuery(_query);
+  }, [period]);
+
+  // const [payment, setPayment] = useState(user.workUnit.paymentMethods[0]);
 
   return (
     <>
-      <PopUp open={open} close={setOpen}>
+      <PopUp open={popupOpen} close={setPopupOpen}>
         <div style={{ display: "flex", marginLeft: "-10px" }}>
           <Dropdown
             label="Format"
-            values={["Period", "Date"]}
+            values={["Date", "Period"]}
             value={format}
             handleChange={setFormat}
             sx={{ marginLeft: "-13px" }}
           />
+
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <ThemeProvider theme={theme}>
               {format === "Period" ? (
@@ -120,13 +120,16 @@ export default function Bills() {
                   <MobileDatePicker
                     label="Du"
                     inputFormat="DD-MM-YYYY"
-                    value={startP}
+                    value={period.start}
                     className={classes.inputText}
-                    onChange={(newValue) => {
-                      setStartD(newValue);
-                    }}
-                    minDate={createdDate}
-                    maxDate={dayjs(new Date(stopP)).subtract(1, "day")}
+                    onAccept={() =>
+                      setPeriod({ ...period, start: selectedPeriod.start })
+                    }
+                    onChange={(start) =>
+                      setSelectedPeriod({ ...selectedPeriod, start })
+                    }
+                    minDate={oldestDate}
+                    maxDate={dayjs(new Date(period.stop)).subtract(1, "day")}
                     renderInput={(params) => (
                       <TextField
                         {...params}
@@ -151,12 +154,15 @@ export default function Bills() {
                   <MobileDatePicker
                     label="Au"
                     inputFormat="DD-MM-YYYY"
-                    value={stopP}
+                    value={period.stop}
                     className={classes.inputText}
-                    onChange={(newValue) => {
-                      setStopD(newValue);
-                    }}
-                    minDate={dayjs(new Date(startP)).add(1, "day")}
+                    onAccept={() =>
+                      setPeriod({ ...period, stop: selectedPeriod.stop })
+                    }
+                    onChange={(stop) =>
+                      setSelectedPeriod({ ...selectedPeriod, stop })
+                    }
+                    minDate={dayjs(new Date(period.start)).add(1, "day")}
                     maxDate={dayjs(new Date())}
                     renderInput={(params) => (
                       <TextField
@@ -184,12 +190,9 @@ export default function Bills() {
                   inputFormat="DD-MM-YYYY"
                   value={date}
                   className={classes.inputText}
-                  onChange={(newValue) => {
-                    var date = new Date(newValue).toISOString().slice(0, 10);
-
-                    setDate(date);
-                  }}
-                  minDate={createdDate}
+                  onAccept={() => setDate(selectedDate)}
+                  onChange={(_date) => setSelectedDate(_date)}
+                  minDate={oldestDate}
                   maxDate={dayjs(new Date())}
                   renderInput={(params) => (
                     <TextField
@@ -214,12 +217,14 @@ export default function Bills() {
             </ThemeProvider>
           </LocalizationProvider>
         </div>
+
         <div style={{ display: "flex", marginLeft: "-35px" }}>
           <Dropdown
-            label="PaymentMethod"
-            values={user.workUnit.paymentMethods}
-            value={payment}
-            handleChange={setPayment}
+            capitalised={false}
+            label="Filter"
+            values={["tableName", "waiterId"]}
+            value={criteria}
+            handleChange={setCriteria}
             sx={{ marginLeft: "13px" }}
           />
         </div>
@@ -234,44 +239,14 @@ export default function Bills() {
       >
         <Search onChange={setSearchVal} />
         <IconButton
-          onClick={() => setOpen(true)}
+          onClick={() => setPopupOpen(true)}
           style={{ marginLeft: "10px" }}
         >
           <FilterAlt style={{ color: "#9e9e9e" }} />
         </IconButton>
       </div>
-      <OrderList orders={_orders} role="admin" />
 
-      <div
-        style={{
-          position: "absolute",
-          bottom: 45,
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          width: "90vw",
-        }}
-      >
-        <span>
-          <Dropdown
-            label=" Synthese "
-            values={["Drinks", "Meals", "Global"]}
-            value={_synthesis}
-            handleChange={setSynthesis}
-          />
-        </span>
-        <span style={{ marginTop: "-10px" }}>
-          <TextField
-            variant="standard"
-            label="Total"
-            value={synthesis[_synthesis]}
-            inputProps={{
-              className: classes.inputText,
-              readOnly: true,
-            }}
-          />
-        </span>
-      </div>
+      <OrderList orders={filtered} role="admin" />
     </>
   );
 }

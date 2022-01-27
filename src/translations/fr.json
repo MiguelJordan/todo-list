@@ -5,6 +5,11 @@
         "dashboard": { "text": "Tableau de bord" },
         "logout": { "text": "Deconnexion" }
       },
+      "popover": {
+        "orderItem-delete": "Supprimer",
+        "orderItem-update": "Modifier",
+        "order-delete": "Supprimer"
+      },
       "tooltip": {
         "add item": "AJouter Articles"
       }
@@ -21,12 +26,7 @@
       "nav": { "bills": "Factures" }
     },
     "waiter": {
-      "nav": { "items": "Articles", "orders": "Commandes" },
-      "popover": {
-        "orderItem-delete": "Supprimer",
-        "orderItem-update": "Modifier",
-        "order-delete": "Supprimer"
-      }
+      "nav": { "items": "Articles", "orders": "Commandes" }
     }
   },
   "compo": {

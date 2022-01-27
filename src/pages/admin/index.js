@@ -39,6 +39,10 @@ export default function Admin() {
         path="/stores/item-add"
         element={<Layout Main={AddItem} links={mainLinks} />}
       />
+      <Route
+        path="/stores/item-modify"
+        element={<Layout Main={ModifyStoreItem} links={mainLinks} />}
+      />
       {/* <Route
         path="/store/:id"
         element={<Layout Main={StoreDetails} links={mainLinks} />}

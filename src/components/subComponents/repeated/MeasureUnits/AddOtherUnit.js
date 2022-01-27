@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@mui/styles";
+
 import { IconButton, TextField } from "@mui/material";
 
 // components
@@ -25,7 +26,7 @@ const useStyles = makeStyles(() => ({
   //   justifyContent: "flex-start",
   //   alignItems: "center",
   // },
-  inputText: { color: "#B3B3B3", margin: 0, marginBottom: 5 },
+  inputText: { color: "black", margin: 0, marginBottom: 5 },
 }));
 
 export const validateOtherUnits = ({
@@ -71,6 +72,7 @@ const AddOtherUnits = ({
     backgroundColor: "#415672",
     borderRadius: 5,
     color: "#FFFFFF",
+    fontSize: 14,
   });
 
   const [coefficient, setCoeff] = useState("");
@@ -94,7 +96,7 @@ const AddOtherUnits = ({
       <DisplayField value={unit.coefficient ?? ""} sx={{ ...displayClass }} />
       <DisplayField
         value={unit.measureUnit ?? ""}
-        sx={{ ...displayClass, width: 75 }}
+        sx={{ ...displayClass, width: 68 }}
       />
       <DisplayField
         value={unit.measureUnitPlural ?? ""}
@@ -114,6 +116,7 @@ const AddOtherUnits = ({
         value={coefficient}
         width={5}
         className={classes.inputText}
+        style={{ width: "60px", marginRight: "8px" }}
         inputProps={{ className: classes.inputText }}
         onChange={(e) => {
           const { validated } = validateOtherUnits({
@@ -132,6 +135,7 @@ const AddOtherUnits = ({
         value={measureUnit}
         width={75}
         className={classes.inputText}
+        style={{ width: "90px", marginRight: "8px" }}
         inputProps={{ className: classes.inputText }}
         onChange={(e) => {
           const { validated } = validateOtherUnits({
@@ -150,6 +154,7 @@ const AddOtherUnits = ({
         value={measureUnitPlural}
         width={85}
         className={classes.inputText}
+        style={{ width: "95px", marginRight: "8px" }}
         inputProps={{ className: classes.inputText }}
         onChange={(e) => {
           const { validated } = validateOtherUnits({

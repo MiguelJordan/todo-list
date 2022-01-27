@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
-import { Button } from "@mui/material";
-import { makeStyles } from "@material-ui/core";
+import { Button, createTheme } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
@@ -27,7 +27,9 @@ import {
 import { post } from "../../functions/http";
 import queries from "../../functions/queries";
 
-const useStyles = makeStyles((theme) => ({
+const theme = createTheme();
+
+const useStyles = makeStyles(() => ({
   media: {
     width: 250,
     height: 200,

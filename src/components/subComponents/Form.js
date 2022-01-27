@@ -1,10 +1,10 @@
 import { Button, TextField } from "@mui/material";
 import React from "react";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@mui/styles";
 
 import Dropdown from "./Dropdown";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   inputText: {
     color: "black",
   },

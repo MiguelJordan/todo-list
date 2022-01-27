@@ -1,5 +1,6 @@
 import { useContext } from "react";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@mui/styles";
+import { createTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 
@@ -25,7 +26,9 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { DeleteRounded } from "@mui/icons-material";
 import InfoIcon from "@mui/icons-material/Info";
 
-const useStyles = makeStyles((theme) => ({
+const theme = createTheme();
+
+const useStyles = makeStyles(() => ({
   container: {
     display: "flex",
     flexFlow: "row",

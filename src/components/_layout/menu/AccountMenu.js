@@ -8,8 +8,8 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import { makeStyles } from "@material-ui/core";
-// import { makeStyles } from "@mui/styles";
+//import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@mui/styles";
 
 // get user option by role
 import useOptions from "./menuOptions";
@@ -18,7 +18,7 @@ import useOptions from "./menuOptions";
 import { SocketContext } from "../../../contexts/SocketContext";
 import { TranslationContext } from "../../../contexts/TranslationContext";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   presence_parent: {
     position: "relative",
   },

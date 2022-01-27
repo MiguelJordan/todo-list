@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@mui/styles";
 import { IconButton, TextField } from "@mui/material";
 
 // contexts
@@ -20,7 +20,7 @@ const useStyles = makeStyles(() => ({
       width: 100,
       border: "none",
       outline: "none",
-      fontSize: 17,
+      fontSize: 14,
       textAlign: "center",
       marginLeft: 4,
       padding: 4,
@@ -28,7 +28,7 @@ const useStyles = makeStyles(() => ({
     },
     "& .MuiIconButton-root": { color: "black" },
   },
-  inputText: { color: "#B3B3B3", margin: 0, marginBottom: 5 },
+  inputText: { color: "black", margin: 0, marginBottom: 5 },
 }));
 
 export const validatePrice = (price = 0) => {

@@ -5,6 +5,32 @@ const toCapital = (word = "") => {
   return word[0].toUpperCase() + word.slice(1).toLowerCase();
 };
 
+export const AddImage = async (e, setError, setImage, setImageUrl) => {
+  if (!e) return "";
+  setError("");
+  let file = e.target.files[0];
+
+  const typeInfo = file.type.split("/"); // [mimeType ,extension]
+
+  // validate type & extension
+  if (
+    typeInfo[0] !== "image" ||
+    !["jpg", "png", "jpeg"].includes(typeInfo[1])
+  ) {
+    return setError("Invalid image - format");
+  }
+
+  // validate file size
+  if (file.size > 5 * 1024 * 1024) {
+    return setError("Invalid image - size too large");
+  }
+
+  let base64 = await toBase64(file);
+
+  setImage(base64);
+  setImageUrl(file);
+};
+
 export const capitalise = (value) => {
   if (typeof value !== "string") return value;
 
@@ -144,6 +170,11 @@ export const removeAt = ({ index = 0, list = [] }) => {
   return newList;
 };
 
+export const RemoveImage = (setImage, setImageUrl) => {
+  setImage(null);
+  setImageUrl(null);
+};
+
 export const toBase64 = async (file) => {
   return new Promise((reslove, reject) => {
     const reader = new FileReader();
@@ -151,4 +182,52 @@ export const toBase64 = async (file) => {
     reader.onload = () => reslove(reader.result);
     reader.onerror = (error) => reject(error);
   });
+};
+export const validateItem = (item, imageUrl) => {
+  item.name = item.name?.trim();
+  if (!item.name) return { valid: false, message: "Invalid item name" };
+
+  item.family = item.family?.trim();
+  if (!item.family) return { valid: false, message: "Invalid family" };
+
+  item.category = item.category?.trim();
+  if (!item.category) return { valid: false, message: "Invalid category" };
+
+  item.measureUnit = item.measureUnit?.trim();
+  if (!item.measureUnit) {
+    return { valid: false, message: "Invalid measure unit" };
+  }
+
+  item.measureUnitPlural = item.measureUnitPlural?.trim();
+  if (!item.measureUnitPlural) {
+    return { valid: false, message: "Invalid measure unit" };
+  }
+
+  if (isNaN(item.quantity) || item.quantity < 0) {
+    return { valid: false, message: "Invalid quantity" };
+  }
+  item.quantity = Number(item.quantity);
+
+  if (isNaN(item.cost) || item.cost < 0) {
+    return { valid: false, message: "Invalid cost price" };
+  }
+  item.cost = Number(item.cost);
+
+  if (isNaN(item.commission) || item.commission < 0) {
+    return { valid: false, message: "Invalid commission" };
+  }
+  item.commission = Number(item.commission);
+
+  if (isNaN(item.commissionRatio) || item.commissionRatio < 1) {
+    return { valid: false, message: "Invalid commission ratio" };
+  }
+  item.commissionRatio = Number(item.commissionRatio);
+
+  if (imageUrl) {
+    item.imageUrl = imageUrl;
+  } else {
+    delete item?.imageUrl;
+  }
+
+  return { valid: true, validated: item };
 };

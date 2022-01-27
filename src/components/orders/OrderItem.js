@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
-import { makeStyles } from "@material-ui/core";
+
+import { makeStyles } from "@mui/styles";
 
 // components
 import DisplayField from "../subComponents/DisplayField";
@@ -22,7 +23,7 @@ import queries from "../../functions/queries";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { DeleteRounded, EditRounded } from "@mui/icons-material";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   orderItem: {
     display: "flex",
     flexFlow: "row",

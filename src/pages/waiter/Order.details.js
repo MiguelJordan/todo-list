@@ -24,5 +24,5 @@ export default function OrderDetail() {
 
   if (!order) return <Navigate to={getOrderRoute(user.role)} />;
 
-  return <OrderDetails order={order} />;
+  return <OrderDetails order={order} role="waiter" />;
 }

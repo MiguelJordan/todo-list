@@ -57,9 +57,17 @@
       "store": "Store"
     },
     "order": {
+      "approve": "Approve",
+      "cashierId": "Cashier ID",
       "consumptionPoint": "Consumption point",
+      "createdAt": "Created At",
+      "customerName": "Customer Name",
+      "delete": "Delete",
       "items": "Items",
-      "tableName": "Table name"
+      "tableName": "Table name",
+      "paid": "Paid",
+      "print": "Print",
+      "waiterId": "Waiter ID"
     },
     "paymentMethod": { "name": "Name", "amount": "Amount" },
     "repeatManager": { "add-btn": "Add" },
@@ -84,7 +92,8 @@
     "404": { "back_home": "Back to Home", "message": "Page Not Found" },
     "admin": {
       "add-staff": { "register": "Register" },
-      "add-storeItem": { "add-btn": "Add" }
+      "add-storeItem": { "add-btn": "Add" },
+      "modify-storeItem": { "modify-btn": "Modify", "cancel-btn": "Reset" }
     },
     "auth": {
       "passwordField": "Password",

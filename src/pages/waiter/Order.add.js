@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
-import { makeStyles } from "@material-ui/core";
-import { TextField } from "@mui/material";
+import { makeStyles } from "@mui/styles";
+
+import { TextField, createTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { LoadingButton } from "@mui/lab";
 
@@ -15,7 +16,9 @@ import { TranslationContext } from "../../contexts/TranslationContext";
 // functions
 import { post } from "../../functions/http";
 
-const useStyles = makeStyles((theme) => ({
+const theme = createTheme();
+
+const useStyles = makeStyles(() => ({
   form: {
     display: "flex",
     flexFlow: "column",

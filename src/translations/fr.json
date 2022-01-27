@@ -57,9 +57,17 @@
       "store": "Magazin"
     },
     "order": {
+      "approve": "Valider",
+      "cashierId": "ID Caissière",
       "consumptionPoint": "Point de consommation",
+      "createdAt": "Crée À",
+      "customerName": "Nom Du Client",
+      "delete": "Supprimer",
       "items": "Articles",
-      "tableName": "Nom de table"
+      "tableName": "Nom de table",
+      "paid": "Payé",
+      "print": "Imprimer",
+      "waiterId": "ID Serveur(se)"
     },
     "paymentMethod": { "name": "Nom", "amount": "Montant" },
     "repeatManager": { "add-btn": "Ajouter" },
@@ -84,7 +92,8 @@
     "404": { "back_home": "Retour à l'accueil", "message": "Page Non Trouvée" },
     "admin": {
       "add-staff": { "register": "Enregistrer" },
-      "add-storeItem": { "add-btn": "Ajouter" }
+      "add-storeItem": { "add-btn": "Ajouter" },
+      "modify-storeItem": { "modify-btn": "Modifier", "cancel-btn": "Annuler" }
     },
     "auth": {
       "passwordField": "Mot De Passe",

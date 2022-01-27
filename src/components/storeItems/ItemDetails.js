@@ -4,12 +4,14 @@ import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
 import Input from "@mui/material/Input";
 
-import { InputLabel } from "@mui/material";
+import { InputLabel, createTheme } from "@mui/material";
 
 import { alpha } from "@mui/material";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@mui/styles";
 
-const useStyles = makeStyles((theme) => ({
+const theme = createTheme();
+
+const useStyles = makeStyles({
   container: {
     marginTop: "2%",
     //display: "flex",
@@ -87,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
       marginTop: "20px",
     },
   },
-}));
+});
 
 export default function ItemDetails({
   list = {

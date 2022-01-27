@@ -4,7 +4,7 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDayjs from "@mui/lab/AdapterDayjs";
 import MobileDatePicker from "@mui/lab/MobileDatePicker";
 import { TextField, IconButton } from "@mui/material";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@mui/styles";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { FilterAlt } from "@mui/icons-material";
 
@@ -35,7 +35,7 @@ const theme = createTheme({
   },
 });
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   inputText: {
     color: "#B3B3B3",
   },

@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@mui/styles";
+
 import { Button } from "@mui/material";
 
 // contexts
@@ -25,7 +26,7 @@ const useStyles = makeStyles(() => ({
   addField: {
     display: "flex",
     flexFlow: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     alignItems: "center",
     width: "100%",
   },
@@ -67,7 +68,7 @@ const RepeatManager = ({
           );
         })}
       </div>
-      <div className={classes.addField}>
+      <div className={classes.addField} style={{ ...sxAddbtn }}>
         <Component
           reset={reset}
           extraData={extraData}
@@ -79,7 +80,6 @@ const RepeatManager = ({
         />
         <Button
           style={{
-            ...sxAddbtn,
             color: !btnDisabled ? sxAddbtn.color ?? "#B3B3B3" : "",
           }}
           disabled={btnDisabled}

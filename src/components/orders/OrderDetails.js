@@ -425,7 +425,7 @@ export default function OrderDetails({ order }) {
           justifyContent: "center",
         }}
       >
-        {user.role === "cashier" && (
+        {user.role === "cashier" && !order.isPaid && (
           <Button style={{ backgroundColor: "#65C466" }} variant="contained">
             Valider
           </Button>

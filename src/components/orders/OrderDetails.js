@@ -75,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function OrderDetails({ order, role }) {
+export default function OrderDetails({ order }) {
   const { user } = useContext(AuthContext);
   const { t } = useContext(TranslationContext);
   const { toggleBackdrop } = useContext(BackdropContext);
@@ -425,7 +425,7 @@ export default function OrderDetails({ order, role }) {
           justifyContent: "center",
         }}
       >
-        {role === "cashier" && (
+        {user.role === "cashier" && (
           <Button style={{ backgroundColor: "#65C466" }} variant="contained">
             Valider
           </Button>
@@ -451,6 +451,7 @@ export default function OrderDetails({ order, role }) {
                 marginBottom: "5px",
                 backgroundColor: "#001d42",
                 width: "95%",
+                height: "43px",
               }}
             >
               <IconButton
@@ -474,7 +475,7 @@ export default function OrderDetails({ order, role }) {
                     <AddCircle
                       style={{
                         color: "#2196f3",
-                        fontSize: "33px",
+                        fontSize: "39px",
 
                         margin: 0,
                         padding: 0,
@@ -516,9 +517,11 @@ export default function OrderDetails({ order, role }) {
           </AccordionSummary>
           <AccordionDetails className={classes.accordionDetails}>
             <RepeatManager
-              AddField={user.role === "cashier" ? true : false}
+              AddField={user.role === "cashier" && !order.isPaid ? true : false}
               Component={AddPM}
-              displayDelete={user.role === "cashier" ? true : false}
+              displayDelete={
+                user.role === "cashier" && !order.isPaid ? true : false
+              }
               extraData={user.workUnit.paymentMethods}
               validate={validatePmAmount}
               readOnlyValues={valuesArray}

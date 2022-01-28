@@ -154,7 +154,7 @@ const AddOtherUnits = ({
         value={measureUnitPlural}
         width={85}
         className={classes.inputText}
-        style={{ width: "130px", marginRight: "8px" }}
+        style={{ width: "105px", marginRight: "8px" }}
         inputProps={{ className: classes.inputText }}
         onChange={(e) => {
           const { validated } = validateOtherUnits({

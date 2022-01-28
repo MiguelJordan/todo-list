@@ -105,7 +105,6 @@ export default function ModifyStoreItem() {
     console.log(item);
   };
 
-  console.log(items);
   return (
     <AmForm
       storeItem={item}

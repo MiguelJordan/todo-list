@@ -75,9 +75,9 @@ const useStyles = makeStyles(() => ({
     maxWidth: "350px",
     padding: "20px",
     borderRadius: "3px",
-    marginTop: "90px",
+    marginTop: "40px",
     [theme.breakpoints.down("sm")]: {
-      marginTop: "55px",
+      marginTop: "35px",
       width: 300,
     },
   },
@@ -323,7 +323,7 @@ export default function AmForm({
             display: "flex",
             flexFlow: "column",
             justifyContent: "flex-start",
-            height: "235px",
+            height: "270px",
             overflowY: "auto",
             paddingTop: 5,
           }}

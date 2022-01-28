@@ -41,6 +41,7 @@ const RepeatManager = ({
   handleDelete,
   readOnlyValues = [],
   validate,
+  validateExtra,
   sx = {},
   sxAddBtn = {},
   sxAddField = {},

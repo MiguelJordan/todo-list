@@ -64,7 +64,7 @@ export const filter = ({
 };
 
 export const getBool = (value) => {
-  return ["true", "yes"].includes(value.toLowerCase()) ? true : false;
+  return ["true", "yes"].includes(String(value).toLowerCase()) ? true : false;
 };
 
 export const getImage = ({ url = "", fullUrl = false }) => {
@@ -183,6 +183,7 @@ export const toBase64 = async (file) => {
     reader.onerror = (error) => reject(error);
   });
 };
+
 export const validateItem = (item, imageUrl) => {
   item.name = item.name?.trim();
   if (!item.name) return { valid: false, message: "Invalid item name" };

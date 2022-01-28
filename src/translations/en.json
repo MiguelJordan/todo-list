@@ -23,7 +23,7 @@
       }
     },
     "cashier": {
-      "nav": { "bills": "Bills" }
+      "nav": { "bills": "Bills", "recovery": "Recovery" }
     },
     "waiter": {
       "nav": { "items": "Items", "orders": "Orders" }
@@ -117,6 +117,9 @@
         "not-found": "No such item found"
       },
       "orders": { "form_add_order": { "title": "New Order", "add-btn": "Add" } }
+    },
+    "cashier": {
+      "recovery": { "form_recovery": { "title": "Recovery", "add-btn": "Add" } }
     }
   },
   "_errors": {

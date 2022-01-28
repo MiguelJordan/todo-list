@@ -23,7 +23,7 @@
       }
     },
     "cashier": {
-      "nav": { "bills": "Factures" }
+      "nav": { "bills": "Factures", "recovery": "Recouvrement" }
     },
     "waiter": {
       "nav": { "items": "Articles", "orders": "Commandes" }
@@ -121,6 +121,11 @@
       },
       "orders": {
         "form_add_order": { "title": "Nouvelle Commande", "add_btn": "Ajouter" }
+      }
+    },
+    "cashier": {
+      "recovery": {
+        "form_recovery": { "title": "Recouvrement", "add-btn": "Ajouter" }
       }
     }
   },

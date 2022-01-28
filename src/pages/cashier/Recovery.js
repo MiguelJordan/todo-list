@@ -86,7 +86,7 @@ export default function Recovery() {
           alignSelf: "center",
         }}
       >
-        {"Recovery"}
+        {t("pages.cashier.recovery.form_recovery.title")}
       </h2>
       {error && <div className="formError"> {error}</div>}
       <TextField
@@ -225,7 +225,7 @@ export default function Recovery() {
             width: "150px",
           }}
         >
-          {t("pages.waiter.orders.form_add_order.add_btn")}
+          {t("pages.cashier.recovery.form_recovery.add-btn")}
         </Button>
       </div>
     </form>

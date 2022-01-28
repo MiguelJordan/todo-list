@@ -8,14 +8,24 @@ import OrderDetails from "../../components/orders/OrderDetails";
 import { AuthContext } from "../../contexts/AuthContext";
 import { OrderContext } from "../../contexts/OrderContext";
 
+// functions
+import { findElement } from "../../functions/data";
+
+const getOrderRoute = (role = "") => {
+  if (role === "admin") return "/admin";
+  if (role === "cashier") return "/cashier";
+  if (role === "waiter") return "/waiter/orders";
+  return "/orders";
+};
+
 export default function OrderDetail() {
   const { user } = useContext(AuthContext);
-  const { findOrder } = useContext(OrderContext);
+  const { orders } = useContext(OrderContext);
   const { id } = useParams();
 
-  const order = findOrder({ key: "id", value: id });
+  const order = findElement({ data: orders, key: "id", value: id });
 
-  if (!order) return <Navigate to={`/${user.role}/orders`} />;
+  if (!order) return <Navigate to={getOrderRoute(user.role)} />;
 
   return <OrderDetails order={order} />;
 }

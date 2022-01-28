@@ -1,5 +1,6 @@
 import { useContext } from "react";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@mui/styles";
+import { createTheme } from "@mui/material";
 
 // components
 import Item from "./Item";
@@ -7,7 +8,9 @@ import Item from "./Item";
 // contexts
 import { TranslationContext } from "../../contexts/TranslationContext";
 
-const useStyles = makeStyles((theme) => ({
+const theme = createTheme();
+
+const useStyles = makeStyles(() => ({
   container: {
     display: "flex",
     flexFlow: "row",
@@ -23,12 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ItemList({
-  orderId,
-  items = [],
-  preview = true,
-  role = "",
-}) {
+export default function ItemList({ orderId, items = [], preview = true }) {
   const { t } = useContext(TranslationContext);
   const classes = useStyles();
 
@@ -36,13 +34,7 @@ export default function ItemList({
     <div className={classes.container}>
       {items.length !== 0 ? (
         items.map((item) => (
-          <Item
-            orderId={orderId}
-            data={item}
-            preview={preview}
-            role={role}
-            key={item.id}
-          />
+          <Item orderId={orderId} data={item} preview={preview} key={item.id} />
         ))
       ) : (
         <h2 style={{ marginTop: "100px" }}>

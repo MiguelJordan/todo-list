@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 
 // components
 import Dropdown from "../../components/subComponents/Dropdown";
+import Fabs from "../../components/subComponents/Fabs";
 import ItemList from "../../components/storeItems/ItemList";
 import Search from "../../components/subComponents/Search";
 
@@ -153,6 +154,10 @@ export default function Items({ orderId, orderItems, preview = true }) {
           handleChange={updateCat}
         />
         <Search onChange={setSearchVal} />
+        <Fabs
+          path="/admin/items/add"
+          sx={{ width: "45px", height: "45px", marginTop: "5px" }}
+        />
       </div>
       <ItemList items={filtered} orderId={orderId} preview={preview} />
     </>

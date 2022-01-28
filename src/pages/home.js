@@ -13,8 +13,8 @@ const Page = () => {
     <div style={{ padding: "0 20px" }}>
       <h1 className="center">{t("pages.home.greeting")}</h1>
       <div className="center">{t("pages.home.page_title")}</div>
-      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(() => (
-        <p>
+      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num, index) => (
+        <p key={index}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae mi
           ut sem efficitur laoreet sit amet ut mi. Maecenas at vestibulum
           ligula. Aliquam blandit mauris nec dolor hendrerit, eu porta neque

@@ -1,10 +1,10 @@
-import React, { useContext } from "react";
-import { makeStyles } from "@material-ui/core";
+import React, { useContext, useState } from "react";
+
+import { makeStyles } from "@mui/styles";
 
 // components
 import DisplayField from "../subComponents/DisplayField";
 import Image from "../subComponents/Image";
-import PopOver from "../subComponents/PopOver";
 
 // contexts
 import { AuthContext } from "../../contexts/AuthContext";
@@ -19,10 +19,11 @@ import { _delete } from "../../functions/http";
 import queries from "../../functions/queries";
 
 // icons
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { DeleteRounded, EditRounded } from "@mui/icons-material";
+import { Delete } from "@mui/icons-material";
+import { IconButton } from "@mui/material";
+import AlertDialog from "../subComponents/Dialog";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   orderItem: {
     display: "flex",
     flexFlow: "row",
@@ -55,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const OrderItem = ({ item = {}, role = "" }) => {
+const OrderItem = ({ item = {} }) => {
   const { user } = useContext(AuthContext);
   const { toggleBackdrop } = useContext(BackdropContext);
   const { showNotification } = useContext(NotificationContext);
@@ -63,13 +64,16 @@ const OrderItem = ({ item = {}, role = "" }) => {
   const { t } = useContext(TranslationContext);
   const classes = useStyles();
 
-  const displayField = {
-    color: "white",
-    margin: 0,
-    padding: 0,
-    textAlign: "left",
-    width: 80,
-    fontSize: 16,
+  const [openDialog, setOpenDialog] = useState(false);
+  const [_deleteItem, setDeleteItem] = useState({});
+  const [dialogMsg, setDialogMsg] = useState("");
+
+  const handleclose = () => setOpenDialog(false);
+
+  const trigger = () => {
+    setDialogMsg(`${t("compo.dialog.delete_item")}  ${item?.name}`);
+    setDeleteItem(item);
+    setOpenDialog(true);
   };
 
   const deleteOrderItem = async (item) => {
@@ -116,82 +120,80 @@ const OrderItem = ({ item = {}, role = "" }) => {
     });
   };
 
-  const WaiterPopMenu = [
-    {
-      action: deleteOrderItem,
-      color: "#FF0000",
-      Icon: <DeleteRounded />,
-      name: "orderItem-delete",
-      role: "waiter",
-    },
-    {
-      action: (item) => console.log("updating", item),
-      color: "#04A5E0",
-      Icon: <EditRounded />,
-      name: "orderItem-update",
-      role: "waiter",
-    },
-  ];
+  const agree = {
+    bgcolor: "red",
+    color: "white",
+    handler: () => deleteOrderItem(_deleteItem),
+  };
+  const disagree = {
+    bgcolor: "black",
+    color: "white",
+    handler: () => {},
+  };
 
-  const AdminPopMenu = [
-    {
-      name: "Modifier",
-      color: "#04A5E0",
-      Icon: <EditRounded />,
-      action: (e) => console.log(e),
-    },
-  ];
+  const displayField = {
+    color: "white",
+    margin: 0,
+    padding: 0,
+    textAlign: "left",
+    width: 80,
+    fontSize: 16,
+  };
 
   return (
-    <div className={classes.orderItem}>
-      <Image
-        className={classes.img}
-        alt={item.name}
-        src={getImage({ url: item.imageUrl })}
+    <>
+      <AlertDialog
+        _open={openDialog}
+        handleClose={handleclose}
+        agree={agree}
+        disagree={disagree}
+        content={dialogMsg}
       />
-
-      <div className={classes.details}>
-        <div className={classes.detailsText}>
-          <span>{t("compo.item.name")}:</span>
-          <DisplayField
-            value={capitalise(item.name)}
-            sx={{ ...displayField, width: 125 }}
-          />
-        </div>
-
-        <div className={classes.detailsText}>
-          <span>{t("compo.item.price")}:</span>
-          <DisplayField value={item.price} sx={displayField} />
-        </div>
-
-        <div className={classes.detailsText}>
-          <span>{t("compo.item.quantity")}:</span>
-          <DisplayField
-            value={`${item.quantity} ${getMeasureUnit(item)}`}
-            sx={displayField}
-          />
-        </div>
-
-        <div className={classes.detailsText}>
-          <span>Total:</span>
-          <DisplayField
-            value={item.isOffer ? 0 : item.quantity * item.price}
-            sx={displayField}
-          />
-        </div>
-      </div>
-
-      {["cashier", "waiter"].includes(role) ? (
-        <PopOver
-          items={WaiterPopMenu}
-          Icon={<MoreVertIcon />}
-          event={item}
-          sx={{ paddingLeft: 0 }}
+      <div className={classes.orderItem}>
+        <Image
+          className={classes.img}
+          alt={item.name}
+          src={getImage({ url: item.imageUrl })}
         />
-      ) : (
-        <PopOver items={AdminPopMenu} Icon={<MoreVertIcon />} event={item} />
-      )}
-    </div>
+
+        <div className={classes.details}>
+          <div className={classes.detailsText}>
+            <span>{t("compo.item.name")}:</span>
+            <DisplayField
+              value={capitalise(item.name)}
+              sx={{ ...displayField, width: 125 }}
+            />
+          </div>
+
+          <div className={classes.detailsText}>
+            <span>{t("compo.item.price")}:</span>
+            <DisplayField value={item.price} sx={displayField} />
+          </div>
+
+          <div className={classes.detailsText}>
+            <span>{t("compo.item.quantity")}:</span>
+            <DisplayField
+              value={`${item.quantity} ${getMeasureUnit(item)}`}
+              sx={displayField}
+            />
+          </div>
+
+          <div className={classes.detailsText}>
+            <span>Total:</span>
+            <DisplayField
+              value={item.isOffer ? 0 : item.quantity * item.price}
+              sx={displayField}
+            />
+          </div>
+        </div>
+
+        {user.role === "waiter" && (
+          <IconButton onClick={trigger}>
+            <Delete style={{ color: "#FF0000" }} />
+          </IconButton>
+        )}
+      </div>
+    </>
   );
 };
 

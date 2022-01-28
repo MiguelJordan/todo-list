@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@mui/styles";
+
 import { IconButton, TextField } from "@mui/material";
 
 // components
@@ -15,6 +16,10 @@ const useStyles = makeStyles(() => ({
   PmField: {
     display: "flex",
     flexFlow: "row",
+    marginTop: ({ displayDelete }) => {
+      if (displayDelete) return 0;
+      return 8;
+    },
     alignItems: "center",
     justifyContent: "space-around",
     "& > input": {
@@ -44,12 +49,13 @@ const AddPM = ({
   deleteKey,
   readOnly = false,
   reset,
+  displayDelete = true,
   handleDelete,
   values: payment = {},
   onChange = () => {},
 }) => {
   const { t } = useContext(TranslationContext);
-  const classes = useStyles();
+  const classes = useStyles({ displayDelete });
   const [name, setName] = useState(extraData[0]);
   const [amount, setAmount] = useState("");
 
@@ -67,9 +73,11 @@ const AddPM = ({
       <input readOnly value={payment.name ?? ""} />
       <input readOnly value={payment.amount ?? ""} />
 
-      <IconButton onClick={() => handleDelete(deleteKey)}>
-        <RemoveCircleOutlineIcon />
-      </IconButton>
+      {displayDelete && (
+        <IconButton onClick={() => handleDelete(deleteKey)}>
+          <RemoveCircleOutlineIcon />
+        </IconButton>
+      )}
     </div>
   ) : (
     <div className={classes.PmField}>

@@ -25,6 +25,37 @@ export default function StoreAdd() {
   const [image, setImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
 
+  const AddImage = async (e) => {
+    if (!e) return "";
+    setError("");
+    let file = e.target.files[0];
+
+    const typeInfo = file.type.split("/"); // [mimeType ,extension]
+
+    // validate type & extension
+    if (
+      typeInfo[0] !== "image" ||
+      !["jpg", "png", "jpeg"].includes(typeInfo[1])
+    ) {
+      return setError("Invalid image - format");
+    }
+
+    // validate file size
+    if (file.size > 5 * 1024 * 1024) {
+      return setError("Invalid image - size too large");
+    }
+
+    let base64 = await toBase64(file);
+
+    setImage(base64);
+    setImageUrl(file);
+  };
+
+  const RemoveImage = () => {
+    setImage(null);
+    setImageUrl(null);
+  };
+
   const validateItem = (item) => {
     item.name = item.name?.trim();
     if (!item.name) return { valid: false, message: "Invalid item name" };
@@ -74,41 +105,10 @@ export default function StoreAdd() {
     return { valid: true, validated: item };
   };
 
-  const AddImage = async (e) => {
-    if (!e) return "";
-    setError("");
-    let file = e.target.files[0];
-
-    const typeInfo = file.type.split("/"); // [mimeType ,extension]
-
-    // validate type & extension
-    if (
-      typeInfo[0] !== "image" ||
-      !["jpg", "png", "jpeg"].includes(typeInfo[1])
-    ) {
-      return setError("Invalid image - format");
-    }
-
-    // validate file size
-    if (file.size > 5 * 1024 * 1024) {
-      return setError("Invalid image - size too large");
-    }
-
-    let base64 = await toBase64(file);
-
-    setImage(base64);
-    setImageUrl(file);
-  };
-
-  const RemoveImage = () => {
-    setImage(null);
-    setImageUrl(null);
-  };
-
   const handleSubmit = async (item, reset) => {
     setError("");
 
-    const { valid, validated, message } = validateItem(item);
+    const { valid, validated, message } = validateItem(item, imageUrl);
 
     if (!valid) return setError(message);
 

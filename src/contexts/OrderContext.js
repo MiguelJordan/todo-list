@@ -4,49 +4,57 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 
 // functions
-import { filter, getUnique } from "../functions/data";
+import { filter, getPeriod, getUnique } from "../functions/data";
 import { get } from "../functions/http";
 
 export const OrderContext = createContext();
 
+const getBaseQuery = (user) => {
+  if (["admin", "cashier", "waiter"].includes(user?.role)) {
+    const { start, stop } = getPeriod({ useDistance: true });
+
+    let _query = {};
+    // let _query = { createdAt: { $gt: start, $lt: stop } };
+
+    if (user.role === "admin" && user.orderQuery) _query = user.orderQuery;
+
+    return {
+      companyCode: user.company.code,
+      query: JSON.stringify(_query),
+    };
+  }
+
+  return null;
+};
+
 const OrderProvider = ({ children }) => {
   const [orders, setOrders] = useState([]);
   const { user } = useContext(AuthContext);
-
-  const getQuery = () => {
-    let req = { companyCode: user.company.code };
-
-    if (user.role === "admin") {
-      return { ...req, date: true, source: "unit", startTime: new Date() };
-    }
-
-    if (user.role === "cashier") {
-      return { ...req, date: true, source: "unit", startTime: new Date() };
-    }
-
-    if (user.role === "waiter") {
-      // const { startTime, stopTime } = getPeriod({ useDistance: true });
-
-      return {
-        ...req,
-        // query: JSON.stringify({ createdAt: { $gt: startTime, $lt: stopTime } }),
-      };
-    }
-  };
+  const [query, setQuery] = useState(getBaseQuery(user));
 
   const getOrders = async () => {
-    const query = getQuery();
+    if (!["admin", "cashier", "waiter"].includes(user?.role)) return;
 
     const _orders = await get({ url: "/orders", params: query });
 
     if (_orders?.error) return console.log(_orders?.error);
-    // console.log("Orders", _orders);
 
     setOrders(_orders);
   };
 
-  const findOrder = ({ key = "id", value = "" }) => {
-    return orders.find((order) => order[key] === value);
+  const makeQuery = ({ _start, _stop }) => {
+    const { start, stop } = getPeriod({
+      start: _start,
+      stop: _stop,
+      useDistance: _stop ? true : false,
+    });
+
+    let _query = { createdAt: { $gt: start, $lt: stop } };
+
+    return {
+      companyCode: user?.company?.code,
+      query: JSON.stringify(_query),
+    };
   };
 
   const removeOrder = (id) => {
@@ -59,13 +67,15 @@ const OrderProvider = ({ children }) => {
     setOrders(getUnique({ data: [...orders, ..._orders] }));
   };
 
-  useEffect(() => {
-    if (!["waiter"].includes(user?.role)) return;
-    // if (!["admin", "cashier", "waiter"].includes(user?.role)) return;
-    getOrders();
-  }, [user]);
+  useEffect(() => getOrders(), [query]);
 
-  const context = { orders, findOrder, removeOrder, updateOrders };
+  const context = {
+    orders,
+    makeQuery,
+    removeOrder,
+    setQuery,
+    updateOrders,
+  };
   return (
     <OrderContext.Provider value={context}>{children}</OrderContext.Provider>
   );

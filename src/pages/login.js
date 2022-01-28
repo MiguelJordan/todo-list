@@ -7,10 +7,13 @@ import {
   FormControl,
   InputLabel,
   InputAdornment,
-  IconButton,
   OutlinedInput,
+  createTheme,
 } from "@mui/material";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@mui/styles";
+
+import { IconButton } from "@mui/material";
+
 import { Avatar } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import LoginIcon from "@mui/icons-material/Login";
@@ -26,7 +29,9 @@ import { TranslationContext } from "../contexts/TranslationContext";
 import LockCloseOutlined from "@mui/icons-material/LockOutlined";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
-const useStyles = makeStyles((theme) => ({
+const theme = createTheme();
+
+const useStyles = makeStyles(() => ({
   form: {
     display: "flex",
     flexFlow: "column",
@@ -41,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
       width: 300,
     },
     [theme.breakpoints.up("md")]: {
-      marginTop: "90px",
+      marginTop: "120px",
     },
   },
   inputText: {

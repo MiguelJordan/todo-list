@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
-import { makeStyles } from "@material-ui/core";
-import { Button, TextField } from "@mui/material";
+import { makeStyles } from "@mui/styles";
+
+import { Button, TextField, createTheme } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
 //context
@@ -11,7 +12,9 @@ import { TranslationContext } from "../../contexts/TranslationContext";
 import Dropdown from "../../components/subComponents/Dropdown";
 import Fabs from "../../components/subComponents/Fabs";
 
-const useStyles = makeStyles((theme) => ({
+const theme = createTheme();
+
+const useStyles = makeStyles(() => ({
   inputText: {
     color: "black",
   },
@@ -27,10 +30,10 @@ const useStyles = makeStyles((theme) => ({
     color: "#B3B3B3",
     borderRadius: "3px",
     [theme.breakpoints.down("sm")]: {
-      marginTop: "160px",
+      marginTop: "80px",
     },
     [theme.breakpoints.up("md")]: {
-      marginTop: "150px",
+      marginTop: "90px",
     },
   },
 }));
@@ -83,7 +86,7 @@ export default function Recovery() {
           alignSelf: "center",
         }}
       >
-        {"Recovery"}
+        {t("pages.cashier.recovery.form_recovery.title")}
       </h2>
       {error && <div className="formError"> {error}</div>}
       <TextField
@@ -222,7 +225,7 @@ export default function Recovery() {
             width: "150px",
           }}
         >
-          {t("pages.waiter.orders.form_add_order.add_btn")}
+          {t("pages.cashier.recovery.form_recovery.add-btn")}
         </Button>
       </div>
     </form>

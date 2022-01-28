@@ -1,7 +1,7 @@
 import { createContext, useState } from "react";
 
 // functions
-import { get, post } from "../functions/http";
+import { post } from "../functions/http";
 
 // hooks
 import useStorage from "../hooks/useStorage";
@@ -49,20 +49,7 @@ const AuthProvider = ({ children }) => {
     return res;
   };
 
-  const logout = async () => {
-    let res;
-
-    try {
-      const data = await get({ url: "/accounts/logout" });
-
-      if (data.success) removeUser();
-      res = data;
-    } catch (err) {
-      res = { error: err.message };
-    }
-
-    return res;
-  };
+  const logout = () => removeUser();
 
   const context = { user, login, logout, updateUser };
   return (

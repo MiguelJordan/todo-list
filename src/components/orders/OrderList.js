@@ -1,9 +1,11 @@
-import { useContext } from "react";
-import { makeStyles } from "@material-ui/core";
+import { useContext, useState } from "react";
+import { makeStyles } from "@mui/styles";
+import { createTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 
 // components
+import AlertDialog from "../subComponents/Dialog";
 import DateTime from "../subComponents/DateTime";
 import DisplayField from "../subComponents/DisplayField";
 import TimeAgo from "../subComponents/TimeAgo";
@@ -25,14 +27,15 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { DeleteRounded } from "@mui/icons-material";
 import InfoIcon from "@mui/icons-material/Info";
 
-const useStyles = makeStyles((theme) => ({
+const theme = createTheme();
+
+const useStyles = makeStyles(() => ({
   container: {
     display: "flex",
     flexFlow: "row",
     justifyContent: "center",
     overflowY: "auto",
     flexWrap: "wrap",
-
     height: ({ role }) => {
       if (role === "admin") return "63vh";
       return "68vh";
@@ -68,14 +71,26 @@ const useStyles = makeStyles((theme) => ({
   orderPaid: { backgroundColor: "green" },
 }));
 
-export default function OrderList({ role = "", orders = [] }) {
+export default function OrderList({ orders = [] }) {
   const { user } = useContext(AuthContext);
   const { toggleBackdrop } = useContext(BackdropContext);
   const { showNotification } = useContext(NotificationContext);
   const { sendEvent } = useContext(SocketContext);
   const { t } = useContext(TranslationContext);
-  const classes = useStyles({ role });
+  const classes = useStyles({ role: user.role });
   const navigate = useNavigate();
+
+  const [openDialog, setOpenDialog] = useState(false);
+  const [_deleteOrder, setDeleteOrder] = useState({});
+  const [dialogMsg, setDialogMsg] = useState("");
+
+  const handleclose = () => setOpenDialog(false);
+
+  const trigger = (order) => {
+    setDeleteOrder(order);
+    setDialogMsg(`${t("compo.dialog.delete_order")} ${order.tableName}`);
+    setOpenDialog(true);
+  };
 
   const deleteOrder = async (order) => {
     if (!["admin", "waiter"].includes(user.role)) return;
@@ -131,141 +146,167 @@ export default function OrderList({ role = "", orders = [] }) {
     });
   };
 
-  const viewOrderDetails = (e) => {
-    navigate(`/waiter/orders/${e.id}`);
+  const agree = {
+    bgcolor: "red",
+    color: "white",
+    handler: () => deleteOrder(_deleteOrder),
   };
+  const disagree = {
+    bgcolor: "black",
+    color: "white",
+    handler: () => {},
+  };
+
+  const viewDetails = (order) => navigate(`/${user.role}/orders/${order.id}`);
 
   const WaiterPopMenu = [
     {
       name: "order-delete",
       Icon: <DeleteRounded />,
       color: "#FF0000",
-      action: (order) => deleteOrder(order),
-      role: "waiter",
+      action: (order) => trigger(order),
+      role: "*",
     },
     {
       name: "Details",
       color: "#04A5E0",
       Icon: <InfoIcon />,
-      action: (order) => viewOrderDetails(order),
+      action: (order) => viewDetails(order),
     },
   ];
+
   const cashierPopMenu = [
     {
       name: "Details",
       color: "#04A5E0",
       Icon: <InfoIcon />,
-      action: (order) => viewOrderDetails(order),
+      action: (order) => viewDetails(order),
     },
   ];
 
   const AdminPopMenu = [
     {
+      name: "order-delete",
+      Icon: <DeleteRounded />,
+      color: "#FF0000",
+      action: (order) => trigger(order),
+      role: "*",
+    },
+    {
       name: "Details",
       color: "#04A5E0",
       Icon: <InfoIcon />,
-      action: (e) => viewOrderDetails(e),
+      action: (e) => viewDetails(e),
     },
   ];
 
   return (
-    <div className={classes.container}>
-      {orders.length === 0 ? (
-        <h2 style={{ marginTop: "100px" }}>No Order Found</h2>
-      ) : (
-        orders.map((order) => {
-          return (
-            <div className={classes.card} key={order.id}>
-              <div
-                className={`${classes.orderStatus} ${
-                  order.isPaid ? classes.orderPaid : ""
-                }`}
-              />
-
-              <div
-                style={{
-                  display: "flex",
-                  flexFlow: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: 5,
-                }}
-              >
-                <DisplayField
-                  value={
-                    ["cashier", "waiter"].includes(role)
-                      ? order.tableName
-                      : `${order.waiter.name} (${order.waiter.id})`
-                  }
-                  sx={{
-                    margin: 0,
-                    padding: 0,
-                    width: "45%",
-                    color: "white",
-                    fontSize: 18,
-                    textAlign: "left",
-                  }}
+    <>
+      <AlertDialog
+        _open={openDialog}
+        handleClose={handleclose}
+        agree={agree}
+        disagree={disagree}
+        content={dialogMsg}
+      />
+      <div className={classes.container}>
+        {orders.length === 0 ? (
+          <h2 style={{ marginTop: "100px" }}>No Order Found</h2>
+        ) : (
+          orders.map((order) => {
+            return (
+              <div className={classes.card} key={order.id}>
+                <div
+                  className={`${classes.orderStatus} ${
+                    order.isPaid ? classes.orderPaid : ""
+                  }`}
                 />
-                <div style={{ fontSize: 15 }}>
-                  {dayjs(new Date()).diff(order.createdAt, "day") < 1 ? (
-                    <TimeAgo date={order.createdAt} />
-                  ) : (
-                    <DateTime date={order.createdAt} />
-                  )}
-                </div>
-              </div>
 
-              <div
-                style={{
-                  display: "flex",
-                  flexFlow: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
                 <div
                   style={{
                     display: "flex",
-                    flexFlow: "column",
-                    justifyContent: "space-around",
+                    flexFlow: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginBottom: 5,
                   }}
                 >
-                  <div>
-                    {t("compo.order.items")}: {order.items.length}
-                  </div>
-                  <div>
-                    Total:{" "}
-                    {order.items.reduce((prev, next) => {
-                      if (next.isOffer) return prev;
-                      return (prev += next.quantity * next.price);
-                    }, 0)}
+                  <DisplayField
+                    value={
+                      ["cashier", "waiter"].includes(user.role)
+                        ? order.tableName
+                        : `${order.waiter.name} (${order.waiter.id})`
+                    }
+                    sx={{
+                      margin: 0,
+                      padding: 0,
+                      width: "45%",
+                      color: "white",
+                      fontSize: 18,
+                      textAlign: "left",
+                    }}
+                  />
+                  <div style={{ fontSize: 15 }}>
+                    {dayjs(new Date()).diff(order.createdAt, "day") < 1 ? (
+                      <TimeAgo date={order.createdAt} />
+                    ) : (
+                      <DateTime date={order.createdAt} />
+                    )}
                   </div>
                 </div>
 
-                {role === "waiter" ? (
-                  <PopOver
-                    items={WaiterPopMenu}
-                    Icon={<MoreVertIcon />}
-                    event={order}
-                  />
-                ) : role === "cashier" ? (
-                  <PopOver
-                    items={cashierPopMenu}
-                    Icon={<MoreVertIcon />}
-                    event={order}
-                  />
-                ) : (
-                  <PopOver
-                    items={AdminPopMenu}
-                    Icon={<MoreVertIcon />}
-                    event={order}
-                  />
-                )}
+                <div
+                  style={{
+                    display: "flex",
+                    flexFlow: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      flexFlow: "column",
+                      justifyContent: "space-around",
+                    }}
+                  >
+                    <div>
+                      {t("compo.order.items")}: {order.items.length}
+                    </div>
+                    <div>
+                      Total:{" "}
+                      {order.items.reduce((prev, next) => {
+                        if (next.isOffer) return prev;
+                        return (prev += next.quantity * next.price);
+                      }, 0)}
+                    </div>
+                  </div>
+
+                  {user.role === "waiter" ? (
+                    <PopOver
+                      items={WaiterPopMenu}
+                      Icon={<MoreVertIcon />}
+                      event={order}
+                    />
+                  ) : user.role === "cashier" ? (
+                    <PopOver
+                      items={cashierPopMenu}
+                      Icon={<MoreVertIcon />}
+                      event={order}
+                    />
+                  ) : (
+                    <PopOver
+                      items={AdminPopMenu}
+                      Icon={<MoreVertIcon />}
+                      event={order}
+                    />
+                  )}
+                </div>
               </div>
-            </div>
-          );
-        })
-      )}
-    </div>
+            );
+          })
+        )}
+      </div>
+    </>
   );
 }

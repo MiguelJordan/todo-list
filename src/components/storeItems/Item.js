@@ -1,15 +1,20 @@
-import React, { useState, useContext } from "react";
-import { Button } from "@mui/material";
-import { makeStyles } from "@material-ui/core";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { Button, createTheme } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import { LoadingButton } from "@mui/lab";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
 // components
 import Dropdown from "../subComponents/Dropdown";
 import DisplayField from "../subComponents/DisplayField";
+import OtherQuantities, {
+  validateOtherQty,
+} from "../subComponents/repeated/MeasureUnits/OtherQuantities";
+import RepeatManager from "../subComponents/repeated/RepeatManager";
 
 // contexts
 import { AuthContext } from "../../contexts/AuthContext";
@@ -23,11 +28,15 @@ import {
   getBool,
   getImage,
   getInputWith,
+  groupData,
+  removeAt,
 } from "../../functions/data";
 import { post } from "../../functions/http";
 import queries from "../../functions/queries";
 
-const useStyles = makeStyles((theme) => ({
+const theme = createTheme();
+
+const useStyles = makeStyles(() => ({
   media: {
     width: 250,
     height: 200,
@@ -74,38 +83,74 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
+const Item = ({ data = {}, orderId, preview = true }) => {
   const { user } = useContext(AuthContext);
   const { showNotification } = useContext(NotificationContext);
   const { sendEvent } = useContext(SocketContext);
   const { t } = useContext(TranslationContext);
+  const navigate = useNavigate();
   const classes = useStyles();
 
   const [loading, setLoading] = useState(false);
 
-  const [isOffer, setIsOffer] = useState("no");
-  const [price, setPrice] = useState(data.prices[0]);
+  const [_item] = useState({
+    companyCode: data.companyCode,
+    isOffer: "no",
+    name: data.name,
+    orderId,
+    otherQuantities: [],
+    quantity: 0,
+    price: data.prices[0],
+    storeId: data.storeId,
+  });
 
-  const handleSubmit = async (e, item) => {
-    e.preventDefault();
+  const [orderItem, setOrderItem] = useState(_item);
 
-    const _isOffer = getBool(isOffer);
+  const getQtyLeft = () => {
+    const muList = groupData({
+      data: data.otherUnits,
+      criteria: "measureUnit",
+    });
 
-    // gather data
-    let _item = {
-      companyCode: item.companyCode,
-      isOffer: _isOffer,
-      name: item.name,
-      orderId,
-      quantity: parseFloat(e.target[5].value),
-      price,
-      storeId: item.storeId,
-    };
+    let qtyLeft = data.quantity - orderItem.quantity;
 
-    if (
-      !_isOffer &&
-      (!_item.quantity || _item.quantity <= 0 || _item.quantity > item.quantity)
-    ) {
+    qtyLeft = orderItem.otherQuantities.reduce((prev, next) => {
+      const mu = muList[next.measureUnit][0];
+
+      const nextQty = mu.coefficient * next.quantity;
+      return prev - nextQty;
+    }, qtyLeft);
+
+    return qtyLeft;
+  };
+
+  const [qtyLeft, setQtyLeft] = useState(getQtyLeft());
+
+  const reset = () => setOrderItem(_item);
+
+  useEffect(
+    () => setQtyLeft(getQtyLeft()),
+    [data.otherUnits, orderItem.quantity, orderItem.otherQuantities]
+  );
+
+  const createOrderItem = async () => {
+    orderItem.isOffer = getBool(orderItem.isOffer);
+
+    const isOffer = orderItem.isOffer;
+    const hasOtherQties = orderItem.otherQuantities.length > 0;
+
+    if (getQtyLeft() < 0) {
+      return showNotification({
+        msg: t("_errors.Invalid quantity"),
+        color: "error",
+      });
+    }
+
+    const validQties = hasOtherQties
+      ? !orderItem.quantity || orderItem.quantity >= 0
+      : orderItem.quantity > 0;
+
+    if (!isOffer && !validQties) {
       return showNotification({
         msg: t("_errors.Invalid quantity"),
         color: "error",
@@ -114,7 +159,7 @@ const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
 
     setLoading(true);
 
-    const res = await post({ url: "/orderItems", body: _item });
+    const res = await post({ url: "/orderItems", body: orderItem });
 
     if (res?.error) {
       setLoading(false);
@@ -125,7 +170,7 @@ const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
     }
 
     // reset form if all is good
-    e.target.reset();
+    reset();
 
     // send store item updated event
     sendEvent({
@@ -133,8 +178,8 @@ const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
       props: {
         companyCode: user.company.code,
         query: queries["cE-store-items-updated"]({
-          items: [item.name],
-          storeId: item.storeId,
+          items: [orderItem.name],
+          storeId: orderItem.storeId,
         }),
       },
       rooms: [user.workUnit.code],
@@ -177,27 +222,26 @@ const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
               margin: 0,
             }}
           />
-          <form
-            className={classes.formControl}
-            onSubmit={(e) => handleSubmit(e, data)}
-          >
+          <div className={classes.formControl}>
             <div>
               <Dropdown
-                sx={{ display: getBool(isOffer) ? "none" : "" }}
+                sx={{ display: getBool(orderItem.isOffer) ? "none" : "" }}
                 label={t("compo.item.prices")}
                 labelId={`store-item-prices-${data.id}`}
-                value={price}
+                value={orderItem.price}
                 values={data.prices}
-                handleChange={setPrice}
+                handleChange={(price) => setOrderItem({ ...orderItem, price })}
               />
-              {!preview && role === "waiter" && (
+              {!preview && user.role === "waiter" && (
                 <Dropdown
                   translated={true}
                   label={t("compo.item.isOffer")}
                   labelId={`store-item-isOffer-${data.id}`}
-                  value={isOffer}
+                  value={orderItem.isOffer}
                   values={["no", "yes"]}
-                  handleChange={(val) => setIsOffer(val)}
+                  handleChange={(isOffer) =>
+                    setOrderItem({ ...orderItem, isOffer })
+                  }
                 />
               )}
             </div>
@@ -234,7 +278,7 @@ const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
                   }}
                 />
               </div>
-              {!preview && role === "waiter" && (
+              {!preview && user.role === "waiter" && (
                 <>
                   <div style={{ display: "flex", flexFlow: "row" }}>
                     <label htmlFor="">{t("compo.item.quantity")} :</label>
@@ -243,7 +287,15 @@ const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
                       type="number"
                       name="quantity"
                       min={1}
-                      max={data.quantity}
+                      max={qtyLeft}
+                      value={orderItem.quantity === 0 ? "" : orderItem.quantity}
+                      onChange={(e) => {
+                        let quantity = e.target.value;
+
+                        quantity = isNaN(quantity) ? "" : Number(quantity);
+
+                        setOrderItem({ ...orderItem, quantity });
+                      }}
                       style={{
                         width: "30px",
                         marginLeft: 8,
@@ -253,29 +305,54 @@ const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
                       className={classes.inp}
                     />
                   </div>
+                  {data.otherUnits.length > 0 && (
+                    <RepeatManager
+                      Component={OtherQuantities}
+                      extraData={data.otherUnits}
+                      readOnlyValues={orderItem.otherQuantities}
+                      validate={validateOtherQty}
+                      validateExtra={qtyLeft}
+                      sxRepeat={{ maxHeight: 80 }}
+                      handleAdd={(qty) => {
+                        delete qty?.coefficient;
+                        let otherQuantities = [
+                          ...orderItem.otherQuantities,
+                          qty,
+                        ];
+                        setOrderItem({ ...orderItem, otherQuantities });
+                      }}
+                      handleDelete={(index) => {
+                        let otherQuantities = removeAt({
+                          index,
+                          list: orderItem.otherQuantities,
+                        });
+                        setOrderItem({ ...orderItem, otherQuantities });
+                      }}
+                    />
+                  )}
                   <LoadingButton
                     loading={loading}
-                    loadingPosition="start"
-                    startIcon={
-                      <AddShoppingCartIcon style={{ color: "#2196f3" }} />
-                    }
+                    loadingIndicator={`${t("compo.item.btn-add")}...`}
                     type="submit"
                     variant="outlined"
                     style={{ border: "4px solid #2B4362", margin: "5px auto" }}
+                    onClick={createOrderItem}
                   >
                     {t("compo.item.btn-add")}
                   </LoadingButton>
                 </>
               )}
             </div>
-            {role === "admin" && (
-              <>
-                <Button variant="contained" style={{ marginTop: "10px" }}>
-                  {"Detail"}
-                </Button>
-              </>
+            {user.role === "admin" && (
+              <Button
+                variant="contained"
+                style={{ marginTop: "10px" }}
+                onClick={() => navigate(`/admin/items/edit/${data.id}`)}
+              >
+                {"Detail"}
+              </Button>
             )}
-          </form>
+          </div>
         </CardContent>
       </Card>
     </>

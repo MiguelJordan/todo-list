@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@mui/styles";
+
 import { Button } from "@mui/material";
 
 // contexts
@@ -25,21 +26,25 @@ const useStyles = makeStyles(() => ({
   addField: {
     display: "flex",
     flexFlow: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     alignItems: "center",
     width: "100%",
   },
 }));
 
 const RepeatManager = ({
+  AddField = true,
   Component,
+  displayDelete = true,
   extraData = [],
   handleAdd,
   handleDelete,
   readOnlyValues = [],
   validate,
+  validateExtra,
   sx = {},
-  sxAddbtn = {},
+  sxAddBtn = {},
+  sxAddField = {},
   sxComponent = {},
   sxComponentRepeat = {},
   sxRepeat = {},
@@ -59,6 +64,7 @@ const RepeatManager = ({
             <Component
               key={index}
               deleteKey={index}
+              displayDelete={displayDelete}
               readOnly={true}
               values={val}
               handleDelete={handleDelete}
@@ -67,30 +73,32 @@ const RepeatManager = ({
           );
         })}
       </div>
-      <div className={classes.addField}>
-        <Component
-          reset={reset}
-          extraData={extraData}
-          sx={sxComponent}
-          onChange={(newVals) => {
-            if (validate) setBtnDisabled(!validate(newVals)?.valid);
-            setValues(newVals);
-          }}
-        />
-        <Button
-          style={{
-            ...sxAddbtn,
-            color: !btnDisabled ? sxAddbtn.color ?? "#B3B3B3" : "",
-          }}
-          disabled={btnDisabled}
-          onClick={() => {
-            handleAdd(values);
-            setReset(!reset);
-          }}
-        >
-          {t("compo.repeatManager.add-btn")}
-        </Button>
-      </div>
+      {AddField && (
+        <div className={classes.addField} style={{ ...sxAddField }}>
+          <Component
+            reset={reset}
+            extraData={extraData}
+            sx={sxComponent}
+            onChange={(newVals) => {
+              if (validate) setBtnDisabled(!validate(newVals)?.valid);
+              setValues(newVals);
+            }}
+          />
+          <Button
+            style={{
+              ...sxAddBtn,
+              color: !btnDisabled ? sxAddBtn.color ?? "#B3B3B3" : "",
+            }}
+            disabled={btnDisabled}
+            onClick={() => {
+              handleAdd(values);
+              setReset(!reset);
+            }}
+          >
+            {t("compo.repeatManager.add-btn")}
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

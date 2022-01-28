@@ -18,18 +18,7 @@ export default function EditItem() {
   const item = findElement({ data: items, key: "id", value: id });
 
   return item ? (
-    <AmForm
-      storeItem={item}
-      modify={true}
-      image={""}
-      handleSubmit={() => {}}
-      AddImage={() => {}}
-      RemoveImage={() => {}}
-      error={""}
-      loading={false}
-      setImage={() => {}}
-      setError={() => {}}
-    />
+    <AmForm storeItem={item} modify={true} />
   ) : (
     <Navigate to={"/admin/items"} />
   );

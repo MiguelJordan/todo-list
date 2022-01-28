@@ -28,12 +28,10 @@ const useStyles = makeStyles(() => ({
     maxWidth: "350px",
     padding: "20px",
     borderRadius: "3px",
+    marginTop: "90px",
     [theme.breakpoints.down("sm")]: {
       marginTop: "55px",
       width: 300,
-    },
-    [theme.breakpoints.up("md")]: {
-      marginTop: "90px",
     },
   },
   formHeader: {

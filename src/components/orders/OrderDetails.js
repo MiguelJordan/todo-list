@@ -75,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function OrderDetails({ order }) {
+export default function OrderDetails({ order, role }) {
   const { user } = useContext(AuthContext);
   const { t } = useContext(TranslationContext);
   const { toggleBackdrop } = useContext(BackdropContext);

@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { makeStyles } from "@mui/styles";
 
-import { Button, TextField, createTheme } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
 //context
@@ -11,8 +11,6 @@ import { TranslationContext } from "../../contexts/TranslationContext";
 //components
 import Dropdown from "../../components/subComponents/Dropdown";
 import Fabs from "../../components/subComponents/Fabs";
-
-const theme = createTheme();
 
 const useStyles = makeStyles(() => ({
   inputText: {
@@ -25,16 +23,10 @@ const useStyles = makeStyles(() => ({
     backgroundColor: "#FFFFFF",
     margin: "auto",
     maxWidth: "350px",
-
+    marginTop: "90px",
     padding: "20px",
     color: "#B3B3B3",
     borderRadius: "3px",
-    [theme.breakpoints.down("sm")]: {
-      marginTop: "80px",
-    },
-    [theme.breakpoints.up("md")]: {
-      marginTop: "90px",
-    },
   },
 }));
 

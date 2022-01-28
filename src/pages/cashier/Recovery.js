@@ -22,7 +22,7 @@ const useStyles = makeStyles(() => ({
     justifyContent: "center",
     backgroundColor: "#FFFFFF",
     margin: "auto",
-    maxWidth: "350px",
+    maxWidth: "320px",
     marginTop: "90px",
     padding: "20px",
     color: "#B3B3B3",

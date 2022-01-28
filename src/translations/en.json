@@ -80,8 +80,8 @@
       "account_menu": { "tooltip": "Account settings" }
     },
     "dialog": {
-      "agree": "Agree",
-      "disagree": "Disagree",
+      "agree": "Yes",
+      "disagree": "Cancel",
       "delete_order": "Are you sure you want to delete this order ?",
       "delete_item": "Are you sure you want to delete this item ?"
     }

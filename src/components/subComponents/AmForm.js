@@ -45,6 +45,9 @@ const useStyles = makeStyles(() => ({
     color: "black",
     marginBottom: "5px",
     borderRadius: "8px",
+    "&::before": {
+      opacity: 0,
+    },
   },
   accordionDetails: {
     height: "fit-content",
@@ -283,7 +286,7 @@ export default function AmForm({
                 validate={validateOtherUnits}
                 sx={{ width: "95%", margin: "5px auto" }}
                 sxAddBtn={{ color: "black" }}
-                sxAddField={{ flexFlow: "column" }}
+                sxAddField={{ flexFlow: "column", width: "90%" }}
                 sxRepeat={{
                   border: "1px solid grey",
                   borderRadius: 8,

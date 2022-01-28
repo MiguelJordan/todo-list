@@ -2,6 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { makeStyles } from "@mui/styles";
 import {
+  Button,
   Checkbox,
   FormControlLabel,
   IconButton,
@@ -415,6 +416,19 @@ export default function OrderDetails({ order, role }) {
               </IconButton>
             )}
           </div>
+        )}
+      </div>
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        {role === "cashier" && (
+          <Button style={{ backgroundColor: "#65C466" }} variant="contained">
+            Valider
+          </Button>
         )}
       </div>
 

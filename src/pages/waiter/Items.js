@@ -154,12 +154,7 @@ export default function Items({ orderId, orderItems, preview = true }) {
         />
         <Search onChange={setSearchVal} />
       </div>
-      <ItemList
-        items={filtered}
-        role="waiter"
-        orderId={orderId}
-        preview={preview}
-      />
+      <ItemList items={filtered} orderId={orderId} preview={preview} />
     </>
   );
 }

@@ -42,10 +42,6 @@ const OrderProvider = ({ children }) => {
     setOrders(_orders);
   };
 
-  const findOrder = ({ key = "id", value = "" }) => {
-    return orders.find((order) => order[key] === value);
-  };
-
   const makeQuery = ({ _start, _stop }) => {
     const { start, stop } = getPeriod({
       start: _start,
@@ -75,7 +71,6 @@ const OrderProvider = ({ children }) => {
 
   const context = {
     orders,
-    findOrder,
     makeQuery,
     removeOrder,
     setQuery,

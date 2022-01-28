@@ -56,7 +56,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const OrderItem = ({ item = {}, role = "" }) => {
+const OrderItem = ({ item = {} }) => {
   const { user } = useContext(AuthContext);
   const { toggleBackdrop } = useContext(BackdropContext);
   const { showNotification } = useContext(NotificationContext);
@@ -187,7 +187,7 @@ const OrderItem = ({ item = {}, role = "" }) => {
           </div>
         </div>
 
-        {role === "waiter" && (
+        {user.role === "waiter" && (
           <IconButton onClick={trigger}>
             <Delete style={{ color: "#FF0000" }} />
           </IconButton>

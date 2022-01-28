@@ -37,6 +37,10 @@ export const filter = ({
   });
 };
 
+export const findElement = ({ data = [], key = "id", value = "" }) => {
+  return data.find((order) => order[key] === value);
+};
+
 export const getBool = (value) => {
   return ["true", "yes"].includes(String(value).toLowerCase()) ? true : false;
 };

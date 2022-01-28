@@ -41,7 +41,7 @@ export default function Admin() {
         element={<Layout Main={AddItem} links={mainLinks} />}
       />
       <Route
-        path="/items/:id/edit"
+        path="/items/edit/:id"
         element={<Layout Main={EditItem} links={mainLinks} />}
       />
       {/* <Route

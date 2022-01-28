@@ -83,7 +83,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Item = ({ data = {}, orderId, preview = false }) => {
+const Item = ({ data = {}, orderId, preview = true }) => {
   const { user } = useContext(AuthContext);
   const { showNotification } = useContext(NotificationContext);
   const { sendEvent } = useContext(SocketContext);
@@ -347,7 +347,7 @@ const Item = ({ data = {}, orderId, preview = false }) => {
               <Button
                 variant="contained"
                 style={{ marginTop: "10px" }}
-                onClick={() => navigate(`/admin/items/${data.id}/edit`)}
+                onClick={() => navigate(`/admin/items/edit/${data.id}`)}
               >
                 {"Detail"}
               </Button>

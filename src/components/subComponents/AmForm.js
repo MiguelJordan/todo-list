@@ -256,7 +256,7 @@ export default function AmForm({
 
     // reset create form if all is good
     reset();
-    RemoveImage();
+    if (!modify) RemoveImage();
 
     // send store item created/updated event
     sendEvent({

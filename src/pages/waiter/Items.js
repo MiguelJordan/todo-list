@@ -1,13 +1,13 @@
 import { useContext, useEffect, useState } from "react";
 
 // components
+import Dropdown from "../../components/subComponents/Dropdown";
 import ItemList from "../../components/storeItems/ItemList";
 import Search from "../../components/subComponents/Search";
-import Dropdown from "../../components/subComponents/Dropdown";
 
 // contexts
-import { TranslationContext } from "../../contexts/TranslationContext";
 import { ItemContext } from "../../contexts/ItemContext";
+import { TranslationContext } from "../../contexts/TranslationContext";
 
 // functions
 import { filter, getList, groupData } from "../../functions/data";
@@ -154,12 +154,7 @@ export default function Items({ orderId, orderItems, preview = true }) {
         />
         <Search onChange={setSearchVal} />
       </div>
-      <ItemList
-        items={filtered}
-        role="waiter"
-        orderId={orderId}
-        preview={preview}
-      />
+      <ItemList items={filtered} orderId={orderId} preview={preview} />
     </>
   );
 }

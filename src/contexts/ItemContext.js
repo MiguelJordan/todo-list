@@ -15,11 +15,23 @@ const ItemProvider = ({ children }) => {
   const { user } = useContext(AuthContext);
 
   const getItems = async () => {
-    const query = {
-      companyCode: user.company.code,
-      storeId: user.workUnit.storeId,
-      query: JSON.stringify({ isBlocked: false }),
-    };
+    let query = {};
+
+    if (user?.role === "admin") {
+      query = {
+        companyCode: user.company.code,
+        query: JSON.stringify({
+          storeId: { $in: [user.workUnit.storeId, user.company.storeId] },
+        }),
+      };
+    } else {
+      query = {
+        companyCode: user.company.code,
+        query: JSON.stringify({
+          $and: [{ storeId: user.workUnit.storeId }, { isBlocked: false }],
+        }),
+      };
+    }
 
     const _items = await get({ url: "/storeItems", params: query });
 
@@ -38,7 +50,7 @@ const ItemProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (user?.role !== "waiter") return;
+    if (!["admin", "waiter"].includes(user?.role)) return;
     getItems();
   }, [user]);
 

@@ -26,12 +26,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function ItemList({
-  orderId,
-  items = [],
-  preview = true,
-  role = "",
-}) {
+export default function ItemList({ orderId, items = [], preview = true }) {
   const { t } = useContext(TranslationContext);
   const classes = useStyles();
 
@@ -39,13 +34,7 @@ export default function ItemList({
     <div className={classes.container}>
       {items.length !== 0 ? (
         items.map((item) => (
-          <Item
-            orderId={orderId}
-            data={item}
-            preview={preview}
-            role={role}
-            key={item.id}
-          />
+          <Item orderId={orderId} data={item} preview={preview} key={item.id} />
         ))
       ) : (
         <h2 style={{ marginTop: "100px" }}>

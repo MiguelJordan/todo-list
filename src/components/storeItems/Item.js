@@ -1,4 +1,6 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { Button, createTheme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import Card from "@mui/material/Card";
@@ -81,11 +83,12 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
+const Item = ({ data = {}, orderId, preview = true }) => {
   const { user } = useContext(AuthContext);
   const { showNotification } = useContext(NotificationContext);
   const { sendEvent } = useContext(SocketContext);
   const { t } = useContext(TranslationContext);
+  const navigate = useNavigate();
   const classes = useStyles();
 
   const [loading, setLoading] = useState(false);
@@ -229,7 +232,7 @@ const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
                 values={data.prices}
                 handleChange={(price) => setOrderItem({ ...orderItem, price })}
               />
-              {!preview && role === "waiter" && (
+              {!preview && user.role === "waiter" && (
                 <Dropdown
                   translated={true}
                   label={t("compo.item.isOffer")}
@@ -275,7 +278,7 @@ const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
                   }}
                 />
               </div>
-              {!preview && role === "waiter" && (
+              {!preview && user.role === "waiter" && (
                 <>
                   <div style={{ display: "flex", flexFlow: "row" }}>
                     <label htmlFor="">{t("compo.item.quantity")} :</label>
@@ -340,12 +343,14 @@ const Item = ({ data = {}, orderId, preview = false, role = "" }) => {
                 </>
               )}
             </div>
-            {role === "admin" && (
-              <>
-                <Button variant="contained" style={{ marginTop: "10px" }}>
-                  {"Detail"}
-                </Button>
-              </>
+            {user.role === "admin" && (
+              <Button
+                variant="contained"
+                style={{ marginTop: "10px" }}
+                onClick={() => navigate(`/admin/items/edit/${data.id}`)}
+              >
+                {"Detail"}
+              </Button>
             )}
           </div>
         </CardContent>

@@ -75,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function OrderDetails({ order, role }) {
+export default function OrderDetails({ order }) {
   const { user } = useContext(AuthContext);
   const { t } = useContext(TranslationContext);
   const { toggleBackdrop } = useContext(BackdropContext);
@@ -318,7 +318,7 @@ export default function OrderDetails({ order, role }) {
                 "DD-MM-YY , hh : mm"
               )}
             />
-            {role === "waiter" ? (
+            {user.role === "waiter" ? (
               <TextField
                 variant="standard"
                 label={t("compo.order.cashierId")}
@@ -328,7 +328,7 @@ export default function OrderDetails({ order, role }) {
                 }}
                 value={order.cashierId ?? ""}
               />
-            ) : role === "cashier" ? (
+            ) : user.role === "cashier" ? (
               <TextField
                 variant="standard"
                 label={t("compo.order.waiterId")}
@@ -405,7 +405,7 @@ export default function OrderDetails({ order, role }) {
           />
         </IconButton>
 
-        {role === "waiter" && (
+        {user.role === "waiter" && (
           <div>
             <IconButton variant="contained">
               <Print style={{ color: "#65C466" }} />
@@ -516,9 +516,9 @@ export default function OrderDetails({ order, role }) {
           </AccordionSummary>
           <AccordionDetails className={classes.accordionDetails}>
             <RepeatManager
-              AddField={role === "cashier" ? true : false}
+              AddField={user.role === "cashier" ? true : false}
               Component={AddPM}
-              displayDelete={role === "cashier" ? true : false}
+              displayDelete={user.role === "cashier" ? true : false}
               extraData={user.workUnit.paymentMethods}
               validate={validatePmAmount}
               readOnlyValues={valuesArray}

@@ -5,17 +5,18 @@ import { useParams, Navigate } from "react-router-dom";
 import Items from "./Items";
 
 // contexts
-import { AuthContext } from "../../contexts/AuthContext";
 import { OrderContext } from "../../contexts/OrderContext";
 
-export default function AddItems() {
-  const { user } = useContext(AuthContext);
-  const { findOrder } = useContext(OrderContext);
+// functions
+import { findElement } from "../../functions/data";
+
+export default function AddOrderItems() {
+  const { orders } = useContext(OrderContext);
   const { id } = useParams();
 
-  const order = findOrder({ key: "id", value: id });
+  const order = findElement({ data: orders, key: "id", value: id });
 
-  if (!order) return <Navigate to={`/${user.role}/orders`} />;
+  if (!order) return <Navigate to={"/waiter/orders"} />;
 
   return <Items orderId={id} orderItems={order.items} preview={false} />;
 }

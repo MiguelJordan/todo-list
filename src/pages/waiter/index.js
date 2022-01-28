@@ -5,7 +5,7 @@ import Layout from "../../components/_layout/Layout";
 
 import Items from "./Items";
 import Orders from "./Orders";
-import AddItems from "./Items.add";
+import AddOrderItems from "./Order.items.add";
 import CreateOrder from "./Order.add";
 import OrderDetails from "./Order.details";
 
@@ -30,7 +30,7 @@ export default function Waiter() {
       />
       <Route
         path="/orders/:id/add-items"
-        element={<Layout Main={AddItems} links={mainLinks} />}
+        element={<Layout Main={AddOrderItems} links={mainLinks} />}
       />
       <Route
         path="/orders/add"

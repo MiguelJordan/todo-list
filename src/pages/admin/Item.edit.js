@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { useParams, Navigate } from "react-router-dom";
 
 // components
@@ -8,7 +8,7 @@ import AmForm from "../../components/subComponents/AmForm";
 import { ItemContext } from "../../contexts/ItemContext";
 
 // functions
-import { findElement, toBase64 } from "../../functions/data";
+import { findElement } from "../../functions/data";
 
 export default function EditItem() {
   const { items } = useContext(ItemContext);
@@ -17,9 +17,7 @@ export default function EditItem() {
 
   const item = findElement({ data: items, key: "id", value: id });
 
-  if (!item) return <Navigate to={"/admin/items"} />;
-
-  return (
+  return item ? (
     <AmForm
       storeItem={item}
       modify={true}
@@ -32,5 +30,7 @@ export default function EditItem() {
       setImage={() => {}}
       setError={() => {}}
     />
+  ) : (
+    <Navigate to={"/admin/items"} />
   );
 }

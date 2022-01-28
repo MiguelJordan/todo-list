@@ -24,14 +24,6 @@ export default function Admin() {
         path="/orders/:id"
         element={<Layout Main={OrderDetails} links={mainLinks} />}
       />
-      {/* <Route
-        path="/staff/add"
-        element={<Layout Main={AddStaff} links={mainLinks} />}
-      />
-      <Route
-        path="/staff/:id"
-        element={<Layout Main={StaffDetails} links={mainLinks} />}
-      /> */}
       <Route
         path="/items"
         element={<Layout Main={Items} links={mainLinks} />}
@@ -44,10 +36,6 @@ export default function Admin() {
         path="/items/edit/:id"
         element={<Layout Main={EditItem} links={mainLinks} />}
       />
-      {/* <Route
-        path="/store/:id"
-        element={<Layout Main={StoreDetails} links={mainLinks} />}
-      /> */}
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

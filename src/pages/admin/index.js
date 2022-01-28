@@ -7,6 +7,7 @@ import Orders from "./Orders";
 import OrderDetails from "./Order.details";
 import AddItem from "./Item.add";
 import Items from "./Items";
+import EditItem from "./Item.edit";
 
 const NotFound = React.lazy(() => import("../404"));
 
@@ -39,10 +40,10 @@ export default function Admin() {
         path="/items/add"
         element={<Layout Main={AddItem} links={mainLinks} />}
       />
-      {/* <Route
-        path="/stores/item-modify"
-        element={<Layout Main={ModifyStoreItem} links={mainLinks} />}
-      /> */}
+      <Route
+        path="/items/:id/edit"
+        element={<Layout Main={EditItem} links={mainLinks} />}
+      />
       {/* <Route
         path="/store/:id"
         element={<Layout Main={StoreDetails} links={mainLinks} />}

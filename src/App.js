@@ -7,7 +7,6 @@ import DataLayerProvider from "./contexts/DataLayerContext";
 import ItemProvider from "./contexts/ItemContext";
 import OrderProvider from "./contexts/OrderContext";
 import SocketProvider from "./contexts/SocketContext";
-import StoreProvider from "./contexts/StoreContext";
 import ThemeProvider from "./contexts/ThemeContext";
 import TranslationProvider from "./contexts/TranslationContext";
 
@@ -23,15 +22,13 @@ function App() {
           <ThemeProvider>
             <AuthProvider>
               <SocketProvider>
-                <StoreProvider>
-                  <OrderProvider>
-                    <ItemProvider>
-                      <DataLayerProvider>
-                        <Router />
-                      </DataLayerProvider>
-                    </ItemProvider>
-                  </OrderProvider>
-                </StoreProvider>
+                <OrderProvider>
+                  <ItemProvider>
+                    <DataLayerProvider>
+                      <Router />
+                    </DataLayerProvider>
+                  </ItemProvider>
+                </OrderProvider>
               </SocketProvider>
             </AuthProvider>
           </ThemeProvider>

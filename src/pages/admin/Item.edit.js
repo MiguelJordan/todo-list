@@ -1,10 +1,13 @@
 import React, { useContext, useState } from "react";
 
+// components
+import AmForm from "../../components/subComponents/AmForm";
+
+// contexts
 import { ItemContext } from "../../contexts/ItemContext";
 
+// functions
 import { AddImage, RemoveImage, validateItem } from "../../functions/data";
-
-import AmForm from "../../components/subComponents/AmForm";
 
 export default function ModifyStoreItem() {
   const { items } = useContext(ItemContext);

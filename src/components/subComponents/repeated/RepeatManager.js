@@ -39,6 +39,7 @@ const RepeatManager = ({
   handleDelete,
   readOnlyValues = [],
   validate,
+  validateExtra,
   sx = {},
   sxAddBtn = {},
   sxAddField = {},
@@ -73,9 +74,11 @@ const RepeatManager = ({
         <Component
           reset={reset}
           extraData={extraData}
+          validateExtra={validateExtra}
           sx={sxComponent}
           onChange={(newVals) => {
-            if (validate) setBtnDisabled(!validate(newVals)?.valid);
+            if (validate)
+              setBtnDisabled(!validate(newVals, validateExtra)?.valid);
             setValues(newVals);
           }}
         />

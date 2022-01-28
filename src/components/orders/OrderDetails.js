@@ -132,7 +132,7 @@ export default function OrderDetails({ order, role }) {
 
   useEffect(() => {
     order.paymentMethods = valuesArray;
-    console.log(order.paymentMethods);
+    // console.log(order.paymentMethods);
   }, [valuesArray]);
 
   return (

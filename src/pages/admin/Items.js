@@ -134,8 +134,6 @@ export default function Items({ orderId, orderItems, preview = true }) {
     }
   }, [category, data, family]);
 
-  console.log(filtered);
-
   return (
     <>
       <PopUp open={popupOpen} close={setPopupOpen}>

@@ -332,6 +332,7 @@ const Item = ({ data = {}, orderId, preview = false }) => {
                   )}
                   <LoadingButton
                     loading={loading}
+                    loadingIndicator={`${t("compo.item.btn-add")}...`}
                     type="submit"
                     variant="outlined"
                     style={{ border: "4px solid #2B4362", margin: "5px auto" }}

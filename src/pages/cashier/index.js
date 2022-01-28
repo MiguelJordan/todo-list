@@ -11,7 +11,7 @@ const NotFound = React.lazy(() => import("../404"));
 
 const mainLinks = [
   { text: "bills", path: "/cashier" },
-  { text: "Recovery", path: "/cashier/recovery" },
+  { text: "recovery", path: "/cashier/recovery" },
 ];
 
 export default function Cashier() {

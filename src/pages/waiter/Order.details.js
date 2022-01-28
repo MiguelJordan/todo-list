@@ -15,7 +15,7 @@ const getOrderRoute = (role = "") => {
   return "/orders";
 };
 
-export default function OrderDetail() {
+export default function OrderDetail({ role = "waiter" }) {
   const { user } = useContext(AuthContext);
   const { findOrder } = useContext(OrderContext);
   const { id } = useParams();
@@ -24,5 +24,5 @@ export default function OrderDetail() {
 
   if (!order) return <Navigate to={getOrderRoute(user.role)} />;
 
-  return <OrderDetails order={order} role="waiter" />;
+  return <OrderDetails order={order} role={role} />;
 }

@@ -2,7 +2,6 @@ import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { makeStyles } from "@mui/styles";
 import {
-  Button,
   Checkbox,
   FormControlLabel,
   IconButton,
@@ -27,15 +26,21 @@ import Search from "../subComponents/Search";
 
 // contexts
 import { AuthContext } from "../../contexts/AuthContext";
+import { BackdropContext } from "../../contexts/feedback/BackdropContext";
+import { NotificationContext } from "../../contexts/feedback/NotificationContext";
+import { SocketContext } from "../../contexts/SocketContext";
 import { TranslationContext } from "../../contexts/TranslationContext";
 
 // functions
 import { getBool, removeAt } from "../../functions/data";
+import { _delete } from "../../functions/http";
+import queries from "../../functions/queries";
 
 // icons
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { FilterAlt, AddCircle, Delete, Print } from "@mui/icons-material";
 import InfoIcon from "@mui/icons-material/Info";
+import AlertDialog from "../subComponents/Dialog";
 
 const useStyles = makeStyles((theme) => ({
   buttonGroup: {
@@ -72,10 +77,13 @@ const useStyles = makeStyles((theme) => ({
 export default function OrderDetails({ order, role }) {
   const { user } = useContext(AuthContext);
   const { t } = useContext(TranslationContext);
+  const { toggleBackdrop } = useContext(BackdropContext);
+  const { showNotification } = useContext(NotificationContext);
+  const { sendEvent } = useContext(SocketContext);
   const navigate = useNavigate();
   const classes = useStyles();
 
-  const [valuesArray, setValuesArray] = useState([]);
+  const [valuesArray, setValuesArray] = useState(order.paymentMethods);
 
   const [open, setOpen] = useState(false);
   const [component, setComponent] = useState("");
@@ -101,6 +109,85 @@ export default function OrderDetails({ order, role }) {
   const [cat, setCat] = useState(categories[0] ?? "");
   const [offer, setOffer] = useState("no");
   const [searchVal, setSearchVal] = useState("");
+
+  const [openDialog, setOpenDialog] = useState(false);
+  const [_deleteOrder, setDeleteOrder] = useState({});
+  const [dialogMsg, setDialogMsg] = useState("");
+
+  const handleclose = () => setOpenDialog(false);
+
+  const trigger = () => {
+    setDeleteOrder(order);
+    setDialogMsg(`${t("compo.dialog.delete_order")} ${order.tableName}`);
+    setOpenDialog(true);
+  };
+
+  const deleteOrder = async (order) => {
+    if (!["admin", "waiter"].includes(user.role)) return;
+
+    if (order.isPaid && user.role !== "admin") {
+      return showNotification({
+        msg: t("server_err.Invalid operation"),
+        color: "error",
+      });
+    }
+
+    toggleBackdrop(true);
+
+    const res = await _delete({
+      url: "/orders",
+      params: { companyCode: user.company.code, id: order.id },
+    });
+
+    toggleBackdrop(false);
+
+    if (res.error) {
+      return showNotification({
+        msg: t(`server_err.${res.error}`),
+        color: "error",
+      });
+    }
+
+    // send order deleted event
+    sendEvent({
+      name: "cE-order-deleted",
+      props: { id: order.id },
+      rooms: [user.workUnit.code],
+    });
+
+    if (!order.isPaid && order.items.length) {
+      // send order deleted event
+      sendEvent({
+        name: "cE-store-items-updated",
+        props: {
+          companyCode: user.company.code,
+          query: queries["cE-store-items-updated"]({
+            items: order.items.map((item) => item.name),
+            storeId: user.workUnit.storeId,
+          }),
+        },
+        rooms: [user.workUnit.code],
+      });
+    }
+
+    return showNotification({
+      msg: t("feedback.waiter.order deleted success"),
+      color: "success",
+    });
+  };
+
+  const agree = {
+    bgcolor: "red",
+    color: "white",
+
+    handler: () => deleteOrder(_deleteOrder),
+  };
+  const disagree = {
+    bgcolor: "black",
+    color: "white",
+
+    handler: () => {},
+  };
 
   const _isOffer = getBool(offer);
 
@@ -132,11 +219,18 @@ export default function OrderDetails({ order, role }) {
 
   useEffect(() => {
     order.paymentMethods = valuesArray;
-    // console.log(order.paymentMethods);
   }, [valuesArray]);
 
   return (
     <>
+      <AlertDialog
+        _open={openDialog}
+        handleClose={handleclose}
+        agree={agree}
+        disagree={disagree}
+        content={dialogMsg}
+      />
+
       <PopUp open={open} close={setOpen}>
         {component === "filter" && (
           <div>
@@ -309,20 +403,18 @@ export default function OrderDetails({ order, role }) {
             }}
           />
         </IconButton>
+
         {role === "waiter" && (
-          <>
+          <div>
             <IconButton variant="contained">
               <Print style={{ color: "#65C466" }} />
             </IconButton>
             {!order.isPaid && (
-              <IconButton variant="contained">
+              <IconButton variant="contained" onClick={trigger}>
                 <Delete style={{ color: "#FF0000" }} />
               </IconButton>
             )}
-          </>
-        )}
-        {role === "cashier" && (
-          <Button variant="contained"> {t("compo.order.approve")}</Button>
+          </div>
         )}
       </div>
 
@@ -410,7 +502,9 @@ export default function OrderDetails({ order, role }) {
           </AccordionSummary>
           <AccordionDetails className={classes.accordionDetails}>
             <RepeatManager
+              AddField={role === "cashier" ? true : false}
               Component={AddPM}
+              displayDelete={role === "cashier" ? true : false}
               extraData={user.workUnit.paymentMethods}
               validate={validatePmAmount}
               readOnlyValues={valuesArray}

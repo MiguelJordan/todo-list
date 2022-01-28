@@ -23,7 +23,7 @@
       }
     },
     "cashier": {
-      "nav": { "bills": "Factures" }
+      "nav": { "bills": "Factures", "recovery": "Recouvrement" }
     },
     "waiter": {
       "nav": { "items": "Articles", "orders": "Commandes" }
@@ -78,6 +78,12 @@
     "nav": {
       "login_btn": "Connexion",
       "account_menu": { "tooltip": "Paramètres du compte" }
+    },
+    "dialog": {
+      "agree": "Oui",
+      "disagree": "Non",
+      "delete_order": "Voulez-vous vraiment supprimer cette commande ?",
+      "delete_item": "Êtes-vous sûr de vouloir supprimer cet article ?"
     }
   },
   "feedback": {
@@ -115,6 +121,11 @@
       },
       "orders": {
         "form_add_order": { "title": "Nouvelle Commande", "add_btn": "Ajouter" }
+      }
+    },
+    "cashier": {
+      "recovery": {
+        "form_recovery": { "title": "Recouvrement", "add-btn": "Ajouter" }
       }
     }
   },

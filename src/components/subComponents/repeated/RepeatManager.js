@@ -33,7 +33,9 @@ const useStyles = makeStyles(() => ({
 }));
 
 const RepeatManager = ({
+  AddField = true,
   Component,
+  displayDelete = true,
   extraData = [],
   handleAdd,
   handleDelete,
@@ -62,6 +64,7 @@ const RepeatManager = ({
             <Component
               key={index}
               deleteKey={index}
+              displayDelete={displayDelete}
               readOnly={true}
               values={val}
               handleDelete={handleDelete}
@@ -70,32 +73,32 @@ const RepeatManager = ({
           );
         })}
       </div>
-      <div className={classes.addField} style={{ ...sxAddField }}>
-        <Component
-          reset={reset}
-          extraData={extraData}
-          validateExtra={validateExtra}
-          sx={sxComponent}
-          onChange={(newVals) => {
-            if (validate)
-              setBtnDisabled(!validate(newVals, validateExtra)?.valid);
-            setValues(newVals);
-          }}
-        />
-        <Button
-          style={{
-            ...sxAddBtn,
-            color: !btnDisabled ? sxAddBtn.color ?? "#B3B3B3" : "",
-          }}
-          disabled={btnDisabled}
-          onClick={() => {
-            handleAdd(values);
-            setReset(!reset);
-          }}
-        >
-          {t("compo.repeatManager.add-btn")}
-        </Button>
-      </div>
+      {AddField && (
+        <div className={classes.addField} style={{ ...sxAddField }}>
+          <Component
+            reset={reset}
+            extraData={extraData}
+            sx={sxComponent}
+            onChange={(newVals) => {
+              if (validate) setBtnDisabled(!validate(newVals)?.valid);
+              setValues(newVals);
+            }}
+          />
+          <Button
+            style={{
+              ...sxAddBtn,
+              color: !btnDisabled ? sxAddBtn.color ?? "#B3B3B3" : "",
+            }}
+            disabled={btnDisabled}
+            onClick={() => {
+              handleAdd(values);
+              setReset(!reset);
+            }}
+          >
+            {t("compo.repeatManager.add-btn")}
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

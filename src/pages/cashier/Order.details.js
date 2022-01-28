@@ -2,5 +2,5 @@
 import OrderDetails from "../waiter/Order.details";
 
 export default function BillDetails() {
-  return <OrderDetails />;
+  return <OrderDetails role="cashier" />;
 }

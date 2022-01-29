@@ -5,7 +5,7 @@ import { AuthContext } from "./AuthContext";
 import { get } from "../functions/http";
 
 // functions
-import { getList, getUnique } from "../functions/data";
+import { filter, getList, getUnique } from "../functions/data";
 
 export const ItemContext = createContext();
 
@@ -46,7 +46,15 @@ const ItemProvider = ({ children }) => {
   };
 
   const updateItems = (_items = []) => {
-    setItems(getUnique({ data: [...items, ..._items] }));
+    if (!["admin", "waiter"].includes(user?.role)) return;
+
+    _items = getUnique({ data: [...items, ..._items], key: "id" });
+
+    if (user.role === "waiter") {
+      _items = filter({ data: _items, criteria: "isBlocked", value: false });
+    }
+
+    setItems(_items);
   };
 
   useEffect(() => {

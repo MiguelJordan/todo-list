@@ -133,7 +133,7 @@ const Item = ({ data = {}, orderId, preview = true }) => {
     [data.otherUnits, orderItem.quantity, orderItem.otherQuantities]
   );
 
-  const createOrderItem = async () => {
+  const AddOrderItem = async () => {
     orderItem.isOffer = getBool(orderItem.isOffer);
 
     const isOffer = orderItem.isOffer;
@@ -185,17 +185,13 @@ const Item = ({ data = {}, orderId, preview = true }) => {
       rooms: [user.workUnit.code],
     });
 
-    // send order item created event
+    // send order item created/updated event
     sendEvent({
-      name: "cE-order-item-created",
-      props: {
-        companyCode: user.company.code,
-        id: orderId,
-      },
+      name: "cE-order-updated",
+      props: { companyCode: user.company.code, id: orderId },
       rooms: [user.workUnit.code],
     });
 
-    //toggleBackdrop(false);
     setLoading(false);
 
     showNotification({
@@ -336,7 +332,7 @@ const Item = ({ data = {}, orderId, preview = true }) => {
                     type="submit"
                     variant="outlined"
                     style={{ border: "4px solid #2B4362", margin: "5px auto" }}
-                    onClick={createOrderItem}
+                    onClick={AddOrderItem}
                   >
                     {t("compo.item.btn-add")}
                   </LoadingButton>

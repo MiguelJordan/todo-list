@@ -87,7 +87,7 @@ export default function AddOrder() {
 
     // sending order created event
     sendEvent({
-      name: "cE-order-created",
+      name: "cE-order-updated",
       props: {
         companyCode: user.company.code,
         id: res.insertedId,

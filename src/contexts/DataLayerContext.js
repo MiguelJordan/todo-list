@@ -20,58 +20,46 @@ const DataLayerProvider = ({ children }) => {
   const { removeOrder, updateOrders } = useContext(OrderContext);
   const { socket } = useContext(SocketContext);
 
-  const _updateOrders = (_order) => {
+  const _updateOrders = (order) => {
     if (!["admin", "cashier", "waiter"].includes(user?.role)) {
       return;
     }
 
     if (user.role === "waiter") {
-      // console.log(_order);
-      if (_order.waiterId !== user.id) return;
+      if (order.waiterId !== user.id) return;
     }
+    // console.log(order);
 
-    updateOrders([_order]);
+    updateOrders([order]);
   };
 
   const deleteOrder = (id) => (user ? removeOrder(id) : null);
 
-  const updateStoreItems = (_items = []) => {
+  const _updateItems = (_items = []) => {
     if (!["admin", "waiter"].includes(user?.role)) {
       return;
     }
 
-    if (user.role === "admin") return updateItems(_items);
+    // console.log("Updated items:", _items);
 
-    if (user.role === "waiter") {
-      // console.log(_items);
-      _items = filter({ data: _items, criteria: "isBlocked", value: false });
-      updateItems(_items);
-    }
+    updateItems(_items);
   };
 
   useEffect(() => {
+    // items
+    socket.on("cE-store-items-updated", _updateItems);
+
     // orders
-    socket.on("cE-order-created", _updateOrders);
     socket.on("cE-order-deleted", deleteOrder);
     socket.on("cE-order-updated", _updateOrders);
 
-    // order items
-    socket.on("cE-order-item-created", _updateOrders);
-
-    // store items
-    socket.on("cE-store-items-updated", updateStoreItems);
-
     return () => {
       // orders
-      socket.off("cE-order-created", _updateOrders);
       socket.off("cE-order-deleted", deleteOrder);
       socket.off("cE-order-updated", _updateOrders);
 
-      // order items
-      socket.off("cE-order-item-created", _updateOrders);
-
       // store items
-      socket.off("cE-store-items-updated", updateStoreItems);
+      socket.off("cE-store-items-updated", _updateItems);
     };
   }, [removeOrder, socket, updateItems, updateOrders, user]);
 

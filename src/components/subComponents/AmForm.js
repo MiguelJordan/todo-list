@@ -306,7 +306,6 @@ export default function AmForm({ storeItem, modify = false }) {
     const _image = _imageUrl ? getImage({ url: _imageUrl }) : null;
 
     setImage(_image);
-    if (_imageUrl) setImageUrl(_imageUrl);
     setUpdate(storeItem);
   }, [storeItem]);
 

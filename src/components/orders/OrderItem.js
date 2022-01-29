@@ -108,7 +108,7 @@ const OrderItem = ({ item = {} }) => {
     // send order updated event
     sendEvent({
       name: "cE-order-updated",
-      props: { id: item.orderId, companyCode: item.companyCode },
+      props: { companyCode: item.companyCode, id: item.orderId },
       rooms: [user.workUnit.code],
     });
 

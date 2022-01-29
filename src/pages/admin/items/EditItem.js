@@ -2,13 +2,13 @@ import React, { useContext } from "react";
 import { useParams, Navigate } from "react-router-dom";
 
 // components
-import AmForm from "../../components/subComponents/AmForm";
+import AmForm from "../../../components/subComponents/AmForm";
 
 // contexts
-import { ItemContext } from "../../contexts/ItemContext";
+import { ItemContext } from "../../../contexts/ItemContext";
 
 // functions
-import { findElement } from "../../functions/data";
+import { findElement } from "../../../functions/data";
 
 export default function EditItem() {
   const { items } = useContext(ItemContext);

@@ -6,15 +6,15 @@ import { useNavigate } from "react-router-dom";
 import { LoadingButton } from "@mui/lab";
 
 // components
-import Dropdown from "../../components/subComponents/Dropdown";
+import Dropdown from "../../../components/subComponents/Dropdown";
 
 // contexts
-import { AuthContext } from "../../contexts/AuthContext";
-import { SocketContext } from "../../contexts/SocketContext";
-import { TranslationContext } from "../../contexts/TranslationContext";
+import { AuthContext } from "../../../contexts/AuthContext";
+import { SocketContext } from "../../../contexts/SocketContext";
+import { TranslationContext } from "../../../contexts/TranslationContext";
 
 // functions
-import { post } from "../../functions/http";
+import { post } from "../../../functions/http";
 
 const theme = createTheme();
 
@@ -42,7 +42,7 @@ const useStyles = makeStyles(() => ({
   inputText: { color: "black", marginBottom: "5px", marginTop: "0px" },
 }));
 
-export default function CreateOrder() {
+export default function AddOrder() {
   const { user } = useContext(AuthContext);
   const { sendEvent } = useContext(SocketContext);
   const { t } = useContext(TranslationContext);

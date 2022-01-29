@@ -2,15 +2,15 @@ import { useContext } from "react";
 import { useParams, Navigate } from "react-router-dom";
 
 // components
-import Items from "./Items";
+import Items from "../items";
 
 // contexts
-import { OrderContext } from "../../contexts/OrderContext";
+import { OrderContext } from "../../../contexts/OrderContext";
 
 // functions
-import { findElement } from "../../functions/data";
+import { findElement } from "../../../functions/data";
 
-export default function AddOrderItems() {
+export default function AddItems() {
   const { orders } = useContext(OrderContext);
   const { id } = useParams();
 

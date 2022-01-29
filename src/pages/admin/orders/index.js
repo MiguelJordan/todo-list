@@ -9,21 +9,21 @@ import { createTheme, ThemeProvider } from "@mui/material";
 import { FilterAlt } from "@mui/icons-material";
 
 //components
-import OrderList from "../../components/orders/OrderList";
-import Search from "../../components/subComponents/Search";
-import Dropdown from "../../components/subComponents/Dropdown";
-import PopUp from "../../components/subComponents/PopUp";
+import OrderList from "../../../components/orders/OrderList";
+import Search from "../../../components/subComponents/Search";
+import Dropdown from "../../../components/subComponents/Dropdown";
+import PopUp from "../../../components/subComponents/PopUp";
 
 // contexts
-import { AuthContext } from "../../contexts/AuthContext";
-import { OrderContext } from "../../contexts/OrderContext";
-// import { TranslationContext } from "../../contexts/TranslationContext";
+import { AuthContext } from "../../../contexts/AuthContext";
+import { OrderContext } from "../../../contexts/OrderContext";
+// import { TranslationContext } from "../../../contexts/TranslationContext";
 
 // functions
-import { getPeriod } from "../../functions/data";
+import { getPeriod } from "../../../functions/data";
 
 // hooks
-import useSearch from "../../hooks/useSearch";
+import useSearch from "../../../hooks/useSearch";
 
 const theme = createTheme({
   components: {

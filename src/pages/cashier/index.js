@@ -4,7 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import Layout from "../../components/_layout/Layout";
 
 import Orders from "./Orders";
-import OrderDetails from "./Order.details";
+import OrderDetails from "./OrderDetails";
 import Recovery from "./Recovery";
 
 const NotFound = React.lazy(() => import("../404"));

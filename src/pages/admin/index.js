@@ -3,11 +3,14 @@ import { Route, Routes } from "react-router-dom";
 
 import Layout from "../../components/_layout/Layout";
 
-import Orders from "./Orders";
-import OrderDetails from "./Order.details";
-import AddItem from "./Item.add";
-import Items from "./Items";
-import EditItem from "./Item.edit";
+// items
+import AddItem from "./items/AddItem";
+import Items from "./items";
+import EditItem from "./items/EditItem";
+
+// orders
+import Orders from "./orders";
+import OrderDetails from "./orders/OrderDetails";
 
 const NotFound = React.lazy(() => import("../404"));
 

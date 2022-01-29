@@ -1,15 +1,15 @@
 import { useContext } from "react";
 
 // components
-import OrderList from "../../components/orders/OrderList";
-import Search from "../../components/subComponents/Search";
-import Fabs from "../../components/subComponents/Fabs";
+import OrderList from "../../../components/orders/OrderList";
+import Search from "../../../components/subComponents/Search";
+import Fabs from "../../../components/subComponents/Fabs";
 
 // contexts
-import { OrderContext } from "../../contexts/OrderContext";
+import { OrderContext } from "../../../contexts/OrderContext";
 
 // hooks
-import useSearch from "../../hooks/useSearch";
+import useSearch from "../../../hooks/useSearch";
 
 export default function Orders() {
   const { orders } = useContext(OrderContext);

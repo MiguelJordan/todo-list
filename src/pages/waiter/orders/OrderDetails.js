@@ -2,14 +2,14 @@ import { useContext } from "react";
 import { useParams, Navigate } from "react-router-dom";
 
 // components
-import OrderDetails from "../../components/orders/OrderDetails";
+import OrderDetails from "../../../components/orders/OrderDetails";
 
 // contexts
-import { AuthContext } from "../../contexts/AuthContext";
-import { OrderContext } from "../../contexts/OrderContext";
+import { AuthContext } from "../../../contexts/AuthContext";
+import { OrderContext } from "../../../contexts/OrderContext";
 
 // functions
-import { findElement } from "../../functions/data";
+import { findElement } from "../../../functions/data";
 
 const getOrderRoute = (role = "") => {
   if (role === "admin") return "/admin";

@@ -10,11 +10,11 @@ import { makeStyles } from "@mui/styles";
 import { EditRounded, DeleteRounded } from "@mui/icons-material";
 
 //components
-import Dropdown from "../../components/subComponents/Dropdown";
+import Dropdown from "../../../components/subComponents/Dropdown";
 // import DisplayField from "../../components/subComponents/DisplayField";
 // import PopOver from "../../components/subComponents/PopOver";
-import useSearch from "../../hooks/useSearch";
-import Search from "../../components/subComponents/Search";
+import useSearch from "../../../hooks/useSearch";
+import Search from "../../../components/subComponents/Search";
 import { createTheme } from "@mui/material";
 
 const theme = createTheme();

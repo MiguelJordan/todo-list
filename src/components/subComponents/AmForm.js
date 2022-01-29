@@ -97,7 +97,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function AmForm({ storeItem = {}, modify = false }) {
+export default function AmForm({ storeItem, modify = false }) {
   const { t } = useContext(TranslationContext);
   const { user } = useContext(AuthContext);
   const { showNotification } = useContext(NotificationContext);
@@ -144,7 +144,10 @@ export default function AmForm({ storeItem = {}, modify = false }) {
   const reset = () => {
     setError("");
 
-    if (!modify) return setItem(_item);
+    if (!modify) {
+      setImage(null);
+      return setItem(_item);
+    }
 
     setImage(getImage({ url: storeItem.imageUrl }));
     setUpdate(storeItem);
@@ -259,7 +262,6 @@ export default function AmForm({ storeItem = {}, modify = false }) {
 
     // reset create form if all is good
     reset();
-    if (!modify) RemoveImage();
 
     // send store item created/updated event
     sendEvent({
@@ -300,11 +302,11 @@ export default function AmForm({ storeItem = {}, modify = false }) {
   ];
 
   useEffect(() => {
-    const _image = storeItem.imageUrl
-      ? getImage({ url: storeItem.imageUrl })
-      : null;
+    const _imageUrl = storeItem?.imageUrl;
+    const _image = _imageUrl ? getImage({ url: _imageUrl }) : null;
 
     setImage(_image);
+    if (_imageUrl) setImageUrl(_imageUrl);
     setUpdate(storeItem);
   }, [storeItem]);
 
@@ -616,7 +618,7 @@ export default function AmForm({ storeItem = {}, modify = false }) {
             disabled={loading ? true : false}
             variant="contained"
             style={{ backgroundColor: "#FF0000" }}
-            onClick={() => reset()}
+            onClick={reset}
           >
             {t("pages.admin.modify-storeItem.cancel-btn")}
           </Button>

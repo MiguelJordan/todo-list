@@ -1,9 +1,9 @@
 import { TextField, Button, createTheme } from "@mui/material";
 import { useContext, useState } from "react";
-import { AuthContext } from "../../contexts/AuthContext";
+import { AuthContext } from "../../../contexts/AuthContext";
 
 import { makeStyles } from "@mui/styles";
-import Dropdown from "../../components/subComponents/Dropdown";
+import Dropdown from "../../../components/subComponents/Dropdown";
 
 const theme = createTheme();
 

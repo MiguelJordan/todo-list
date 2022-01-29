@@ -25,9 +25,14 @@ import RepeatManager from "./repeated/RepeatManager";
 // contexts
 import { TranslationContext } from "../../contexts/TranslationContext";
 import { AuthContext } from "../../contexts/AuthContext";
+import { SocketContext } from "../../contexts/SocketContext";
+import { NotificationContext } from "../../contexts/feedback/NotificationContext";
 
 // functions
 import { removeAt } from "../../functions/data";
+import { toBase64 } from "../../functions/data";
+import { sendFormData } from "../../functions/http";
+import queries from "../../functions/queries";
 
 // icons
 import {
@@ -45,6 +50,9 @@ const useStyles = makeStyles(() => ({
     color: "black",
     marginBottom: "5px",
     borderRadius: "8px",
+    "&::before": {
+      opacity: 0,
+    },
   },
   accordionDetails: {
     height: "fit-content",
@@ -67,12 +75,10 @@ const useStyles = makeStyles(() => ({
     maxWidth: "350px",
     padding: "20px",
     borderRadius: "3px",
+    marginTop: "40px",
     [theme.breakpoints.down("sm")]: {
-      marginTop: "55px",
+      marginTop: "35px",
       width: 300,
-    },
-    [theme.breakpoints.up("md")]: {
-      marginTop: "90px",
     },
   },
   rowField: {
@@ -95,19 +101,13 @@ const useStyles = makeStyles(() => ({
 export default function AmForm({
   storeItem,
   modify = false,
-  handleSubmit,
   target = "storeItems",
-  image,
-  setImage,
-  AddImage,
-  RemoveImage,
-  loading,
-  error,
-  setError,
 }) {
   const { t } = useContext(TranslationContext);
   const { user } = useContext(AuthContext);
   const classes = useStyles();
+  const { showNotification } = useContext(NotificationContext);
+  const { sendEvent } = useContext(SocketContext);
 
   const [stores] = useState([
     user.workUnit.storeId ?? "",
@@ -134,6 +134,151 @@ export default function AmForm({
   const [item, setItem] = useState(_item);
   const [updateItem, setUpdate] = useState(storeItem ?? {});
 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [image, setImage] = useState(modify ? updateItem.imageUrl : null);
+  const [imageUrl, setImageUrl] = useState(null);
+
+  const getInputValue = (e) => {
+    return modify
+      ? setUpdate({ ...updateItem, [e.target.name]: e.target.value })
+      : setItem({ ...item, [e.target.name]: e.target.value });
+  };
+
+  const reset = () => {
+    if (!modify) return setItem(_item);
+    setError("");
+    setImage(storeItem.imageUrl);
+    setUpdate(storeItem);
+  };
+
+  const AddImage = async (e) => {
+    if (!e) return "";
+    setError("");
+    let file = e.target.files[0];
+
+    const typeInfo = file.type.split("/"); // [mimeType ,extension]
+
+    // validate type & extension
+    if (
+      typeInfo[0] !== "image" ||
+      !["jpg", "png", "jpeg"].includes(typeInfo[1])
+    ) {
+      return setError("Invalid image - format");
+    }
+
+    // validate file size
+    if (file.size > 5 * 1024 * 1024) {
+      return setError("Invalid image - size too large");
+    }
+
+    let base64 = await toBase64(file);
+
+    setImage(base64);
+    setImageUrl(file);
+  };
+
+  const RemoveImage = () => {
+    setImage(null);
+    setImageUrl(null);
+  };
+
+  const validateItem = (item) => {
+    item.name = item.name?.trim();
+    if (!item.name) return { valid: false, message: "Invalid item name" };
+
+    item.family = item.family?.trim();
+    if (!item.family) return { valid: false, message: "Invalid family" };
+
+    item.category = item.category?.trim();
+    if (!item.category) return { valid: false, message: "Invalid category" };
+
+    item.measureUnit = item.measureUnit?.trim();
+    if (!item.measureUnit) {
+      return { valid: false, message: "Invalid measure unit" };
+    }
+
+    item.measureUnitPlural = item.measureUnitPlural?.trim();
+    if (!item.measureUnitPlural) {
+      return { valid: false, message: "Invalid measure unit" };
+    }
+
+    if (isNaN(item.quantity) || item.quantity < 0) {
+      return { valid: false, message: "Invalid quantity" };
+    }
+    item.quantity = Number(item.quantity);
+
+    if (isNaN(item.cost) || item.cost < 0) {
+      return { valid: false, message: "Invalid cost price" };
+    }
+    item.cost = Number(item.cost);
+
+    if (isNaN(item.commission) || item.commission < 0) {
+      return { valid: false, message: "Invalid commission" };
+    }
+    item.commission = Number(item.commission);
+
+    if (isNaN(item.commissionRatio) || item.commissionRatio < 1) {
+      return { valid: false, message: "Invalid commission ratio" };
+    }
+    item.commissionRatio = Number(item.commissionRatio);
+
+    if (imageUrl) {
+      item.imageUrl = imageUrl;
+    } else {
+      delete item?.imageUrl;
+    }
+
+    return { valid: true, validated: item };
+  };
+
+  const handleSubmit = async (item) => {
+    setError("");
+
+    const { valid, validated, message } = validateItem(item, imageUrl);
+
+    if (!valid) return setError(message);
+
+    item = validated;
+
+    setLoading(true);
+
+    const res = await sendFormData({
+      url: "/storeItems",
+      values: item,
+      method: "POST",
+    });
+
+    if (res.error) {
+      setLoading(false);
+      return setError(res.error);
+    }
+
+    // reset create form if all is good
+    reset();
+    if (!modify) RemoveImage();
+
+    // send store item created/updated event
+    sendEvent({
+      name: "cE-store-items-updated",
+      props: {
+        companyCode: user.company.code,
+        query: queries["cE-store-items-updated"]({
+          items: [item.name],
+          storeId: item.storeId,
+        }),
+      },
+      rooms: [user.workUnit.code],
+    });
+
+    showNotification({
+      msg: t("feedback.admin.store item created success"),
+      color: "success",
+    });
+
+    setLoading(false);
+  };
+
   const popMenu = [
     {
       name: "Select Image",
@@ -150,25 +295,12 @@ export default function AmForm({
     },
   ];
 
-  const getInputValue = (e) => {
-    return modify
-      ? setUpdate({ ...updateItem, [e.target.name]: e.target.value })
-      : setItem({ ...item, [e.target.name]: e.target.value });
-  };
-
-  const reset = () => {
-    if (!modify) return setItem(_item);
-    setError("");
-    setImage(storeItem.imageUrl);
-    setUpdate(storeItem);
-  };
-
   return (
     <form
       className={classes.form}
       onSubmit={(e) => {
         e.preventDefault();
-        if (!modify) return handleSubmit(item, reset);
+        if (!modify) return handleSubmit(item);
         return handleSubmit(updateItem);
       }}
     >
@@ -191,7 +323,7 @@ export default function AmForm({
             display: "flex",
             flexFlow: "column",
             justifyContent: "flex-start",
-            height: "235px",
+            height: "270px",
             overflowY: "auto",
             paddingTop: 5,
           }}
@@ -283,7 +415,7 @@ export default function AmForm({
                 validate={validateOtherUnits}
                 sx={{ width: "95%", margin: "5px auto" }}
                 sxAddBtn={{ color: "black" }}
-                sxAddField={{ flexFlow: "column" }}
+                sxAddField={{ flexFlow: "column", width: "90%" }}
                 sxRepeat={{
                   border: "1px solid grey",
                   borderRadius: 8,

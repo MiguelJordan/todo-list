@@ -39,14 +39,12 @@ const useStyles = makeStyles(() => ({
     backgroundColor: "#FFFFFF",
     margin: "auto",
     maxWidth: "350px",
+    marginTop: "120px",
     padding: "20px",
     borderRadius: "3px",
     [theme.breakpoints.down("sm")]: {
       marginTop: "55px",
       width: 300,
-    },
-    [theme.breakpoints.up("md")]: {
-      marginTop: "120px",
     },
   },
   inputText: {

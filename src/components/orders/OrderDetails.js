@@ -2,6 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { makeStyles } from "@mui/styles";
 import {
+  Button,
   Checkbox,
   FormControlLabel,
   IconButton,
@@ -418,6 +419,19 @@ export default function OrderDetails({ order }) {
         )}
       </div>
 
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        {user.role === "cashier" && !order.isPaid && (
+          <Button style={{ backgroundColor: "#65C466" }} variant="contained">
+            Valider
+          </Button>
+        )}
+      </div>
+
       <div className={classes.accordionParent}>
         <Accordion className={classes.accordion}>
           <AccordionSummary
@@ -437,6 +451,7 @@ export default function OrderDetails({ order }) {
                 marginBottom: "5px",
                 backgroundColor: "#001d42",
                 width: "95%",
+                height: "43px",
               }}
             >
               <IconButton
@@ -460,7 +475,7 @@ export default function OrderDetails({ order }) {
                     <AddCircle
                       style={{
                         color: "#2196f3",
-                        fontSize: "33px",
+                        fontSize: "39px",
 
                         margin: 0,
                         padding: 0,
@@ -502,9 +517,11 @@ export default function OrderDetails({ order }) {
           </AccordionSummary>
           <AccordionDetails className={classes.accordionDetails}>
             <RepeatManager
-              AddField={user.role === "cashier" ? true : false}
+              AddField={user.role === "cashier" && !order.isPaid ? true : false}
               Component={AddPM}
-              displayDelete={user.role === "cashier" ? true : false}
+              displayDelete={
+                user.role === "cashier" && !order.isPaid ? true : false
+              }
               extraData={user.workUnit.paymentMethods}
               validate={validatePmAmount}
               readOnlyValues={valuesArray}

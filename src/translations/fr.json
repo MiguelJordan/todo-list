@@ -81,7 +81,7 @@
     },
     "dialog": {
       "agree": "Oui",
-      "disagree": "Non",
+      "disagree": "Annuler",
       "delete_order": "Voulez-vous vraiment supprimer cette commande ?",
       "delete_item": "Êtes-vous sûr de vouloir supprimer cet article ?"
     }

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { makeStyles } from "@mui/styles";
 import { LoadingButton } from "@mui/lab";
 import {
@@ -23,14 +23,13 @@ import PopOver from "./PopOver";
 import RepeatManager from "./repeated/RepeatManager";
 
 // contexts
-import { TranslationContext } from "../../contexts/TranslationContext";
 import { AuthContext } from "../../contexts/AuthContext";
-import { SocketContext } from "../../contexts/SocketContext";
 import { NotificationContext } from "../../contexts/feedback/NotificationContext";
+import { TranslationContext } from "../../contexts/TranslationContext";
+import { SocketContext } from "../../contexts/SocketContext";
 
 // functions
-import { removeAt } from "../../functions/data";
-import { toBase64 } from "../../functions/data";
+import { getImage, removeAt, toBase64 } from "../../functions/data";
 import { sendFormData } from "../../functions/http";
 import queries from "../../functions/queries";
 
@@ -98,16 +97,13 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function AmForm({
-  storeItem,
-  modify = false,
-  target = "storeItems",
-}) {
+export default function AmForm({ storeItem = {}, modify = false }) {
   const { t } = useContext(TranslationContext);
   const { user } = useContext(AuthContext);
-  const classes = useStyles();
   const { showNotification } = useContext(NotificationContext);
   const { sendEvent } = useContext(SocketContext);
+
+  const classes = useStyles();
 
   const [stores] = useState([
     user.workUnit.storeId ?? "",
@@ -132,11 +128,11 @@ export default function AmForm({
   });
 
   const [item, setItem] = useState(_item);
-  const [updateItem, setUpdate] = useState(storeItem ?? {});
+  const [updateItem, setUpdate] = useState(storeItem);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [image, setImage] = useState(modify ? updateItem.imageUrl : null);
+  const [image, setImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
 
   const getInputValue = (e) => {
@@ -146,9 +142,11 @@ export default function AmForm({
   };
 
   const reset = () => {
-    if (!modify) return setItem(_item);
     setError("");
-    setImage(storeItem.imageUrl);
+
+    if (!modify) return setItem(_item);
+
+    setImage(getImage({ url: storeItem.imageUrl }));
     setUpdate(storeItem);
   };
 
@@ -226,13 +224,18 @@ export default function AmForm({
     if (imageUrl) {
       item.imageUrl = imageUrl;
     } else {
-      delete item?.imageUrl;
+      if (modify) {
+        item.imageUrl = "";
+        delete item.image;
+      } else {
+        delete item?.imageUrl;
+      }
     }
 
     return { valid: true, validated: item };
   };
 
-  const handleSubmit = async (item) => {
+  const handleSubmit = async ({ item, method = "POST" }) => {
     setError("");
 
     const { valid, validated, message } = validateItem(item, imageUrl);
@@ -246,7 +249,7 @@ export default function AmForm({
     const res = await sendFormData({
       url: "/storeItems",
       values: item,
-      method: "POST",
+      method,
     });
 
     if (res.error) {
@@ -271,10 +274,11 @@ export default function AmForm({
       rooms: [user.workUnit.code],
     });
 
-    showNotification({
-      msg: t("feedback.admin.store item created success"),
-      color: "success",
-    });
+    const feedbackMsg = modify
+      ? "feedback.admin.store item updated success"
+      : "feedback.admin.store item created success";
+
+    showNotification({ msg: t(feedbackMsg), color: "success" });
 
     setLoading(false);
   };
@@ -295,302 +299,305 @@ export default function AmForm({
     },
   ];
 
+  useEffect(() => {
+    const _image = storeItem.imageUrl
+      ? getImage({ url: storeItem.imageUrl })
+      : null;
+
+    setImage(_image);
+    setUpdate(storeItem);
+  }, [storeItem]);
+
   return (
     <form
       className={classes.form}
       onSubmit={(e) => {
         e.preventDefault();
-        if (!modify) return handleSubmit(item);
-        return handleSubmit(updateItem);
+        const data = modify ? updateItem : item;
+        const method = modify ? "PATCH" : "POST";
+
+        handleSubmit({ item: data, method });
       }}
     >
-      {target === "storeItems" && (
-        <ImagePreview
-          button={
-            <PopOver
-              items={popMenu}
-              Icon={<CameraAlt />}
-              tooltipText="Upload"
-            />
-          }
-          imageSrc={image}
-        />
-      )}
-      {error && <div className="formError"> {t(`_errors.${error}`)}</div>}
-      {target === "storeItems" && (
-        <div
-          style={{
-            display: "flex",
-            flexFlow: "column",
-            justifyContent: "flex-start",
-            height: "270px",
-            overflowY: "auto",
-            paddingTop: 5,
-          }}
-        >
-          <div className={classes.rowField}>
-            <TextField
-              fullWidth
-              required
-              variant="standard"
-              type="text"
-              name="family"
-              value={modify ? updateItem.family : item.family}
-              className={classes.inputText}
-              inputProps={{ className: classes.inputText }}
-              label={t("compo.item.family") + "*"}
-              onChange={getInputValue}
-            />
+      <ImagePreview
+        button={
+          <PopOver items={popMenu} Icon={<CameraAlt />} tooltipText="Upload" />
+        }
+        imageSrc={image}
+      />
 
-            <TextField
-              fullWidth
-              required
-              variant="standard"
-              type="text"
-              name="category"
-              value={modify ? updateItem.category : item.category}
-              className={classes.inputText}
-              inputProps={{ className: classes.inputText }}
-              label={t("compo.item.category") + "*"}
-              onChange={getInputValue}
-            />
-          </div>
+      {error && <div className="formError"> {t(`_errors.${error}`)}</div>}
+
+      <div
+        style={{
+          display: "flex",
+          flexFlow: "column",
+          justifyContent: "flex-start",
+          height: "270px",
+          overflowY: "auto",
+          paddingTop: 5,
+        }}
+      >
+        <div className={classes.rowField}>
+          <TextField
+            fullWidth
+            required
+            variant="standard"
+            type="text"
+            name="family"
+            value={modify ? updateItem.family : item.family}
+            className={classes.inputText}
+            inputProps={{ className: classes.inputText }}
+            label={t("compo.item.family") + "*"}
+            onChange={getInputValue}
+          />
 
           <TextField
             fullWidth
             required
             variant="standard"
             type="text"
-            name="name"
-            value={modify ? updateItem.name : item.name}
+            name="category"
+            value={modify ? updateItem.category : item.category}
             className={classes.inputText}
             inputProps={{ className: classes.inputText }}
-            label={t("compo.item.name") + "*"}
+            label={t("compo.item.category") + "*"}
+            onChange={getInputValue}
+          />
+        </div>
+
+        <TextField
+          fullWidth
+          required
+          variant="standard"
+          type="text"
+          name="name"
+          value={modify ? updateItem.name : item.name}
+          className={classes.inputText}
+          inputProps={{ className: classes.inputText }}
+          label={t("compo.item.name") + "*"}
+          onChange={getInputValue}
+        />
+
+        <div className={classes.rowField}>
+          <TextField
+            fullWidth
+            required
+            variant="standard"
+            type="text"
+            name="measureUnit"
+            value={modify ? updateItem.measureUnit : item.measureUnit}
+            className={classes.inputText}
+            inputProps={{ className: classes.inputText }}
+            label={t("compo.item.measureUnit") + "*"}
             onChange={getInputValue}
           />
 
-          <div className={classes.rowField}>
-            <TextField
-              fullWidth
-              required
-              variant="standard"
-              type="text"
-              name="measureUnit"
-              value={modify ? updateItem.measureUnit : item.measureUnit}
-              className={classes.inputText}
-              inputProps={{ className: classes.inputText }}
-              label={t("compo.item.measureUnit") + "*"}
-              onChange={getInputValue}
-            />
+          <TextField
+            fullWidth
+            required
+            variant="standard"
+            type="text"
+            name="measureUnitPlural"
+            value={
+              modify ? updateItem.measureUnitPlural : item.measureUnitPlural
+            }
+            className={classes.inputText}
+            inputProps={{ className: classes.inputText }}
+            label={t("compo.item.measureUnitPlural") + "*"}
+            onChange={getInputValue}
+          />
+        </div>
 
-            <TextField
-              fullWidth
-              required
-              variant="standard"
-              type="text"
-              name="measureUnitPlural"
-              value={
-                modify ? updateItem.measureUnitPlural : item.measureUnitPlural
-              }
-              className={classes.inputText}
-              inputProps={{ className: classes.inputText }}
-              label={t("compo.item.measureUnitPlural") + "*"}
-              onChange={getInputValue}
-            />
-          </div>
-
-          <Accordion className={classes.accordion}>
-            <AccordionSummary
-              expandIcon={<ExpandMore style={{ color: "black" }} />}
-              className={classes.accordionSummary}
-            >
-              <Typography>{t("compo.item.otherUnits")}</Typography>
-            </AccordionSummary>
-            <AccordionDetails className={classes.accordionDetails}>
-              <RepeatManager
-                Component={AddOtherUnits}
-                readOnlyValues={
-                  modify ? updateItem.otherUnits : item.otherUnits
-                }
-                validate={validateOtherUnits}
-                sx={{ width: "95%", margin: "5px auto" }}
-                sxAddBtn={{ color: "black" }}
-                sxAddField={{ flexFlow: "column", width: "90%" }}
-                sxRepeat={{
-                  border: "1px solid grey",
-                  borderRadius: 8,
-                  maxHeight: 80,
-                }}
-                handleAdd={(unit) => {
-                  if (!modify)
-                    return setItem({
-                      ...item,
-                      otherUnits: [...item.otherUnits, unit],
-                    });
-                  setUpdate({
-                    ...updateItem,
-                    otherUnits: [...updateItem.otherUnits, unit],
+        <Accordion className={classes.accordion}>
+          <AccordionSummary
+            expandIcon={<ExpandMore style={{ color: "black" }} />}
+            className={classes.accordionSummary}
+          >
+            <Typography>{t("compo.item.otherUnits")}</Typography>
+          </AccordionSummary>
+          <AccordionDetails className={classes.accordionDetails}>
+            <RepeatManager
+              Component={AddOtherUnits}
+              readOnlyValues={modify ? updateItem.otherUnits : item.otherUnits}
+              validate={validateOtherUnits}
+              sx={{ width: "95%", margin: "5px auto" }}
+              sxAddBtn={{ color: "black" }}
+              sxAddField={{ flexFlow: "column", width: "90%" }}
+              sxRepeat={{
+                border: "1px solid grey",
+                borderRadius: 8,
+                maxHeight: 80,
+              }}
+              handleAdd={(unit) => {
+                if (!modify)
+                  return setItem({
+                    ...item,
+                    otherUnits: [...item.otherUnits, unit],
                   });
-                }}
-                handleDelete={(index) => {
-                  if (!modify)
-                    return setItem({
-                      ...item,
-                      otherUnits: removeAt({
-                        index,
-                        list: [...item.otherUnits],
-                      }),
-                    });
-                  setUpdate({
-                    ...updateItem,
+                setUpdate({
+                  ...updateItem,
+                  otherUnits: [...updateItem.otherUnits, unit],
+                });
+              }}
+              handleDelete={(index) => {
+                if (!modify)
+                  return setItem({
+                    ...item,
                     otherUnits: removeAt({
                       index,
-                      list: [...updateItem.otherUnits],
+                      list: [...item.otherUnits],
                     }),
                   });
-                }}
-              />
-            </AccordionDetails>
-          </Accordion>
-
-          <div className={classes.rowField}>
-            <TextField
-              fullWidth
-              required
-              variant="standard"
-              type="number"
-              name="quantity"
-              value={modify ? updateItem.quantity : item.quantity}
-              className={classes.inputText}
-              inputProps={{ className: classes.inputText }}
-              label={t("compo.item.quantity")}
-              onChange={getInputValue}
-            />
-
-            <TextField
-              fullWidth
-              required
-              variant="standard"
-              type="number"
-              name="cost"
-              value={modify ? updateItem.cost : item.cost}
-              className={classes.inputText}
-              inputProps={{ className: classes.inputText }}
-              label={t("compo.item.cost")}
-              onChange={getInputValue}
-            />
-          </div>
-
-          <Accordion className={classes.accordion}>
-            <AccordionSummary
-              expandIcon={<ExpandMore style={{ color: "black" }} />}
-              className={classes.accordionSummary}
-            >
-              <Typography> {t("compo.item.prices")}</Typography>
-            </AccordionSummary>
-            <AccordionDetails className={classes.accordionDetails}>
-              <RepeatManager
-                Component={AddPrices}
-                readOnlyValues={modify ? updateItem.prices : item.prices}
-                validate={validatePrice}
-                sx={{ width: "95%", margin: "5px 0" }}
-                sxAddBtn={{ color: "black" }}
-                sxRepeat={{
-                  border: "1px solid grey",
-                  borderRadius: 8,
-                  maxHeight: 80,
-                }}
-                handleAdd={(price) => {
-                  if (!modify)
-                    return setItem({
-                      ...item,
-                      prices: [...item.prices, price],
-                    });
-                  setUpdate({
-                    ...updateItem,
-                    prices: [...updateItem.prices, price],
-                  });
-                }}
-                handleDelete={(index) => {
-                  if (!modify)
-                    return setItem({
-                      ...item,
-                      prices: removeAt({ index, list: [...item.prices] }),
-                    });
-                  setUpdate({
-                    ...updateItem,
-                    prices: removeAt({ index, list: [...updateItem.prices] }),
-                  });
-                }}
-              />
-            </AccordionDetails>
-          </Accordion>
-
-          <div className={classes.rowField}>
-            <TextField
-              fullWidth
-              required
-              variant="standard"
-              type="number"
-              name="commission"
-              value={modify ? updateItem.commission : item.commission}
-              className={classes.inputText}
-              inputProps={{ className: classes.inputText }}
-              label={t("compo.item.commission")}
-              onChange={getInputValue}
-            />
-
-            <TextField
-              fullWidth
-              required
-              variant="standard"
-              type="number"
-              name="commissionRatio"
-              value={modify ? updateItem.commissionRatio : item.commissionRatio}
-              className={classes.inputText}
-              inputProps={{ className: classes.inputText }}
-              label={t("compo.item.commissionRatio")}
-              onChange={getInputValue}
-            />
-          </div>
-
-          <div className={classes.rowField}>
-            <span>
-              <Checkbox
-                checked={modify ? updateItem.isBlocked : item.isBlocked}
-                onChange={() => {
-                  if (modify)
-                    return setUpdate({
-                      ...updateItem,
-                      isBlocked: !updateItem.isBlocked,
-                    });
-
-                  setItem({
-                    ...item,
-                    isBlocked: !item.isBlocked,
-                  });
-                }}
-                id="isBlocked"
-              />
-              <label htmlFor="isBlocked" style={{ color: "black" }}>
-                {t("compo.item.isBlocked")}
-              </label>
-            </span>
-            <Dropdown
-              label={t("compo.item.store")}
-              values={stores}
-              value={item.storeId}
-              textColor={"black"}
-              handleChange={(storeId) => {
-                if (!modify) return setItem({ ...item, storeId });
-                return setUpdate({ ...updateItem, storeId });
+                setUpdate({
+                  ...updateItem,
+                  otherUnits: removeAt({
+                    index,
+                    list: [...updateItem.otherUnits],
+                  }),
+                });
               }}
-              sx={{ width: "50%" }}
-              capitalised={false}
             />
-          </div>
+          </AccordionDetails>
+        </Accordion>
+
+        <div className={classes.rowField}>
+          <TextField
+            fullWidth
+            required
+            variant="standard"
+            type="number"
+            name="quantity"
+            value={modify ? updateItem.quantity : item.quantity}
+            className={classes.inputText}
+            inputProps={{ className: classes.inputText }}
+            label={t("compo.item.quantity")}
+            onChange={getInputValue}
+          />
+
+          <TextField
+            fullWidth
+            required
+            variant="standard"
+            type="number"
+            name="cost"
+            value={modify ? updateItem.cost : item.cost}
+            className={classes.inputText}
+            inputProps={{ className: classes.inputText }}
+            label={t("compo.item.cost")}
+            onChange={getInputValue}
+          />
         </div>
-      )}
+
+        <Accordion className={classes.accordion}>
+          <AccordionSummary
+            expandIcon={<ExpandMore style={{ color: "black" }} />}
+            className={classes.accordionSummary}
+          >
+            <Typography> {t("compo.item.prices")}</Typography>
+          </AccordionSummary>
+          <AccordionDetails className={classes.accordionDetails}>
+            <RepeatManager
+              Component={AddPrices}
+              readOnlyValues={modify ? updateItem.prices : item.prices}
+              validate={validatePrice}
+              sx={{ width: "95%", margin: "5px 0" }}
+              sxAddBtn={{ color: "black" }}
+              sxRepeat={{
+                border: "1px solid grey",
+                borderRadius: 8,
+                maxHeight: 80,
+              }}
+              handleAdd={(price) => {
+                if (!modify)
+                  return setItem({
+                    ...item,
+                    prices: [...item.prices, price],
+                  });
+                setUpdate({
+                  ...updateItem,
+                  prices: [...updateItem.prices, price],
+                });
+              }}
+              handleDelete={(index) => {
+                if (!modify)
+                  return setItem({
+                    ...item,
+                    prices: removeAt({ index, list: [...item.prices] }),
+                  });
+                setUpdate({
+                  ...updateItem,
+                  prices: removeAt({ index, list: [...updateItem.prices] }),
+                });
+              }}
+            />
+          </AccordionDetails>
+        </Accordion>
+
+        <div className={classes.rowField}>
+          <TextField
+            fullWidth
+            required
+            variant="standard"
+            type="number"
+            name="commission"
+            value={modify ? updateItem.commission : item.commission}
+            className={classes.inputText}
+            inputProps={{ className: classes.inputText }}
+            label={t("compo.item.commission")}
+            onChange={getInputValue}
+          />
+
+          <TextField
+            fullWidth
+            required
+            variant="standard"
+            type="number"
+            name="commissionRatio"
+            value={modify ? updateItem.commissionRatio : item.commissionRatio}
+            className={classes.inputText}
+            inputProps={{ className: classes.inputText }}
+            label={t("compo.item.commissionRatio")}
+            onChange={getInputValue}
+          />
+        </div>
+
+        <div className={classes.rowField}>
+          <span>
+            <Checkbox
+              checked={modify ? updateItem.isBlocked : item.isBlocked}
+              onChange={() => {
+                if (modify)
+                  return setUpdate({
+                    ...updateItem,
+                    isBlocked: !updateItem.isBlocked,
+                  });
+
+                setItem({
+                  ...item,
+                  isBlocked: !item.isBlocked,
+                });
+              }}
+              id="isBlocked"
+            />
+            <label htmlFor="isBlocked" style={{ color: "black" }}>
+              {t("compo.item.isBlocked")}
+            </label>
+          </span>
+          <Dropdown
+            label={t("compo.item.store")}
+            values={stores}
+            value={item.storeId}
+            textColor={"black"}
+            handleChange={(storeId) => {
+              if (!modify) return setItem({ ...item, storeId });
+              return setUpdate({ ...updateItem, storeId });
+            }}
+            sx={{ width: "50%" }}
+            capitalised={false}
+          />
+        </div>
+      </div>
 
       {modify ? (
         <div
@@ -606,6 +613,7 @@ export default function AmForm({
             {t("pages.admin.modify-storeItem.modify-btn")}
           </LoadingButton>
           <Button
+            disabled={loading ? true : false}
             variant="contained"
             style={{ backgroundColor: "#FF0000" }}
             onClick={() => reset()}

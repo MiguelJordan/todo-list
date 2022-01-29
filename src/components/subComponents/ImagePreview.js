@@ -8,15 +8,16 @@ export default function ImagePreview({ button, handleClick, imageSrc }) {
         position: "relative",
         margin: "-10px auto",
         marginBottom: "5px",
-        width: "fit-content",
+        width: "140px",
+        height: "140px",
       }}
     >
       <img
         alt="preview"
         src={imageSrc ?? defaultImage}
         style={{
-          width: "140px",
-          height: "140px",
+          width: "100%",
+          height: "100%",
           borderRadius: "300px",
           border: 0,
           objectFit: "cover",

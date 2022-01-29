@@ -40,12 +40,7 @@ const DataLayerProvider = ({ children }) => {
       return;
     }
 
-    if (user.role === "admin") {
-      // group data by stores
-      // if (!data.length) return;
-      return;
-      // updateAdminStore(_items)
-    }
+    if (user.role === "admin") return updateItems(_items);
 
     if (user.role === "waiter") {
       // console.log(_items);

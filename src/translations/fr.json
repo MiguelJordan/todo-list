@@ -87,7 +87,10 @@
     }
   },
   "feedback": {
-    "admin": { "store item created success": "Article creé avec succès" },
+    "admin": {
+      "store item created success": "Article creé avec succès",
+      "store item updated success": "Article modifié avec succès"
+    },
     "waiter": {
       "order item created success": "Article ajouté avec succès",
       "order item deleted success": "Article supprimé avec succès",

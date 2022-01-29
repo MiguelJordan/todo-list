@@ -48,6 +48,7 @@ export const getBool = (value) => {
 export const getImage = ({ url = "", fullUrl = false }) => {
   // this is in case the resource
   // is independent of NODE_ENV
+  if (!url) return null;
   if (fullUrl) return url;
   return nodeEnv === "production" ? url : apiUrl + url;
 };

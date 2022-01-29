@@ -87,7 +87,10 @@
     }
   },
   "feedback": {
-    "admin": { "store item created success": "Item created successfully" },
+    "admin": {
+      "store item created success": "Item created successfully",
+      "store item updated success": "Item updated successfully"
+    },
     "waiter": {
       "order item created success": "Item added successfully",
       "order item deleted success": "Item deleted successfully",

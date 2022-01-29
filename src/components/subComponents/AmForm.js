@@ -269,7 +269,7 @@ export default function AmForm({ storeItem, modify = false }) {
       props: {
         companyCode: user.company.code,
         query: queries["cE-store-items-updated"]({
-          items: [item.name],
+          items: [item.name.toLowerCase()],
           storeId: item.storeId,
         }),
       },

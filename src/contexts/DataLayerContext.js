@@ -40,7 +40,7 @@ const DataLayerProvider = ({ children }) => {
       return;
     }
 
-    console.log("Updated items:", _items);
+    // console.log("Updated items:", _items);
 
     updateItems(_items);
   };

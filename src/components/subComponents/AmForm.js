@@ -184,55 +184,94 @@ export default function AmForm({ storeItem, modify = false }) {
     setImageUrl(null);
   };
 
+  const updateProps = (originalItem, updateItem, nonUpdateProps = []) => {
+    let props = Object.keys(originalItem);
+
+    if (nonUpdateProps) {
+      nonUpdateProps.map((attr) => {
+        const index = props.indexOf(attr);
+        props.splice(index, 1);
+      });
+    }
+    if (imageUrl) {
+      updateItem.imageUrl = imageUrl;
+    }
+
+    let item = {};
+
+    props.map((prop) => {
+      if (
+        JSON.stringify(originalItem[prop]) !== JSON.stringify(updateItem[prop])
+      )
+        return (item[prop] = updateItem[prop]);
+    });
+
+    item["companyCode"] = originalItem.companyCode;
+    item["storeId"] = originalItem.storeId;
+    item["name"] = originalItem.name;
+
+    return item;
+  };
+
   const validateItem = (item) => {
-    item.name = item.name?.trim();
-    if (!item.name) return { valid: false, message: "Invalid item name" };
+    if (!modify) item.name = item.name?.trim();
 
-    item.family = item.family?.trim();
-    if (!item.family) return { valid: false, message: "Invalid family" };
+    if (item.hasOwnProperty("name") && !item.name)
+      return { valid: false, message: "Invalid item name" };
 
-    item.category = item.category?.trim();
-    if (!item.category) return { valid: false, message: "Invalid category" };
+    if (!modify) item.family = item.family?.trim();
+    if (item.hasOwnProperty("family") && !item.family)
+      return { valid: false, message: "Invalid family" };
 
-    item.measureUnit = item.measureUnit?.trim();
-    if (!item.measureUnit) {
+    if (!modify) item.category = item.category?.trim();
+    if (item.hasOwnProperty("category") && !item.category)
+      return { valid: false, message: "Invalid category" };
+
+    if (!modify) item.measureUnit = item.measureUnit?.trim();
+    if (item.hasOwnProperty("measureUnit") && !item.measureUnit) {
       return { valid: false, message: "Invalid measure unit" };
     }
 
-    item.measureUnitPlural = item.measureUnitPlural?.trim();
-    if (!item.measureUnitPlural) {
+    if (!modify) item.measureUnitPlural = item.measureUnitPlural?.trim();
+    if (item.hasOwnProperty("measureUnitPlural") && !item.measureUnitPlural) {
       return { valid: false, message: "Invalid measure unit" };
     }
 
-    if (isNaN(item.quantity) || item.quantity < 0) {
+    if (
+      (item.hasOwnProperty("quantity") && isNaN(item.quantity)) ||
+      item.quantity < 0
+    ) {
       return { valid: false, message: "Invalid quantity" };
     }
-    item.quantity = Number(item.quantity);
+    if (!modify) item.quantity = Number(item.quantity);
 
-    if (isNaN(item.cost) || item.cost < 0) {
+    if ((item.hasOwnProperty("cost") && isNaN(item.cost)) || item.cost < 0) {
       return { valid: false, message: "Invalid cost price" };
     }
-    item.cost = Number(item.cost);
+    if (!modify) item.cost = Number(item.cost);
 
-    if (isNaN(item.commission) || item.commission < 0) {
+    if (
+      (item.hasOwnProperty("commission") && isNaN(item.commission)) ||
+      item.commission < 0
+    ) {
       return { valid: false, message: "Invalid commission" };
     }
-    item.commission = Number(item.commission);
+    if (!modify) item.commission = Number(item.commission);
 
-    if (isNaN(item.commissionRatio) || item.commissionRatio < 1) {
+    if (
+      (item.hasOwnProperty("commissionRatio") && isNaN(item.commissionRatio)) ||
+      item.commissionRatio < 1
+    ) {
       return { valid: false, message: "Invalid commission ratio" };
     }
-    item.commissionRatio = Number(item.commissionRatio);
+
+    if (!modify) item.commissionRatio = Number(item.commissionRatio);
+
+    if (item.hasOwnProperty("imageUrl") && !item.imageUrl)
+      return { valid: false, message: "Please Upload an Image" };
 
     if (imageUrl) {
       item.imageUrl = imageUrl;
-    } else {
-      if (modify) {
-        item.imageUrl = "";
-        delete item.image;
-      } else {
-        delete item?.imageUrl;
-      }
     }
 
     return { valid: true, validated: item };
@@ -306,7 +345,6 @@ export default function AmForm({ storeItem, modify = false }) {
     const _image = _imageUrl ? getImage({ url: _imageUrl }) : null;
 
     setImage(_image);
-    if (_imageUrl) setImageUrl(_imageUrl);
     setUpdate(storeItem);
   }, [storeItem]);
 
@@ -315,7 +353,10 @@ export default function AmForm({ storeItem, modify = false }) {
       className={classes.form}
       onSubmit={(e) => {
         e.preventDefault();
-        const data = modify ? updateItem : item;
+
+        const data = modify
+          ? updateProps(storeItem, updateItem, ["name", "storeId"])
+          : item;
         const method = modify ? "PATCH" : "POST";
 
         handleSubmit({ item: data, method });

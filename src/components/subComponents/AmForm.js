@@ -269,7 +269,7 @@ export default function AmForm({ storeItem, modify = false }) {
       props: {
         companyCode: user.company.code,
         query: queries["cE-store-items-updated"]({
-          items: [item.name],
+          items: [item.name.toLowerCase()],
           storeId: item.storeId,
         }),
       },
@@ -306,7 +306,6 @@ export default function AmForm({ storeItem, modify = false }) {
     const _image = _imageUrl ? getImage({ url: _imageUrl }) : null;
 
     setImage(_image);
-    if (_imageUrl) setImageUrl(_imageUrl);
     setUpdate(storeItem);
   }, [storeItem]);
 
